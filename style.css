@@ -120,6 +120,20 @@ section {
     color: #333;
 }
 
+.talks-intro {
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.talks-subtitle {
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
 /* Lists */
 ul {
     list-style: none;
@@ -127,13 +141,15 @@ ul {
 }
 
 #about ul li,
-.links li {
+.links li,
+.talks-list li {
     padding: 0.5rem 0;
     border-bottom: 1px solid #ddd;
 }
 
 #about ul li:last-child,
-.links li:last-child {
+.links li:last-child,
+.talks-list li:last-child {
     border-bottom: none;
 }
 
