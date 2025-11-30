@@ -219,6 +219,12 @@ ul {
     font-size: 0.95rem;
 }
 
+.view-all {
+    margin-top: 2rem;
+    text-align: right;
+    font-weight: 700;
+}
+
 /* Footer */
 footer {
     margin-top: 4rem;

@@ -4,7 +4,8 @@ async function loadArticles() {
     const loadingIndicator = document.getElementById('articles-loading');
 
     try {
-        const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://binarypaths.substack.com/feed');
+        // Replace with your Cloudflare Worker URL after deployment
+        const response = await fetch('https://rss.silvags.com');
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
