@@ -58,3 +58,120 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Typing Animation
+function typeWriter() {
+    const tagline = document.querySelector('.tagline');
+    if (!tagline) return;
+
+    const text = tagline.textContent;
+    tagline.textContent = '';
+    tagline.classList.add('typing-text');
+
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            tagline.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 100);
+        } else {
+            // Remove cursor animation after typing is done
+            setTimeout(() => {
+                tagline.style.borderRight = 'none';
+            }, 1000);
+        }
+    }
+
+    // Start typing after a short delay
+    setTimeout(type, 500);
+}
+
+// Initialize typing animation
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', typeWriter);
+} else {
+    typeWriter();
+}
+
+// Magnetic Cursor Effect
+class MagneticCursor {
+    constructor() {
+        // Check if device has mouse (not mobile)
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (this.isMobile) return;
+
+        this.cursor = document.createElement('div');
+        this.cursor.className = 'magnetic-cursor';
+        document.body.appendChild(this.cursor);
+        document.body.classList.add('magnetic-active');
+
+        this.position = { x: 0, y: 0 };
+        this.mouse = { x: 0, y: 0 };
+
+        this.init();
+    }
+
+    init() {
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+        });
+
+        // Animate cursor
+        this.animate();
+
+        // Add magnetic effect to interactive elements
+        const magneticElements = document.querySelectorAll('a, button, .profile-pic, h1, h2');
+        magneticElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                this.cursor.classList.add('hovering');
+            });
+
+            el.addEventListener('mouseleave', () => {
+                this.cursor.classList.remove('hovering');
+            });
+
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                // Apply magnetic effect (subtle pull)
+                const distance = Math.sqrt(x * x + y * y);
+                const maxDistance = 100;
+
+                if (distance < maxDistance) {
+                    const force = (maxDistance - distance) / maxDistance;
+                    const translateX = x * force * 0.3;
+                    const translateY = y * force * 0.3;
+
+                    el.style.transform = `translate(${translateX}px, ${translateY}px)`;
+                }
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translate(0, 0)';
+            });
+        });
+    }
+
+    animate() {
+        // Smooth cursor movement
+        this.position.x += (this.mouse.x - this.position.x) * 0.15;
+        this.position.y += (this.mouse.y - this.position.y) * 0.15;
+
+        this.cursor.style.left = `${this.position.x}px`;
+        this.cursor.style.top = `${this.position.y}px`;
+
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Initialize magnetic cursor
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new MagneticCursor());
+} else {
+    new MagneticCursor();
+}

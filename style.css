@@ -21,7 +21,9 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
@@ -249,6 +251,15 @@ footer {
         font-size: 1.8rem;
     }
 
+    /* Disable magnetic cursor on mobile */
+    .magnetic-cursor {
+        display: none;
+    }
+
+    body.magnetic-active {
+        cursor: auto;
+    }
+
     h2 {
         font-size: 1.3rem;
     }
@@ -271,6 +282,125 @@ footer {
         width: 100px;
         height: 100px;
         box-shadow: 6px 6px 0 #000;
+    }
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(-2px, 2px);
+    }
+
+    40% {
+        transform: translate(-2px, -2px);
+    }
+
+    60% {
+        transform: translate(2px, 2px);
+    }
+
+    80% {
+        transform: translate(2px, -2px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+@keyframes glitch-text {
+    0% {
+        text-shadow: 0 0 0 #000;
+    }
+
+    20% {
+        text-shadow: -2px 0 #00ff00, 2px 0 #ff00ff;
+    }
+
+    40% {
+        text-shadow: -2px 0 #ff00ff, 2px 0 #00ff00;
+    }
+
+    60% {
+        text-shadow: 2px 0 #00ff00, -2px 0 #ff00ff;
+    }
+
+    80% {
+        text-shadow: 2px 0 #ff00ff, -2px 0 #00ff00;
+    }
+
+    100% {
+        text-shadow: 0 0 0 #000;
+    }
+}
+
+h1 {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+h1:hover {
+    animation: glitch 0.3s infinite, glitch-text 0.3s infinite;
+}
+
+/* Magnetic Cursor */
+body.magnetic-active {
+    cursor: none;
+}
+
+.magnetic-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease-out, width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+    background: #fff;
+}
+
+.magnetic-cursor.hovering {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Typing Animation */
+.typing-text {
+    overflow: hidden;
+    border-right: 3px solid #000;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    display: block;
+    max-width: fit-content;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: #000;
     }
 }
 
