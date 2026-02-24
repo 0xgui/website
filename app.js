@@ -93,85 +93,81 @@ if (document.readyState === 'loading') {
     typeWriter();
 }
 
-// Magnetic Cursor Effect
-class MagneticCursor {
+// ── Robot Arm Animator ────────────────────────────────────────────────────────
+// Drives a pick-and-place loop on the SVG arm in the intro section.
+// Reads IDs: arm-shoulder, arm-elbow, arm-wrist, arm-jaw-left, arm-jaw-right,
+//            arm-target, j1-val, j2-val, j3-val, gr-val
+class RobotArmAnimator {
     constructor() {
-        // Check if device has mouse (not mobile)
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const g = id => document.getElementById(id);
+        this.els = {
+            shoulder: g('arm-shoulder'), elbow: g('arm-elbow'),
+            wrist:    g('arm-wrist'),    jawL:  g('arm-jaw-left'),
+            jawR:     g('arm-jaw-right'),target: g('arm-target'),
+            j1: g('j1-val'), j2: g('j2-val'), j3: g('j3-val'), gr: g('gr-val'),
+        };
+        if (!this.els.shoulder) return;
 
-        if (this.isMobile) return;
+        this.t0    = performance.now();
+        this.CYCLE = 7000; // ms per full pick-and-place cycle
 
-        this.cursor = document.createElement('div');
-        this.cursor.className = 'magnetic-cursor';
-        document.body.appendChild(this.cursor);
-        document.body.classList.add('magnetic-active');
+        // Keyframes: { t∈[0,1], s=shoulder, e=elbow, w=wrist, g=gripper∈[0,1] }
+        this.KF = [
+            { t: 0.00, s:  0,  e: -10, w:  5,  g: 0 }, // rest
+            { t: 0.28, s:  25, e:  42, w: -28, g: 0 }, // reach forward-down
+            { t: 0.37, s:  25, e:  42, w: -28, g: 1 }, // grip
+            { t: 0.60, s: -18, e: -22, w:  14, g: 1 }, // lift & swing back
+            { t: 0.75, s:  16, e:  22, w: -18, g: 1 }, // move to place
+            { t: 0.84, s:  16, e:  22, w: -18, g: 0 }, // release
+            { t: 1.00, s:  0,  e: -10, w:  5,  g: 0 }, // return to rest
+        ];
 
-        this.position = { x: 0, y: 0 };
-        this.mouse = { x: 0, y: 0 };
-
-        this.init();
+        requestAnimationFrame(() => this.tick());
     }
 
-    init() {
-        // Track mouse movement
-        document.addEventListener('mousemove', (e) => {
-            this.mouse.x = e.clientX;
-            this.mouse.y = e.clientY;
-        });
+    // Cubic ease-in-out
+    ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
 
-        // Animate cursor
-        this.animate();
-
-        // Add magnetic effect to interactive elements
-        const magneticElements = document.querySelectorAll('a, button, .profile-pic, h1, h2');
-        magneticElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                this.cursor.classList.add('hovering');
-            });
-
-            el.addEventListener('mouseleave', () => {
-                this.cursor.classList.remove('hovering');
-            });
-
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-
-                // Apply magnetic effect (subtle pull)
-                const distance = Math.sqrt(x * x + y * y);
-                const maxDistance = 100;
-
-                if (distance < maxDistance) {
-                    const force = (maxDistance - distance) / maxDistance;
-                    const translateX = x * force * 0.3;
-                    const translateY = y * force * 0.3;
-
-                    el.style.transform = `translate(${translateX}px, ${translateY}px)`;
-                }
-            });
-
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = 'translate(0, 0)';
-            });
-        });
+    interpolate(t) {
+        const kf = this.KF;
+        for (let i = 0; i < kf.length - 1; i++) {
+            if (t >= kf[i].t && t <= kf[i + 1].t) {
+                const p = this.ease((t - kf[i].t) / (kf[i + 1].t - kf[i].t));
+                const l = (a, b) => a + (b - a) * p;
+                return { s: l(kf[i].s, kf[i+1].s), e: l(kf[i].e, kf[i+1].e),
+                         w: l(kf[i].w, kf[i+1].w), g: l(kf[i].g, kf[i+1].g) };
+            }
+        }
+        return kf[kf.length - 1];
     }
 
-    animate() {
-        // Smooth cursor movement
-        this.position.x += (this.mouse.x - this.position.x) * 0.15;
-        this.position.y += (this.mouse.y - this.position.y) * 0.15;
+    tick() {
+        const t = ((performance.now() - this.t0) % this.CYCLE) / this.CYCLE;
+        const a = this.interpolate(t);
+        const { shoulder, elbow, wrist, jawL, jawR, target, j1, j2, j3, gr } = this.els;
 
-        this.cursor.style.left = `${this.position.x}px`;
-        this.cursor.style.top = `${this.position.y}px`;
+        shoulder.setAttribute('transform', `translate(100,248) rotate(${a.s})`);
+        elbow   .setAttribute('transform', `translate(0,-95)  rotate(${a.e})`);
+        wrist   .setAttribute('transform', `translate(0,-75)  rotate(${a.w})`);
 
-        requestAnimationFrame(() => this.animate());
+        const jaw = a.g * 9;
+        jawL  .setAttribute('transform', `translate(${-jaw},0)`);
+        jawR  .setAttribute('transform', `translate(${jaw},0)`);
+        target.setAttribute('opacity', a.g > 0.5 ? String((a.g - 0.5) * 2) : '0');
+
+        const fmt = v => (v >= 0 ? '+' : '') + Math.round(v) + '°';
+        if (j1) j1.textContent = fmt(a.s);
+        if (j2) j2.textContent = fmt(a.e);
+        if (j3) j3.textContent = fmt(a.w);
+        if (gr) gr.textContent = a.g > 0.5 ? 'CLOSED' : 'OPEN';
+
+        requestAnimationFrame(() => this.tick());
     }
 }
 
-// Initialize magnetic cursor
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new MagneticCursor());
+    document.addEventListener('DOMContentLoaded', () => new RobotArmAnimator());
 } else {
-    new MagneticCursor();
+    new RobotArmAnimator();
 }
+

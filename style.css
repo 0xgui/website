@@ -105,6 +105,45 @@ section {
 
 #intro {
     margin-top: 2rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+}
+
+#intro-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.arm-container {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.robot-arm-svg {
+    display: block;
+}
+
+.arm-readout {
+    width: 100%;
+    margin-top: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: #666;
+}
+
+.readout-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.readout-row span:last-child {
+    font-weight: 700;
+    color: #000;
 }
 
 .profile-pic {
@@ -153,6 +192,108 @@ ul {
 .links li:last-child,
 .talks-list li:last-child {
     border-bottom: none;
+}
+
+/* PCB board */
+.pcb-wrap {
+    margin: -1rem 0 3rem 0;
+}
+
+.pcb-board {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.pcb-signal {
+    stroke-dasharray: 18 800;
+    stroke-dashoffset: 0;
+    animation: signal-pulse 2.8s linear infinite;
+}
+
+@keyframes signal-pulse {
+    from { stroke-dashoffset:  20; }
+    to   { stroke-dashoffset: -820; }
+}
+
+
+/* Project Cards */
+.project-card {
+    border: 2px solid #000;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.project-title {
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.project-status {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid #000;
+    padding: 0.15rem 0.5rem 0.15rem 1.4rem;
+    white-space: nowrap;
+    position: relative;
+}
+
+.project-status::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #000;
+    animation: led-blink 1.8s ease-in-out infinite;
+}
+
+@keyframes led-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.1; }
+}
+
+.project-desc {
+    color: #333;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.project-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.project-tags span {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid #999;
+    padding: 0.1rem 0.4rem;
+    color: #666;
+}
+
+.project-links a {
+    font-weight: 700;
+    font-size: 0.9rem;
 }
 
 /* Timeline */
@@ -227,6 +368,18 @@ ul {
     font-weight: 700;
 }
 
+/* Footer robot */
+.footer-bot {
+    display: block;
+    margin: 0 auto 0.75rem;
+    animation: bot-float 3s ease-in-out infinite;
+}
+
+@keyframes bot-float {
+    0%, 100% { transform: translateY(0);    }
+    50%       { transform: translateY(-5px); }
+}
+
 /* Footer */
 footer {
     margin-top: 4rem;
@@ -251,13 +404,13 @@ footer {
         font-size: 1.8rem;
     }
 
-    /* Disable magnetic cursor on mobile */
-    .magnetic-cursor {
-        display: none;
+    #intro {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    body.magnetic-active {
-        cursor: auto;
+    .arm-container {
+        display: none;
     }
 
     h2 {
@@ -348,29 +501,6 @@ h1:hover {
     animation: glitch 0.3s infinite, glitch-text 0.3s infinite;
 }
 
-/* Magnetic Cursor */
-body.magnetic-active {
-    cursor: none;
-}
-
-.magnetic-cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #000;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease-out, width 0.2s, height 0.2s;
-    mix-blend-mode: difference;
-    background: #fff;
-}
-
-.magnetic-cursor.hovering {
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.1);
-}
 
 /* Typing Animation */
 .typing-text {
