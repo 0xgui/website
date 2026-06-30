@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SO-101 — Build Log · Guilherme Silva</title>
+<meta name="description" content="Building a 6-DOF robotic arm from scratch. Build log: teleop, imitation learning, sim-to-real." />
+<meta property="og:image" content="https://silvags.com/builds/so-101/arms-hero.webp">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" /></noscript>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #fbfaf7; --text: #1a1a1a; --muted: #6b6b6b; --soft: #9a9a9a;
+    --border: #e8e6e0; --accent: #2a2a2a; --card: #f4f2ec;
+    --warm: #b15a00; --warm-bg: rgba(227,168,107,0.12); --warm-border: #e3a86b66;
+  }
+  :root.dark {
+    --bg: #0e0e0e; --text: #e8e6e1; --muted: #8e8c86; --soft: #5e5c58;
+    --border: #242220; --accent: #ccc9c2; --card: #161513;
+    --warm: #f0b370; --warm-bg: rgba(227,168,107,0.08); --warm-border: #4a3a1f;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px;
+    -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .site-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 1.5rem; position: sticky; top: 0;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    z-index: 10; max-width: 720px; margin: 0 auto;
+  }
+  .site-nav .brand {
+    font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15rem;
+    color: var(--text); text-decoration: none; border: none;
+  }
+  .nav-icons { display: flex; align-items: center; gap: 1rem; }
+  .nav-icons a { display: flex; color: var(--muted); transition: color 0.2s; border: none; }
+  .nav-icons a:hover { color: var(--text); }
+  .nav-icons svg { width: 18px; height: 18px; fill: currentColor; }
+  .theme-toggle { background: none; border: none; color: var(--muted); cursor: pointer; padding: 0; display: flex; }
+  .theme-toggle:hover { color: var(--text); }
+  .theme-toggle svg { width: 16px; height: 16px; fill: currentColor; }
+  .theme-toggle .icon-sun { display: none; }
+  .dark .theme-toggle .icon-moon { display: none; }
+  .dark .theme-toggle .icon-sun { display: inline; }
+
+  /* ── HERO ── */
+  .hero { padding: 2rem 0 1rem; }
+  .back {
+    font-size: 0.85rem; color: var(--muted); border: none; margin-bottom: 1.25rem;
+    display: inline-block; transition: color 0.2s;
+  }
+  .back:hover { color: var(--text); }
+  .kicker {
+    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--warm); display: inline-flex;
+    align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
+  }
+  .kicker .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm); box-shadow: 0 0 0 4px var(--warm-bg); }
+  h1.title {
+    font-family: 'Instrument Serif', serif; font-weight: 400;
+    font-size: clamp(2.4rem, 8vw, 3.8rem); line-height: 1; letter-spacing: -0.02em;
+    margin-bottom: 0.9rem;
+  }
+  .summary { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.5rem; max-width: 38em; }
+  .summary strong { color: var(--text); font-weight: 500; }
+
+  .hero-img {
+    width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 14px;
+    background: var(--border); display: block; margin-bottom: 1.5rem;
+  }
+
+  /* ── 3D MODEL VIEWER (always visible) ── */
+  .mv-wrap {
+    position: relative; width: 100%; margin-bottom: 1.5rem;
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    background: var(--card);
+  }
+  model-viewer {
+    width: 100%; height: 460px; --poster-color: transparent;
+    background: radial-gradient(ellipse at center, var(--card) 0%, var(--bg) 100%);
+  }
+  .mv-wrap .mv-caption {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 0.7rem 1rem;
+    font-size: 0.76rem; color: var(--soft); text-align: center; pointer-events: none;
+    background: linear-gradient(transparent, color-mix(in srgb, var(--card) 92%, transparent));
+  }
+  .mv-wrap .mv-caption em { color: var(--muted); font-style: italic; }
+
+  @media (max-width: 600px) {
+    model-viewer { height: 340px; }
+  }
+
+  /* ── PROGRESS ── */
+  .progress-card {
+    border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem;
+    background: var(--card); margin-bottom: 3rem;
+  }
+  .progress-card .pl {
+    font-size: 0.66rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--soft); margin-bottom: 0.85rem;
+  }
+  .progress .track { display: flex; gap: 0.4rem; margin-bottom: 0.85rem; }
+  .progress .seg { flex: 1; height: 5px; border-radius: 3px; background: var(--border); }
+  .progress .seg.done { background: var(--text); }
+  .progress .seg.active { background: var(--warm); }
+  .progress .steps {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem 1rem;
+    font-size: 0.82rem; color: var(--muted);
+  }
+  .progress .steps .step { display: flex; align-items: center; gap: 0.4rem; }
+  .progress .steps .step.done { color: var(--text); }
+  .progress .steps .step.active { color: var(--warm); }
+
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin: 1.5rem 0 0;
+    font-size: 0.84rem; color: var(--muted); padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .meta-row a { color: var(--text); border: none; border-bottom: 1px solid var(--border); }
+  .meta-row a:hover { border-color: var(--text); }
+
+  /* ── ENTRIES ── */
+  h2.section-h {
+    font-family: 'Instrument Serif', serif; font-weight: 400;
+    font-size: 1.9rem; line-height: 1.1; letter-spacing: -0.01em;
+    margin: 0 0 1.5rem; scroll-margin-top: 80px;
+  }
+  .entry {
+    padding: 2rem 0; border-top: 1px solid var(--border);
+  }
+  .entry:first-of-type { border-top: none; }
+  .entry .ehead { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .entry .day {
+    font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: var(--warm);
+    font-style: italic;
+  }
+  .entry .date {
+    font-size: 0.72rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .entry h3 {
+    font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.7rem;
+    line-height: 1.15; margin-bottom: 0.85rem; letter-spacing: -0.01em;
+  }
+  .entry p { margin-bottom: 1rem; color: var(--text); }
+  .entry p.muted { color: var(--muted); }
+  .entry .media {
+    width: 100%; border-radius: 12px; margin: 1rem 0; background: var(--border);
+    display: block;
+  }
+  .entry .media.tall { max-width: 380px; aspect-ratio: 9/16; object-fit: cover; margin-left: auto; margin-right: auto; }
+  .entry .media.wide { aspect-ratio: 16/9; object-fit: cover; }
+  .entry .caption { font-size: 0.78rem; color: var(--soft); text-align: center; margin-top: -0.4rem; margin-bottom: 1.25rem; font-style: italic; }
+  .entry a { color: var(--text); border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
+  .entry a:hover { border-color: var(--text); }
+  .entry .pullquote {
+    border-left: 3px solid var(--warm); padding-left: 1rem; margin: 1.25rem 0;
+    font-family: 'Instrument Serif', serif; font-size: 1.25rem; line-height: 1.4;
+    color: var(--text); font-style: italic;
+  }
+
+  .more-coming {
+    margin: 2rem 0; padding: 1.5rem; border: 1px dashed var(--border);
+    border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.92rem;
+  }
+  .more-coming .icon { font-size: 1rem; color: var(--warm); margin-right: 0.4rem; }
+
+  footer {
+    margin-top: 4rem; padding: 2rem 0 3rem; border-top: 1px solid var(--border);
+    font-size: 0.8rem; color: var(--soft); text-align: center;
+  }
+  footer a { color: var(--muted); border: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 600px) {
+    .wrap, .site-nav { padding-left: 1.1rem; padding-right: 1.1rem; }
+    h1.title { font-size: 2.4rem; }
+    h2.section-h { font-size: 1.6rem; }
+    .entry h3 { font-size: 1.4rem; }
+    .progress .steps { font-size: 0.74rem; gap: 0.35rem 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="new.html">← Guilherme Silva</a>
+  <span class="nav-icons">
+    <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener" aria-label="GitHub repo">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </span>
+</nav>
+
+<div class="wrap">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <a class="back" href="new.html">← Back to home</a>
+    <span class="kicker"><span class="dot"></span>Build log · In progress</span>
+    <h1 class="title">SO-101 Robotic Arm</h1>
+    <p class="summary">
+      A 6-DOF robotic arm, built from scratch with <strong>twelve STS3215 servos</strong>, two 3D-printed airframes, leader-follower teleop, and a slowly growing brain. Follow along as I learn robotics the hard way — in public.
+    </p>
+    <div class="mv-wrap">
+      <model-viewer
+        id="so-model"
+        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+        poster="builds/so-101/arms-hero.webp"
+        alt="3D model of the SO-101 robotic arm — drag to rotate, scroll to zoom"
+        auto-rotate
+        rotation-per-second="25deg"
+        camera-controls
+        shadow-intensity="1"
+        interaction-prompt="auto"
+        interaction-prompt-style="wiggle"
+        camera-orbit="0deg 80deg 105%"
+        loading="eager"
+      ></model-viewer>
+      <p class="mv-caption">drag to rotate · scroll to zoom · <em>placeholder until I export the SO-101 .glb</em></p>
+    </div>
+
+    <div class="progress-card">
+      <div class="pl">Build progress</div>
+      <div class="progress">
+        <div class="track">
+          <div class="seg done"></div>
+          <div class="seg done"></div>
+          <div class="seg active"></div>
+          <div class="seg"></div>
+        </div>
+        <div class="steps">
+          <span class="step done">✓ Build &amp; assemble</span>
+          <span class="step done">✓ Teleop moving</span>
+          <span class="step active">◉ Imitation learning</span>
+          <span class="step">○ Sim-to-real + VLA</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span><strong style="color:var(--text)">Hardware:</strong> STS3215 × 12, 3D-printed (PLA/PETG)</span>
+        <span><strong style="color:var(--text)">Stack:</strong> Python · ROS2 · LeRobot</span>
+        <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub →</a>
+        <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Origin story →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ENTRIES ═══ -->
+  <h2 class="section-h">Log</h2>
+
+  <article class="entry" id="day-01">
+    <div class="ehead">
+      <span class="day">Day 01</span>
+      <span class="date">March 05, 2026</span>
+    </div>
+    <h3>The arms move</h3>
+    <p>
+      I 3D-printed two arms part by part with a printer I bought, ordered twelve STS3215 servos from AliExpress, and followed open-source designs and instructions. Two arms, completely from scratch. The 3D printing alone took about two days for both.
+    </p>
+    <p class="muted">
+      Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup — realized it only after everything was done. Had to redo it all from scratch. Lessons like that, you only get to learn once.
+    </p>
+
+    <video class="media tall" autoplay muted loop playsinline preload="none">
+      <source src="builds/so-101/teleop.webm" type="video/webm">
+      <source src="builds/so-101/teleop.mp4" type="video/mp4">
+    </video>
+    <p class="caption">Leader-follower teleop — I move, it mirrors.</p>
+
+    <div class="pullquote">
+      The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
+    </div>
+
+    <p>
+      It's physical. It's immediate. It's hard. It's real. Now I just need to give it a <strong>brain</strong>.
+    </p>
+    <p class="muted">
+      The plan from here: teach the arms tasks by demonstration — move them through a motion a few dozen times, let it learn to replicate on its own (imitation learning). Then get into sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/home" target="_blank" rel="noopener">Gazebo</a>. Then, finally, put a vision-language-action model on it so it can see, reason, and act.
+    </p>
+    <p>
+      More on the "why" and the bigger picture in the <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">origin story post on Binary Paths</a>.
+    </p>
+  </article>
+
+  <div class="more-coming">
+    <span class="icon">◉</span>
+    Next entry: imitation learning — first demonstrations.<br>
+    <span style="color:var(--soft);font-size:0.82rem;">In progress. Check back soon.</span>
+  </div>
+
+  <footer>
+    <p>SO-101 build log · <a href="new.html">Guilherme Silva</a></p>
+    <p style="margin-top:0.25rem;">Calibration scripts &amp; more on <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a></p>
+  </footer>
+
+</div>
+
+<script>
+const toggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+const saved = localStorage.getItem('theme');
+if (saved === 'dark') html.classList.add('dark');
+toggle.addEventListener('click', () => {
+  html.classList.toggle('dark');
+  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+});
+
+// ── 3D MODEL VIEWER ──
+// Always loaded. Poster image shows while the .glb streams in.
+const mv = document.getElementById('so-model');
+if (mv) {
+  mv.addEventListener('error', () => console.warn('model-viewer: failed to load .glb'));
+}
+
+// ── DEEP-LINK HIGHLIGHT (#day-XX) ──
+// Smooth-scroll to the entry on load and flash a highlight,
+// so silvags.com/so-101.html#day-01 lands you right on it.
+if (location.hash) {
+  const highlightStyle = document.createElement('style');
+  highlightStyle.textContent = `
+    @keyframes mv-log-flash {
+      0% { background: var(--warm-bg); box-shadow: -8px 0 0 0 var(--warm); }
+      100% { background: transparent; box-shadow: -8px 0 0 0 transparent; }
+    }
+    .entry.log-flash { animation: mv-log-flash 2.5s ease-out; }
+  `;
+  document.head.appendChild(highlightStyle);
+  requestAnimationFrame(() => {
+    const target = document.querySelector(location.hash);
+    if (target) {
+      target.classList.add('log-flash');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+}
+</script>
+</body>
+</html>
