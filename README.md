@@ -1,4 +1,3 @@
-# Guilherme Silva - Personal Website
+# silvags.com
 
-A minimal, brutalist personal website built with pure HTML, CSS, and vanilla JavaScript.
-
+Personal website and robot build log. Static HTML/CSS/JS — no build step.

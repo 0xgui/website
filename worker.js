@@ -32,6 +32,9 @@ export default {
         const linkRegex = /<link>(.*?)<\/link>/;
         const pubDateRegex = /<pubDate>(.*?)<\/pubDate>/;
         const descriptionRegex = /<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/;
+        const enclosureRegex = /<enclosure[^>]*url="([^"]+)"[^>]*>/;
+        const mediaContentRegex = /<media:content[^>]*url="([^"]+)"[^>]*>/;
+        const mediaThumbnailRegex = /<media:thumbnail[^>]*url="([^"]+)"[^>]*>/;
 
         const items = [];
         let match;
@@ -43,12 +46,26 @@ export default {
           const linkMatch = itemContent.match(linkRegex);
           const pubDateMatch = itemContent.match(pubDateRegex);
           const descriptionMatch = itemContent.match(descriptionRegex);
+          const enclosureMatch = itemContent.match(enclosureRegex);
+          const mediaContentMatch = itemContent.match(mediaContentRegex);
+          const mediaThumbnailMatch = itemContent.match(mediaThumbnailRegex);
+
+          // Extract image URL from enclosure (preferred) or media tags
+          let image = '';
+          if (enclosureMatch) {
+            image = enclosureMatch[1];
+          } else if (mediaContentMatch) {
+            image = mediaContentMatch[1];
+          } else if (mediaThumbnailMatch) {
+            image = mediaThumbnailMatch[1];
+          }
 
           items.push({
             title: titleMatch ? titleMatch[1] : '',
             link: linkMatch ? linkMatch[1].trim() : '',
             pubDate: pubDateMatch ? pubDateMatch[1] : '',
-            description: descriptionMatch ? descriptionMatch[1] : ''
+            description: descriptionMatch ? descriptionMatch[1] : '',
+            image: image
           });
         }
 
