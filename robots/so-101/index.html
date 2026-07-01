@@ -216,12 +216,12 @@
     <span class="kicker"><span class="dot"></span>Build log · In progress</span>
     <h1 class="title">SO-101 Robotic Arm</h1>
     <p class="summary">
-      A 6-DOF robotic arm, built from scratch with <strong>twelve STS3215 servos</strong>, two 3D-printed airframes, leader-follower teleop, and a slowly growing brain. Follow along as I learn robotics the hard way — in public.
+      A 6-DOF robotic arm, built from scratch with <strong>twelve STS3215 servos</strong>, two 3D-printed airframes, leader-follower teleop, and a slowly growing brain.
     </p>
     <div class="mv-wrap">
       <model-viewer
         id="so-model"
-        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+        src="so101.glb"
         poster="arms-wide.webp"
         alt="3D model of the SO-101 robotic arm — drag to rotate, scroll to zoom"
         auto-rotate
@@ -233,7 +233,7 @@
         camera-orbit="0deg 80deg 105%"
         loading="eager"
       ></model-viewer>
-      <p class="mv-caption">drag to rotate · scroll to zoom · <em>placeholder until I export the SO-101 .glb</em></p>
+      <p class="mv-caption">drag to rotate · scroll to zoom · <em>real SO-101 CAD model</em></p>
     </div>
 
     <div class="progress-card">
@@ -269,33 +269,32 @@
       <span class="day">Day 01</span>
       <span class="date">March 05, 2026</span>
     </div>
-    <h3>The arms move</h3>
+    <h3>The arms, they move</h3>
 
     <img class="media wide" src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" loading="lazy" />
-    <p class="caption">Two arms, twelve servos, built from scratch.</p>
+    <p class="caption">Two arms, a lot of servos, built from scratch.</p>
 
     <p>
-      I 3D-printed them part by part with a printer I bought, ordered twelve STS3215 servos from AliExpress — almost &euro;20 each — and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
+      I 3D-printed part by part with a bambu printer I bought, ordered twelve STS3215 servos from AliExpress,&euro;20 each and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
     </p>
 
 
     <p class="muted">
-      Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm&hellip; as a follower. Wrong configuration, wrong setup — realized it only after everything was done. Had to redo it all from scratch. Lessons like that, you only get to learn once.
+      Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm&hellip; as a follower. Wrong configuration, wrong setup. Realized it only after everything was done. Had to redo it all from scratch.
     </p>
 
     <p>
-      It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. The tolerances are different, but the mindset is the same: something physical either fits or it doesn't.
+      It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There just something special seeing something move. Atoms moving.
     </p>
 
     <video class="media tall" autoplay muted loop playsinline preload="none">
       <source src="teleop-v1.webm" type="video/webm">
     </video>
-    <p class="caption">First teleop test — the follower mirrors the leader in real time.</p>
+    <p class="caption">3D Printing the arms.</p>
 
     <div class="pullquote">
       The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
     </div>
-
     <p>
       It's physical. It's immediate. It's hard. It's real. Now I just need to give it a <strong>brain</strong>.
     </p>
@@ -305,7 +304,7 @@
     <video class="media tall" autoplay muted loop playsinline preload="none">
       <source src="teleop-v2.webm" type="video/webm">
     </video>
-    <p class="caption">Another teleop run — smoother this time.</p>
+    <p class="caption"> teleop run.</p>
 
     <p class="muted">
       Right now it's pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to trigger the curiosity in me completely into this new world of hardware.
