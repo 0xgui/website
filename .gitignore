@@ -8,3 +8,8 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# AI agents
+.codex
+.agents
+.claude

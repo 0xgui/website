@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SO-101 — Build Log · Guilherme Silva</title>
 <meta name="description" content="Building a 6-DOF robotic arm from scratch. Build log: teleop, imitation learning, sim-to-real." />
-<meta property="og:image" content="https://silvags.com/builds/so-101/arms-hero.webp">
+<meta property="og:image" content="https://silvags.com/arms-wide.webp">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -197,7 +197,7 @@
 <body>
 
 <nav class="site-nav">
-  <a class="brand" href="new.html">← Guilherme Silva</a>
+  <a class="brand" href="../../index.html">← Guilherme Silva</a>
   <span class="nav-icons">
     <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener" aria-label="GitHub repo">
       <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -213,7 +213,7 @@
 
   <!-- ═══ HERO ═══ -->
   <section class="hero">
-    <a class="back" href="new.html">← Back to home</a>
+    <a class="back" href="../../index.html">← Back to home</a>
     <span class="kicker"><span class="dot"></span>Build log · In progress</span>
     <h1 class="title">SO-101 Robotic Arm</h1>
     <p class="summary">
@@ -223,7 +223,7 @@
       <model-viewer
         id="so-model"
         src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-        poster="builds/so-101/arms-hero.webp"
+        poster="arms-wide.webp"
         alt="3D model of the SO-101 robotic arm — drag to rotate, scroll to zoom"
         auto-rotate
         rotation-per-second="25deg"
@@ -271,18 +271,29 @@
       <span class="date">March 05, 2026</span>
     </div>
     <h3>The arms move</h3>
+
+    <img class="media wide" src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" loading="lazy" />
+    <p class="caption">Two arms, twelve servos, built from scratch.</p>
+
     <p>
-      I 3D-printed two arms part by part with a printer I bought, ordered twelve STS3215 servos from AliExpress, and followed open-source designs and instructions. Two arms, completely from scratch. The 3D printing alone took about two days for both.
+      I 3D-printed them part by part with a printer I bought, ordered twelve STS3215 servos from AliExpress — almost &euro;20 each — and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
     </p>
+
+    <img class="media" src="arms-desk.webp" alt="SO-101 arms on the desk, close-up" loading="lazy" />
+    <p class="caption">The desk. A printer, twelve servos, and patience.</p>
+
     <p class="muted">
-      Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup — realized it only after everything was done. Had to redo it all from scratch. Lessons like that, you only get to learn once.
+      Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm&hellip; as a follower. Wrong configuration, wrong setup — realized it only after everything was done. Had to redo it all from scratch. Lessons like that, you only get to learn once.
+    </p>
+
+    <p>
+      It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. The tolerances are different, but the mindset is the same: something physical either fits or it doesn't.
     </p>
 
     <video class="media tall" autoplay muted loop playsinline preload="none">
-      <source src="builds/so-101/teleop.webm" type="video/webm">
-      <source src="builds/so-101/teleop.mp4" type="video/mp4">
+      <source src="teleop-v1.webm" type="video/webm">
     </video>
-    <p class="caption">Leader-follower teleop — I move, it mirrors.</p>
+    <p class="caption">First teleop test — the follower mirrors the leader in real time.</p>
 
     <div class="pullquote">
       The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
@@ -291,7 +302,26 @@
     <p>
       It's physical. It's immediate. It's hard. It's real. Now I just need to give it a <strong>brain</strong>.
     </p>
+
+    <video class="media wide" autoplay muted loop playsinline preload="none">
+      <source src="demo-1.webm" type="video/webm">
+    </video>
+    <p class="caption">Moving through the workspace — testing range of motion.</p>
+
+    <video class="media wide" autoplay muted loop playsinline preload="none">
+      <source src="demo-2.webm" type="video/webm">
+    </video>
+    <p class="caption">Different angles, different movements.</p>
+
+    <video class="media tall" autoplay muted loop playsinline preload="none">
+      <source src="teleop-v2.webm" type="video/webm">
+    </video>
+    <p class="caption">Another teleop run — smoother this time.</p>
+
     <p class="muted">
+      Right now it's pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to trigger the curiosity in me completely into this new world of hardware.
+    </p>
+    <p>
       The plan from here: teach the arms tasks by demonstration — move them through a motion a few dozen times, let it learn to replicate on its own (imitation learning). Then get into sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/home" target="_blank" rel="noopener">Gazebo</a>. Then, finally, put a vision-language-action model on it so it can see, reason, and act.
     </p>
     <p>
@@ -306,7 +336,7 @@
   </div>
 
   <footer>
-    <p>SO-101 build log · <a href="new.html">Guilherme Silva</a></p>
+    <p>SO-101 build log · <a href="../../index.html">Guilherme Silva</a></p>
     <p style="margin-top:0.25rem;">Calibration scripts &amp; more on <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a></p>
   </footer>
 
