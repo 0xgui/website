@@ -155,12 +155,21 @@
   .now a.title-link:hover { color: var(--muted); }
 
   /* ── WORKBENCH ── */
+  .builds-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .builds-grid .build { min-width: 0; display: flex; flex-direction: column; margin-bottom: 0; }
+  .builds-grid .build-body { display: flex; flex-direction: column; flex: 1; padding: 1.25rem; }
+  .builds-grid .build h3.b-title { font-size: 1.65rem; }
+  .builds-grid .build .links { margin-top: auto; }
+  .builds-grid .progress .steps { display: grid; grid-template-columns: 1fr; gap: 0.35rem; }
+  .builds-grid .log-teaser { padding: 1.25rem; }
+  .builds-grid .log-teaser .entry { display: block; }
+  .builds-grid .log-teaser .entry .date { display: block; margin-bottom: 0.15rem; }
   .build {
     border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
     background: var(--card); margin-bottom: 1.5rem;
   }
   .build-img {
-    display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover;
+    display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; flex-shrink: 0;
     background: var(--border);
   }
   .build-body { padding: 1.5rem; }
@@ -309,6 +318,7 @@
   .updated { margin-top: 0.25rem; }
 
   @media (max-width: 600px) {
+    .builds-grid { grid-template-columns: 1fr; }
     .wrap, .site-nav { padding-left: 1.1rem; padding-right: 1.1rem; }
     .site-nav { padding-top: 1rem; padding-bottom: 1rem; }
     h1.name { font-size: 2.6rem; }
@@ -369,8 +379,9 @@
   </section>
 
   <!-- ═══ WORKBENCH ═══ -->
-  <h2 class="section-h">The Workbench<span class="count">01 build</span></h2>
+  <h2 class="section-h">The Workbench<span class="count">02 builds</span></h2>
 
+  <div class="builds-grid">
   <article class="build">
     <img class="build-img" src="robots/so-101/arms-wide.webp" alt="SO-101 robotic arms, built from scratch" loading="lazy" width="1600" height="955" />
     <div class="build-body">
@@ -420,11 +431,80 @@
     </div>
   </article>
 
+  <article class="build">
+    <img class="build-img" src="robots/pico/pico-preview.webp" alt="Render of Pico's simulation model with two servos and printed arms" loading="lazy" width="1600" height="900" />
+    <div class="build-body">
+      <div class="badges">
+        <span class="badge live"><span class="pulse"></span>Self-righting works</span>
+        <span class="badge">Robotics</span>
+        <span class="badge">Reinforcement Learning</span>
+      </div>
+      <h3 class="b-title">Pico</h3>
+      <p class="b-desc">
+        Two servos, a tiny ESP32 board, and one job: get back up. A policy trained in MuJoCo moves the arms when the robot falls. My build now recovers reliably on real hardware. Next comes measuring those recoveries and trying new ideas.
+      </p>
+      <div class="progress">
+        <div class="track" aria-hidden="true">
+          <div class="seg done"></div>
+          <div class="seg done"></div>
+          <div class="seg done"></div>
+          <div class="seg active"></div>
+        </div>
+        <div class="steps">
+          <span class="step done"><span class="icon">✓</span> Build &amp; assemble</span>
+          <span class="step done"><span class="icon">✓</span> Calibrate</span>
+          <span class="step done"><span class="icon">✓</span> Self-righting</span>
+          <span class="step active"><span class="icon">◉</span> Experiments next</span>
+        </div>
+      </div>
+      <div class="links">
+        <a class="primary" href="robots/pico/">Follow the build →</a>
+        <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="log-teaser">
+      <div class="log-label">Build notes</div>
+      <div class="entry">
+        <span class="date">The robot</span>
+        <a href="robots/pico/#day-01">Two motors, back on its feet</a>
+      </div>
+      <div class="entry">
+        <span class="date">Hardware</span>
+        <a href="robots/pico/#day-02">Making the code match the build</a>
+      </div>
+      <p class="more"><a href="robots/pico/">Full build notes →</a></p>
+    </div>
+  </article>
+  </div>
+
   <!-- ═══ WRITING ═══ -->
   <h2 class="section-h">Writing<span class="count">Binary Paths</span></h2>
   <p class="lede" style="margin-bottom:1.25rem;">On engineering, teams, and the strange joy of building things you can touch. From <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
-  <div id="articles-loading" style="color:var(--muted);font-size:0.9rem;padding:0.5rem 0;">Loading articles…</div>
-  <div id="articles"></div>
+  <!-- A small published snapshot keeps first visits and no-JS visits useful during RSS outages. -->
+  <div id="articles">
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2026-08-27">August 27, 2026</time>
+        <h3><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a></h3>
+        <p>How cleaning one room turned into open-heart surgery on a robot vacuum</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2026-03-05">March 5, 2026</time>
+        <h3><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a></h3>
+        <p>I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2025-12-05">December 5, 2025</time>
+        <h3><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a></h3>
+        <p>AI agents will define the future global ecommerce</p>
+      </div>
+    </div>
+  </div>
+  <p id="articles-status" role="status" style="color:var(--muted);font-size:0.8rem;margin-top:0.75rem;">Selected posts · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">All posts on Binary Paths →</a></p>
 
   <div class="subscribe-cta">
     <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe to Binary Paths →</a>
@@ -471,7 +551,7 @@
 
   <footer>
 
-    <p class="updated">Last updated July 2026</p>
+    <p class="updated">Last updated September 2026</p>
   </footer>
 
 </div>
@@ -480,11 +560,10 @@
 // ── THEME TOGGLE ──
 const toggle = document.getElementById('theme-toggle');
 const html = document.documentElement;
-const saved = localStorage.getItem('theme');
-if (saved === 'dark') html.classList.add('dark');
+try { if (localStorage.getItem('theme') === 'dark') html.classList.add('dark'); } catch {}
 toggle.addEventListener('click', () => {
   html.classList.toggle('dark');
-  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+  try { localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); } catch {}
 });
 
 // ── AUTO-STAMP THE "NOW" DATE ──
@@ -496,35 +575,78 @@ if (nowLabel) {
 
 // ── ARTICLES FROM SUBSTACK (via Cloudflare Worker at rss.silvags.com) ──
 (async () => {
-  const loading = document.getElementById("articles-loading");
   const container = document.getElementById("articles");
-  try {
-    const rsp = await fetch("https://rss.silvags.com");
-    if (!rsp.ok) throw new Error("unavailable");
-    const data = await rsp.json();
-    loading.remove();
-    if (!data.items || !data.items.length) {
-      container.innerHTML = '<p style="color:var(--muted);font-size:0.9rem">No articles yet.</p>';
-      return;
-    }
-    data.items.slice(0, 6).forEach(article => {
-      const title = article.title || "Untitled";
-      const link = article.link || "#";
+  const status = document.getElementById("articles-status");
+  const cacheKey = "binary-paths-articles-v1";
+  const maxCacheAge = 7 * 24 * 60 * 60 * 1000;
+  function httpsURL(value) {
+    try { const url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch { return ''; }
+  }
+  function validItems(data) {
+    if (!Array.isArray(data?.items)) return [];
+    return data.items.filter(item => item && typeof item.title === 'string' && item.title.trim()
+      && typeof item.link === 'string' && httpsURL(item.link)).slice(0, 5);
+  }
+  function render(items) {
+    const fragment = document.createDocumentFragment();
+    for (const article of items) {
+      const div = document.createElement('div');
+      div.className = 'article-item';
+      const media = document.createElement('div');
+      const image = httpsURL(article.image);
+      if (image) {
+        const img = document.createElement('img');
+        img.className = 'thumb'; img.src = image; img.alt = ''; img.loading = 'lazy';
+        img.addEventListener('error', () => img.remove(), { once: true });
+        media.append(img);
+      }
+      const meta = document.createElement('div'); meta.className = 'meta';
       const date = new Date(article.pubDate);
-      const desc = (article.description || "").replace(/<[^>]*>/g, "").slice(0, 150) + "…";
-      const thumb = article.image || (article.description || "").match(/<img[^>]+src="([^"]+)"/)?.[1] || "";
-      const div = document.createElement("div");
-      div.className = "article-item";
-      div.innerHTML = `<div>${thumb ? `<img class="thumb" src="${thumb}" alt="" loading="lazy" />` : ''}</div>
-        <div class="meta">
-          <time>${date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
-          <h3><a href="${link}" target="_blank" rel="noopener">${title}</a></h3>
-          <p>${desc}</p>
-        </div>`;
-      container.appendChild(div);
-    });
-  } catch (e) {
-    loading.textContent = "Could not load articles. Visit Binary Paths directly.";
+      if (Number.isFinite(date.getTime())) {
+        const time = document.createElement('time'); time.dateTime = date.toISOString();
+        time.textContent = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        meta.append(time);
+      }
+      const heading = document.createElement('h3');
+      const link = document.createElement('a');
+      link.href = article.link; link.target = '_blank'; link.rel = 'noopener'; link.textContent = article.title;
+      heading.append(link); meta.append(heading);
+      const description = document.createElement('p');
+      const text = typeof article.description === 'string' ? article.description.replace(/<[^>]*>/g, '').trim() : '';
+      description.textContent = text.length > 150 ? text.slice(0, 150) + '…' : text;
+      meta.append(description); div.append(media, meta); fragment.append(div);
+    }
+    container.replaceChildren(fragment);
+  }
+  // Storage is optional: privacy settings and quota errors must not block articles.
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey));
+    const age = Date.now() - cached?.savedAt;
+    const items = validItems(cached);
+    if (items.length && age >= 0 && age < maxCacheAge) {
+      render(items); status.textContent = 'Saved posts · checking for updates…';
+    }
+  } catch {}
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const rsp = await fetch('https://rss.silvags.com', { signal: controller.signal });
+      if (!rsp.ok) throw new Error('Feed unavailable');
+      const data = await rsp.json();
+      const items = validItems(data);
+      if (!items.length) throw new Error('Invalid or empty feed');
+      render(items);
+      status.textContent = data.stale ? 'Saved posts · feed update delayed.' : '';
+      // Do not extend the age of a stale server snapshot on each visit.
+      const fetchedAt = Date.parse(data.fetchedAt);
+      const savedAt = Number.isFinite(fetchedAt) ? fetchedAt : Date.now();
+      try { localStorage.setItem(cacheKey, JSON.stringify({ items, savedAt })); } catch {}
+      return;
+    } catch {
+      if (attempt === 1) status.textContent = 'Showing saved or selected posts. Visit Binary Paths for the latest.';
+    } finally { clearTimeout(timeout); }
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 })();
 </script>

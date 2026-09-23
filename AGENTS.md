@@ -14,6 +14,10 @@ robots/
     arms-wide.webp
     demo-1.webm
     ...
+  pico/
+    index.html          Self-righting robot build notes
+    pico.glb            Neutral pose from the simulation meshes
+    pico-preview.webp   Render of the same geometry
 favicon.svg             Site icon
 worker.js               Cloudflare Worker (RSS proxy, deployed separately)
 ```
@@ -38,6 +42,11 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 | `worker.js` | Cloudflare Worker (RSS proxy) — deployed separately, repo change requires Cloudflare redeploy |
 | `favicon.svg` | Site icon |
 | `robots/so-101/*` | Optimized media (webm/webp) for the SO-101 build log |
+| `robots/pico/index.html` | Pico build notes — recovery loop, hardware adaptation, progress |
+| `robots/pico/pico.glb` | Neutral robot model converted from SelfRisingRobot MuJoCo meshes |
+| `robots/pico/pico-preview.webp` | Static render used as the model poster, homepage card, and OG image |
+
+Pico's physical self-righting is confirmed working by the owner. Further measurements and training changes are planned. Its visual is labelled as simulation geometry; use actual supplied footage for any physical demo. Build notes use the same `day-XX` anchor pattern as SO-101 but descriptive labels instead of invented diary dates. The model uses the six meshes from `pico-self-rising-robot/RL/assets`, in their neutral pose, converted from Z-up to Y-up. The site's existing model-viewer component displays it, with a static poster fallback and reduced-motion support. Auto-rotation matches SO-101's 25 degrees/second; Start/Pause rotation lets visitors explicitly enable motion even when reduced motion is preferred.
 
 ## Important rules
 
@@ -51,9 +60,12 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 
 - Deployed separately at `rss.silvags.com`
 - Fetches `https://binarypaths.substack.com/feed`
-- Returns JSON: `{ items: [{ title, link, pubDate, description, image }] }`
+- Returns JSON: `{ items: [{ title, link, pubDate, description, image }], fetchedAt, stale }`
 - `image` field comes from the RSS `<enclosure>` tag
-- Cached for 1 hour via Cloudflare cache
+- Cache stays fresh for 1 hour; last-good articles are retained for up to 7 days and served immediately while stale data refreshes in the background. Cache is best-effort, not durable storage.
+- Upstream fetch times out after 6 seconds; malformed/empty feeds never replace a good cache.
+- Homepage includes a small published article snapshot, optionally restores a recent browser cache, and refreshes with an 8-second timeout plus one retry. Storage failures must not stop the page. Keep the snapshot links/titles current when editing the Writing section.
+- Render feed strings as text, not interpolated HTML; only accept HTTPS article and image URLs.
 - Changes to worker.js in this repo do NOT take effect until redeployed to Cloudflare
 
 ## CSS conventions
@@ -98,11 +110,11 @@ Put optimized media in `robots/<project-name>/` alongside the page:
 
 ### 3. Add a card on the homepage
 
-In `index.html`, the Workbench section (`<article class="build">`) is currently a single card. When adding a second robot:
-- Wrap existing + new cards in a grid: `<div class="builds-grid">` with `display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;`
+In `index.html`, the Workbench section currently contains SO-101 and Pico:
+- Add the new `<article class="build">` inside the existing `.builds-grid` (two columns, `1.5rem` gap).
 - Each card keeps the same structure: `build-img`, `build-body` (badges, title, desc, progress, links), `log-teaser`
 - Link to `robots/<project-name>/`
-- Update the counter: `<span class="count">02 builds</span>`
+- Update the build counter to match the number of cards.
 - On mobile (<600px): `grid-template-columns: 1fr`
 
 ### 4. Build log entry pattern
