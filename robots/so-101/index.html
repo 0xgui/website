@@ -5,8 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SO-101 — Build Log · Guilherme Silva</title>
 <meta name="description" content="Building a 6-DOF robotic arm from scratch. Build log: teleop, imitation learning, sim-to-real." />
+<meta property="og:type" content="website">
+<meta property="og:title" content="SO-101 — Build Log">
+<meta property="og:description" content="Building a 6-DOF robotic arm from scratch. Build log: teleop, imitation learning, sim-to-real.">
 <meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:image:alt" content="Both SO-101 arms assembled on the desk">
+<meta property="og:url" content="https://silvags.com/robots/so-101/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://silvags.com/robots/so-101/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
@@ -275,7 +282,7 @@
     <p class="caption">Two arms, a lot of servos, built from scratch.</p>
 
     <p>
-      I 3D-printed part by part with a bambu printer I bought, ordered twelve STS3215 servos from AliExpress,&euro;20 each and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
+      I 3D-printed part by part with a bambu printer I bought, ordered twelve STS3215 servos from AliExpress, &euro;20 each and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
     </p>
 
 
@@ -284,13 +291,13 @@
     </p>
 
     <p>
-      It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There just something special seeing something move. Atoms moving.
+      It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There's just something special seeing something move. Atoms moving.
     </p>
 
-    <video class="media tall" autoplay muted loop playsinline preload="none">
+    <video class="media tall" autoplay muted loop playsinline preload="none" aria-labelledby="cap-print">
       <source src="teleop-v1.webm" type="video/webm">
     </video>
-    <p class="caption">3D Printing the arms.</p>
+    <p class="caption" id="cap-print">3D Printing the arms.</p>
 
     <div class="pullquote">
       The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
@@ -301,16 +308,16 @@
 
 
 
-    <video class="media tall" autoplay muted loop playsinline preload="none">
+    <video class="media tall" autoplay muted loop playsinline preload="none" aria-labelledby="cap-teleop">
       <source src="teleop-v2.webm" type="video/webm">
     </video>
-    <p class="caption"> teleop run.</p>
+    <p class="caption" id="cap-teleop">Teleop run.</p>
 
     <p class="muted">
       Right now it's pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to trigger the curiosity in me completely into this new world of hardware.
     </p>
     <p>
-      The plan from here: teach the arms tasks by demonstration — move them through a motion a few dozen times, let it learn to replicate on its own (imitation learning). Then get into sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/home" target="_blank" rel="noopener">Gazebo</a>. Then, finally, put a vision-language-action model on it so it can see, reason, and act.
+      The plan from here: teach the arms tasks by demonstration — move them through a motion a few dozen times, let it learn to replicate on its own (imitation learning). Then get into sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/" target="_blank" rel="noopener">Gazebo</a>. Then, finally, put a vision-language-action model on it so it can see, reason, and act.
     </p>
     <p>
       More on the "why" and the bigger picture in the <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">origin story post on Binary Paths</a>.
