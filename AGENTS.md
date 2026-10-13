@@ -137,3 +137,9 @@ In `index.html`, the Workbench section currently contains SO-101 and Pico:
 ### 5. Update AGENTS.md
 
 Add the new project to the file table and note any project-specific conventions.
+
+## Cursor Cloud specific instructions
+
+There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. The homepage, `robots/so-101/`, and `robots/pico/` are the pages to check; the theme toggle is `#theme-toggle` and persists `theme` in localStorage.
+
+`worker.js` is the Cloudflare RSS proxy. It is not started by the local server. Repo changes to it do nothing until the GitHub Action redeploys it.
