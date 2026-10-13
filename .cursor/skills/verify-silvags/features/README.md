@@ -33,7 +33,7 @@ Each feature file starts with an H1 and one paragraph, then exactly four H2s: `S
 ## Features
 
 - [Theme toggle](./theme-toggle.md) — light/dark class and `localStorage` persistence across pages.
-- [Homepage workbench](./homepage-workbench.md) — Now strip, SO-101 and Pico cards, navigate into build logs and back.
+- [Homepage workbench](./homepage-workbench.md) — Now building strip for SO-101 and Pico, navigate into build logs and back.
 - [Writing feed](./writing-feed.md) — Binary Paths snapshot, live RSS refresh, status text, offline fallback.
 - [Pico model viewer](./pico-model.md) — GLB viewer, poster fallback path, Start/Pause rotation.
 - [SO-101 build log](./so-101-build-log.md) — hero, model, Day 01 entry, deep-link `#day-01`.

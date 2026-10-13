@@ -37,14 +37,14 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Homepage — hero, workbench, writing, talks, about |
+| `index.html` | Homepage — writing-first: short intro, Binary Paths feed, Now building strip |
 | `robots/so-101/index.html` | SO-101 build log — entries, progress, 3D model viewer |
 | `worker.js` | Cloudflare Worker (RSS proxy) — deployed separately, repo change requires Cloudflare redeploy |
 | `favicon.svg` | Site icon |
 | `robots/so-101/*` | Optimized media (webm/webp) for the SO-101 build log |
 | `robots/pico/index.html` | Pico build notes — recovery loop, hardware adaptation, progress |
 | `robots/pico/pico.glb` | Neutral robot model converted from SelfRisingRobot MuJoCo meshes |
-| `robots/pico/pico-preview.webp` | Static render used as the model poster, homepage card, and OG image |
+| `robots/pico/pico-preview.webp` | Static render used as the model poster and Pico page OG image |
 
 Pico's physical self-righting is confirmed working by the owner. Further measurements and training changes are planned. Its visual is labelled as simulation geometry; use actual supplied footage for any physical demo. Build notes use the same `day-XX` anchor pattern as SO-101 but descriptive labels instead of invented diary dates. The model uses the six meshes from `pico-self-rising-robot/RL/assets`, in their neutral pose, converted from Z-up to Y-up. The site's existing model-viewer component displays it, with a static poster fallback and reduced-motion support. Auto-rotation matches SO-101's 25 degrees/second; Start/Pause rotation lets visitors explicitly enable motion even when reduced motion is preferred.
 
@@ -108,14 +108,13 @@ Put optimized media in `robots/<project-name>/` alongside the page:
 - Max 500KB per file, max 1MB hard limit
 - Reference with relative paths: `src="arms-wide.webp"` (same directory)
 
-### 3. Add a card on the homepage
+### 3. Add a row on the homepage Now strip
 
-In `index.html`, the Workbench section currently contains SO-101 and Pico:
-- Add the new `<article class="build">` inside the existing `.builds-grid` (two columns, `1.5rem` gap).
-- Each card keeps the same structure: `build-img`, `build-body` (badges, title, desc, progress, links), `log-teaser`
-- Link to `robots/<project-name>/`
-- Update the build counter to match the number of cards.
-- On mobile (<600px): `grid-template-columns: 1fr`
+In `index.html`, the Now building strip lists SO-101 and Pico. The homepage is writing-first: do not add image cards, progress bars, or a workbench grid.
+- Add another `<li>` inside `.now-list`.
+- Each row has a title link to `robots/<project-name>/`, one sentence, and a text link into the build log.
+- Keep the strip text-only so the homepage stays small.
+- Below 600px the strip stacks to one column. From 600px up it is two columns; a third robot wraps onto the next row.
 
 ### 4. Build log entry pattern
 

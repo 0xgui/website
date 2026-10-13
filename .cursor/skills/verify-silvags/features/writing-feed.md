@@ -1,6 +1,6 @@
 # Writing feed
 
-The Writing section shows Binary Paths posts: a static snapshot for first paint / no-JS, then a live refresh from `https://rss.silvags.com` that rewrites `#articles` and updates `#articles-status`.
+The Writing section is the homepage feed. Each post shows a title, date, and excerpt: a static snapshot for first paint / no-JS, then a live refresh from `https://rss.silvags.com` that rewrites `#articles` and updates `#articles-status`.
 
 ## Sub-features
 
@@ -32,6 +32,6 @@ Preconditions:
 ## Gotchas
 
 - The worker is not started by `bin/launch`. Live proof depends on production `rss.silvags.com`.
-- First paint already has three snapshot articles; a failed fetch must still leave useful content — assert that, do not require live success for a partial pass.
+- First paint already has five snapshot articles (title, date, excerpt, no thumbnails); a failed fetch must still leave useful content — assert that, do not require live success for a partial pass.
 - Cache age is seven days; a stale browser cache can show old posts before refresh. Clear `binary-paths-articles-v1` when proving a clean live fetch.
 - Do not open Substack in the verify browser as proof of the site feature; stay on `$VERIFY_URL`.

@@ -12,7 +12,7 @@ The SO-101 page is the robotic-arm build log: hero summary, 3D CAD model, progre
 
 ## How to get to it (user POV)
 
-- From `/`, choose `Follow the build log →`, Now title, or `Day 01 — The arms move`.
+- From `/`, choose `Follow the build log →` or the Now title `SO-101 — searching for a brain`.
 - Open `/robots/so-101/` or `/robots/so-101/#day-01` directly.
 - Choose `← Back to home` to leave.
 

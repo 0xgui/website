@@ -3,32 +3,30 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Guilherme Silva — Building robots</title>
-<meta name="description" content="Engineering Manager at xgeeks exploring Physical AI. Building robots from scratch and writing about it at Binary Paths." />
+<title>Guilherme Silva</title>
+<meta name="description" content="Engineering Manager at xgeeks. Writing about engineering, tech, and Physical AI at Binary Paths, and building small robots at night." />
 <meta property="og:type" content="website">
 <meta property="og:title" content="Guilherme Silva">
-<meta property="og:description" content="Building robots from scratch and writing about it. Engineering Manager at xgeeks.">
+<meta property="og:description" content="Engineering Manager at xgeeks by day. Writing at Binary Paths, and building small robots at night.">
 <meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
 <meta property="og:image:alt" content="SO-101 robotic arms, built from scratch">
 <meta property="og:url" content="https://silvags.com">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://silvags.com">
+<link rel="alternate" type="application/rss+xml" title="Binary Paths" href="https://binarypaths.substack.com/feed">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://rss.silvags.com" />
-<link rel="dns-prefetch" href="https://substack-post-media.s3.amazonaws.com" />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" /></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet" /></noscript>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --bg: #fbfaf7;
     --text: #1a1a1a;
-    --muted: #6b6b6b;
-    --soft: #9a9a9a;
-    --border: #e8e6e0;
+    --muted: #5c5c5c;
+    --soft: #8a8a8a;
+    --border: #e4e1d8;
     --accent: #2a2a2a;
     --card: #f4f2ec;
     --warm: #b15a00;
@@ -38,50 +36,49 @@
   :root.dark {
     --bg: #0e0e0e;
     --text: #e8e6e1;
-    --muted: #8e8c86;
-    --soft: #5e5c58;
-    --border: #242220;
+    --muted: #a3a199;
+    --soft: #6e6c66;
+    --border: #2a2826;
     --accent: #ccc9c2;
     --card: #161513;
     --warm: #f0b370;
     --warm-bg: rgba(227,168,107,0.08);
     --warm-border: #4a3a1f;
   }
-
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.65;
-    font-size: 16px;
+    line-height: 1.6;
+    font-size: 16.5px;
     -webkit-font-smoothing: antialiased;
-    transition: background 0.3s, color 0.3s;
   }
-
   .wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
+  a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+  a:hover { border-color: var(--text); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--warm); outline-offset: 3px; }
+  .plain { border: none; }
 
-  /* ── NAV ── */
   .site-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 1.5rem; position: sticky; top: 0;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.9rem 1.5rem; position: sticky; top: 0; z-index: 10;
+    max-width: 720px; margin: 0 auto;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    z-index: 10; max-width: 720px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
   }
   .site-nav .brand {
     font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15rem;
-    color: var(--text); text-decoration: none; border: none;
+    color: var(--text); border: none;
   }
-  .nav-icons { display: flex; align-items: center; gap: 1rem; }
-  .nav-icons a {
-    display: flex; color: var(--muted); transition: color 0.2s; border: none;
-  }
+  .nav-icons { display: flex; align-items: center; gap: 0.9rem; }
+  .nav-icons a { display: flex; color: var(--muted); border: none; }
   .nav-icons a:hover { color: var(--text); }
   .nav-icons svg { width: 18px; height: 18px; fill: currentColor; }
   .theme-toggle {
     background: none; border: none; color: var(--muted); cursor: pointer;
-    padding: 0; display: flex; border-radius: 4px;
+    padding: 0; display: flex;
   }
   .theme-toggle:hover { color: var(--text); }
   .theme-toggle svg { width: 16px; height: 16px; fill: currentColor; }
@@ -89,257 +86,91 @@
   .dark .theme-toggle .icon-moon { display: none; }
   .dark .theme-toggle .icon-sun { display: inline; }
 
-  /* ── TYPOGRAPHY ── */
   h1.name {
     font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
-    font-size: clamp(2.6rem, 9vw, 4.6rem); line-height: 0.98;
-    letter-spacing: -0.022em; margin: 0.4rem 0 1.1rem;
+    font-size: clamp(2.4rem, 7vw, 3.35rem); line-height: 1.02;
+    letter-spacing: -0.02em; margin: 0 0 0.85rem;
   }
   h2.section-h {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: 2rem; line-height: 1.1; letter-spacing: -0.01em;
-    margin: 3.5rem 0 1.2rem; scroll-margin-top: 80px;
+    font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+    font-size: 1.55rem; letter-spacing: -0.01em; line-height: 1.2;
+    margin: 2.6rem 0 0.85rem; scroll-margin-top: 4.5rem;
   }
-  h2.section-h .count {
-    font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.1em; color: var(--soft);
-    margin-left: 0.5rem; vertical-align: middle;
-  }
-  a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
-  a:hover { border-color: var(--text); }
-  .plain { border: none; }
-
-  /* ── HERO ── */
-  .hero { padding: 2.5rem 0 1rem; }
-  .kicker {
-    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.12em; color: var(--warm); display: inline-flex;
-    align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;
-  }
-  .kicker .dot {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--warm);
-    display: inline-block; box-shadow: 0 0 0 4px var(--warm-bg);
-  }
-  .lede {
-    font-size: 1.08rem; color: var(--muted); max-width: 38em; margin-bottom: 1.5rem;
-  }
+  .hero { padding: 2.4rem 0 0.4rem; }
+  .lede { color: var(--muted); max-width: 40em; font-size: 1.05rem; }
   .lede strong { color: var(--text); font-weight: 500; }
-  .contact-row {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.25rem;
-    font-size: 0.92rem; color: var(--muted); margin-bottom: 0.5rem;
-  }
-  .contact-row a { color: var(--text); }
-  .hero-socials { display: flex; gap: 0.55rem; }
-  .hero-socials a { color: var(--muted); border: none; transition: color 0.2s; }
-  .hero-socials a:hover { color: var(--text); }
-  .hero-socials svg { width: 18px; height: 18px; fill: currentColor; }
+  .section-note { color: var(--muted); margin: -0.2rem 0 1.15rem; font-size: 0.98rem; }
 
-  /* ── NOW STRIP ── */
-  .now {
-    display: grid; grid-template-columns: 1fr 200px; gap: 1.5rem; align-items: center;
-    padding: 1.25rem; margin: 2.5rem 0; background: var(--card);
-    border: 1px solid var(--border); border-radius: 14px;
+  .post { padding: 1.15rem 0 1.2rem; border-top: 1px solid var(--border); }
+  .post:first-child { border-top: none; padding-top: 0.15rem; }
+  .post time {
+    display: block; font-size: 0.72rem; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--soft); margin-bottom: 0.28rem;
   }
-  .now .label {
-    font-size: 0.68rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--warm); margin-bottom: 0.45rem;
+  .post h3 {
+    font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+    font-size: 1.48rem; line-height: 1.22; letter-spacing: -0.015em; margin-bottom: 0.3rem;
   }
-  .now h3 {
-    font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem;
-    line-height: 1.15; margin-bottom: 0.35rem;
-  }
-  .now p { font-size: 0.92rem; color: var(--muted); }
-  .now .media {
-    width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 10px;
-    background: var(--border); display: block;
-  }
-  .now a.title-link { border: none; color: var(--text); }
-  .now a.title-link:hover { color: var(--muted); }
+  .post h3 a { border: none; }
+  .post h3 a:hover { color: var(--warm); }
+  .post p { color: var(--muted); font-size: 0.98rem; max-width: 62ch; }
+  #articles-status { color: var(--muted); font-size: 0.8rem; margin-top: 0.85rem; }
+  #articles-status:empty { display: none; }
 
-  /* ── WORKBENCH ── */
-  .builds-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
-  .builds-grid .build { min-width: 0; display: flex; flex-direction: column; margin-bottom: 0; }
-  .builds-grid .build-body { display: flex; flex-direction: column; flex: 1; padding: 1.25rem; }
-  .builds-grid .build h3.b-title { font-size: 1.65rem; }
-  .builds-grid .build .links { margin-top: auto; }
-  .builds-grid .progress .steps { display: grid; grid-template-columns: 1fr; gap: 0.35rem; }
-  .builds-grid .log-teaser { padding: 1.25rem; }
-  .builds-grid .log-teaser .entry { display: block; }
-  .builds-grid .log-teaser .entry .date { display: block; margin-bottom: 0.15rem; }
-  .build {
-    border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
-    background: var(--card); margin-bottom: 1.5rem;
+  .subscribe {
+    margin-top: 1.35rem; padding: 1rem 1.15rem;
+    border: 1px solid var(--warm-border); border-radius: 12px; background: var(--warm-bg);
   }
-  .build-img {
-    display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; flex-shrink: 0;
-    background: var(--border);
+  .subscribe p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.35rem; }
+  .subscribe a {
+    color: var(--warm); font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.2rem; border: none; border-bottom: 1px solid var(--warm-border);
   }
-  .build-body { padding: 1.5rem; }
-  .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.85rem; }
-  .badge {
-    display: inline-flex; align-items: center; gap: 0.35rem;
-    font-size: 0.68rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.06em; padding: 0.22rem 0.65rem; border-radius: 999px;
-    border: 1px solid var(--border); color: var(--muted);
-  }
-  .badge.live {
-    color: var(--warm); border-color: var(--warm-border); background: var(--warm-bg);
-  }
-  .badge.live .pulse {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--warm);
-    animation: pulse 2.2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
-  }
-  .build h3.b-title {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: 2rem; line-height: 1.1; margin-bottom: 0.6rem; letter-spacing: -0.01em;
-  }
-  .build p.b-desc { color: var(--text); margin-bottom: 1.1rem; font-size: 0.98rem; }
+  .subscribe a:hover { border-color: var(--warm); }
 
-  .progress { margin: 0 0 1.1rem; }
-  .progress .track {
-    display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.75rem;
+  .now-list {
+    list-style: none; display: grid; grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    background: var(--card);
   }
-  .progress .seg {
-    flex: 1; height: 4px; border-radius: 2px; background: var(--border);
+  .now-list li { padding: 1rem 1.1rem 1.05rem; min-width: 0; }
+  .now-list li + li { border-left: 1px solid var(--border); }
+  .now-list h3 {
+    font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+    font-size: 1.22rem; line-height: 1.25; margin-bottom: 0.35rem;
   }
-  .progress .seg.done { background: var(--text); }
-  .progress .seg.active { background: var(--warm); }
-  .progress .steps {
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem 1rem;
-    font-size: 0.78rem; color: var(--muted);
+  .now-list h3 a { border: none; }
+  .now-list h3 a:hover { color: var(--warm); }
+  .now-list p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.7rem; }
+  .now-list a.go {
+    color: var(--warm); font-size: 0.92rem;
+    border: none; border-bottom: 1px solid var(--warm-border);
   }
-  .progress .steps .step { display: flex; align-items: center; gap: 0.35rem; }
-  .progress .steps .step .icon { font-size: 0.85rem; }
-  .progress .steps .step.done { color: var(--text); }
-  .progress .steps .step.active { color: var(--warm); }
+  .now-list a.go:hover { border-color: var(--warm); }
 
-  .build .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; font-size: 0.92rem; }
-  .build .links a {
-    color: var(--accent); border: none; border-bottom: 1px solid var(--border);
-    padding-bottom: 1px; transition: border-color 0.2s;
-  }
-  .build .links a:hover { border-color: var(--text); }
-  .build .links a.primary { color: var(--warm); }
-
-  /* ── LOG ENTRIES TEASER ── */
-  .log-teaser {
-    border-top: 1px solid var(--border); padding: 1.25rem 1.5rem;
-  }
-  .log-teaser .log-label {
-    font-size: 0.66rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--soft); margin-bottom: 0.85rem;
-  }
-  .log-teaser .entry {
-    display: flex; gap: 1rem; padding: 0.65rem 0; align-items: baseline;
-  }
-  .log-teaser .entry:not(:last-child) { border-bottom: 1px dashed var(--border); }
-  .log-teaser .entry .date {
-    flex: 0 0 90px; font-size: 0.72rem; color: var(--soft);
-    text-transform: uppercase; letter-spacing: 0.04em;
-  }
-  .log-teaser .entry a {
-    color: var(--text); border: none; font-size: 0.95rem;
-  }
-  .log-teaser .entry a:hover { color: var(--muted); }
-  .log-teaser .more {
-    margin-top: 0.85rem; font-size: 0.9rem;
-  }
-  .log-teaser .more a { color: var(--warm); border: none; border-bottom: 1px solid var(--warm-border); }
-
-  /* ── WRITING ── */
-  .article-item {
-    padding: 1.1rem 0; border-bottom: 1px solid var(--border);
-    display: grid; grid-template-columns: 88px 1fr; gap: 1rem; align-items: start;
-  }
-  .article-item:last-child { border-bottom: none; }
-  .article-item .thumb {
-    width: 88px; height: 88px; border-radius: 8px; object-fit: cover; background: var(--border);
-  }
-  .article-item .meta { min-width: 0; }
-  .article-item time {
-    display: block; font-size: 0.7rem; color: var(--soft);
-    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem;
-  }
-  .article-item h3 {
-    font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-weight: 400;
-    line-height: 1.2; margin-bottom: 0.2rem;
-  }
-  .article-item h3 a { color: var(--text); border: none; }
-  .article-item h3 a:hover { color: var(--muted); }
-  .article-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
-
-  /* ── SUBSCRIBE CTA ── */
-  .subscribe-cta {
-    margin-top: 1.75rem; padding: 1.25rem 1.5rem; border: 1px solid var(--warm-border);
-    border-radius: 12px; background: var(--warm-bg); text-align: center;
-  }
-  .subscribe-cta a {
-    color: var(--warm); font-family: 'Instrument Serif', serif; font-size: 1.15rem;
-    border: none; border-bottom: 1px solid var(--warm-border); transition: border-color 0.2s;
-  }
-  .subscribe-cta a:hover { border-color: var(--warm); }
-
-  /* ── TALKS ── */
-  .talks-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;
-  }
-  .talk-card {
-    border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem;
-    transition: border-color 0.2s, transform 0.15s;
-  }
-  .talk-card:hover { border-color: var(--text); transform: translateY(-1px); }
-  .talk-card .t-tag {
-    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--soft); margin-bottom: 0.4rem;
-  }
-  .talk-card a {
-    color: var(--text); border: none; font-family: 'Instrument Serif', serif;
-    font-size: 1.05rem; line-height: 1.25; display: block;
-  }
-  .talk-card a:hover { color: var(--muted); }
-
-  /* ── ABOUT ── */
-  .about p { margin-bottom: 0.9rem; color: var(--text); }
-  .about p.muted { color: var(--muted); }
-  .about p.manifesto {
-    font-family: 'Instrument Serif', serif; font-size: 1.6rem; font-style: italic;
-    color: var(--warm); border-left: 3px solid var(--warm); padding-left: 1rem;
-    margin: 1.25rem 0 0; line-height: 1.3;
-  }
-  /* ── FOOTER ── */
   footer {
-    margin-top: 4.5rem; padding: 2rem 0 3rem; border-top: 1px solid var(--border);
-    font-size: 0.8rem; color: var(--soft); text-align: center;
+    margin-top: 3.2rem; padding: 1.4rem 0 2.6rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem; color: var(--soft);
   }
   footer a { color: var(--muted); border: none; }
   footer a:hover { color: var(--text); }
-  .updated { margin-top: 0.25rem; }
 
   @media (max-width: 600px) {
-    .builds-grid { grid-template-columns: 1fr; }
     .wrap, .site-nav { padding-left: 1.1rem; padding-right: 1.1rem; }
-    .site-nav { padding-top: 1rem; padding-bottom: 1rem; }
-    h1.name { font-size: 2.6rem; }
-    h2.section-h { font-size: 1.7rem; }
-    .now { grid-template-columns: 1fr; }
-    .now .media { aspect-ratio: 16/9; max-height: 220px; }
-    .build h3.b-title { font-size: 1.6rem; }
-    .article-item { grid-template-columns: 64px 1fr; }
-    .article-item .thumb { width: 64px; height: 64px; }
-    .talks-grid { grid-template-columns: 1fr; }
-    .progress .steps { gap: 0.35rem 0.85rem; font-size: 0.72rem; }
-    .log-teaser .entry { gap: 0.6rem; }
-    .log-teaser .entry .date { flex-basis: 76px; }
+    h1.name { font-size: 2.35rem; }
+    .now-list { grid-template-columns: 1fr; }
+    .now-list li + li { border-left: none; border-top: 1px solid var(--border); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
 
 <nav class="site-nav">
+  <a class="brand" href="#top">Guilherme Silva</a>
   <span class="nav-icons">
     <a href="https://github.com/0xgui" target="_blank" rel="noopener" aria-label="GitHub">
       <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -357,208 +188,78 @@
   </span>
 </nav>
 
-<div class="wrap">
+<div class="wrap" id="top">
 
-  <!-- ═══ HERO ═══ -->
-  <section class="hero">
+  <header class="hero">
     <h1 class="name">Guilherme Silva</h1>
     <p class="lede">
-      Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.
+      Engineering Manager at xgeeks helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.
     </p>
-  </section>
+  </header>
 
-  <!-- ═══ NOW ═══ -->
-  <section class="now">
-    <div>
-      <div class="label" id="now-label">Now · …</div>
-      <h3><a class="title-link plain" href="robots/so-101/">SO-101 — searching for a brain</a></h3>
-      <p>Teleoperation works. Next: imitation learning with LeRobot, then sim-to-real in Isaac Sim. Some days the arms do exactly what I ask. Most days they don't.</p>
-    </div>
-    <video class="media" autoplay muted loop playsinline preload="none" poster="robots/so-101/arms-wide.webp" aria-label="SO-101 arms during teleoperation">
-      <source src="robots/so-101/teleop-v2.webm" type="video/webm">
-    </video>
-  </section>
+  <main>
+    <section id="writing" aria-labelledby="writing-heading">
+      <h2 class="section-h" id="writing-heading">Writing</h2>
+      <p class="section-note">On engineering, teams, and the strange joy of building things you can touch.</p>
+      <!-- Published snapshot for first paint and for visits when the RSS proxy is down. -->
+      <div id="articles">
+        <article class="post">
+          <time datetime="2026-09-28">September 28, 2026</time>
+          <h3><a href="https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses" target="_blank" rel="noopener">I built a tiny robot that refuses to stay down</a></h3>
+          <p>Its name is Pico.</p>
+        </article>
+        <article class="post">
+          <time datetime="2026-08-27">August 27, 2026</time>
+          <h3><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a></h3>
+          <p>How cleaning one room turned into open-heart surgery on a robot vacuum</p>
+        </article>
+        <article class="post">
+          <time datetime="2026-03-05">March 5, 2026</time>
+          <h3><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a></h3>
+          <p>I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</p>
+        </article>
+        <article class="post">
+          <time datetime="2025-12-05">December 5, 2025</time>
+          <h3><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a></h3>
+          <p>AI agents will define the future global ecommerce</p>
+        </article>
+        <article class="post">
+          <time datetime="2025-01-09">January 9, 2025</time>
+          <h3><a href="https://binarypaths.substack.com/p/5-tech-trends-that-will-define-2025" target="_blank" rel="noopener">5 Tech Trends That Will Define 2025</a></h3>
+          <p>We are in the best timeline.</p>
+        </article>
+      </div>
+      <p id="articles-status" role="status">Selected posts · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">All posts on Binary Paths →</a></p>
+      <div class="subscribe">
+        <p>New essays on engineering and how AI meets the physical world.</p>
+        <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe to Binary Paths →</a>
+      </div>
+    </section>
 
-  <!-- ═══ WORKBENCH ═══ -->
-  <h2 class="section-h">The Workbench<span class="count">02 builds</span></h2>
-
-  <div class="builds-grid">
-  <article class="build">
-    <img class="build-img" src="robots/so-101/arms-wide.webp" alt="SO-101 robotic arms, built from scratch" loading="lazy" width="1600" height="955" />
-    <div class="build-body">
-      <div class="badges">
-        <span class="badge live"><span class="pulse"></span>In Progress</span>
-        <span class="badge">Robotics</span>
-        <span class="badge">Imitation Learning</span>
-      </div>
-      <h3 class="b-title">SO-101 Robotic Arm</h3>
-      <p class="b-desc">
-        Two 6-DOF arms built from scratch: 3D-printed from open-source designs, twelve STS3215 servos, leader-follower teleop. The first time I grabbed the leader and watched the follower mirror me in real time, that was the trigger. Now I'm teaching it to do things on its own.
-      </p>
-
-      <div class="progress">
-        <div class="track">
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg active"></div>
-          <div class="seg"></div>
-        </div>
-        <div class="steps">
-          <span class="step done"><span class="icon">✓</span> Build &amp; assemble</span>
-          <span class="step done"><span class="icon">✓</span> Teleop moving</span>
-          <span class="step active"><span class="icon">◉</span> Imitation learning</span>
-          <span class="step"><span class="icon">○</span> Sim-to-real + VLA</span>
-        </div>
-      </div>
-
-      <div class="links">
-        <a class="primary" href="robots/so-101/">Follow the build log →</a>
-        <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Origin story</a>
-      </div>
-    </div>
-
-    <div class="log-teaser">
-      <div class="log-label">Latest entries</div>
-      <div class="entry">
-        <span class="date">Mar 05</span>
-        <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I'm building for it</a>
-      </div>
-      <div class="entry">
-        <span class="date">In progress</span>
-        <a href="robots/so-101/">Day 01 — The arms move</a>
-      </div>
-      <p class="more"><a href="robots/so-101/">Full build log →</a></p>
-    </div>
-  </article>
-
-  <article class="build">
-    <img class="build-img" src="robots/pico/pico-preview.webp" alt="Render of Pico's simulation model with two servos and printed arms" loading="lazy" width="1600" height="900" />
-    <div class="build-body">
-      <div class="badges">
-        <span class="badge live"><span class="pulse"></span>Self-righting works</span>
-        <span class="badge">Robotics</span>
-        <span class="badge">Reinforcement Learning</span>
-      </div>
-      <h3 class="b-title">Pico</h3>
-      <p class="b-desc">
-        Two servos, a tiny ESP32 board, and one job: get back up. A policy trained in MuJoCo moves the arms when the robot falls. My build now recovers reliably on real hardware. Next comes measuring those recoveries and trying new ideas.
-      </p>
-      <div class="progress">
-        <div class="track" aria-hidden="true">
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg active"></div>
-        </div>
-        <div class="steps">
-          <span class="step done"><span class="icon">✓</span> Build &amp; assemble</span>
-          <span class="step done"><span class="icon">✓</span> Calibrate</span>
-          <span class="step done"><span class="icon">✓</span> Self-righting</span>
-          <span class="step active"><span class="icon">◉</span> Experiments next</span>
-        </div>
-      </div>
-      <div class="links">
-        <a class="primary" href="robots/pico/">Follow the build →</a>
-        <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </div>
-    <div class="log-teaser">
-      <div class="log-label">Build notes</div>
-      <div class="entry">
-        <span class="date">The robot</span>
-        <a href="robots/pico/#day-01">Two motors, back on its feet</a>
-      </div>
-      <div class="entry">
-        <span class="date">Hardware</span>
-        <a href="robots/pico/#day-02">Making the code match the build</a>
-      </div>
-      <p class="more"><a href="robots/pico/">Full build notes →</a></p>
-    </div>
-  </article>
-  </div>
-
-  <!-- ═══ WRITING ═══ -->
-  <h2 class="section-h">Writing<span class="count">Binary Paths</span></h2>
-  <p class="lede" style="margin-bottom:1.25rem;">On engineering, teams, and the strange joy of building things you can touch. From <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
-  <!-- A small published snapshot keeps first visits and no-JS visits useful during RSS outages. -->
-  <div id="articles">
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2026-08-27">August 27, 2026</time>
-        <h3><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a></h3>
-        <p>How cleaning one room turned into open-heart surgery on a robot vacuum</p>
-      </div>
-    </div>
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2026-03-05">March 5, 2026</time>
-        <h3><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a></h3>
-        <p>I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</p>
-      </div>
-    </div>
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2025-12-05">December 5, 2025</time>
-        <h3><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a></h3>
-        <p>AI agents will define the future global ecommerce</p>
-      </div>
-    </div>
-  </div>
-  <p id="articles-status" role="status" style="color:var(--muted);font-size:0.8rem;margin-top:0.75rem;">Selected posts · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">All posts on Binary Paths →</a></p>
-
-  <div class="subscribe-cta">
-    <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe to Binary Paths →</a>
-  </div>
-
-  <!-- ═══ TALKS ═══ -->
-  <h2 class="section-h">Previous Talks<span class="count">cloud &amp; platform</span></h2>
-  <p class="lede" style="margin-bottom:1.25rem;">My DevOps world. Kubernetes, WebAssembly, and platform engineering. These days my research is more about robotics, but I still continue to work on cloud-native stuff.</p>
-  <div class="talks-grid">
-    <div class="talk-card">
-      <div class="t-tag">Video</div>
-      <a href="https://youtu.be/GVWSm0GXfFg" target="_blank" rel="noopener">WebAssembly + Kubernetes: Future or Fad?</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Video · Series</div>
-      <a href="https://youtu.be/1HnvtX5iFG0" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Intro</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Video · Series</div>
-      <a href="https://youtu.be/4-IEQK75ASE" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Business</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Slides</div>
-      <a href="https://drive.google.com/file/d/1U3Fy4boqBCr6XJyx-QTuS1T4n3sX4yzg/view" target="_blank" rel="noopener">Beyond the Hype: K8s for Real Business Value</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Slides</div>
-      <a href="https://drive.google.com/file/d/1mwjWJ6FR0OSCIx_EBlW-GnyAQMKGXbM9/view" target="_blank" rel="noopener">WebAssembly + Kubernetes Presentation</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Slides</div>
-      <a href="https://drive.google.com/file/d/1JW9yt-4dkswd9lUxgyEnpinAHZaPleE0/view" target="_blank" rel="noopener">Maximizing Efficiency with K8s Multi-Tenancy</a>
-    </div>
-  </div>
-
-  <!-- ═══ ABOUT ═══ -->
-  <h2 class="section-h">About</h2>
-  <div class="about">
-    <p>I started in automotive engineering, designing and building physical systems where tolerances are measured in millimetres and a wrong assumption means something breaks in the real world.</p>
-    <p>I moved into software, spending time working on cloud/infrastructure/devops/platform/etc and eventually became an Engineering Manager, where I build teams that build things.</p>
-    <p>Now I'm deeply interested in Physical AI: robots that have some kind of AI system to do their tasks instead of being programmed movement-by-movement. The SO-101 build is my self-education in public, my first real robot. A 3D printer, AliExpress, and the question:</p>
-    <p class="manifesto">what does it take to give a machine a brain?</p>
-  </div>
+    <section id="now" aria-labelledby="now-heading">
+      <h2 class="section-h" id="now-heading">Now building</h2>
+      <ul class="now-list">
+        <li>
+          <h3><a class="plain" href="robots/so-101/">SO-101 — searching for a brain</a></h3>
+          <p>Teleoperation works. Next: imitation learning with LeRobot, then sim-to-real in Isaac Sim.</p>
+          <a class="go" href="robots/so-101/">Follow the build log →</a>
+        </li>
+        <li>
+          <h3><a class="plain" href="robots/pico/">Pico</a></h3>
+          <p>Two servos, a tiny ESP32 board, and one job: get back up. Self-righting works on real hardware.</p>
+          <a class="go" href="robots/pico/">Follow the build →</a>
+        </li>
+      </ul>
+    </section>
+  </main>
 
   <footer>
-
-    <p class="updated">Last updated September 2026</p>
+    <p>Engineering Manager at xgeeks. Last updated October 2026.</p>
   </footer>
 
 </div>
 
 <script>
-// ── THEME TOGGLE ──
 const toggle = document.getElementById('theme-toggle');
 const html = document.documentElement;
 try { if (localStorage.getItem('theme') === 'dark') html.classList.add('dark'); } catch {}
@@ -567,18 +268,11 @@ toggle.addEventListener('click', () => {
   try { localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); } catch {}
 });
 
-// ── AUTO-STAMP THE "NOW" DATE ──
-const nowLabel = document.getElementById('now-label');
-if (nowLabel) {
-  const month = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  nowLabel.textContent = `Now · ${month}`;
-}
-
-// ── ARTICLES FROM SUBSTACK (via Cloudflare Worker at rss.silvags.com) ──
+// Articles from Binary Paths via the Cloudflare Worker at rss.silvags.com.
 (async () => {
-  const container = document.getElementById("articles");
-  const status = document.getElementById("articles-status");
-  const cacheKey = "binary-paths-articles-v1";
+  const container = document.getElementById('articles');
+  const status = document.getElementById('articles-status');
+  const cacheKey = 'binary-paths-articles-v1';
   const maxCacheAge = 7 * 24 * 60 * 60 * 1000;
   function httpsURL(value) {
     try { const url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch { return ''; }
@@ -591,41 +285,38 @@ if (nowLabel) {
   function render(items) {
     const fragment = document.createDocumentFragment();
     for (const article of items) {
-      const div = document.createElement('div');
-      div.className = 'article-item';
-      const media = document.createElement('div');
-      const image = httpsURL(article.image);
-      if (image) {
-        const img = document.createElement('img');
-        img.className = 'thumb'; img.src = image; img.alt = ''; img.loading = 'lazy';
-        img.addEventListener('error', () => img.remove(), { once: true });
-        media.append(img);
-      }
-      const meta = document.createElement('div'); meta.className = 'meta';
+      const post = document.createElement('article');
+      post.className = 'post';
       const date = new Date(article.pubDate);
       if (Number.isFinite(date.getTime())) {
-        const time = document.createElement('time'); time.dateTime = date.toISOString();
+        const time = document.createElement('time');
+        time.dateTime = date.toISOString();
         time.textContent = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        meta.append(time);
+        post.append(time);
       }
       const heading = document.createElement('h3');
       const link = document.createElement('a');
-      link.href = article.link; link.target = '_blank'; link.rel = 'noopener'; link.textContent = article.title;
-      heading.append(link); meta.append(heading);
+      link.href = article.link;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = article.title;
+      heading.append(link);
+      post.append(heading);
       const description = document.createElement('p');
       const text = typeof article.description === 'string' ? article.description.replace(/<[^>]*>/g, '').trim() : '';
       description.textContent = text.length > 150 ? text.slice(0, 150) + '…' : text;
-      meta.append(description); div.append(media, meta); fragment.append(div);
+      post.append(description);
+      fragment.append(post);
     }
     container.replaceChildren(fragment);
   }
-  // Storage is optional: privacy settings and quota errors must not block articles.
   try {
     const cached = JSON.parse(localStorage.getItem(cacheKey));
     const age = Date.now() - cached?.savedAt;
     const items = validItems(cached);
     if (items.length && age >= 0 && age < maxCacheAge) {
-      render(items); status.textContent = 'Saved posts · checking for updates…';
+      render(items);
+      status.textContent = 'Saved posts · checking for updates…';
     }
   } catch {}
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -639,7 +330,6 @@ if (nowLabel) {
       if (!items.length) throw new Error('Invalid or empty feed');
       render(items);
       status.textContent = data.stale ? 'Saved posts · feed update delayed.' : '';
-      // Do not extend the age of a stale server snapshot on each visit.
       const fetchedAt = Date.parse(data.fetchedAt);
       const savedAt = Number.isFinite(fetchedAt) ? fetchedAt : Date.now();
       try { localStorage.setItem(cacheKey, JSON.stringify({ items, savedAt })); } catch {}
