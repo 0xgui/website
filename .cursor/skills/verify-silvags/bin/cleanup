@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Tear down the verification server started by bin/launch.
+# Does NOT delete evidence under artifacts/.
+# Usage: bin/cleanup
+set -euo pipefail
+
+SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+RUN_DIR="${SKILL_DIR}/.run"
+PID_FILE="${RUN_DIR}/server.pid"
+META_FILE="${RUN_DIR}/meta.env"
+
+if [[ ! -f "$PID_FILE" ]]; then
+  echo "cleanup: no pid file; nothing to stop"
+  rm -f "$META_FILE"
+  exit 0
+fi
+
+pid="$(cat "$PID_FILE")"
+if kill -0 "$pid" 2>/dev/null; then
+  kill "$pid"
+  for _ in $(seq 1 30); do
+    if ! kill -0 "$pid" 2>/dev/null; then
+      break
+    fi
+    sleep 0.1
+  done
+  if kill -0 "$pid" 2>/dev/null; then
+    kill -9 "$pid" 2>/dev/null || true
+  fi
+  echo "cleanup: stopped pid ${pid}"
+else
+  echo "cleanup: pid ${pid} already gone"
+fi
+
+rm -f "$PID_FILE" "$META_FILE"
+# Keep server.log for post-mortem unless empty run dir is fine — leave log until next launch overwrites
+echo "cleanup: done (artifacts/ preserved)"

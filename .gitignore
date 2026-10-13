@@ -13,3 +13,7 @@ Thumbs.db
 .codex
 .agents
 .claude
+
+# Verification skill evidence (keep skill; ignore proof artifacts)
+.cursor/skills/verify-silvags/artifacts/
+.cursor/skills/verify-silvags/.run/

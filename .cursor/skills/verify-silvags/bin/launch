@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Start a disposable static server for silvags.com verification.
+# Usage: bin/launch [port]
+# Env: VERIFY_PORT (default 8765), VERIFY_HOST (default 127.0.0.1)
+set -euo pipefail
+
+SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "${SKILL_DIR}/../../.." && pwd)"
+RUN_DIR="${SKILL_DIR}/.run"
+PORT="${1:-${VERIFY_PORT:-8765}}"
+HOST="${VERIFY_HOST:-127.0.0.1}"
+URL="http://${HOST}:${PORT}"
+PID_FILE="${RUN_DIR}/server.pid"
+META_FILE="${RUN_DIR}/meta.env"
+
+mkdir -p "$RUN_DIR"
+
+if [[ -f "$PID_FILE" ]]; then
+  old_pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+  if [[ -n "${old_pid}" ]] && kill -0 "$old_pid" 2>/dev/null; then
+    echo "error: verification server already running (pid ${old_pid}). Run bin/cleanup first." >&2
+    exit 1
+  fi
+  rm -f "$PID_FILE" "$META_FILE"
+fi
+
+if command -v ss >/dev/null 2>&1; then
+  if ss -ltn "sport = :${PORT}" 2>/dev/null | grep -q ":${PORT}"; then
+    echo "error: port ${PORT} already in use. Pick another VERIFY_PORT or free it." >&2
+    exit 1
+  fi
+fi
+
+cd "$ROOT"
+python3 -m http.server "$PORT" --bind "$HOST" >"${RUN_DIR}/server.log" 2>&1 &
+pid=$!
+echo "$pid" >"$PID_FILE"
+cat >"$META_FILE" <<EOF
+VERIFY_URL=${URL}
+VERIFY_HOST=${HOST}
+VERIFY_PORT=${PORT}
+VERIFY_PID=${pid}
+VERIFY_ROOT=${ROOT}
+EOF
+
+ready=0
+for _ in $(seq 1 40); do
+  if curl -fsS -o /dev/null --max-time 1 "${URL}/" 2>/dev/null; then
+    ready=1
+    break
+  fi
+  if ! kill -0 "$pid" 2>/dev/null; then
+    echo "error: server exited early. See ${RUN_DIR}/server.log" >&2
+    exit 1
+  fi
+  sleep 0.1
+done
+
+if [[ "$ready" -ne 1 ]]; then
+  echo "error: server did not become ready at ${URL}" >&2
+  kill "$pid" 2>/dev/null || true
+  rm -f "$PID_FILE" "$META_FILE"
+  exit 1
+fi
+
+echo "VERIFY_URL=${URL}"
+echo "VERIFY_PID=${pid}"
+echo "ready: ${URL}/ returns 200"
