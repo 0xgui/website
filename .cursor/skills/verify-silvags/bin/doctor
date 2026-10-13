@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# Read-only health check for a verify-silvags instance.
+# Usage: bin/doctor
+# Expects .run/meta.env from bin/launch (or VERIFY_URL in the environment).
+set -euo pipefail
+
+SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+RUN_DIR="${SKILL_DIR}/.run"
+META_FILE="${RUN_DIR}/meta.env"
+PID_FILE="${RUN_DIR}/server.pid"
+
+if [[ -f "$META_FILE" ]]; then
+  # shellcheck disable=SC1090
+  source "$META_FILE"
+fi
+
+URL="${VERIFY_URL:-}"
+if [[ -z "$URL" ]]; then
+  echo "error: VERIFY_URL unset and ${META_FILE} missing. Run bin/launch first." >&2
+  exit 1
+fi
+
+fail=0
+check() {
+  local path="$1" label="$2" kind="${3:-any}"
+  local code
+  code="$(curl -sS -o /tmp/verify-silvags-doctor.body -w '%{http_code}' --max-time 3 "${URL}${path}" 2>/dev/null || echo "000")"
+  if [[ "$code" != "200" ]]; then
+    echo "FAIL ${label}: ${URL}${path} -> HTTP ${code}"
+    fail=1
+    return
+  fi
+  if [[ "$kind" == "html" ]]; then
+    if ! grep -q '<!doctype html>' /tmp/verify-silvags-doctor.body && ! grep -qi '<html' /tmp/verify-silvags-doctor.body; then
+      echo "FAIL ${label}: response is not HTML"
+      fail=1
+      return
+    fi
+  fi
+  local bytes
+  bytes="$(wc -c </tmp/verify-silvags-doctor.body | tr -d ' ')"
+  if [[ "$bytes" -lt 1 ]]; then
+    echo "FAIL ${label}: empty body"
+    fail=1
+    return
+  fi
+  echo "ok   ${label}: HTTP 200 (${bytes} bytes)"
+}
+
+echo "doctor: ${URL}"
+
+if [[ -f "$PID_FILE" ]]; then
+  pid="$(cat "$PID_FILE")"
+  if kill -0 "$pid" 2>/dev/null; then
+    echo "ok   process: pid ${pid} alive"
+  else
+    echo "FAIL process: pid ${pid} not running"
+    fail=1
+  fi
+else
+  echo "WARN process: no pid file (external URL?)"
+fi
+
+check "/" "homepage" html
+check "/robots/so-101/" "so-101 build log" html
+check "/robots/pico/" "pico build notes" html
+check "/favicon.svg" "favicon" asset
+check "/robots/so-101/arms-wide.webp" "so-101 hero image" asset
+check "/robots/pico/pico-preview.webp" "pico poster" asset
+check "/robots/pico/pico.glb" "pico model" asset
+check "/robots/so-101/so101.glb" "so-101 model" asset
+
+# Theme toggle must exist on all three pages
+for path in "/" "/robots/so-101/" "/robots/pico/"; do
+  body="$(curl -fsS --max-time 3 "${URL}${path}")"
+  if ! printf '%s' "$body" | grep -q 'id="theme-toggle"'; then
+    echo "FAIL theme-toggle missing on ${path}"
+    fail=1
+  else
+    echo "ok   theme-toggle on ${path}"
+  fi
+done
+
+if ! curl -fsS --max-time 3 "${URL}/" | grep -q 'Guilherme Silva'; then
+  echo "FAIL homepage missing site identity"
+  fail=1
+else
+  echo "ok   homepage identity"
+fi
+
+rm -f /tmp/verify-silvags-doctor.body
+
+if [[ "$fail" -ne 0 ]]; then
+  echo "doctor: UNHEALTHY"
+  exit 1
+fi
+echo "doctor: HEALTHY"
