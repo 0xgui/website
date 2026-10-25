@@ -24,6 +24,8 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     env:
+      # Dedicated preview project. The live site is the Pages project "website"
+      # (silvags.com, website-5fv.pages.dev). Never set this to website.
       PAGES_PROJECT: silvags-preview
       # Sentinel production branch. This workflow never deploys it, so the
       # project apex (https://silvags-preview.pages.dev) stays unpublished.
@@ -40,6 +42,10 @@ jobs:
           HEAD_REF: ${{ github.head_ref }}
         run: |
           set -euo pipefail
+          if [ "${PAGES_PROJECT}" = "website" ]; then
+            echo "Refusing to deploy the production Pages project (website / silvags.com)."
+            exit 1
+          fi
           case "${HEAD_REF}" in
             ""|main|master|production|pages-production-unused)
               echo "Refusing to deploy branch '${HEAD_REF}'."

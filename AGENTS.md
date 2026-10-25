@@ -144,4 +144,4 @@ There is no package install and no build. `start` serves this directory with `py
 
 `worker.js` is the Cloudflare RSS proxy. It is not started by the local server. Repo changes to it do nothing until the GitHub Action redeploys it.
 
-Pull requests can publish a Cloudflare Pages preview from `.github/workflows/pages-preview.yml`. That workflow uploads the static site only (not `worker.js`) to the Pages project `silvags-preview`, on the pull request branch, and comments the preview URL. It does not deploy `silvags.com` or the Pages production branch.
+Pull requests can publish a Cloudflare Pages preview from `.github/workflows/pages-preview.yml`. That workflow uploads the static site only (not `worker.js`) to the Pages project `silvags-preview`, on the pull request branch, and comments the preview URL. The live site is a different Pages project, `website` (`silvags.com` / `website-5fv.pages.dev`). Do not direct-upload to `website`. The preview workflow does not deploy `silvags.com` or a Pages production branch.
