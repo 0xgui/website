@@ -37,7 +37,7 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Homepage — hero, workbench, writing, talks, about |
+| `index.html` | Homepage — hero, builds, writing, talks, about |
 | `robots/so-101/index.html` | SO-101 build log — entries, progress, 3D model viewer |
 | `worker.js` | Cloudflare Worker (RSS proxy) — deployed separately, repo change requires Cloudflare redeploy |
 | `favicon.svg` | Site icon |
@@ -110,9 +110,9 @@ Put optimized media in `robots/<project-name>/` alongside the page:
 
 ### 3. Add a card on the homepage
 
-In `index.html`, the Workbench section currently contains SO-101 and Pico:
+In `index.html`, the Builds section currently contains SO-101 and Pico:
 - Add the new `<article class="build">` inside the existing `.builds-grid` (two columns, `1.5rem` gap).
-- Each card keeps the same structure: `build-img`, `build-body` (badges, title, desc, progress, links), `log-teaser`
+- Each card keeps the same structure: `build-img`, `build-body` (badges, title, desc, progress), and one primary link (`Open <name> →`) whose hit area covers the card. Do not add a homepage build-notes list or log teaser.
 - Link to `robots/<project-name>/`
 - Update the build counter to match the number of cards.
 - On mobile (<600px): `grid-template-columns: 1fr`
@@ -143,3 +143,5 @@ Add the new project to the file table and note any project-specific conventions.
 There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. The homepage, `robots/so-101/`, and `robots/pico/` are the pages to check; the theme toggle is `#theme-toggle` and persists `theme` in localStorage.
 
 `worker.js` is the Cloudflare RSS proxy. It is not started by the local server. Repo changes to it do nothing until the GitHub Action redeploys it.
+
+Pull requests can publish a Cloudflare Pages preview from `.github/workflows/pages-preview.yml`. That workflow uploads the static site only (not `worker.js`) to the Pages project `silvags-preview`, on the pull request branch, and comments the preview URL. The live site is a different Pages project, `website` (`silvags.com` / `website-5fv.pages.dev`). Do not direct-upload to `website`. The preview workflow does not deploy `silvags.com` or a Pages production branch.

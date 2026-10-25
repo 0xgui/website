@@ -42,7 +42,7 @@ Must print `doctor: HEALTHY` before driving. Checks process, homepage, `/robots/
 
 1. `bin/launch` then `bin/doctor`.
 2. Open `$VERIFY_URL/` in the Cursor browser (list tabs → navigate → lock before interaction).
-3. Prefer ARIA: button `Toggle theme`, links by accessible name (`Follow the build log →`, `Follow the build →`, `← Back to home`, brand `Guilherme Silva`).
+3. Prefer ARIA: button `Toggle theme`, links by accessible name (`Open SO-101 →`, `Open Pico →`, `← Back to home`, brand `Guilherme Silva`).
 4. Stable IDs when ARIA is thin: `#theme-toggle`, `#articles`, `#articles-status`, `#pico-model`, `#rotation-toggle`, `#day-01`, `#day-02`, `#so-model`.
 5. Follow the feature file under `features/`. One feature per proof is enough unless the change spans several.
 

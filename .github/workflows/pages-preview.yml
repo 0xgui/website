@@ -1,0 +1,196 @@
+# Preview-only Cloudflare Pages deploy for pull requests.
+# Production silvags.com is a separate site. This workflow never deploys the
+# worker (wrangler.toml / worker.js) and never publishes the Pages production
+# branch or a custom domain.
+name: Pages preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
+concurrency:
+  group: pages-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    name: Deploy Cloudflare Pages preview
+    # Fork PRs cannot read this repo's Cloudflare secrets.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      # Dedicated preview project. The live site is the Pages project "website"
+      # (silvags.com, website-5fv.pages.dev). Never set this to website.
+      PAGES_PROJECT: silvags-preview
+      # Sentinel production branch. This workflow never deploys it, so the
+      # project apex (https://silvags-preview.pages.dev) stays unpublished.
+      PAGES_PRODUCTION_BRANCH: pages-production-unused
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Refuse production branches
+        id: guard
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          if [ "${PAGES_PROJECT}" = "website" ]; then
+            echo "Refusing to deploy the production Pages project (website / silvags.com)."
+            exit 1
+          fi
+          case "${HEAD_REF}" in
+            ""|main|master|production|pages-production-unused)
+              echo "Refusing to deploy branch '${HEAD_REF}'."
+              exit 1
+              ;;
+          esac
+
+      - name: Stage static site
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/silvags-site
+          mkdir -p /tmp/silvags-site
+          tar \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.cursor' \
+            --exclude='worker.js' \
+            --exclude='wrangler.toml' \
+            --exclude='AGENTS.md' \
+            --exclude='README.md' \
+            --exclude='.gitignore' \
+            -cf - . | tar -C /tmp/silvags-site -xf -
+          test -f /tmp/silvags-site/index.html
+          test -d /tmp/silvags-site/robots
+          test ! -e /tmp/silvags-site/worker.js
+          test ! -e /tmp/silvags-site/wrangler.toml
+          test ! -e /tmp/silvags-site/functions
+          test ! -e /tmp/silvags-site/_worker.js
+
+      - name: Ensure preview Pages project
+        working-directory: /tmp
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          list="$(npx --yes wrangler@4 pages project list)"
+          printf '%s\n' "$list"
+          if printf '%s\n' "$list" | grep -E '(^|[^A-Za-z0-9-])silvags-preview([^A-Za-z0-9-]|$)'; then
+            echo "Using existing Pages project silvags-preview for previews only."
+          else
+            npx --yes wrangler@4 pages project create silvags-preview --production-branch=pages-production-unused
+          fi
+
+      - name: Deploy preview
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4"
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # --branch selects a non-production Pages branch. Do not drop it:
+          # a deploy of the project's production branch publishes the apex alias.
+          command: pages deploy /tmp/silvags-site --project-name=silvags-preview --branch=${{ github.head_ref }} --commit-dirty=true --commit-hash=${{ github.event.pull_request.head.sha }}
+
+      - name: Confirm preview URL
+        id: preview
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+          PAGES_ENVIRONMENT: ${{ steps.deploy.outputs.pages-environment }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          from urllib.parse import urlparse
+
+          environment = os.environ.get("PAGES_ENVIRONMENT", "").strip()
+          alias = os.environ.get("ALIAS_URL", "").strip()
+          deployment = os.environ.get("DEPLOYMENT_URL", "").strip()
+          if environment == "production":
+              raise SystemExit("Refusing a production Pages deployment from a pull request.")
+
+          url = alias or deployment
+          parsed = urlparse(url)
+          host = (parsed.hostname or "").lower()
+          labels = host.split(".")
+          if parsed.scheme != "https" or labels[-2:] != ["pages", "dev"] or len(labels) < 4:
+              raise SystemExit(f"Preview URL is missing or looks like a production alias: {url!r}")
+          if "silvags.com" in host:
+              raise SystemExit(f"Refusing custom domain {url}")
+
+          path = os.environ["GITHUB_OUTPUT"]
+          with open(path, "a", encoding="utf-8") as output:
+              output.write(f"url={url}\n")
+          print(f"Preview URL: {url}")
+          PY
+
+      - name: Comment preview URL
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        with:
+          script: |
+            const marker = '<!-- cloudflare-pages-preview -->';
+            const previewUrl = process.env.PREVIEW_URL || '';
+            const deploymentUrl = process.env.DEPLOYMENT_URL || '';
+            if (!previewUrl) {
+              core.setFailed('Pages preview URL was empty.');
+              return;
+            }
+            const lines = [
+              marker,
+              '### Cloudflare Pages preview',
+              '',
+              `Preview: ${previewUrl}`,
+            ];
+            if (deploymentUrl && deploymentUrl !== previewUrl) {
+              lines.push(`Deployment: ${deploymentUrl}`);
+            }
+            lines.push(
+              '',
+              'Preview deployment only. Production [silvags.com](https://silvags.com) is unchanged.',
+              '',
+              `Commit: \`${process.env.HEAD_SHA}\``,
+            );
+            const body = lines.join('\n');
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const existing = comments.find((comment) =>
+              comment.user?.login === 'github-actions[bot]' &&
+              typeof comment.body === 'string' &&
+              comment.body.includes(marker)
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
