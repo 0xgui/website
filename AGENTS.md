@@ -37,7 +37,7 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Homepage — hero, workbench, writing, talks, about |
+| `index.html` | Homepage — hero, now, writing, workbench, talks, about |
 | `robots/so-101/index.html` | SO-101 build log — entries, progress, 3D model viewer |
 | `worker.js` | Cloudflare Worker (RSS proxy) — deployed separately, repo change requires Cloudflare redeploy |
 | `favicon.svg` | Site icon |
@@ -51,7 +51,7 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 ## Important rules
 
 1. **No X/Twitter links** — do not link any X/Twitter profile or handle anywhere in these files.
-2. **Keep xgeeks as current employer** — the user is still Engineering Manager there.
+2. **Keep xgeeks as current employer** — the user is still Engineering Manager there. The homepage day-job line says “synvert xgeeks”.
 3. **Substack is "Binary Paths"** — do not rename it or change the URL.
 4. **Media must be optimized** — no files over 1MB. Convert GIFs to webm, PNGs to webp before adding.
 5. **Theme system** — `:root` is light, `:root.dark` is dark. Toggle via `#theme-toggle` button. State persisted in localStorage key `theme`.
@@ -64,7 +64,7 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 - `image` field comes from the RSS `<enclosure>` tag
 - Cache stays fresh for 1 hour; last-good articles are retained for up to 7 days and served immediately while stale data refreshes in the background. Cache is best-effort, not durable storage.
 - Upstream fetch times out after 6 seconds; malformed/empty feeds never replace a good cache.
-- Homepage includes a small published article snapshot, optionally restores a recent browser cache, and refreshes with an 8-second timeout plus one retry. Storage failures must not stop the page. Keep the snapshot links/titles current when editing the Writing section.
+- Homepage includes a published snapshot of six recent articles, optionally restores a recent browser cache, and refreshes with an 8-second timeout plus one retry. Storage failures must not stop the page. Keep the snapshot links/titles current when editing the Writing section. The worker returns six items; that cap only changes in production after the main-branch deploy workflow runs.
 - Render feed strings as text, not interpolated HTML; only accept HTTPS article and image URLs.
 - Changes to worker.js in this repo do NOT take effect until redeployed to Cloudflare
 

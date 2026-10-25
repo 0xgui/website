@@ -11,7 +11,7 @@ The Writing section shows Binary Paths posts: a static snapshot for first paint 
 
 ## How to get to it (user POV)
 
-- Open `/` and scroll to the `Writing` heading (or land there via page scroll).
+- Open `/` and scroll to the `Writing` heading. It sits after the Now strip and above The Workbench.
 - Optionally follow `Subscribe to Binary Paths →` or an article title (external Substack).
 
 ## Driving it with Cursor browser
@@ -32,6 +32,6 @@ Preconditions:
 ## Gotchas
 
 - The worker is not started by `bin/launch`. Live proof depends on production `rss.silvags.com`.
-- First paint already has three snapshot articles; a failed fetch must still leave useful content — assert that, do not require live success for a partial pass.
+- First paint already has six snapshot articles; a failed fetch must still leave useful content — assert that, do not require live success for a partial pass. The live worker may still return five until `worker.js` is redeployed from `main`.
 - Cache age is seven days; a stale browser cache can show old posts before refresh. Clear `binary-paths-articles-v1` when proving a clean live fetch.
 - Do not open Substack in the verify browser as proof of the site feature; stay on `$VERIFY_URL`.

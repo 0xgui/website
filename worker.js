@@ -50,7 +50,7 @@ export function parseFeed(xml) {
       if (image) break;
     }
     items.push({ title, link, pubDate: textTag(source, 'pubDate'), description: textTag(source, 'description'), image });
-    if (items.length === 5) break;
+    if (items.length === 6) break;
   }
   if (!items.length) throw new Error('RSS contains no usable articles');
   return items;

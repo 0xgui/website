@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Guilherme Silva — Building robots</title>
-<meta name="description" content="Engineering Manager at xgeeks exploring Physical AI. Building robots from scratch and writing about it at Binary Paths." />
+<title>Guilherme Silva — Engineering Manager · builder</title>
+<meta name="description" content="Engineering manager who writes at Binary Paths and still builds on the bench." />
 <meta property="og:type" content="website">
-<meta property="og:title" content="Guilherme Silva">
-<meta property="og:description" content="Building robots from scratch and writing about it. Engineering Manager at xgeeks.">
+<meta property="og:title" content="Guilherme Silva — Engineering Manager · builder">
+<meta property="og:description" content="Engineering manager who writes at Binary Paths and still builds on the bench.">
 <meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
 <meta property="og:image:alt" content="SO-101 robotic arms, built from scratch">
 <meta property="og:url" content="https://silvags.com">
@@ -296,7 +296,8 @@
     font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--soft); margin-bottom: 0.4rem;
   }
-  .talk-card a {
+  .talk-card a,
+  .talk-card .t-title {
     color: var(--text); border: none; font-family: 'Instrument Serif', serif;
     font-size: 1.05rem; line-height: 1.25; display: block;
   }
@@ -305,11 +306,7 @@
   /* ── ABOUT ── */
   .about p { margin-bottom: 0.9rem; color: var(--text); }
   .about p.muted { color: var(--muted); }
-  .about p.manifesto {
-    font-family: 'Instrument Serif', serif; font-size: 1.6rem; font-style: italic;
-    color: var(--warm); border-left: 3px solid var(--warm); padding-left: 1rem;
-    margin: 1.25rem 0 0; line-height: 1.3;
-  }
+  .about p.day-job { margin-top: 1.25rem; margin-bottom: 0; }
   /* ── FOOTER ── */
   footer {
     margin-top: 4.5rem; padding: 2rem 0 3rem; border-top: 1px solid var(--border);
@@ -363,7 +360,7 @@
   <section class="hero">
     <h1 class="name">Guilherme Silva</h1>
     <p class="lede">
-      Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.
+      Hands-on engineering manager. I write at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>, and I still build on the bench.
     </p>
   </section>
 
@@ -378,6 +375,60 @@
       <source src="robots/so-101/teleop-v2.webm" type="video/webm">
     </video>
   </section>
+
+  <!-- ═══ WRITING ═══ -->
+  <h2 class="section-h">Writing<span class="count">Binary Paths</span></h2>
+  <p class="lede" style="margin-bottom:1.25rem;">On engineering, teams, and the strange joy of building things you can touch. From <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
+  <!-- Published posts keep first visits and no-JS visits useful during RSS outages. -->
+  <div id="articles">
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2026-09-28">September 28, 2026</time>
+        <h3><a href="https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses" target="_blank" rel="noopener">I built a tiny robot that refuses to stay down</a></h3>
+        <p>Its name is Pico.</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2026-08-27">August 27, 2026</time>
+        <h3><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a></h3>
+        <p>How cleaning one room turned into open-heart surgery on a robot vacuum</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2026-03-05">March 5, 2026</time>
+        <h3><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a></h3>
+        <p>I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2025-12-05">December 5, 2025</time>
+        <h3><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a></h3>
+        <p>AI agents will define the future global ecommerce</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2025-01-09">January 9, 2025</time>
+        <h3><a href="https://binarypaths.substack.com/p/5-tech-trends-that-will-define-2025" target="_blank" rel="noopener">5 Tech Trends That Will Define 2025</a></h3>
+        <p>We are in the best timeline.</p>
+      </div>
+    </div>
+    <div class="article-item">
+      <div></div><div class="meta">
+        <time datetime="2024-12-04">December 4, 2024</time>
+        <h3><a href="https://binarypaths.substack.com/p/engineering-estimates" target="_blank" rel="noopener">Engineering Estimates: 1 week means 4</a></h3>
+        <p>Why your estimate is a lie you keep telling yourself</p>
+      </div>
+    </div>
+  </div>
+  <p id="articles-status" role="status" style="color:var(--muted);font-size:0.8rem;margin-top:0.75rem;">Selected posts · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">All posts on Binary Paths →</a></p>
+
+  <div class="subscribe-cta">
+    <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe to Binary Paths →</a>
+  </div>
 
   <!-- ═══ WORKBENCH ═══ -->
   <h2 class="section-h">The Workbench<span class="count">02 builds</span></h2>
@@ -478,43 +529,18 @@
   </article>
   </div>
 
-  <!-- ═══ WRITING ═══ -->
-  <h2 class="section-h">Writing<span class="count">Binary Paths</span></h2>
-  <p class="lede" style="margin-bottom:1.25rem;">On engineering, teams, and the strange joy of building things you can touch. From <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
-  <!-- A small published snapshot keeps first visits and no-JS visits useful during RSS outages. -->
-  <div id="articles">
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2026-08-27">August 27, 2026</time>
-        <h3><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a></h3>
-        <p>How cleaning one room turned into open-heart surgery on a robot vacuum</p>
-      </div>
-    </div>
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2026-03-05">March 5, 2026</time>
-        <h3><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a></h3>
-        <p>I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</p>
-      </div>
-    </div>
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2025-12-05">December 5, 2025</time>
-        <h3><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a></h3>
-        <p>AI agents will define the future global ecommerce</p>
-      </div>
-    </div>
-  </div>
-  <p id="articles-status" role="status" style="color:var(--muted);font-size:0.8rem;margin-top:0.75rem;">Selected posts · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">All posts on Binary Paths →</a></p>
-
-  <div class="subscribe-cta">
-    <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe to Binary Paths →</a>
-  </div>
-
   <!-- ═══ TALKS ═══ -->
-  <h2 class="section-h">Previous Talks<span class="count">cloud &amp; platform</span></h2>
-  <p class="lede" style="margin-bottom:1.25rem;">My DevOps world. Kubernetes, WebAssembly, and platform engineering. These days my research is more about robotics, but I still continue to work on cloud-native stuff.</p>
+  <h2 class="section-h">Talks<span class="count">cloud &amp; platform</span></h2>
+  <p class="lede" style="margin-bottom:1.25rem;">My DevOps world. Kubernetes, WebAssembly, and platform engineering — still part of the work.</p>
   <div class="talks-grid">
+    <div class="talk-card">
+      <div class="t-tag">Upcoming · Lisbon</div>
+      <span class="t-title">Richemont · 11 Nov 2026</span>
+    </div>
+    <div class="talk-card">
+      <div class="t-tag">Upcoming · Porto</div>
+      <a href="https://kcd-porto-2026.sessionize.com/" target="_blank" rel="noopener">KCD Porto · 19 Nov 2026</a>
+    </div>
     <div class="talk-card">
       <div class="t-tag">Video</div>
       <a href="https://youtu.be/GVWSm0GXfFg" target="_blank" rel="noopener">WebAssembly + Kubernetes: Future or Fad?</a>
@@ -544,15 +570,13 @@
   <!-- ═══ ABOUT ═══ -->
   <h2 class="section-h">About</h2>
   <div class="about">
-    <p>I started in automotive engineering, designing and building physical systems where tolerances are measured in millimetres and a wrong assumption means something breaks in the real world.</p>
-    <p>I moved into software, spending time working on cloud/infrastructure/devops/platform/etc and eventually became an Engineering Manager, where I build teams that build things.</p>
-    <p>Now I'm deeply interested in Physical AI: robots that have some kind of AI system to do their tasks instead of being programmed movement-by-movement. The SO-101 build is my self-education in public, my first real robot. A 3D printer, AliExpress, and the question:</p>
-    <p class="manifesto">what does it take to give a machine a brain?</p>
+    <p>I started in automotive engineering, where a wrong assumption means something breaks in the real world. Software came later. I still like projects I can put my hands on, which is what the bench is for.</p>
+    <p class="muted day-job">Engineering Manager · platforms &amp; AI at synvert xgeeks · <a href="https://www.linkedin.com/in/silva-gs/" target="_blank" rel="noopener">LinkedIn</a></p>
   </div>
 
   <footer>
 
-    <p class="updated">Last updated September 2026</p>
+    <p class="updated">Last updated October 2026</p>
   </footer>
 
 </div>
@@ -586,7 +610,7 @@ if (nowLabel) {
   function validItems(data) {
     if (!Array.isArray(data?.items)) return [];
     return data.items.filter(item => item && typeof item.title === 'string' && item.title.trim()
-      && typeof item.link === 'string' && httpsURL(item.link)).slice(0, 5);
+      && typeof item.link === 'string' && httpsURL(item.link)).slice(0, 6);
   }
   function render(items) {
     const fragment = document.createDocumentFragment();
