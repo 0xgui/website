@@ -12,7 +12,7 @@ The Pico build page shows a `model-viewer` of simulation geometry (`pico.glb`) w
 
 ## How to get to it (user POV)
 
-- Open `/robots/pico/` from the homepage (`Follow the build →`) or directly.
+- Open `/robots/pico/` from the homepage (`Open Pico →`) or directly.
 - After the model loads, use `Pause rotation` / `Start rotation` under the viewer.
 
 ## Driving it with Cursor browser

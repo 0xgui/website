@@ -134,42 +134,20 @@
   .hero-socials a:hover { color: var(--text); }
   .hero-socials svg { width: 18px; height: 18px; fill: currentColor; }
 
-  /* ── NOW STRIP ── */
-  .now {
-    display: grid; grid-template-columns: 1fr 200px; gap: 1.5rem; align-items: center;
-    padding: 1.25rem; margin: 2.5rem 0; background: var(--card);
-    border: 1px solid var(--border); border-radius: 14px;
-  }
-  .now .label {
-    font-size: 0.68rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--warm); margin-bottom: 0.45rem;
-  }
-  .now h3 {
-    font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem;
-    line-height: 1.15; margin-bottom: 0.35rem;
-  }
-  .now p { font-size: 0.92rem; color: var(--muted); }
-  .now .media {
-    width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 10px;
-    background: var(--border); display: block;
-  }
-  .now a.title-link { border: none; color: var(--text); }
-  .now a.title-link:hover { color: var(--muted); }
-
-  /* ── WORKBENCH ── */
+  /* ── BUILDS ── */
   .builds-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
   .builds-grid .build { min-width: 0; display: flex; flex-direction: column; margin-bottom: 0; }
   .builds-grid .build-body { display: flex; flex-direction: column; flex: 1; padding: 1.25rem; }
   .builds-grid .build h3.b-title { font-size: 1.65rem; }
-  .builds-grid .build .links { margin-top: auto; }
   .builds-grid .progress .steps { display: grid; grid-template-columns: 1fr; gap: 0.35rem; }
-  .builds-grid .log-teaser { padding: 1.25rem; }
-  .builds-grid .log-teaser .entry { display: block; }
-  .builds-grid .log-teaser .entry .date { display: block; margin-bottom: 0.15rem; }
   .build {
+    position: relative;
     border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
     background: var(--card); margin-bottom: 1.5rem;
+    transition: border-color 0.2s;
   }
+  .build:hover { border-color: var(--text); }
+  .build:focus-within { outline: 2px solid var(--warm); outline-offset: 3px; }
   .build-img {
     display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; flex-shrink: 0;
     background: var(--border);
@@ -217,38 +195,18 @@
   .progress .steps .step.done { color: var(--text); }
   .progress .steps .step.active { color: var(--warm); }
 
-  .build .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; font-size: 0.92rem; }
-  .build .links a {
-    color: var(--accent); border: none; border-bottom: 1px solid var(--border);
-    padding-bottom: 1px; transition: border-color 0.2s;
+  .build .open {
+    margin-top: auto; align-self: flex-start;
+    display: inline-flex; align-items: center;
+    color: var(--warm); background: var(--warm-bg);
+    border: 1px solid var(--warm-border); border-radius: 999px;
+    padding: 0.5rem 0.95rem; font-size: 0.92rem; font-weight: 500; line-height: 1.2;
   }
-  .build .links a:hover { border-color: var(--text); }
-  .build .links a.primary { color: var(--warm); }
-
-  /* ── LOG ENTRIES TEASER ── */
-  .log-teaser {
-    border-top: 1px solid var(--border); padding: 1.25rem 1.5rem;
+  .build .open:hover { border-color: var(--warm); }
+  .build .open:focus { outline: none; }
+  .build .open::after {
+    content: ""; position: absolute; inset: 0;
   }
-  .log-teaser .log-label {
-    font-size: 0.66rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--soft); margin-bottom: 0.85rem;
-  }
-  .log-teaser .entry {
-    display: flex; gap: 1rem; padding: 0.65rem 0; align-items: baseline;
-  }
-  .log-teaser .entry:not(:last-child) { border-bottom: 1px dashed var(--border); }
-  .log-teaser .entry .date {
-    flex: 0 0 90px; font-size: 0.72rem; color: var(--soft);
-    text-transform: uppercase; letter-spacing: 0.04em;
-  }
-  .log-teaser .entry a {
-    color: var(--text); border: none; font-size: 0.95rem;
-  }
-  .log-teaser .entry a:hover { color: var(--muted); }
-  .log-teaser .more {
-    margin-top: 0.85rem; font-size: 0.9rem;
-  }
-  .log-teaser .more a { color: var(--warm); border: none; border-bottom: 1px solid var(--warm-border); }
 
   /* ── WRITING ── */
   .article-item {
@@ -325,15 +283,11 @@
     .site-nav { padding-top: 1rem; padding-bottom: 1rem; }
     h1.name { font-size: 2.6rem; }
     h2.section-h { font-size: 1.7rem; }
-    .now { grid-template-columns: 1fr; }
-    .now .media { aspect-ratio: 16/9; max-height: 220px; }
     .build h3.b-title { font-size: 1.6rem; }
     .article-item { grid-template-columns: 64px 1fr; }
     .article-item .thumb { width: 64px; height: 64px; }
     .talks-grid { grid-template-columns: 1fr; }
     .progress .steps { gap: 0.35rem 0.85rem; font-size: 0.72rem; }
-    .log-teaser .entry { gap: 0.6rem; }
-    .log-teaser .entry .date { flex-basis: 76px; }
   }
 </style>
 </head>
@@ -367,20 +321,8 @@
     </p>
   </section>
 
-  <!-- ═══ NOW ═══ -->
-  <section class="now">
-    <div>
-      <div class="label" id="now-label">Now · …</div>
-      <h3><a class="title-link plain" href="robots/so-101/">SO-101 — searching for a brain</a></h3>
-      <p>Teleoperation works. Next: imitation learning with LeRobot, then sim-to-real in Isaac Sim. Some days the arms do exactly what I ask. Most days they don't.</p>
-    </div>
-    <video class="media" autoplay muted loop playsinline preload="none" poster="robots/so-101/arms-wide.webp" aria-label="SO-101 arms during teleoperation">
-      <source src="robots/so-101/teleop-v2.webm" type="video/webm">
-    </video>
-  </section>
-
-  <!-- ═══ WORKBENCH ═══ -->
-  <h2 class="section-h">The Workbench<span class="count">02 builds</span></h2>
+  <!-- ═══ BUILDS ═══ -->
+  <h2 class="section-h" id="builds">Builds<span class="count">02 builds</span></h2>
 
   <div class="builds-grid">
   <article class="build">
@@ -411,24 +353,7 @@
         </div>
       </div>
 
-      <div class="links">
-        <a class="primary" href="robots/so-101/">Follow the build log →</a>
-        <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Origin story</a>
-      </div>
-    </div>
-
-    <div class="log-teaser">
-      <div class="log-label">Latest entries</div>
-      <div class="entry">
-        <span class="date">Mar 05</span>
-        <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I'm building for it</a>
-      </div>
-      <div class="entry">
-        <span class="date">In progress</span>
-        <a href="robots/so-101/">Day 01 — The arms move</a>
-      </div>
-      <p class="more"><a href="robots/so-101/">Full build log →</a></p>
+      <a class="open" href="robots/so-101/">Open SO-101 →</a>
     </div>
   </article>
 
@@ -458,22 +383,7 @@
           <span class="step active"><span class="icon">◉</span> Experiments next</span>
         </div>
       </div>
-      <div class="links">
-        <a class="primary" href="robots/pico/">Follow the build →</a>
-        <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </div>
-    <div class="log-teaser">
-      <div class="log-label">Build notes</div>
-      <div class="entry">
-        <span class="date">The robot</span>
-        <a href="robots/pico/#day-01">Two motors, back on its feet</a>
-      </div>
-      <div class="entry">
-        <span class="date">Hardware</span>
-        <a href="robots/pico/#day-02">Making the code match the build</a>
-      </div>
-      <p class="more"><a href="robots/pico/">Full build notes →</a></p>
+      <a class="open" href="robots/pico/">Open Pico →</a>
     </div>
   </article>
   </div>
@@ -566,13 +476,6 @@ toggle.addEventListener('click', () => {
   html.classList.toggle('dark');
   try { localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); } catch {}
 });
-
-// ── AUTO-STAMP THE "NOW" DATE ──
-const nowLabel = document.getElementById('now-label');
-if (nowLabel) {
-  const month = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  nowLabel.textContent = `Now · ${month}`;
-}
 
 // ── ARTICLES FROM SUBSTACK (via Cloudflare Worker at rss.silvags.com) ──
 (async () => {
