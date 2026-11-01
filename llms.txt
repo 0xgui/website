@@ -28,7 +28,6 @@ Canonical site: https://silvags.com. Essays keep a canonical link to https://bin
 - [When Engineers Need to Talk Business](https://silvags.com/writing/when-engineers-need-to-talk-business/index.md): 2024-11-09. Your code is perfect. Your business vocabulary isn't.
 - [You Can't Know Everything in Tech](https://silvags.com/writing/you-cant-know-everything-in-tech/index.md): 2024-10-23. Because tech moves fast, but you can move faster.
 - [Speaking in Front of 250+ People](https://silvags.com/writing/speaking-in-front-of-250-people/index.md): 2024-10-09. 250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.
-- [The Art of Juggling Life](https://silvags.com/writing/the-art-of-juggling-life/index.md): 2024-09-25. Balls Drop, Balls Add, You Adapt.
 - [The Road Trip of Kubernetes](https://silvags.com/writing/the-road-trip-of-kubernetes/index.md): 2024-09-04. Don't follow the road that everyone is riding. Create your own road trip.
 - [Why Platforms Must Be Products, Not Projects](https://silvags.com/writing/why-platforms-must-be-products/index.md): 2024-08-28. It's not a set-and-forget thing. You need to nourish it. You need to take care of it.
 - [Becoming a Product-Minded Engineer](https://silvags.com/writing/becoming-a-product-minded-engineer/index.md): 2024-08-14. Because let's face it. Customers don't care about what tech you use. They care if what they use, works.

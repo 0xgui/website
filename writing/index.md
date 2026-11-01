@@ -20,8 +20,6 @@ On engineering, teams, and the strange joy of building things you can touch. I p
 
 - October 9, 2024[Speaking in Front of 250+ People](https://silvags.com/writing/speaking-in-front-of-250-people/)250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.
 
-- September 25, 2024[The Art of Juggling Life](https://silvags.com/writing/the-art-of-juggling-life/)Balls Drop, Balls Add, You Adapt.
-
 - September 4, 2024[The Road Trip of Kubernetes](https://silvags.com/writing/the-road-trip-of-kubernetes/)Don't follow the road that everyone is riding. Create your own road trip.
 
 - August 28, 2024[Why Platforms Must Be Products, Not Projects](https://silvags.com/writing/why-platforms-must-be-products/)It's not a set-and-forget thing. You need to nourish it. You need to take care of it.
