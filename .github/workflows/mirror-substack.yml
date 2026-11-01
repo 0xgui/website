@@ -10,12 +10,9 @@ on:
   workflow_dispatch:
     inputs:
       proof_slug:
-        description: "Essay slug to omit on a scratch PR against main. The schedule leaves this empty."
+        description: "Essay slug to mark on a scratch PR against main. The schedule leaves this empty. The scratch PR is not auto-merged."
         required: false
         default: ""
-  # Proof only. A pull request from this branch starts the job because
-  # workflow_dispatch is forbidden for the cloud token. Removed after the proof.
-  pull_request:
 
 permissions:
   contents: write
@@ -31,7 +28,6 @@ concurrency:
 
 jobs:
   mirror:
-    if: github.event_name != 'pull_request' || github.head_ref == 'cursor/mirror-token-checks-f12f'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,9 +39,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Mirror
-        # GitHub-hosted runners receive a Cloudflare challenge from Substack.
-        # A proof run only needs a local diff, so it does not fetch.
-        if: github.head_ref != 'cursor/mirror-token-checks-f12f'
         run: python3 scripts/mirror_substack.py
 
       - name: Open a pull request
@@ -56,9 +49,6 @@ jobs:
         run: |
           set -euo pipefail
           proof="${PROOF_SLUG:-}"
-          if [ "${{ github.head_ref }}" = "cursor/mirror-token-checks-f12f" ]; then
-            proof="the-art-of-juggling-life"
-          fi
           if [ -n "$proof" ] && ! printf '%s' "$proof" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*$'; then
             echo "proof_slug must be an essay slug" >&2
             exit 1
