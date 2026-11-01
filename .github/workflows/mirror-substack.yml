@@ -43,6 +43,9 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Mirror
+        # GitHub-hosted runners receive a Cloudflare challenge from Substack.
+        # A proof run only needs a local diff, so it does not fetch.
+        if: github.head_ref != 'cursor/mirror-token-checks-f12f'
         run: python3 scripts/mirror_substack.py
 
       - name: Open a pull request
