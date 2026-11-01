@@ -32,7 +32,7 @@ Each feature file starts with an H1 and one paragraph, then exactly four H2s: `S
 
 ## Features
 
-- [Theme toggle](./theme-toggle.md) — light/dark class and `localStorage` persistence across pages.
+- [Color scheme](./theme-toggle.md) — auto/light/dark radios, `:root.dark` / `:root.light`, and `localStorage` key `theme` across pages.
 - [Homepage builds](./homepage-workbench.md) — Builds heading, SO-101 and Pico cards, navigate into each robot page and back.
 - [Writing feed](./writing-feed.md) — Binary Paths snapshot, live RSS refresh, status text, offline fallback.
 - [Pico model viewer](./pico-model.md) — GLB viewer, poster fallback path, Start/Pause rotation.

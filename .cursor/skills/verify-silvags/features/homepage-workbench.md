@@ -34,5 +34,5 @@ Preconditions:
 
 - Each card has one link. Match the full accessible name (`Open SO-101 →` vs `Open Pico →`). Clicking the card image uses that same link.
 - The homepage has no Now strip and no build-notes teaser under the cards.
-- SO-101 nav has no brand link — only `← Back to home` returns to the homepage.
+- Both robot pages include a brand link `Guilherme Silva` and `← Back to home`. Either returns to the homepage.
 - Media posters may lazy-load; identity proof is the page title/heading, not video playback.

@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>
+try {
+  var savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") document.documentElement.classList.add("dark");
+  else if (savedTheme === "light") document.documentElement.classList.add("light");
+} catch (err) {}
+</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SO-101 — Build Log · Guilherme Silva</title>
@@ -14,367 +21,713 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://silvags.com/robots/so-101/">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" /></noscript>
+<link rel="preload" href="../../fonts/crimson-text-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/crimson-text-600.woff2" as="font" type="font/woff2" crossorigin>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+@font-face {
+  font-family: "Crimson Text";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../fonts/crimson-text-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Crimson Text";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../fonts/crimson-text-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Crimson Text";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../../fonts/crimson-text-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Crimson Text";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../../fonts/crimson-text-600-italic.woff2") format("woff2");
+}
 
-  :root {
-    --bg: #fbfaf7; --text: #1a1a1a; --muted: #6b6b6b; --soft: #9a9a9a;
-    --border: #e8e6e0; --accent: #2a2a2a; --card: #f4f2ec;
-    --warm: #b15a00; --warm-bg: rgba(227,168,107,0.12); --warm-border: #e3a86b66;
+:root {
+  --bg: #f6f1e7;
+  --text: #2b251e;
+  --muted: #6e6256;
+  --soft: #74685c;
+  --border: #e4d9c8;
+  --card: #fbf7f0;
+  --warm: #8c4f28;
+  color-scheme: light;
+}
+:root.dark {
+  --bg: #2b2723;
+  --text: #f0e6d6;
+  --muted: #b6aa9b;
+  --soft: #a3988a;
+  --border: #433d37;
+  --card: #342f2a;
+  --warm: #e0b48a;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg: #2b2723;
+    --text: #f0e6d6;
+    --muted: #b6aa9b;
+    --soft: #a3988a;
+    --border: #433d37;
+    --card: #342f2a;
+    --warm: #e0b48a;
+    color-scheme: dark;
   }
-  :root.dark {
-    --bg: #0e0e0e; --text: #e8e6e1; --muted: #8e8c86; --soft: #5e5c58;
-    --border: #242220; --accent: #ccc9c2; --card: #161513;
-    --warm: #f0b370; --warm-bg: rgba(227,168,107,0.08); --warm-border: #4a3a1f;
-  }
+}
 
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px;
-    -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s;
-  }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "Crimson Text", Palatino, "Palatino Linotype", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.65;
+  background: var(--bg);
+  color: var(--text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: #e4d2b0; color: #2b251e; }
+:root.dark ::selection { background: #5a4b38; color: #f0e6d6; }
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) ::selection { background: #5a4b38; color: #f0e6d6; }
+}
+img, video { max-width: 100%; height: auto; }
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--soft);
+  text-underline-offset: 0.16em;
+}
+a:hover { text-decoration-color: var(--text); }
+:focus-visible { outline: 2px solid var(--warm); outline-offset: 3px; }
+strong { font-weight: 600; }
 
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
+.wrap { max-width: 40rem; margin: 0 auto; padding: 0 1.5rem 4.5rem; }
 
-  .site-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 1.5rem; position: sticky; top: 0;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    z-index: 10; max-width: 720px; margin: 0 auto;
-  }
-  .site-nav .brand {
-    font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15rem;
-    color: var(--text); text-decoration: none; border: none;
-  }
-  .nav-icons { display: flex; align-items: center; gap: 1rem; }
-  .nav-icons a { display: flex; color: var(--muted); transition: color 0.2s; border: none; }
-  .nav-icons a:hover { color: var(--text); }
-  .nav-icons svg { width: 18px; height: 18px; fill: currentColor; }
-  .theme-toggle { background: none; border: none; color: var(--muted); cursor: pointer; padding: 0; display: flex; }
-  .theme-toggle:hover { color: var(--text); }
-  .theme-toggle svg { width: 16px; height: 16px; fill: currentColor; }
-  .theme-toggle .icon-sun { display: none; }
-  .dark .theme-toggle .icon-moon { display: none; }
-  .dark .theme-toggle .icon-sun { display: inline; }
+.ink {
+  position: relative;
+  width: 100%;
+  height: clamp(12rem, 32vw, 26rem);
+  overflow: hidden;
+  background: var(--bg);
+}
+.ink img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ink[data-fit="contain"] img { object-fit: contain; }
+.ink canvas:not([hidden]) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.ink.is-dithered img { visibility: hidden; }
 
-  /* ── HERO ── */
-  .hero { padding: 2rem 0 1rem; }
-  .back {
-    font-size: 0.85rem; color: var(--muted); border: none; margin-bottom: 1.25rem;
-    display: inline-block; transition: color 0.2s;
-  }
-  .back:hover { color: var(--text); }
-  .kicker {
-    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.12em; color: var(--warm); display: inline-flex;
-    align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
-  }
-  .kicker .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm); box-shadow: 0 0 0 4px var(--warm-bg); }
-  h1.title {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: clamp(2.4rem, 8vw, 3.8rem); line-height: 1; letter-spacing: -0.02em;
-    margin-bottom: 0.9rem;
-  }
-  .summary { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.5rem; max-width: 38em; }
-  .summary strong { color: var(--text); font-weight: 500; }
+.site-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.35rem 1.25rem;
+  padding-top: 1.35rem;
+}
+.brand, .site-nav a, .back { text-decoration: none; }
+.brand { font-size: 1.05rem; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 0.2rem 0.95rem; }
+.site-nav a { color: var(--muted); }
+.site-nav a:hover, .brand:hover, .back:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--soft);
+}
 
-  .hero-img {
-    width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 14px;
-    background: var(--border); display: block; margin-bottom: 1.5rem;
-  }
+h1 {
+  font-weight: 600;
+  font-size: clamp(2.2rem, 6vw, 3.15rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 2.1rem 0 0.35rem;
+}
+h2.section-h {
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  margin: 2.8rem 0 0.85rem;
+  scroll-margin-top: 1.25rem;
+}
+h2.section-h .count {
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-left: 0.35rem;
+}
+.dateline {
+  margin: 0 0 1.35rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.lede { margin: 0 0 0.4rem; }
+.back { color: var(--muted); }
 
-  /* ── 3D MODEL VIEWER (always visible) ── */
-  .mv-wrap {
-    position: relative; width: 100%; margin-bottom: 1.5rem;
-    border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
-    background: var(--card);
-  }
-  model-viewer {
-    width: 100%; height: 460px; --poster-color: transparent;
-    background: radial-gradient(ellipse at center, var(--card) 0%, var(--bg) 100%);
-  }
-  .mv-wrap .mv-caption {
-    position: absolute; left: 0; right: 0; bottom: 0; padding: 0.7rem 1rem;
-    font-size: 0.76rem; color: var(--soft); text-align: center; pointer-events: none;
-    background: linear-gradient(transparent, color-mix(in srgb, var(--card) 92%, transparent));
-  }
-  .mv-wrap .mv-caption em { color: var(--muted); font-style: italic; }
+footer {
+  margin-top: 3.4rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+footer p { margin: 0.35rem 0; }
+#color-scheme {
+  border: 0;
+  margin: 0 0 0.85rem;
+  padding: 0;
+}
+#color-scheme legend {
+  display: inline;
+  padding: 0;
+  margin-right: 0.35rem;
+}
+#color-scheme label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  margin-right: 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#color-scheme input { accent-color: var(--text); }
 
-  @media (max-width: 600px) {
-    model-viewer { height: 340px; }
-  }
+@media (max-width: 600px) {
+  body { font-size: 1.15rem; }
+  .wrap { padding-left: 1.15rem; padding-right: 1.15rem; }
+  .site-head { flex-direction: column; align-items: flex-start; }
+  h2.section-h { font-size: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 
-  /* ── PROGRESS ── */
-  .progress-card {
-    border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem;
-    background: var(--card); margin-bottom: 3rem;
-  }
-  .progress-card .pl {
-    font-size: 0.66rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--soft); margin-bottom: 0.85rem;
-  }
-  .progress .track { display: flex; gap: 0.4rem; margin-bottom: 0.85rem; }
-  .progress .seg { flex: 1; height: 5px; border-radius: 3px; background: var(--border); }
-  .progress .seg.done { background: var(--text); }
-  .progress .seg.active { background: var(--warm); }
-  .progress .steps {
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem 1rem;
-    font-size: 0.82rem; color: var(--muted);
-  }
-  .progress .steps .step { display: flex; align-items: center; gap: 0.4rem; }
-  .progress .steps .step.done { color: var(--text); }
-  .progress .steps .step.active { color: var(--warm); }
-
-  .meta-row {
-    display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin: 1.5rem 0 0;
-    font-size: 0.84rem; color: var(--muted); padding-top: 1.25rem;
-    border-top: 1px solid var(--border);
-  }
-  .meta-row a { color: var(--text); border: none; border-bottom: 1px solid var(--border); }
-  .meta-row a:hover { border-color: var(--text); }
-
-  /* ── ENTRIES ── */
-  h2.section-h {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: 1.9rem; line-height: 1.1; letter-spacing: -0.01em;
-    margin: 0 0 1.5rem; scroll-margin-top: 80px;
-  }
-  .entry {
-    padding: 2rem 0; border-top: 1px solid var(--border);
-  }
-  .entry:first-of-type { border-top: none; }
-  .entry .ehead { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
-  .entry .day {
-    font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: var(--warm);
-    font-style: italic;
-  }
-  .entry .date {
-    font-size: 0.72rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em;
-  }
-  .entry h3 {
-    font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.7rem;
-    line-height: 1.15; margin-bottom: 0.85rem; letter-spacing: -0.01em;
-  }
-  .entry p { margin-bottom: 1rem; color: var(--text); }
-  .entry p.muted { color: var(--muted); }
-  .entry .media {
-    width: 100%; border-radius: 12px; margin: 1rem 0; background: var(--border);
-    display: block;
-  }
-  .entry .media.tall { max-width: 380px; aspect-ratio: 9/16; object-fit: cover; margin-left: auto; margin-right: auto; }
-  .entry .media.wide { aspect-ratio: 16/9; object-fit: cover; }
-  .entry .caption { font-size: 0.78rem; color: var(--soft); text-align: center; margin-top: -0.4rem; margin-bottom: 1.25rem; font-style: italic; }
-  .entry a { color: var(--text); border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
-  .entry a:hover { border-color: var(--text); }
-  .entry .pullquote {
-    border-left: 3px solid var(--warm); padding-left: 1rem; margin: 1.25rem 0;
-    font-family: 'Instrument Serif', serif; font-size: 1.25rem; line-height: 1.4;
-    color: var(--text); font-style: italic;
-  }
-
-  .more-coming {
-    margin: 2rem 0; padding: 1.5rem; border: 1px dashed var(--border);
-    border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.92rem;
-  }
-  .more-coming .icon { font-size: 1rem; color: var(--warm); margin-right: 0.4rem; }
-
-  footer {
-    margin-top: 4rem; padding: 2rem 0 3rem; border-top: 1px solid var(--border);
-    font-size: 0.8rem; color: var(--soft); text-align: center;
-  }
-  footer a { color: var(--muted); border: none; }
-  footer a:hover { color: var(--text); }
-
-  @media (max-width: 600px) {
-    .wrap, .site-nav { padding-left: 1.1rem; padding-right: 1.1rem; }
-    h1.title { font-size: 2.4rem; }
-    h2.section-h { font-size: 1.6rem; }
-    .entry h3 { font-size: 1.4rem; }
-    .progress .steps { font-size: 0.74rem; gap: 0.35rem 0.85rem; }
-  }
+.hero h1 { margin-top: 0.85rem; }
+.summary { margin: 0 0 1.4rem; }
+.mv-wrap { margin: 0 0 1.6rem; }
+model-viewer {
+  display: block;
+  width: 100%;
+  height: 24rem;
+  background: var(--bg);
+  --poster-color: transparent;
+  --progress-bar-height: 0px;
+  --progress-bar-color: transparent;
+}
+.mv-caption {
+  margin: 0.55rem 0 0;
+  text-align: center;
+  font-style: italic;
+  color: var(--muted);
+}
+.progress-card { margin: 0 0 2.2rem; }
+.progress-card .pl { font-style: italic; color: var(--muted); margin: 0 0 0.55rem; }
+.progress .track { display: flex; gap: 0.35rem; margin: 0 0 0.45rem; }
+.progress .seg { flex: 1; height: 2px; background: var(--border); }
+.progress .seg.done { background: var(--text); }
+.progress .seg.active { background: var(--warm); }
+.progress .steps { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; color: var(--muted); }
+.progress .steps .step.done { color: var(--text); }
+.progress .steps .step.active { color: var(--warm); }
+.meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+.entry {
+  padding: 1.6rem 0 0.4rem;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 1.25rem;
+}
+.entry:first-of-type { border-top: 0; padding-top: 0.2rem; }
+.entry .ehead { display: flex; flex-wrap: wrap; gap: 0.35rem 0.8rem; align-items: baseline; margin-bottom: 0.25rem; }
+.entry .day { font-style: italic; color: var(--warm); }
+.entry .date { font-style: italic; color: var(--muted); }
+.entry h3 { font-size: 1.55rem; font-weight: 600; line-height: 1.2; margin: 0 0 0.75rem; }
+.entry p { margin: 0 0 1rem; }
+.entry p.muted { color: var(--muted); }
+.entry .media { display: block; width: 100%; margin: 0.4rem 0 0.35rem; background: var(--border); }
+.entry .media.wide { aspect-ratio: 16 / 9; object-fit: cover; }
+.entry .media.tall { max-width: 20rem; aspect-ratio: 9 / 16; object-fit: cover; margin-left: auto; margin-right: auto; }
+.entry .caption { text-align: center; font-style: italic; color: var(--muted); margin: 0 0 1.1rem; }
+.entry .pullquote {
+  margin: 1.2rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--warm);
+  font-style: italic;
+  font-size: 1.28rem;
+  line-height: 1.45;
+}
+.more-coming { margin: 1.6rem 0 0; font-style: italic; color: var(--muted); }
+.more-coming .icon { color: var(--warm); margin-right: 0.25rem; font-style: normal; }
+@keyframes log-flash { from { background: rgba(140, 79, 40, 0.16); } to { background: transparent; } }
+.entry.log-flash { animation: log-flash 2s ease-out; }
+@media (max-width: 600px) {
+  model-viewer { height: 18rem; }
+  .entry h3 { font-size: 1.35rem; }
+}
 </style>
 </head>
 <body>
-
-<nav class="site-nav">
-  <span class="nav-icons">
-    <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener" aria-label="GitHub repo">
-      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-    </a>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-    </button>
-  </span>
-</nav>
-
+<div class="ink" aria-hidden="true">
+  <img src="arms-wide.webp" alt="" width="1600" height="955">
+  <canvas hidden></canvas>
+</div>
 <div class="wrap">
+  <header class="site-head">
+    <a class="brand" href="../../index.html">Guilherme Silva</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../index.html#builds">builds</a>
+      <a href="../../index.html#writing">writing</a>
+      <a href="../../index.html#talks">talks</a>
+      <a href="../../index.html#about">about</a>
+    </nav>
+  </header>
 
-  <!-- ═══ HERO ═══ -->
-  <section class="hero">
-    <a class="back" href="../../index.html">← Back to home</a>
-    <span class="kicker"><span class="dot"></span>Build log · In progress</span>
-    <h1 class="title">SO-101 Robotic Arm</h1>
-    <p class="summary">
-      A 6-DOF robotic arm, built from scratch with <strong>twelve STS3215 servos</strong>, two 3D-printed airframes, leader-follower teleop, and a slowly growing brain.
-    </p>
-    <div class="mv-wrap">
-      <model-viewer
-        id="so-model"
-        src="so101.glb"
-        poster="arms-wide.webp"
-        alt="3D model of the SO-101 robotic arm — drag to rotate, scroll to zoom"
-        auto-rotate
-        rotation-per-second="25deg"
-        camera-controls
-        shadow-intensity="1"
-        interaction-prompt="auto"
-        interaction-prompt-style="wiggle"
-        camera-orbit="0deg 80deg 105%"
-        loading="eager"
-      ></model-viewer>
-      <p class="mv-caption">drag to rotate · scroll to zoom · <em>real SO-101 CAD model</em></p>
-    </div>
+  <main>
+    <section class="hero">
+      <p><a class="back" href="../../index.html">← Back to home</a></p>
+      <h1 class="title">SO-101 Robotic Arm</h1>
+      <p class="dateline">build log · in progress</p>
+      <p class="summary">
+        A 6-DOF robotic arm, built from scratch with <strong>twelve STS3215 servos</strong>, two 3D-printed airframes, leader-follower teleop, and a slowly growing brain.
+      </p>
+      <div class="mv-wrap">
+        <model-viewer
+          id="so-model"
+          src="so101.glb"
+          poster="arms-wide.webp"
+          alt="3D model of the SO-101 robotic arm — drag to rotate, scroll to zoom"
+          auto-rotate
+          rotation-per-second="25deg"
+          camera-controls
+          shadow-intensity="1"
+          interaction-prompt="auto"
+          interaction-prompt-style="wiggle"
+          camera-orbit="0deg 80deg 105%"
+          loading="eager"
+        ></model-viewer>
+        <p class="mv-caption">drag to rotate · scroll to zoom · <em>real SO-101 CAD model</em></p>
+      </div>
 
-    <div class="progress-card">
-      <div class="pl">Build progress</div>
-      <div class="progress">
-        <div class="track">
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg active"></div>
-          <div class="seg"></div>
+      <div class="progress-card">
+        <div class="pl">Build progress</div>
+        <div class="progress">
+          <div class="track">
+            <div class="seg done"></div>
+            <div class="seg done"></div>
+            <div class="seg active"></div>
+            <div class="seg"></div>
+          </div>
+          <div class="steps">
+            <span class="step done">✓ Build &amp; assemble</span>
+            <span class="step done">✓ Teleop moving</span>
+            <span class="step active">◉ Imitation learning</span>
+            <span class="step">○ Sim-to-real + VLA</span>
+          </div>
         </div>
-        <div class="steps">
-          <span class="step done">✓ Build &amp; assemble</span>
-          <span class="step done">✓ Teleop moving</span>
-          <span class="step active">◉ Imitation learning</span>
-          <span class="step">○ Sim-to-real + VLA</span>
+        <div class="meta-row">
+          <span><strong style="color:var(--text)">Hardware:</strong> STS3215 × 12, 3D-printed (PLA/PETG)</span>
+          <span><strong style="color:var(--text)">Stack:</strong> Python · ROS2 · LeRobot</span>
+          <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Origin story →</a>
         </div>
       </div>
-      <div class="meta-row">
-        <span><strong style="color:var(--text)">Hardware:</strong> STS3215 × 12, 3D-printed (PLA/PETG)</span>
-        <span><strong style="color:var(--text)">Stack:</strong> Python · ROS2 · LeRobot</span>
-        <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub →</a>
-        <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Origin story →</a>
+    </section>
+
+    <h2 class="section-h">Log</h2>
+
+    <article class="entry" id="day-01">
+      <div class="ehead">
+        <span class="day">Day 01</span>
+        <span class="date">written on March 05, 2026</span>
       </div>
+      <h3>The arms, they move</h3>
+
+      <img class="media wide" src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" loading="lazy" />
+      <p class="caption">Two arms, a lot of servos, built from scratch.</p>
+
+      <p>
+        I 3D-printed part by part with a bambu printer I bought, ordered twelve STS3215 servos from AliExpress, &euro;20 each and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
+      </p>
+      <p class="muted">
+        Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm&hellip; as a follower. Wrong configuration, wrong setup. Realized it only after everything was done. Had to redo it all from scratch.
+      </p>
+      <p>
+        It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There's just something special seeing something move. Atoms moving.
+      </p>
+
+      <video class="media tall" autoplay muted loop playsinline preload="none" aria-labelledby="cap-print">
+        <source src="teleop-v1.webm" type="video/webm">
+      </video>
+      <p class="caption" id="cap-print">3D Printing the arms.</p>
+
+      <div class="pullquote">
+        The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
+      </div>
+      <p>
+        It's physical. It's immediate. It's hard. It's real. Now I just need to give it a <strong>brain</strong>.
+      </p>
+
+      <video class="media tall" autoplay muted loop playsinline preload="none" aria-labelledby="cap-teleop">
+        <source src="teleop-v2.webm" type="video/webm">
+      </video>
+      <p class="caption" id="cap-teleop">Teleop run.</p>
+
+      <p class="muted">
+        Right now it's pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to trigger the curiosity in me completely into this new world of hardware.
+      </p>
+      <p>
+        The plan from here: teach the arms tasks by demonstration — move them through a motion a few dozen times, let it learn to replicate on its own (imitation learning). Then get into sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/" target="_blank" rel="noopener">Gazebo</a>. Then, finally, put a vision-language-action model on it so it can see, reason, and act.
+      </p>
+      <p>
+        More on the "why" and the bigger picture in the <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">origin story post on Binary Paths</a>.
+      </p>
+    </article>
+
+    <div class="more-coming">
+      <span class="icon">◉</span>
+      Next entry: imitation learning — first demonstrations.<br>
+      <span style="color:var(--soft);font-size:0.95rem;">In progress. Check back soon.</span>
     </div>
-  </section>
-
-  <!-- ═══ ENTRIES ═══ -->
-  <h2 class="section-h">Log</h2>
-
-  <article class="entry" id="day-01">
-    <div class="ehead">
-      <span class="day">Day 01</span>
-      <span class="date">March 05, 2026</span>
-    </div>
-    <h3>The arms, they move</h3>
-
-    <img class="media wide" src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" loading="lazy" />
-    <p class="caption">Two arms, a lot of servos, built from scratch.</p>
-
-    <p>
-      I 3D-printed part by part with a bambu printer I bought, ordered twelve STS3215 servos from AliExpress, &euro;20 each and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
-    </p>
-
-
-    <p class="muted">
-      Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm&hellip; as a follower. Wrong configuration, wrong setup. Realized it only after everything was done. Had to redo it all from scratch.
-    </p>
-
-    <p>
-      It's also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There's just something special seeing something move. Atoms moving.
-    </p>
-
-    <video class="media tall" autoplay muted loop playsinline preload="none" aria-labelledby="cap-print">
-      <source src="teleop-v1.webm" type="video/webm">
-    </video>
-    <p class="caption" id="cap-print">3D Printing the arms.</p>
-
-    <div class="pullquote">
-      The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
-    </div>
-    <p>
-      It's physical. It's immediate. It's hard. It's real. Now I just need to give it a <strong>brain</strong>.
-    </p>
-
-
-
-    <video class="media tall" autoplay muted loop playsinline preload="none" aria-labelledby="cap-teleop">
-      <source src="teleop-v2.webm" type="video/webm">
-    </video>
-    <p class="caption" id="cap-teleop">Teleop run.</p>
-
-    <p class="muted">
-      Right now it's pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to trigger the curiosity in me completely into this new world of hardware.
-    </p>
-    <p>
-      The plan from here: teach the arms tasks by demonstration — move them through a motion a few dozen times, let it learn to replicate on its own (imitation learning). Then get into sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/" target="_blank" rel="noopener">Gazebo</a>. Then, finally, put a vision-language-action model on it so it can see, reason, and act.
-    </p>
-    <p>
-      More on the "why" and the bigger picture in the <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">origin story post on Binary Paths</a>.
-    </p>
-  </article>
-
-  <div class="more-coming">
-    <span class="icon">◉</span>
-    Next entry: imitation learning — first demonstrations.<br>
-    <span style="color:var(--soft);font-size:0.82rem;">In progress. Check back soon.</span>
-  </div>
+  </main>
 
   <footer>
+    <fieldset id="color-scheme">
+      <legend>Color scheme:</legend>
+      <label><input type="radio" name="theme" value="auto" checked> auto</label>
+      <label><input type="radio" name="theme" value="light"> light</label>
+      <label><input type="radio" name="theme" value="dark"> dark</label>
+    </fieldset>
     <p>SO-101 build log · <a href="../../index.html">Guilherme Silva</a></p>
-    <p style="margin-top:0.25rem;">Calibration scripts &amp; more on <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a></p>
+    <p>Calibration scripts &amp; more on <a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a></p>
   </footer>
-
 </div>
-
 <script>
-const toggle = document.getElementById('theme-toggle');
-const html = document.documentElement;
-const saved = localStorage.getItem('theme');
-if (saved === 'dark') html.classList.add('dark');
-toggle.addEventListener('click', () => {
-  html.classList.toggle('dark');
-  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-});
+(function () {
+  var root = document.documentElement;
+  var scheme = document.getElementById("color-scheme");
+  var band = document.querySelector(".ink");
+  var canvas = band ? band.querySelector("canvas") : null;
+  var photo = band ? band.querySelector("img") : null;
+  var gl = null;
+  var program = null;
+  var buffer = null;
+  var photoTex = null;
+  var bayerTex = null;
+  var locs = null;
+  var ready = false;
 
-// ── 3D MODEL VIEWER ──
-// Always loaded. Poster image shows while the .glb streams in.
-const mv = document.getElementById('so-model');
-if (mv) {
-  mv.addEventListener('error', () => console.warn('model-viewer: failed to load .glb'));
-}
+  function storedTheme() {
+    try {
+      var value = localStorage.getItem("theme");
+      if (value === "light" || value === "dark" || value === "auto") return value;
+    } catch (err) {}
+    return "auto";
+  }
 
-// ── DEEP-LINK HIGHLIGHT (#day-XX) ──
-// Smooth-scroll to the entry on load and flash a highlight,
-// so silvags.com/so-101.html#day-01 lands you right on it.
-if (location.hash) {
-  const highlightStyle = document.createElement('style');
-  highlightStyle.textContent = `
-    @keyframes mv-log-flash {
-      0% { background: var(--warm-bg); box-shadow: -8px 0 0 0 var(--warm); }
-      100% { background: transparent; box-shadow: -8px 0 0 0 transparent; }
+  function syncRadios() {
+    if (!scheme) return;
+    var input = scheme.querySelector('input[value="' + storedTheme() + '"]');
+    if (input) input.checked = true;
+  }
+
+  function pageIsDark() {
+    if (root.classList.contains("dark")) return true;
+    if (root.classList.contains("light")) return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  function cssColor(name, fallback) {
+    var raw = getComputedStyle(root).getPropertyValue(name).trim();
+    var hex = raw.charAt(0) === "#" ? raw.slice(1) : "";
+    if (hex.length === 3) hex = hex.replace(/./g, function (ch) { return ch + ch; });
+    if (!/^[0-9a-fA-F]{6}$/.test(hex)) return fallback;
+    var n = parseInt(hex, 16);
+    return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  }
+
+  function compile(type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      gl.deleteShader(shader);
+      return null;
     }
-    .entry.log-flash { animation: mv-log-flash 2.5s ease-out; }
-  `;
-  document.head.appendChild(highlightStyle);
-  requestAnimationFrame(() => {
-    const target = document.querySelector(location.hash);
-    if (target) {
-      target.classList.add('log-flash');
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return shader;
+  }
+
+  // Standard recursive Bayer matrix. Thresholds are (value + 0.5) / 64.
+  function bayerBytes() {
+    function level(n) {
+      if (n === 1) return [[0]];
+      var prev = level(n / 2);
+      var half = n / 2;
+      var matrix = [];
+      for (var y = 0; y < n; y++) matrix.push(new Array(n));
+      for (var y2 = 0; y2 < half; y2++) {
+        for (var x = 0; x < half; x++) {
+          var v = prev[y2][x] * 4;
+          matrix[y2][x] = v;
+          matrix[y2][x + half] = v + 2;
+          matrix[y2 + half][x] = v + 3;
+          matrix[y2 + half][x + half] = v + 1;
+        }
+      }
+      return matrix;
     }
+    var matrix = level(8);
+    var bytes = new Uint8Array(64 * 4);
+    var i = 0;
+    for (var y = 0; y < 8; y++) {
+      for (var x = 0; x < 8; x++) {
+        var value = Math.round(((matrix[y][x] + 0.5) / 64) * 255);
+        bytes[i++] = value;
+        bytes[i++] = value;
+        bytes[i++] = value;
+        bytes[i++] = 255;
+      }
+    }
+    return bytes;
+  }
+
+  function bindGeometry() {
+    gl.useProgram(program);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, photoTex);
+    gl.uniform1i(locs.photo, 0);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, bayerTex);
+    gl.uniform1i(locs.bayer, 1);
+  }
+
+  function setupGL() {
+    gl = canvas.getContext("webgl", {
+      alpha: false,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      preserveDrawingBuffer: false,
+      powerPreference: "low-power"
+    });
+    if (!gl) return false;
+    var vertex = compile(gl.VERTEX_SHADER, [
+      "attribute vec2 aPos;",
+      "varying vec2 vUv;",
+      "void main(){",
+      "  vUv = aPos * 0.5 + 0.5;",
+      "  gl_Position = vec4(aPos, 0.0, 1.0);",
+      "}"
+    ].join("\n"));
+    var fragment = compile(gl.FRAGMENT_SHADER, [
+      "precision mediump float;",
+      "uniform sampler2D uPhoto;",
+      "uniform sampler2D uBayer;",
+      "uniform vec2 uCover;",
+      "uniform vec3 uPaper;",
+      "uniform vec3 uInk;",
+      "varying vec2 vUv;",
+      "void main(){",
+      "  vec2 uv = (vUv - 0.5) * uCover + 0.5;",
+      "  float inside = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);",
+      "  vec3 sampleColor = texture2D(uPhoto, clamp(uv, 0.0, 1.0)).rgb;",
+      "  float luma = dot(sampleColor, vec3(0.299, 0.587, 0.114));",
+      "  luma = clamp((luma - 0.05) / 0.9, 0.0, 1.0);",
+      "  vec2 cell = floor(mod(gl_FragCoord.xy, 8.0));",
+      "  float threshold = texture2D(uBayer, (cell + 0.5) / 8.0).r;",
+      "  float onPaper = step(threshold, luma);",
+      "  vec3 dithered = mix(uInk, uPaper, onPaper);",
+      "  gl_FragColor = vec4(mix(uPaper, dithered, inside), 1.0);",
+      "}"
+    ].join("\n"));
+    if (!vertex || !fragment) return false;
+    program = gl.createProgram();
+    gl.attachShader(program, vertex);
+    gl.attachShader(program, fragment);
+    gl.bindAttribLocation(program, 0, "aPos");
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return false;
+    locs = {
+      photo: gl.getUniformLocation(program, "uPhoto"),
+      bayer: gl.getUniformLocation(program, "uBayer"),
+      cover: gl.getUniformLocation(program, "uCover"),
+      paper: gl.getUniformLocation(program, "uPaper"),
+      ink: gl.getUniformLocation(program, "uInk")
+    };
+    buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      -1, -1, 1, -1, -1, 1,
+      -1, 1, 1, -1, 1, 1
+    ]), gl.STATIC_DRAW);
+
+    bayerTex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, bayerTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 8, 8, 0, gl.RGBA, gl.UNSIGNED_BYTE, bayerBytes());
+
+    photoTex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, photoTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, photo);
+    bindGeometry();
+    return true;
+  }
+
+  function paint() {
+    if (!gl || !ready) return;
+    var rect = band.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var width = Math.max(1, Math.round(rect.width * dpr));
+    var height = Math.max(1, Math.round(rect.height * dpr));
+    var cap = 1400;
+    if (width > cap) {
+      height = Math.max(1, Math.round(height * (cap / width)));
+      width = cap;
+    }
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+      bindGeometry();
+    }
+    var canvasAspect = width / height;
+    var imageAspect = photo.naturalWidth / photo.naturalHeight;
+    var coverX = 1;
+    var coverY = 1;
+    var contain = band.getAttribute("data-fit") === "contain";
+    if (contain) {
+      if (imageAspect > canvasAspect) coverY = imageAspect / canvasAspect;
+      else coverX = canvasAspect / imageAspect;
+    } else if (imageAspect > canvasAspect) {
+      coverX = canvasAspect / imageAspect;
+    } else {
+      coverY = imageAspect / canvasAspect;
+    }
+    var dark = pageIsDark();
+    var paper = cssColor("--bg", dark ? [0.17, 0.15, 0.14] : [0.965, 0.945, 0.906]);
+    var ink = cssColor("--text", dark ? [0.941, 0.902, 0.839] : [0.169, 0.145, 0.118]);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(locs.cover, coverX, coverY);
+    gl.uniform3fv(locs.paper, paper);
+    gl.uniform3fv(locs.ink, ink);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    canvas.hidden = false;
+    band.classList.add("is-dithered");
+  }
+
+  syncRadios();
+  if (scheme) {
+    scheme.addEventListener("change", function (event) {
+      var value = event.target && event.target.value;
+      if (value !== "auto" && value !== "light" && value !== "dark") return;
+      root.classList.toggle("dark", value === "dark");
+      root.classList.toggle("light", value === "light");
+      try { localStorage.setItem("theme", value); } catch (err) {}
+      paint();
+    });
+  }
+
+  if (photo && canvas) {
+    var boot = function () {
+      if (!photo.naturalWidth || ready) return;
+      if (!setupGL()) return;
+      ready = true;
+      paint();
+    };
+    if (photo.complete && photo.naturalWidth) boot();
+    else photo.addEventListener("load", boot);
+    canvas.addEventListener("webglcontextlost", function () {
+      ready = false;
+      gl = null;
+      canvas.hidden = true;
+      band.classList.remove("is-dithered");
+    });
+  }
+
+  var resizeTimer = 0;
+  window.addEventListener("resize", function () {
+    if (!ready) return;
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(paint, 80);
   });
-}
+  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  var onScheme = function () {
+    if (storedTheme() === "auto") paint();
+  };
+  if (darkQuery.addEventListener) darkQuery.addEventListener("change", onScheme);
+  else if (darkQuery.addListener) darkQuery.addListener(onScheme);
+})();
+
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var mv = document.getElementById("so-model");
+  if (reduce.matches) {
+    document.querySelectorAll("video").forEach(function (video) {
+      video.removeAttribute("autoplay");
+      try { video.pause(); } catch (err) {}
+    });
+    if (mv) {
+      mv.removeAttribute("auto-rotate");
+      mv.setAttribute("interaction-prompt", "none");
+    }
+  }
+  if (mv) {
+    mv.addEventListener("error", function () {
+      console.warn("model-viewer: failed to load .glb");
+    });
+  }
+  if (location.hash) {
+    var target = null;
+    try { target = document.querySelector(location.hash); } catch (err) { target = null; }
+    if (target) {
+      target.classList.add("log-flash");
+      target.scrollIntoView({ behavior: reduce.matches ? "instant" : "smooth", block: "start" });
+    }
+  }
+})();
 </script>
 </body>
 </html>

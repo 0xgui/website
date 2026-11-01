@@ -36,14 +36,14 @@ Teardown: `.cursor/skills/verify-silvags/bin/cleanup` (kills only the recorded p
 .cursor/skills/verify-silvags/bin/doctor
 ```
 
-Must print `doctor: HEALTHY` before driving. Checks process, homepage, `/robots/so-101/`, `/robots/pico/`, favicon, key media (webp/glb), theme-toggle presence, and homepage identity (`Guilherme Silva`). If anything looks off mid-run, re-run doctor first.
+Must print `doctor: HEALTHY` before driving. Checks process, homepage, `/robots/so-101/`, `/robots/pico/`, favicon, key media (webp/glb), color-scheme radios, and homepage identity (`Guilherme Silva`). If anything looks off mid-run, re-run doctor first.
 
 ## Drive
 
 1. `bin/launch` then `bin/doctor`.
 2. Open `$VERIFY_URL/` in the Cursor browser (list tabs → navigate → lock before interaction).
-3. Prefer ARIA: button `Toggle theme`, links by accessible name (`Open SO-101 →`, `Open Pico →`, `← Back to home`, brand `Guilherme Silva`).
-4. Stable IDs when ARIA is thin: `#theme-toggle`, `#articles`, `#articles-status`, `#pico-model`, `#rotation-toggle`, `#day-01`, `#day-02`, `#so-model`.
+3. Prefer ARIA: color scheme radios `auto`, `light`, and `dark`, links by accessible name (`Open SO-101 →`, `Open Pico →`, `← Back to home`, brand `Guilherme Silva`).
+4. Stable IDs when ARIA is thin: `#color-scheme`, `#articles`, `#articles-status`, `#pico-model`, `#rotation-toggle`, `#day-01`, `#day-02`, `#so-model`.
 5. Follow the feature file under `features/`. One feature per proof is enough unless the change spans several.
 
 Pages to cover when relevant: `/`, `/robots/so-101/`, `/robots/pico/`.

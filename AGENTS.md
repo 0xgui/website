@@ -19,6 +19,7 @@ robots/
     pico.glb            Neutral pose from the simulation meshes
     pico-preview.webp   Render of the same geometry
 favicon.svg             Site icon
+fonts/                  Crimson Text (OFL) woff2 used by every page
 worker.js               Cloudflare Worker (RSS proxy, deployed separately)
 ```
 
@@ -41,6 +42,7 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 | `robots/so-101/index.html` | SO-101 build log — entries, progress, 3D model viewer |
 | `worker.js` | Cloudflare Worker (RSS proxy) — deployed separately, repo change requires Cloudflare redeploy |
 | `favicon.svg` | Site icon |
+| `fonts/` | Self-hosted Crimson Text woff2 (OFL). Shared by every page; not a stylesheet |
 | `robots/so-101/*` | Optimized media (webm/webp) for the SO-101 build log |
 | `robots/pico/index.html` | Pico build notes — recovery loop, hardware adaptation, progress |
 | `robots/pico/pico.glb` | Neutral robot model converted from SelfRisingRobot MuJoCo meshes |
@@ -54,7 +56,7 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 2. **Keep xgeeks as current employer** — the user is still Engineering Manager there.
 3. **Substack is "Binary Paths"** — do not rename it or change the URL.
 4. **Media must be optimized** — no files over 1MB. Convert GIFs to webm, PNGs to webp before adding.
-5. **Theme system** — `:root` is light, `:root.dark` is dark. Toggle via `#theme-toggle` button. State persisted in localStorage key `theme`.
+5. **Theme system** — `:root` is light. `:root.dark` forces dark and `:root.light` forces light. With neither class, the page follows `prefers-color-scheme` (auto). The same dark tokens are repeated in that media query for `:root:not(.light)`. Visitors pick auto, light, or dark with the footer radios in `#color-scheme`. The choice is stored in localStorage key `theme` (`auto`, `light`, or `dark`). A tiny script at the top of `<head>` applies a saved light or dark choice before paint. A missing or unknown value behaves as auto.
 
 ## Worker.js (Cloudflare Worker)
 
@@ -70,11 +72,13 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 
 ## CSS conventions
 
-- Variables defined in `:root` and `:root.dark` (same names, different values)
-- `--warm` is the accent color (orange/amber)
-- `--bg`, `--text`, `--muted`, `--soft`, `--border`, `--card` are the palette
-- Fonts: Instrument Serif for headings, Inter for body
-- Max content width: 720px (`.wrap` class)
+- Variables defined in `:root` (light) and `:root.dark` (dark), same names
+- `--warm` is the accent color (brown/amber)
+- `--bg`, `--text`, `--muted`, `--soft`, `--border`, `--card` are the palette. The dither header reads `--bg` as paper and `--text` as ink, so those two should stay soft (not pure black or white)
+- Font: Crimson Text for everything, files in `fonts/`
+- Max content width: 40rem (`.wrap`), one column
+
+Each page opens with a full-width `.ink` band: a Bayer 8×8 WebGL dither of a photo already in the repo. Pico's band sets `data-fit="contain"` so the whole robot stays in frame; the other pages crop to fill the band. Without WebGL or JavaScript the band shows that photo. The shader draws one still frame (no animation loop). Saved theme and `prefers-reduced-motion` are applied as described above; reduced motion also skips smooth scrolling, autoplaying build-log video, and model auto-rotate until a visitor asks for it.
 
 ## When making changes
 
@@ -99,6 +103,7 @@ Copy `robots/so-101/index.html` as a template. Change:
 - Log entries (use `<article class="entry" id="day-XX">` pattern)
 - All links back to homepage: `href="../../index.html"`
 - Nav brand link: `href="../../index.html"`
+- Keep the `.ink` dither band, Crimson Text `@font-face` rules, footer `#color-scheme` radios, and the head script that applies `theme` before paint
 
 ### 2. Add media
 
@@ -111,11 +116,11 @@ Put optimized media in `robots/<project-name>/` alongside the page:
 ### 3. Add a card on the homepage
 
 In `index.html`, the Builds section currently contains SO-101 and Pico:
-- Add the new `<article class="build">` inside the existing `.builds-grid` (two columns, `1.5rem` gap).
+- Add the new `<article class="build">` inside the existing `.builds-grid` (one column, inside the reading measure).
 - Each card keeps the same structure: `build-img`, `build-body` (badges, title, desc, progress), and one primary link (`Open <name> →`) whose hit area covers the card. Do not add a homepage build-notes list or log teaser.
 - Link to `robots/<project-name>/`
 - Update the build counter to match the number of cards.
-- On mobile (<600px): `grid-template-columns: 1fr`
+- The grid stays one column at every width.
 
 ### 4. Build log entry pattern
 
@@ -140,7 +145,7 @@ Add the new project to the file table and note any project-specific conventions.
 
 ## Cursor Cloud specific instructions
 
-There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. The homepage, `robots/so-101/`, and `robots/pico/` are the pages to check; the theme toggle is `#theme-toggle` and persists `theme` in localStorage.
+There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. The homepage, `robots/so-101/`, and `robots/pico/` are the pages to check. Color scheme radios live in `#color-scheme` and persist `theme` in localStorage (`auto`, `light`, or `dark`).
 
 `worker.js` is the Cloudflare RSS proxy. It is not started by the local server. Repo changes to it do nothing until the GitHub Action redeploys it.
 

@@ -70,14 +70,17 @@ check "/robots/pico/pico-preview.webp" "pico poster" asset
 check "/robots/pico/pico.glb" "pico model" asset
 check "/robots/so-101/so101.glb" "so-101 model" asset
 
-# Theme toggle must exist on all three pages
+# Color scheme radios must exist on all three pages
 for path in "/" "/robots/so-101/" "/robots/pico/"; do
   body="$(curl -fsS --max-time 3 "${URL}${path}")"
-  if ! printf '%s' "$body" | grep -q 'id="theme-toggle"'; then
-    echo "FAIL theme-toggle missing on ${path}"
+  if ! printf '%s' "$body" | grep -q 'id="color-scheme"'; then
+    echo "FAIL color-scheme missing on ${path}"
+    fail=1
+  elif ! printf '%s' "$body" | grep -q 'name="theme"' || ! printf '%s' "$body" | grep -q 'value="auto"' || ! printf '%s' "$body" | grep -q 'value="dark"'; then
+    echo "FAIL theme radios missing on ${path}"
     fail=1
   else
-    echo "ok   theme-toggle on ${path}"
+    echo "ok   color-scheme on ${path}"
   fi
 done
 
