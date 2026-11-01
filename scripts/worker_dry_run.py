@@ -124,16 +124,7 @@ def main() -> int:
     if dry.returncode != 0:
         print("wrangler deploy --dry-run failed. Nothing was deployed.", file=sys.stderr)
         return dry.returncode
-    print("DRY_RUN=ok")
-
-    committed = committed_namespace_id(original)
-    if committed != namespace:
-        print(
-            f"wrangler.toml SNAPSHOT id is {committed!r}; the namespace id is {namespace}. "
-            "Commit that id. Nothing was deployed.",
-            file=sys.stderr,
-        )
-        return 1
+    print("DRY_RUN=ok", flush=True)
 
     status, body = _api(token, f"https://api.cloudflare.com/client/v4/accounts/{account}/workers/subdomain")
     print(f"SUBDOMAIN_HTTP={status}")
@@ -156,7 +147,7 @@ def main() -> int:
     print(f"WORKERS_DEV_ENABLED={str(enabled).lower()}")
     if not enabled:
         print("workers.dev is not enabled on the current worker. The next deploy turns it on.")
-        return 0
+        return _committed_namespace(original, namespace)
 
     fetch_status, fetch_body, fetch_type = _fetch(snapshot)
     print(f"WORKERS_DEV_FETCH={fetch_status} {fetch_type}")
@@ -165,6 +156,18 @@ def main() -> int:
     lowered = fetch_body[:8000].lower()
     if "just a moment" in lowered or "cf-browser-verification" in lowered or "challenge-platform" in lowered:
         print("workers.dev returned a challenge page.", file=sys.stderr)
+        return 1
+    return _committed_namespace(original, namespace)
+
+
+def _committed_namespace(original: str, namespace: str) -> int:
+    committed = committed_namespace_id(original)
+    if committed != namespace:
+        print(
+            f"wrangler.toml SNAPSHOT id is {committed!r}; the namespace id is {namespace}. "
+            "Commit that id. Nothing was deployed.",
+            file=sys.stderr,
+        )
         return 1
     return 0
 

@@ -14,4 +14,4 @@ crons = ["17 * * * *"]
 
 [[kv_namespaces]]
 binding = "SNAPSHOT"
-id = "pending"
+id = "343495711abd4d8cb8c4b7946afc0c33"
