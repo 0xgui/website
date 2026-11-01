@@ -13,6 +13,11 @@ on:
         description: "Essay slug to omit on a scratch PR against main. The schedule leaves this empty."
         required: false
         default: ""
+  # Label on a same-repo PR starts one proof run. workflow_dispatch is blocked for
+  # this repo's cloud token. Remove this trigger after the proof; the schedule
+  # and workflow_dispatch paths are the ones that ship.
+  pull_request:
+    types: [labeled]
 
 permissions:
   contents: write
@@ -28,6 +33,7 @@ concurrency:
 
 jobs:
   mirror:
+    if: github.event_name != 'pull_request' || github.event.label.name == 'mirror-proof'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,6 +55,9 @@ jobs:
         run: |
           set -euo pipefail
           proof="${PROOF_SLUG:-}"
+          if [ "${{ github.event.label.name }}" = "mirror-proof" ]; then
+            proof="the-art-of-juggling-life"
+          fi
           if [ -n "$proof" ] && ! printf '%s' "$proof" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*$'; then
             echo "proof_slug must be an essay slug" >&2
             exit 1
