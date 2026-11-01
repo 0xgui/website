@@ -68,19 +68,8 @@ jobs:
             git fetch origin main
             git checkout -B "mirror/proof-${proof}" origin/main
             cp /tmp/mirror_substack.py scripts/mirror_substack.py
-            python3 - "$proof" <<'PY'
-            import sys
-            from pathlib import Path
-            slug = sys.argv[1]
-            path = Path("writing") / slug / "index.html"
-            if not path.is_file():
-                raise SystemExit(f"No essay {path}")
-            text = path.read_text(encoding="utf-8")
-            mark = "<!-- mirror-proof -->"
-            if mark not in text:
-                text = text.replace("</article>", mark + "\n</article>", 1)
-                path.write_text(text, encoding="utf-8")
-            PY
+            PROOF_ESSAY="$proof" python3 -c 'from pathlib import Path; import os; slug=os.environ["PROOF_ESSAY"]; path=Path("writing")/slug/"index.html"; text=path.read_text(encoding="utf-8"); mark="<!-- mirror-proof -->";
+            path.write_text(text if mark in text else text.replace("</article>", mark+"\n</article>", 1), encoding="utf-8")'
             python3 scripts/mirror_substack.py --reindex
             git checkout origin/main -- scripts
             base="main"
