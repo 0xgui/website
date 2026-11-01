@@ -17,11 +17,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import hashlib
 import json
+import os
 import re
 import tempfile
 import time
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 
 from scripts.build_agent import apply as apply_agent
 from scripts.build_agent import links_block
@@ -76,6 +78,14 @@ FEED_SCRIPT_RE = re.compile(
 )
 IMAGE_MAX = 1_000_000
 IMAGE_TARGET = 500_000
+# Rewritten after a successful fetch when the file is missing or older than this.
+STAMP_EVERY = 24 * 60 * 60
+# A failed fetch stays quiet while the newest good data is younger than this.
+QUIET_AFTER = 48 * 60 * 60
+LAST_GOOD = "writing/last-good.txt"
+# Set after CI reads the account workers.dev subdomain. Empty skips that source.
+DEFAULT_WORKERS_DEV = ""
+RSS_HOST_SNAPSHOT = "https://rss.silvags.com/raw.xml"
 
 
 def format_date(post: Post) -> str:
@@ -120,22 +130,45 @@ def _decode(status: int, ctype: str, body: bytes, url: str) -> str:
     return text
 
 
-def fetch_posts(get=http_get) -> list[Post]:
-    """Substack API, then archive, then RSS.
+def default_snapshot_urls() -> list[tuple[str, str]]:
+    """workers.dev first. The silvags.com zone's bot settings do not apply there."""
+    found = []
+    dev = os.environ.get("WORKERS_DEV_SNAPSHOT", DEFAULT_WORKERS_DEV).strip()
+    if dev:
+        if not dev.endswith("/raw.xml"):
+            dev = dev.rstrip("/") + "/raw.xml"
+        found.append(("workers-dev", dev))
+    found.append(("rss-host", RSS_HOST_SNAPSHOT))
+    return found
 
-    rss.silvags.com is not a source. Cloudflare puts a JavaScript challenge
-    in front of that host (cf-mitigated: challenge) for datacenter clients,
-    including a browser User-Agent. The mirror cannot pass that challenge.
+
+def _posts_from_snapshot(get, url: str) -> list[Post]:
+    text = _decode(*get(
+        url,
+        "application/rss+xml, application/xml, text/xml",
+    ), url)
+    return posts_from_rss(text)
+
+
+def fetch_posts(get=http_get, snapshots=None) -> list[Post]:
+    """Posts API, archive, RSS, then the worker's stored snapshot.
+
+    A challenge, empty body, or malformed snapshot is one failed source.
+    The next source is tried. Nothing is deleted.
     """
     errors = []
-    for name, fn in (
+    sources: list[tuple[str, object]] = [
         ("api", lambda: _posts_api(get)),
         ("archive", lambda: _posts_archive(get)),
         ("rss", lambda: posts_from_rss(_decode(*get(
             "https://binarypaths.substack.com/feed",
             "application/rss+xml, application/xml, text/xml",
         ), "https://binarypaths.substack.com/feed"))),
-    ):
+    ]
+    chosen = default_snapshot_urls() if snapshots is None else list(snapshots)
+    for name, url in chosen:
+        sources.append((name, lambda url=url: _posts_from_snapshot(get, url)))
+    for name, fn in sources:
         try:
             posts = fn()
             if not posts:
@@ -144,6 +177,77 @@ def fetch_posts(get=http_get) -> list[Post]:
         except FeedError as exc:
             errors.append(f"{name}: {exc}")
     raise FeedError("all feed sources failed:\n" + "\n".join(errors))
+
+
+def _parse_stamp(text: str) -> datetime:
+    text = text.strip()
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    found = datetime.fromisoformat(text)
+    if found.tzinfo is None:
+        found = found.replace(tzinfo=timezone.utc)
+    return found.astimezone(timezone.utc)
+
+
+def last_good_at(root: Path) -> datetime | None:
+    path = root / LAST_GOOD
+    if not path.is_file():
+        return None
+    text = path.read_text(encoding="utf-8").strip()
+    if not text:
+        return None
+    try:
+        return _parse_stamp(text)
+    except ValueError:
+        return None
+
+
+def outage_is_loud(root: Path, now: datetime | None = None) -> bool:
+    """True when no path worked and the newest good data is missing or >= 48h old."""
+    stamp = last_good_at(root)
+    if stamp is None:
+        return True
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    return (now.astimezone(timezone.utc) - stamp).total_seconds() >= QUIET_AFTER
+
+
+def note_success(root: Path, now: datetime | None = None) -> bool:
+    """Record a successful fetch, at most once per 24h, so a no-op run stays quiet."""
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    now = now.astimezone(timezone.utc).replace(microsecond=0)
+    stamp = last_good_at(root)
+    if stamp is not None and (now - stamp).total_seconds() < STAMP_EVERY:
+        return False
+    path = root / LAST_GOOD
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ") + "\n", encoding="utf-8")
+    return True
+
+
+def run_mirror(root: Path, get=http_get, now: datetime | None = None, snapshots=None) -> int:
+    try:
+        posts = fetch_posts(get, snapshots=snapshots)
+        changed = apply_mirror(root, posts)
+        if note_success(root, now):
+            changed.append(LAST_GOOD)
+    except FeedError as exc:
+        if outage_is_loud(root, now):
+            print(f"mirror failed: {exc}", file=sys.stderr)
+            return 1
+        print(
+            "mirror sources failed; newest good data is under 48h, so this run stays quiet:\n"
+            + str(exc)
+        )
+        return 0
+    if changed:
+        print(f"updated {len(changed)} file(s)")
+    else:
+        print("mirror is up to date")
+    return 0
 
 
 def _collect(rows: list[dict], seen: dict[str, Post]) -> None:
@@ -716,17 +820,7 @@ def main(argv: list[str]) -> int:
             return 1
         print(f"reindexed {len(changed)} file(s)" if changed else "indexes are up to date")
         return 0
-    try:
-        posts = fetch_posts()
-        changed = apply_mirror(ROOT, posts)
-    except FeedError as exc:
-        print(f"mirror failed: {exc}", file=sys.stderr)
-        return 1
-    if changed:
-        print(f"updated {len(changed)} file(s)")
-    else:
-        print("mirror is up to date")
-    return 0
+    return run_mirror(ROOT)
 
 
 if __name__ == "__main__":

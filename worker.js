@@ -73,11 +73,189 @@ async function refresh(cache, key) {
   } finally { clearTimeout(timeout); }
 }
 
+const API_URL = 'https://binarypaths.substack.com/api/v1/posts?limit=50';
+const SNAPSHOT_KEY = 'raw.xml';
+const SNAPSHOT_ATTEMPTS = 3;
+const CONTENT_NS = 'http://purl.org/rss/1.0/modules/content/';
+// Substack rejects short client names. This is the same browser string the mirror uses.
+const SNAPSHOT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
+export function isChallenge(text) {
+  const sample = String(text || '').slice(0, 8000).toLowerCase();
+  return [
+    'just a moment',
+    'cf-browser-verification',
+    'challenge-platform',
+    'attention required',
+    'enable javascript and cookies',
+    'cf-mitigated',
+    'cf-chl',
+  ].some(marker => sample.includes(marker));
+}
+
+export function assertSnapshot(xml) {
+  if (typeof xml !== 'string' || !xml.trim()) throw new Error('empty snapshot');
+  if (isChallenge(xml)) throw new Error('challenge html');
+  if (!/<rss\b/i.test(xml) || !/<\/rss\s*>/i.test(xml)) throw new Error('not rss');
+  if (!/<item\b/i.test(xml)) throw new Error('no items');
+  return xml;
+}
+
+export function stampFetchedAt(xml, fetchedAt) {
+  const comment = `<!-- fetchedAt: ${fetchedAt} -->`;
+  if (/<!--\s*fetchedAt:[\s\S]*?-->/.test(xml)) {
+    return xml.replace(/<!--\s*fetchedAt:[\s\S]*?-->/, comment);
+  }
+  if (xml.startsWith('<?xml')) return xml.replace(/^(<\?xml[^?]*\?>)/, `$1${comment}`);
+  return comment + xml;
+}
+
+export function fetchedAtFromXml(xml) {
+  return xml.match(/<!--\s*fetchedAt:\s*([^>]*?)\s*-->/)?.[1] || '';
+}
+
+function xmlEscape(value) {
+  return String(value || '').replace(/[&<>"]/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;',
+  }[char]));
+}
+
+function cdata(value) {
+  return `<![CDATA[${String(value || '').replace(/]]>/g, ']]]]><![CDATA[>')}]]>`;
+}
+
+export function rssFromPosts(payload, fetchedAt) {
+  const rows = Array.isArray(payload) ? payload : payload?.posts;
+  if (!Array.isArray(rows) || !rows.length) throw new Error('api returned no posts');
+  const items = rows.map(post => {
+    const slug = String(post.slug || '').trim();
+    const link = String(post.canonical_url || post.link || (slug ? `https://binarypaths.substack.com/p/${slug}` : ''));
+    return [
+      '<item>',
+      `<title>${xmlEscape(post.title || '')}</title>`,
+      `<link>${xmlEscape(link)}</link>`,
+      `<pubDate>${xmlEscape(post.post_date || post.pubDate || '')}</pubDate>`,
+      `<description>${xmlEscape(post.subtitle || post.description || '')}</description>`,
+      `<content:encoded>${cdata(post.body_html || post.content_html || '')}</content:encoded>`,
+      '</item>',
+    ].join('');
+  }).join('');
+  return assertSnapshot(stampFetchedAt(
+    `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="${CONTENT_NS}"><channel><title>Binary Paths</title>${items}</channel></rss>`,
+    fetchedAt,
+  ));
+}
+
+async function readUpstream(fetcher, url) {
+  const response = await fetcher(url, {
+    headers: { 'User-Agent': SNAPSHOT_UA, Accept: '*/*' },
+  });
+  const text = await response.text();
+  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+  if (isChallenge(text)) throw new Error(`${url} returned a challenge`);
+  return text;
+}
+
+async function retry(fn) {
+  let last;
+  for (let attempt = 0; attempt < SNAPSHOT_ATTEMPTS; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      last = err;
+    }
+  }
+  throw last;
+}
+
+async function postsFromApi(fetcher) {
+  const posts = [];
+  let cursor = '';
+  for (let page = 0; page < 20; page++) {
+    const url = API_URL + (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '');
+    const raw = await retry(() => readUpstream(fetcher, url));
+    let payload;
+    try {
+      payload = JSON.parse(raw);
+    } catch {
+      throw new Error('api json is not valid');
+    }
+    const rows = Array.isArray(payload) ? payload : payload?.posts;
+    if (!Array.isArray(rows)) throw new Error('api posts is not a list');
+    if (!rows.length) break;
+    posts.push(...rows);
+    cursor = !Array.isArray(payload) && payload?.nextCursor ? String(payload.nextCursor) : '';
+    if (!cursor) break;
+  }
+  if (!posts.length) throw new Error('api returned no posts');
+  return posts;
+}
+
+export async function collectSnapshot(fetcher = fetch, now = () => new Date()) {
+  const fetchedAt = now().toISOString();
+  let rssError;
+  try {
+    const xml = await retry(() => readUpstream(fetcher, RSS_URL));
+    return stampFetchedAt(assertSnapshot(xml), fetchedAt);
+  } catch (err) {
+    rssError = err;
+  }
+  try {
+    return rssFromPosts(await postsFromApi(fetcher), fetchedAt);
+  } catch (err) {
+    throw new Error(`snapshot fetch failed: ${rssError}; ${err}`);
+  }
+}
+
+export async function saveSnapshot(env, fetcher = fetch, now = () => new Date()) {
+  if (!env?.SNAPSHOT?.put) throw new Error('snapshot store is not configured');
+  const xml = await collectSnapshot(fetcher, now);
+  const fetchedAt = fetchedAtFromXml(xml);
+  await env.SNAPSHOT.put(SNAPSHOT_KEY, xml, { metadata: { fetchedAt } });
+  return { fetchedAt, bytes: xml.length };
+}
+
+function snapshotResponse(body, status, fetchedAt = '') {
+  const headers = {
+    'Cache-Control': status === 200 ? 'public, max-age=300' : 'no-store',
+    'Access-Control-Allow-Origin': '*',
+  };
+  if (status === 200) {
+    headers['Content-Type'] = 'application/rss+xml; charset=utf-8';
+    headers['X-Fetched-At'] = fetchedAt;
+  } else {
+    headers['Content-Type'] = 'text/plain; charset=utf-8';
+  }
+  return new Response(body, { status, headers });
+}
+
+async function serveRaw(env) {
+  if (!env?.SNAPSHOT?.getWithMetadata) return snapshotResponse('snapshot store is not configured', 503);
+  let got;
+  try {
+    got = await env.SNAPSHOT.getWithMetadata(SNAPSHOT_KEY);
+  } catch {
+    return snapshotResponse('snapshot store failed', 503);
+  }
+  const value = got?.value;
+  if (!value) return snapshotResponse('no snapshot yet', 503);
+  try {
+    assertSnapshot(value);
+  } catch {
+    // Leave the stored value in place. The next good cron run overwrites it.
+    return snapshotResponse('stored snapshot is not a feed', 503);
+  }
+  const fetchedAt = got?.metadata?.fetchedAt || fetchedAtFromXml(value);
+  return snapshotResponse(value, 200, fetchedAt);
+}
+
 export default {
   async fetch(request, env, ctx) {
     if (request.method !== 'GET') return new Response('Method not allowed', {
       status: 405, headers: { Allow: 'GET', 'Access-Control-Allow-Origin': '*' },
     });
+    const url = new URL(request.url);
+    if (url.pathname === '/raw.xml') return serveRaw(env);
     const cache = caches.default;
     // One key per feed, independent of visitor query strings and paths.
     const key = new Request(new URL('/__binary-paths-v2', request.url).href);
@@ -99,5 +277,9 @@ export default {
     } catch {
       return json({ error: 'Feed temporarily unavailable' }, 503);
     }
+  },
+
+  async scheduled(_event, env, ctx) {
+    ctx.waitUntil(saveSnapshot(env));
   },
 };

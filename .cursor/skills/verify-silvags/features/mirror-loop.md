@@ -34,4 +34,4 @@ Preconditions:
 
 - `GITHUB_TOKEN` does not start `pull_request` workflows. A green `test` check on a bot pull request came from `workflow_dispatch` of `ci.yml`, not from the pull request event.
 - Branch protection is what waits on `test` and `agent-pr-gate`. Until those are required, `gh pr merge --auto` merges immediately. The proof path must not call it.
-- `rss.silvags.com` is not part of this loop. Cloudflare challenges that host before the worker runs.
+- The mirror tries Substack, then `workers.dev/raw.xml`, then `rss.silvags.com/raw.xml`. A failed fetch stays quiet while `writing/last-good.txt` is under 48 hours old. `rss.silvags.com` is still challenged while Bot Fight Mode is on. The workers.dev host serves `/raw.xml` only after the worker deploy on `main`.

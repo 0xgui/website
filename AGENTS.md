@@ -38,7 +38,7 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 |------|---------|
 | `index.html` | Homepage — hero, builds, writing, talks, about |
 | `robots/so-101/index.html` | SO-101 build log — entries, progress, 3D model viewer |
-| `worker.js` | Cloudflare Worker (RSS proxy) — deployed separately, repo change requires Cloudflare redeploy |
+| `worker.js` | Cloudflare Worker — JSON RSS proxy, plus an hourly full-feed snapshot in KV served at `/raw.xml`. Deployed separately |
 | `favicon.svg` | Site icon |
 | `robots/so-101/*` | Optimized media (webm/webp) for the SO-101 build log |
 | `robots/pico/index.html` | Pico build notes — recovery loop, hardware adaptation, progress |
@@ -68,9 +68,13 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 - `image` field comes from the RSS `<enclosure>` tag
 - Cache stays fresh for 1 hour; last-good articles are retained for up to 7 days and served immediately while stale data refreshes in the background. Cache is best-effort, not durable storage.
 - Upstream fetch times out after 6 seconds; malformed/empty feeds never replace a good cache.
-- The homepage and Writing page no longer call this worker. They link to the local copies under `writing/<slug>/`. The mirror does not call it either. From a datacenter network, including GitHub Actions, `https://rss.silvags.com` answers with a Cloudflare challenge (`cf-mitigated: challenge`, title "Just a moment...") before the worker runs. A browser User-Agent does not skip it. The mirror cannot complete that challenge, so the source was removed. Substack's API and RSS are the sources.
+- The homepage and Writing page link to the local copies under `writing/<slug>/`. They do not call this worker.
+- `GET /` is unchanged: JSON `{ items, fetchedAt, stale }`, at most five items, cache key `/__binary-paths-v2`.
+- A cron at minute 17 of every hour fetches the full Substack RSS feed (and, if that is not a valid feed, the posts API), retries each request three times, and rejects challenge pages, empty feeds, and malformed XML. A valid result is stored in the `SNAPSHOT` KV binding under `raw.xml`, with `fetchedAt` in the value and in KV metadata. A failed fetch does not overwrite the last good value.
+- `GET /raw.xml` serves that snapshot as `application/rss+xml` with `X-Fetched-At`. It does not fetch Substack. A missing or invalid stored value returns 503 and leaves KV as it is.
+- `workers_dev = true` keeps `https://rss-worker.<account>.workers.dev` available. That host is outside the silvags.com zone, so Bot Fight Mode and AI-bot blocking on the zone do not apply to it. `https://rss.silvags.com` still does until those zone settings are off.
+- Repo changes do nothing until `.github/workflows/deploy-worker.yml` runs on `main`.
 - Render feed strings as text, not interpolated HTML; only accept HTTPS article and image URLs.
-- Changes to worker.js in this repo do NOT take effect until redeployed to Cloudflare
 
 ## CSS conventions
 
@@ -85,7 +89,7 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 - Read the full file before editing — these are large inline HTML files
 - Match the existing style (inline CSS, no Tailwind, no framework)
 - Test with `python3 -m http.server 8000` and open in a browser
-- Tests: `python3 -m unittest discover -s tests -v` and `node --test tests/negotiate.test.mjs`. CI runs both on pull requests.
+- Tests: `python3 -m unittest discover -s tests -v`, `node --test tests/negotiate.test.mjs`, and `node --experimental-detect-module --test tests/worker-snapshot.test.mjs`. CI runs all three on pull requests. The `worker dry-run` job runs `scripts/worker_dry_run.py` (whoami, KV, `wrangler deploy --dry-run`) and does not deploy.
 - `python3 scripts/build_agent.py --check` fails when Markdown twins or `llms.txt` drift from the HTML
 - Don't add dependencies — scripts use the Python stdlib. Image recompression shells out to `ffmpeg` when a download is not already a small WebP. GIFs become WebM.
 
@@ -159,7 +163,9 @@ The dithered header is the inline module on `.hero`: a poster image first, then 
 
 `python3 scripts/mirror_substack.py` copies every public essay to `writing/<slug>/` using the Writing page as the template. The HTML is sanitized with an allowlist. Images are saved next to the essay and kept under 1MB (GIFs become WebM). Each essay has `<link rel="canonical">` pointing at its `https://binarypaths.substack.com/p/...` URL, a visible "Originally published on Binary Paths" link, the publish date, and a Markdown twin.
 
-The homepage "Latest writing" list (four essays) and the Writing page link to these local copies. The subscribe link stays on Binary Paths. Paywalled or truncated posts become a local excerpt that links back. The script tries the Substack posts API, then the archive API, then the RSS feed. GitHub-hosted runners currently receive a Cloudflare challenge page (`Just a moment...`) from all three, measured on Actions run 41346947263. A browser User-Agent does not skip it. The run fails before it writes, and opens the failure issue. A runner that can fetch Substack, or a Substack response that is not a challenge, is what makes the schedule succeed. A challenge page, HTTP 403/503, empty feed, or malformed body is a failure. It retries with backoff. On failure it writes nothing. It never deletes an essay that is already on disk, and it never replaces a full essay with a shorter or paywalled body.
+The homepage "Latest writing" list (four essays) and the Writing page link to these local copies. The subscribe link stays on Binary Paths. Paywalled or truncated posts become a local excerpt that links back. The script tries, in order, the Substack posts API, the archive API, the RSS feed, the worker snapshot on `workers.dev` (`/raw.xml`), then `https://rss.silvags.com/raw.xml`. It accepts a snapshot when `posts_from_rss` can read at least one item and the body is not a challenge page. GitHub-hosted runners currently receive a Cloudflare challenge page (`Just a moment...`) from the three Substack URLs, measured on Actions run 41346947263. A browser User-Agent does not skip it. `rss.silvags.com` is challenged the same way while Bot Fight Mode and AI-bot blocking are on for the silvags.com zone. `workers.dev` is the path that avoids those zone settings, once this worker has been deployed from `main`.
+
+`writing/last-good.txt` is the newest successful fetch, currently `2026-11-01T18:27:00Z` (the worker JSON `fetchedAt` read from an unchallenged network). A successful run rewrites it only when it is missing or at least 24 hours old, so an unchanged mirror does not open a pull request every time. When every source fails, the run writes nothing. It exits 0, and the workflow does not open the failure issue, while that stamp is under 48 hours old. It exits 1, and the workflow opens or updates the issue, when the stamp is missing or at least 48 hours old. It never deletes an essay that is already on disk, and it never replaces a full essay with a shorter or paywalled body.
 
 `.github/workflows/mirror-substack.yml` runs that script every 6 hours (minute 17) and on `workflow_dispatch`. It opens a pull request with `GITHUB_TOKEN`. GitHub does not start `pull_request` or `pull_request_target` workflows for that token, so this workflow then dispatches `ci.yml` on the mirror branch and runs `agent-pr-gate` with `pr-number`. That puts the check run `test` and the commit status `agent-pr-gate` on the head SHA. Branch protection on `main` should require those two names and no others from this repo. Auto-merge is requested only when `scripts/gate_paths.py` says the diff is not high tier, CI passed, and the gate result is `pass`. A proof dispatch (`proof_slug`) omits one essay on a scratch branch and does not enable auto-merge. A diff that touches a workflow, `_headers`, `_redirects`, `_routes.json`, `functions/`, `worker.js`, `wrangler.toml`, `.review-gate.yml`, or `scripts/mirror_substack.py` is left for a person. If the run fails, it opens or updates a GitHub issue titled "Binary Paths mirror failed" and leaves the live site alone.
 
@@ -169,6 +175,6 @@ Pages Functions are on the free Workers quota (100,000 requests a day, shared wi
 
 There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. Check `/`, `/writing/`, one `writing/<slug>/` essay, `/robots/so-101/`, and `/robots/pico/`. The theme toggle is `#theme-toggle` and persists `theme` in localStorage. `/llms.txt` and `/writing/<slug>/index.md` are static files the same server can return. `Accept: text/markdown` negotiation needs the Pages function; the Python server will not do it.
 
-`worker.js` is the Cloudflare RSS proxy. It is not started by the local server. Repo changes to it do nothing until the GitHub Action redeploys it.
+`worker.js` is the Cloudflare RSS proxy and snapshot. It is not started by the local server. Repo changes do nothing until the deploy workflow on `main`. `scripts/worker_dry_run.py` only dry-runs that deploy.
 
 Pull requests can publish a Cloudflare Pages preview from `.github/workflows/pages-preview.yml`. That workflow uploads the static site only (not `worker.js`) to the Pages project `silvags-preview`, on the pull request branch, and comments the preview URL. The live site is a different Pages project, `website` (`silvags.com` / `website-5fv.pages.dev`). Do not direct-upload to `website`. The preview workflow does not deploy `silvags.com` or a Pages production branch.

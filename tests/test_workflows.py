@@ -49,6 +49,16 @@ class WorkflowTests(unittest.TestCase):
                 offenders.append(f"{path.name}: {', '.join(missing)}")
         self.assertEqual(offenders, [])
 
+    def test_worker_dry_run_is_not_the_required_check(self):
+        text = _text("ci.yml")
+        self.assertIn("\n  worker-dry-run:\n", text)
+        self.assertIn("name: worker dry-run\n", text)
+        self.assertIn("python3 scripts/worker_dry_run.py", text)
+        self.assertEqual(text.count("\n  test:\n"), 1)
+        script = (ROOT / "scripts" / "worker_dry_run.py").read_text(encoding="utf-8")
+        self.assertIn('["deploy", "--dry-run"]', script)
+        self.assertIn('["whoami"]', script)
+
     def test_mirror_workflow_requests_both_required_results(self):
         text = _text("mirror-substack.yml")
         self.assertIn("gh workflow run ci.yml --ref", text)
