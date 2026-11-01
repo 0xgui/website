@@ -68,17 +68,25 @@ jobs:
             git fetch origin main
             git checkout -B "mirror/proof-${proof}" origin/main
             cp /tmp/mirror_substack.py scripts/mirror_substack.py
-            if [ ! -d "writing/${proof}" ]; then
-              echo "No essay writing/${proof}" >&2
-              exit 1
-            fi
-            rm -rf "writing/${proof}"
+            python3 - "$proof" <<'PY'
+            import sys
+            from pathlib import Path
+            slug = sys.argv[1]
+            path = Path("writing") / slug / "index.html"
+            if not path.is_file():
+                raise SystemExit(f"No essay {path}")
+            text = path.read_text(encoding="utf-8")
+            mark = "<!-- mirror-proof -->"
+            if mark not in text:
+                text = text.replace("</article>", mark + "\n</article>", 1)
+                path.write_text(text, encoding="utf-8")
+            PY
             python3 scripts/mirror_substack.py --reindex
             git checkout origin/main -- scripts
             base="main"
-            branch="mirror/proof-${proof}"
+            branch="mirror/proof-checks"
             message="Mirror proof, do not merge"
-            summary="Proof only. Omits writing/${proof} so a GITHUB_TOKEN pull request can receive checks. Do not merge."
+            summary="Proof only. Adds an HTML comment to one essay so a GITHUB_TOKEN pull request can receive checks. Do not merge."
           else
             if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
               echo "opened=false" >> "$GITHUB_OUTPUT"
