@@ -1,391 +1,178 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pico — Self-righting robot · Guilherme Silva</title>
-<meta name="description" content="Pico: my two-servo self-righting robot. A build with an ATOM Matrix, a policy trained in MuJoCo, and recovery working on real hardware." />
+<title>Pico, a self-righting robot · Guilherme Silva</title>
+<meta name="description" content="Pico: my two-servo self-righting robot. An ATOM Matrix, a policy trained in MuJoCo, and recovery working on real hardware." />
+<meta name="theme-color" content="#17140f" />
 <meta property="og:type" content="website">
-<meta property="og:title" content="Pico — Self-righting robot">
-<meta property="og:description" content="Two servos, an onboard neural network, and a robot that gets back up. My build and experiments with Pico.">
+<meta property="og:title" content="Pico, a self-righting robot · Guilherme Silva">
+<meta property="og:description" content="Pico: my two-servo self-righting robot. An ATOM Matrix, a policy trained in MuJoCo, and recovery working on real hardware.">
 <meta property="og:image" content="https://silvags.com/robots/pico/pico-preview.webp">
-<meta property="og:image:alt" content="Render of Pico's simulation geometry: two servos, printed arms, and an ATOM Matrix on its base.">
 <meta property="og:url" content="https://silvags.com/robots/pico/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://silvags.com/robots/pico/">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" /></noscript>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #fbfaf7; --text: #1a1a1a; --muted: #6b6b6b; --soft: #9a9a9a;
-    --border: #e8e6e0; --accent: #2a2a2a; --card: #f4f2ec;
-    --warm: #b15a00; --warm-bg: rgba(227,168,107,0.12); --warm-border: #e3a86b66;
-  }
-  :root.dark {
-    --bg: #0e0e0e; --text: #e8e6e1; --muted: #8e8c86; --soft: #5e5c58;
-    --border: #242220; --accent: #ccc9c2; --card: #161513;
-    --warm: #f0b370; --warm-bg: rgba(227,168,107,0.08); --warm-border: #4a3a1f;
-  }
-
-  html { scroll-behavior: smooth; }
-  a { color: var(--text); text-decoration: none; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--warm); outline-offset: 5px; }
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px;
-    -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s;
-  }
-
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
-
-  .site-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 1.5rem; position: sticky; top: 0;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    z-index: 10; max-width: 720px; margin: 0 auto;
-  }
-  .site-nav .brand {
-    font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15rem;
-    color: var(--text); text-decoration: none; border: none;
-  }
-  .nav-icons { display: flex; align-items: center; gap: 1rem; }
-  .nav-icons a { display: flex; color: var(--muted); transition: color 0.2s; border: none; }
-  .nav-icons a:hover { color: var(--text); }
-  .nav-icons svg { width: 18px; height: 18px; fill: currentColor; }
-  .theme-toggle { background: none; border: none; color: var(--muted); cursor: pointer; padding: 0; display: flex; }
-  .theme-toggle:hover { color: var(--text); }
-  .theme-toggle svg { width: 16px; height: 16px; fill: currentColor; }
-  .theme-toggle .icon-sun { display: none; }
-  .dark .theme-toggle .icon-moon { display: none; }
-  .dark .theme-toggle .icon-sun { display: inline; }
-
-  /* ── HERO ── */
-  .hero { padding: 2rem 0 1rem; }
-  .back {
-    font-size: 0.85rem; color: var(--muted); border: none; margin-bottom: 1.25rem;
-    display: block; width: fit-content; transition: color 0.2s;
-  }
-  .back:hover { color: var(--text); }
-  .kicker {
-    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.12em; color: var(--warm); display: inline-flex;
-    align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
-  }
-  .kicker .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm); box-shadow: 0 0 0 4px var(--warm-bg); }
-  h1.title {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: clamp(2.4rem, 8vw, 3.8rem); line-height: 1; letter-spacing: -0.02em;
-    margin-bottom: 0.9rem;
-  }
-  .summary { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.5rem; max-width: 38em; }
-  .summary strong { color: var(--text); font-weight: 500; }
-
-  .hero-img {
-    width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 14px;
-    background: var(--border); display: block; margin-bottom: 1.5rem;
-  }
-
-  /* ── 3D MODEL VIEWER (always visible) ── */
-  .mv-wrap {
-    position: relative; width: 100%; margin-bottom: 1.5rem;
-    border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
-    background: var(--card);
-  }
-  model-viewer {
-    display: block; width: 100%; height: 460px; --poster-color: transparent;
-    background: radial-gradient(ellipse at center, var(--card) 0%, var(--bg) 100%);
-  }
-  .model-poster { display: block; width: 100%; height: 100%; object-fit: contain; background: #f4f2ec; }
-  .mv-wrap .mv-caption {
-    padding: 0.7rem 1rem; font-size: 0.76rem; color: var(--muted); text-align: center;
-    background: var(--card);
-  }
-  .mv-wrap .mv-caption em { color: var(--muted); font-style: italic; }
-  .rotation-toggle { display: block; margin: 0 auto 0.8rem; padding: 0.3rem 0.65rem; font: inherit; font-size: 0.76rem; color: var(--text); background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; }
-  .rotation-toggle[hidden] { display: none; }
-
-  @media (max-width: 600px) {
-    model-viewer { height: 340px; }
-  }
-
-  /* ── PROGRESS ── */
-  .progress-card {
-    border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem;
-    background: var(--card); margin-bottom: 3rem;
-  }
-  .progress-card .pl {
-    font-size: 0.66rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--soft); margin-bottom: 0.85rem;
-  }
-  .progress .track { display: flex; gap: 0.4rem; margin-bottom: 0.85rem; }
-  .progress .seg { flex: 1; height: 5px; border-radius: 3px; background: var(--border); }
-  .progress .seg.done { background: var(--text); }
-  .progress .seg.active { background: var(--warm); }
-  .progress .steps {
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem 1rem;
-    font-size: 0.82rem; color: var(--muted);
-  }
-  .progress .steps .step { display: flex; align-items: center; gap: 0.4rem; }
-  .progress .steps .step.done { color: var(--text); }
-  .progress .steps .step.active { color: var(--warm); }
-
-  .meta-row {
-    display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin: 1.5rem 0 0;
-    font-size: 0.84rem; color: var(--muted); padding-top: 1.25rem;
-    border-top: 1px solid var(--border);
-  }
-  .meta-row a { color: var(--text); border: none; border-bottom: 1px solid var(--border); }
-  .meta-row a:hover { border-color: var(--text); }
-
-  /* ── ENTRIES ── */
-  h2.section-h {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: 1.9rem; line-height: 1.1; letter-spacing: -0.01em;
-    margin: 0 0 1.5rem; scroll-margin-top: 80px;
-  }
-  .entry {
-    padding: 2rem 0; border-top: 1px solid var(--border); scroll-margin-top: 90px;
-  }
-  .entry:first-of-type { border-top: none; }
-  .entry .ehead { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
-  .entry .day {
-    font-family: 'Instrument Serif', serif; font-size: 0.95rem; color: var(--warm);
-    font-style: italic;
-  }
-  .entry .date {
-    font-size: 0.72rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em;
-  }
-  .entry h3 {
-    font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.7rem;
-    line-height: 1.15; margin-bottom: 0.85rem; letter-spacing: -0.01em;
-  }
-  .entry p { margin-bottom: 1rem; color: var(--text); }
-  .entry p.muted { color: var(--muted); }
-  .entry .media {
-    width: 100%; border-radius: 12px; margin: 1rem 0; background: var(--border);
-    display: block;
-  }
-  .entry .media.tall { max-width: 380px; aspect-ratio: 9/16; object-fit: cover; margin-left: auto; margin-right: auto; }
-  .entry .media.wide { aspect-ratio: 16/9; object-fit: cover; }
-  .entry .caption { font-size: 0.78rem; color: var(--soft); text-align: center; margin-top: -0.4rem; margin-bottom: 1.25rem; font-style: italic; }
-  .entry a { color: var(--text); border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
-  .entry a:hover { border-color: var(--text); }
-  .entry .pullquote {
-    border-left: 3px solid var(--warm); padding-left: 1rem; margin: 1.25rem 0;
-    font-family: 'Instrument Serif', serif; font-size: 1.25rem; line-height: 1.4;
-    color: var(--text); font-style: italic;
-  }
-
-  .more-coming {
-    margin: 2rem 0; padding: 1.5rem; border: 1px dashed var(--border);
-    border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.92rem;
-  }
-  .more-coming .icon { font-size: 1rem; color: var(--warm); margin-right: 0.4rem; }
-
-  footer {
-    margin-top: 4rem; padding: 2rem 0 3rem; border-top: 1px solid var(--border);
-    font-size: 0.8rem; color: var(--soft); text-align: center;
-  }
-  footer a { color: var(--muted); border: none; }
-  footer a:hover { color: var(--text); }
-  .control-loop { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
-  .control-loop div { padding: 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card); }
-  .control-loop dt { color: var(--warm); font-size: 0.8rem; margin-bottom: 0.35rem; }
-  .control-loop dd { color: var(--muted); font-size: 0.86rem; line-height: 1.55; }
-  .entry code { font-size: 0.86em; overflow-wrap: anywhere; }
-  @keyframes log-flash { from { background: var(--warm-bg); } to { background: transparent; } }
-  .entry.log-flash { animation: log-flash 2s ease-out; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
-
-  @media (max-width: 600px) {
-    .wrap, .site-nav { padding-left: 1.1rem; padding-right: 1.1rem; }
-    h1.title { font-size: 2.4rem; }
-    h2.section-h { font-size: 1.6rem; }
-    .entry h3 { font-size: 1.4rem; }
-    .progress .steps { font-size: 0.74rem; gap: 0.35rem 0.85rem; }
-    .control-loop { grid-template-columns: 1fr; gap: 0.65rem; }
-    .progress-card { padding: 1.1rem; }
-  }
+:root{
+  --bg:#f6f1e7; --text:#2b241c; --muted:#6f6455; --link:#8a3d1c; --rule:#d9cfbf; --line:rgba(138,61,28,.35);
+  color-scheme:light;
+}
+:root.dark{
+  --bg:#17140f; --text:#e9e2d6; --muted:#a3998a; --link:#e0bf92; --rule:#352f27; --line:rgba(224,191,146,.4);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.col{max-width:37rem;margin:0 auto;padding:2.25rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:4.5rem;font-size:1.02rem}
+header .name{color:var(--text);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover{color:var(--link)}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .4rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.5rem 0 .9rem}
+h3{font-size:1.25rem;font-weight:500;margin:2.25rem 0 .5rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2.25rem}
+.lede{font-size:1.32rem;line-height:1.55}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+.sub{color:var(--muted)}
+ul.plain time{color:var(--muted);font-size:.95rem;font-variant-numeric:tabular-nums;display:inline-block;min-width:8.6rem}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic;color:var(--text)}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+dl{margin:0 0 1.1rem}
+dt{font-style:italic;color:var(--muted)}
+dd{margin:0 0 .6rem}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+.build{margin:0 0 2.25rem}
+.build h3{margin:0 0 .15rem;font-size:1.3rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--text)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500;color:var(--text)}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.1rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+@media (max-width:600px){
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+  body{font-size:1.12rem}
+  .col{padding:1.5rem 1.25rem 2.5rem}
+  header{margin-bottom:3rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  ul.plain time{display:block;min-width:0;font-size:.9rem}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
 <body>
+<div class="col">
+<header>
+  <a class="name" href="../../">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="../../#writing">Writing</a><a href="../../#builds">Builds</a><a href="../../#talks">Talks</a><a href="../../#about">About</a></nav>
+</header>
+<main>
+<article>
+<h1>Pico</h1>
+<p class="meta">Build notes · physical recovery confirmed</p>
 
-<nav class="site-nav">
-  <a class="brand" href="../../index.html">Guilherme Silva</a>
-  <span class="nav-icons">
-    <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener" aria-label="Pico on GitHub">
-      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-    </a>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-    </button>
-  </span>
-</nav>
+<p class="lede">A small robot with two servos and one job: get back up. An onboard neural network moves its arms to recover from a fall. It’s now reliably self-righting on real hardware.</p>
+<dl class="facts">
+  <dt>Status</dt><dd>Self-righting works, experiments next</dd>
+  <dt>Progress</dt><dd>✓ Build &amp; assemble<br>✓ Calibrate<br>✓ Self-righting<br>→ <b>Experiments</b> (next)</dd>
+  <dt>Hardware</dt><dd>ATOM Matrix, PTK 7465 MG × 2, printed parts</dd>
+  <dt>Stack</dt><dd>MuJoCo, PPO, Arduino / PlatformIO</dd>
+  <dt>Links</dt><dd><a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a></dd>
+</dl>
 
-<div class="wrap">
+<figure>
+  <img src="pico-preview.webp" alt="Render of Pico's simulation model: two servos and printed arms above a base with an ATOM Matrix" width="1600" height="900" />
+  <figcaption>Simulation geometry, neutral pose.</figcaption>
+</figure>
 
-  <!-- ═══ HERO ═══ -->
-  <section class="hero">
-    <a class="back" href="../../index.html">← Back to home</a>
-    <span class="kicker"><span class="dot"></span>Build log · Self-righting works</span>
-    <h1 class="title">Pico</h1>
-    <p class="summary">
-      A small robot with <strong>two servos and one job: get back up.</strong> An onboard neural network moves its arms to recover from a fall. It's now reliably self-righting on real hardware.
-    </p>
-    <div class="mv-wrap">
-      <model-viewer
-        id="pico-model"
-        src="pico.glb"
-        poster="pico-preview.webp"
-        alt="Pico simulation model: two servos and printed arms above a base with an ATOM Matrix. Drag to rotate."
-        auto-rotate
-        auto-rotate-delay="1000"
-        rotation-per-second="25deg"
-        camera-controls
-        shadow-intensity="1"
-        interaction-prompt="auto"
-        interaction-prompt-style="wiggle"
-        camera-orbit="30deg 78deg 105%"
-        touch-action="pan-y"
-        loading="eager"
-      ><img class="model-poster" slot="poster" src="pico-preview.webp" alt="Render of Pico's simulation model" width="1600" height="900"></model-viewer>
-      <p class="mv-caption" id="model-caption">Simulation geometry · neutral pose</p>
-      <button class="rotation-toggle" id="rotation-toggle" type="button" hidden>Pause rotation</button>
-    </div>
+<h2>Note 01 · Two motors, back on its feet</h2>
+<p>Pico has a printed base, two moving arms, and an M5Stack ATOM Matrix: a tiny ESP32 board with an inertial sensor. When the robot tips over, it estimates its tilt and uses the arms to work its way back upright. The recovery runs entirely on the robot once the firmware is flashed.</p>
+<p>The interesting part is the controller. A policy trained in the MuJoCo simulator takes four inputs (roll, pitch, and the two servo targets) and chooses how to change those targets. The firmware runs that small neural network about 50 times a second during a recovery attempt.</p>
+<ul>
+  <li><em>Sense.</em> The IMU measures tilt. A sustained fall starts a recovery attempt.</li>
+  <li><em>Move.</em> The policy updates both arm targets every 20 milliseconds.</li>
+  <li><em>Recover.</em> The attempt ends after a steady upright hold, or a timeout.</li>
+</ul>
+<p>My build uses <a href="https://github.com/homemadegarbage/SelfRisingRobot" target="_blank" rel="noopener">HomeMadeGarbage’s SelfRisingRobot</a> design, simulation, and pretrained policy. My work here is assembling the robot, adapting the firmware, and exploring what I can do with it next.</p>
 
-    <div class="progress-card">
-      <div class="pl">Build progress</div>
-      <div class="progress">
-        <div class="track">
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg active"></div>
-        </div>
-        <div class="steps">
-          <span class="step done">✓ Build &amp; assemble</span>
-          <span class="step done">✓ Calibrate</span>
-          <span class="step done">✓ Self-righting</span>
-          <span class="step active">◉ Experiments next</span>
-        </div>
-      </div>
-      <div class="meta-row">
-        <span><strong style="color:var(--text)">Hardware:</strong> ATOM Matrix · PTK 7465 MG × 2 · printed parts</span>
-        <span><strong style="color:var(--text)">Stack:</strong> MuJoCo · PPO · Arduino / PlatformIO</span>
-        <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub →</a>
-        <a href="#day-01">How it works ↓</a>
-      </div>
-    </div>
-  </section>
+<h2>Note 02 · Making the code match the build</h2>
+<p>The wiring and orientation matter. On my assembly, GPIO 32 drives the lower servo and GPIO 26 drives the upper one. The joints turn in opposite directions, so the firmware maps each target accordingly. I also adjusted the IMU’s roll initialization to match the board’s orientation.</p>
+<p>Servo commands are limited to 15–165 degrees, and the upper joint has a home trim stored on the board. A local Wi-Fi page handles calibration and manual start/stop controls. The project builds and uploads through PlatformIO.</p>
+<p>One practical lesson: powering both servos from a PC’s USB port caused brownouts. Power delivery is part of getting this little robot working, alongside the model and code.</p>
 
-  <!-- ═══ ENTRIES ═══ -->
-  <h2 class="section-h">Build notes</h2>
+<h2>What’s next</h2>
+<p>Self-righting now works reliably on the physical robot. Next I want to record recovery results from different starting poses and use those as a baseline for further experiments:</p>
+<ul>
+  <li>recovery measurements</li>
+  <li>LED status feedback</li>
+  <li>training experiments</li>
+</ul>
 
-  <article class="entry" id="day-01">
-    <div class="ehead">
-      <span class="day">Note 01</span>
-      <span class="date">The robot</span>
-    </div>
-    <h3>Two motors, back on its feet</h3>
-    <p>
-      Pico has a printed base, two moving arms, and an M5Stack ATOM Matrix: a tiny ESP32 board with an inertial sensor. When the robot tips over, it estimates its tilt and uses the arms to work its way back upright. The recovery runs entirely on the robot once the firmware is flashed.
-    </p>
-    <p>
-      The interesting part is the controller. A policy trained in the MuJoCo simulator takes four inputs — roll, pitch, and the two servo targets — and chooses how to change those targets. The firmware runs that small neural network about 50 times a second during a recovery attempt.
-    </p>
-    <dl class="control-loop" aria-label="Pico's recovery loop">
-      <div><dt>01 · Sense</dt><dd>The IMU measures tilt. A sustained fall starts a recovery attempt.</dd></div>
-      <div><dt>02 · Move</dt><dd>The policy updates both arm targets every 20 milliseconds.</dd></div>
-      <div><dt>03 · Recover</dt><dd>The attempt ends after a steady upright hold, or a timeout.</dd></div>
-    </dl>
-    <p>
-      My build uses <a href="https://github.com/homemadegarbage/SelfRisingRobot" target="_blank" rel="noopener">HomeMadeGarbage's SelfRisingRobot</a> design, simulation, and pretrained policy. My work here is assembling the robot, adapting the firmware, and exploring what I can do with it next.
-    </p>
-  </article>
-
-  <article class="entry" id="day-02">
-    <div class="ehead">
-      <span class="day">Note 02</span>
-      <span class="date">Hardware &amp; firmware</span>
-    </div>
-    <h3>Making the code match the build</h3>
-    <p>
-      The wiring and orientation matter. On my assembly, GPIO 32 drives the lower servo and GPIO 26 drives the upper one. The joints turn in opposite directions, so the firmware maps each target accordingly. I also adjusted the IMU's roll initialization to match the board's orientation.
-    </p>
-    <p>
-      Servo commands are limited to 15–165 degrees, and the upper joint has a home trim stored on the board. A local Wi-Fi page handles calibration and manual start/stop controls. The project builds and uploads through PlatformIO.
-    </p>
-    <p class="muted">
-      One practical lesson: powering both servos from a PC's USB port caused brownouts. Power delivery is part of getting this little robot working, alongside the model and code.
-    </p>
-    <p>
-      Self-righting now works reliably on the physical robot. Next I want to record recovery results from different starting poses and use those as a baseline for further experiments.
-    </p>
-  </article>
-
-  <div class="more-coming">
-    <span class="icon">◉</span>
-    Next: recovery measurements, LED status feedback, and training experiments.<br>
-    <span style="color:var(--soft);font-size:0.82rem;">Plans and progress live in the project repository.</span>
-  </div>
-
-  <footer>
-    <p>Pico build notes · <a href="../../index.html">Guilherme Silva</a></p>
-    <p style="margin-top:0.25rem;">Code, parts, and experiments on <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a></p>
-  </footer>
-
+<p>Code, parts, and experiments on <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a>.</p>
+</article>
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span>Last updated September 2026 · <button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
 </div>
-
 <script>
-const toggle = document.getElementById('theme-toggle');
-const html = document.documentElement;
-try { if (localStorage.getItem('theme') === 'dark') html.classList.add('dark'); } catch {}
-toggle.addEventListener('click', () => {
-  html.classList.toggle('dark');
-  try { localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); } catch {}
-});
-
-const motion = matchMedia('(prefers-reduced-motion: reduce)');
-const mv = document.getElementById('pico-model');
-const rotationToggle = document.getElementById('rotation-toggle');
-function setRotation(enabled) {
-  mv.toggleAttribute('auto-rotate', enabled);
-  rotationToggle.textContent = enabled ? 'Pause rotation' : 'Start rotation';
-}
-const updateMotion = () => setRotation(!motion.matches);
-updateMotion();
-motion.addEventListener('change', updateMotion);
-rotationToggle.addEventListener('click', () => setRotation(!mv.hasAttribute('auto-rotate')));
-mv.addEventListener('load', () => {
-  rotationToggle.hidden = false;
-  document.getElementById('model-caption').textContent = 'Simulation geometry · drag to rotate · scroll to zoom';
-});
-mv.addEventListener('error', () => {
-  rotationToggle.hidden = true;
-  document.getElementById('model-caption').textContent = 'Simulation geometry · static preview';
-});
-
-// Highlight build notes linked from the homepage.
-if (location.hash) {
-  try {
-    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-    if (target) requestAnimationFrame(() => {
-      target.classList.add('log-flash');
-      target.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
-    });
-  } catch {}
-}
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
+function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
+try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
 </script>
+
 </body>
 </html>
