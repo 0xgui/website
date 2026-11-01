@@ -50,7 +50,12 @@ from scripts.htmltext import (
 from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]  # noqa: F811 — Path imported above
-UA = "silvags-mirror/1.0 (+https://silvags.com)"
+# Substack answers 403 to the default Python client and to short bot names from
+# GitHub-hosted runners. A normal browser User-Agent is the request it accepts.
+UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+)
 HOME_LIMIT = 4
 SITE = "https://silvags.com"
 MONTHS = [
@@ -82,17 +87,22 @@ def http_get(url: str, accept: str, timeout: int = 25, attempts: int = 3, sleep=
     last: Exception | None = None
     for attempt in range(attempts):
         try:
-            request = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
+            request = urllib.request.Request(url, headers={
+                "User-Agent": UA,
+                "Accept": accept,
+                "Accept-Language": "en-US,en;q=0.9",
+            })
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.status, response.headers.get("content-type", ""), response.read()
         except urllib.error.HTTPError as exc:
             raw = exc.read() if exc.fp else b""
             ctype = exc.headers.get("content-type", "") if exc.headers else ""
             text = raw.decode("utf-8", "replace")
+            detail = " ".join(text[:180].split())
             if looks_like_challenge(exc.code, text, ctype):
-                last = ChallengeError(f"{url} returned {exc.code}")
+                last = ChallengeError(f"{url} returned {exc.code} ({ctype}) {detail}")
             else:
-                last = FeedError(f"{url} returned {exc.code}")
+                last = FeedError(f"{url} returned {exc.code} ({ctype}) {detail}")
         except Exception as exc:  # noqa: BLE001 — network failures become FeedError
             last = FeedError(f"{url} failed: {exc}")
         if attempt + 1 < attempts:
