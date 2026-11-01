@@ -34,7 +34,6 @@ from scripts.feeds import (
     looks_like_challenge,
     post_from_mapping,
     posts_from_rss,
-    posts_from_worker,
 )
 from scripts.htmltext import (
     attr_map,
@@ -112,6 +111,12 @@ def _decode(status: int, ctype: str, body: bytes, url: str) -> str:
 
 
 def fetch_posts(get=http_get) -> list[Post]:
+    """Substack API, then archive, then RSS.
+
+    rss.silvags.com is not a source. Cloudflare puts a JavaScript challenge
+    in front of that host (cf-mitigated: challenge) for datacenter clients,
+    including a browser User-Agent. The mirror cannot pass that challenge.
+    """
     errors = []
     for name, fn in (
         ("api", lambda: _posts_api(get)),
@@ -120,9 +125,6 @@ def fetch_posts(get=http_get) -> list[Post]:
             "https://binarypaths.substack.com/feed",
             "application/rss+xml, application/xml, text/xml",
         ), "https://binarypaths.substack.com/feed"))),
-        ("worker", lambda: posts_from_worker(_decode(*get(
-            "https://rss.silvags.com", "application/json",
-        ), "https://rss.silvags.com"))),
     ):
         try:
             posts = fn()
@@ -676,7 +678,34 @@ def apply_mirror(root: Path, posts: list[Post], *, fetch_bytes=default_fetch_byt
     return changed
 
 
+def refresh_indexes(root: Path) -> list[str]:
+    """Rebuild the homepage list, the writing list, and agent files from disk."""
+    saved = discover(root)
+    posts = sorted((row[0] for row in saved.values()), key=lambda post: (post.published, post.slug), reverse=True)
+    home = root / "index.html"
+    writing = root / "writing" / "index.html"
+    changed = []
+    for path, markup in (
+        (home, list_markup(posts, lambda post: f"writing/{post.slug}/", HOME_LIMIT)),
+        (writing, list_markup(posts, lambda post: f"{post.slug}/", None)),
+    ):
+        updated = replace_list(path.read_text(encoding="utf-8"), markup)
+        if path.read_text(encoding="utf-8") != updated:
+            path.write_text(updated, encoding="utf-8")
+            changed.append(str(path.relative_to(root)))
+    changed.extend(apply_agent(root))
+    return changed
+
+
 def main(argv: list[str]) -> int:
+    if "--reindex" in argv:
+        try:
+            changed = refresh_indexes(ROOT)
+        except FeedError as exc:
+            print(f"reindex failed: {exc}", file=sys.stderr)
+            return 1
+        print(f"reindexed {len(changed)} file(s)" if changed else "indexes are up to date")
+        return 0
     try:
         posts = fetch_posts()
         changed = apply_mirror(ROOT, posts)

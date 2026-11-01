@@ -135,6 +135,34 @@ class MirrorTests(unittest.TestCase):
             self.assertIn("A full public essay.", saved)
             self.assertNotIn("This is a preview", saved)
 
+    def test_worker_host_is_not_requested(self):
+        seen = []
+
+        def get(url, accept, **_kwargs):
+            seen.append(url)
+            if "/api/v1/posts" in url:
+                return 200, "application/json", (FIX / "api.json").read_bytes()
+            raise AssertionError(url)
+
+        posts = fetch_posts(get)
+        self.assertEqual(posts[0].slug, "hello-world")
+        self.assertFalse(any("rss.silvags.com" in url for url in seen))
+
+    def test_reindex_drops_only_the_removed_essay(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            from scripts.mirror_substack import refresh_indexes
+            refresh_indexes(root)
+            self.assertIn("kept-post/", (root / "writing" / "index.html").read_text(encoding="utf-8"))
+            import shutil
+            shutil.rmtree(root / "writing" / "kept-post")
+            refresh_indexes(root)
+            text = (root / "writing" / "index.html").read_text(encoding="utf-8")
+            self.assertNotIn("kept-post", text)
+            self.assertTrue((root / "index.html").exists())
+
     def test_discover_keeps_saved_posts(self):
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:

@@ -1,16 +1,26 @@
 # Fetch Binary Paths and open a PR. Never pushes straight to main.
-# Schedule runs only after this file is on the default branch.
+# GITHUB_TOKEN does not start pull_request or pull_request_target workflows.
+# After the push, this file dispatches CI and runs agent-pr-gate itself so the
+# `test` check and the `agent-pr-gate` commit status exist on the head SHA.
 name: Mirror Binary Paths
 
 on:
   schedule:
     - cron: "17 */6 * * *"
   workflow_dispatch:
+    inputs:
+      proof_slug:
+        description: "Essay slug to omit on a scratch PR against main. The schedule leaves this empty."
+        required: false
+        default: ""
 
 permissions:
   contents: write
   pull-requests: write
   issues: write
+  checks: read
+  statuses: write
+  actions: write
 
 concurrency:
   group: mirror-binary-paths
@@ -29,44 +39,65 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Mirror
-        id: mirror
         run: python3 scripts/mirror_substack.py
-
-      - name: Validate
-        run: |
-          python3 -m unittest discover -s tests -v
-          node --test tests/negotiate.test.mjs
 
       - name: Open a pull request
         id: pr
         env:
           GH_TOKEN: ${{ github.token }}
+          PROOF_SLUG: ${{ inputs.proof_slug }}
         run: |
           set -euo pipefail
-          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-            echo "opened=false" >> "$GITHUB_OUTPUT"
-            echo "No changes."
-            exit 0
+          proof="${PROOF_SLUG:-}"
+          if [ -n "$proof" ] && ! printf '%s' "$proof" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*$'; then
+            echo "proof_slug must be an essay slug" >&2
+            exit 1
           fi
-          base="${GITHUB_REF_NAME}"
-          branch="mirror/binary-paths"
-          message="Mirror Binary Paths essays"
+          if [ -n "$proof" ]; then
+            cp scripts/mirror_substack.py /tmp/mirror_substack.py
+            git fetch origin main
+            git checkout -B "mirror/proof-${proof}" origin/main
+            cp /tmp/mirror_substack.py scripts/mirror_substack.py
+            if [ ! -d "writing/${proof}" ]; then
+              echo "No essay writing/${proof}" >&2
+              exit 1
+            fi
+            rm -rf "writing/${proof}"
+            python3 scripts/mirror_substack.py --reindex
+            git checkout origin/main -- scripts
+            base="main"
+            branch="mirror/proof-${proof}"
+            message="Mirror proof, do not merge"
+            summary="Proof only. Omits writing/${proof} so a GITHUB_TOKEN pull request can receive checks. Do not merge."
+          else
+            if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+              echo "opened=false" >> "$GITHUB_OUTPUT"
+              echo "No changes."
+              exit 0
+            fi
+            base="${GITHUB_REF_NAME}"
+            branch="mirror/binary-paths"
+            message="Mirror Binary Paths essays"
+            summary="Mirror public Binary Paths essays onto the site."
+          fi
           body_file="$(mktemp)"
-          python3 scripts/gate_paths.py body > "$body_file"
+          python3 scripts/gate_paths.py body --summary "$summary" > "$body_file"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git stash push -u -m mirror
-          git fetch origin "$branch" || true
-          if git rev-parse --verify "origin/$branch" >/dev/null 2>&1; then
-            git checkout -B "$branch" "origin/$branch"
-            git merge --no-edit "origin/$base" || {
-              echo "Could not merge $base into $branch." >&2
-              exit 1
-            }
-          else
-            git checkout -B "$branch" "origin/$base"
+          if [ -z "$proof" ]; then
+            git stash push -u -m mirror
+            git fetch origin "$branch" || true
+            if git rev-parse --verify "origin/$branch" >/dev/null 2>&1; then
+              git checkout -B "$branch" "origin/$branch"
+              git merge --no-edit "origin/$base" || {
+                echo "Could not merge $base into $branch." >&2
+                exit 1
+              }
+            else
+              git checkout -B "$branch" "origin/$base"
+            fi
+            git stash pop
           fi
-          git stash pop
           if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
             echo "opened=false" >> "$GITHUB_OUTPUT"
             echo "Mirror branch already has this content."
@@ -80,23 +111,86 @@ jobs:
           else
             url="$(gh pr create --base "$base" --head "$branch" --title "$message" --body-file "$body_file")"
           fi
-          echo "opened=true" >> "$GITHUB_OUTPUT"
-          echo "url=$url" >> "$GITHUB_OUTPUT"
-          files="$(git diff --name-only "origin/$base...HEAD")"
+          number="$(gh pr view "$branch" --json number --jq .number)"
+          files="$(git diff --name-only "origin/${base}...HEAD")"
           decision="$(python3 scripts/gate_paths.py decide --files $files --body-file "$body_file")"
           echo "$decision"
           auto="$(python3 -c 'import json,sys; print("yes" if json.load(sys.stdin)["auto_merge"] else "no")' <<<"$decision")"
+          if [ -n "$proof" ]; then
+            proof_flag=yes
+          else
+            proof_flag=no
+          fi
+          {
+            echo "opened=true"
+            echo "url=${url}"
+            echo "number=${number}"
+            echo "branch=${branch}"
+            echo "sha=$(git rev-parse HEAD)"
+            echo "auto=${auto}"
+            echo "proof=${proof_flag}"
+          } >> "$GITHUB_OUTPUT"
           if [ "$auto" != "yes" ]; then
             gh pr comment "$url" --body "Not enabling auto-merge. This diff includes a high-tier path, so it needs a person to merge it."
-            echo "auto=no" >> "$GITHUB_OUTPUT"
-            exit 0
           fi
-          if gh pr merge "$url" --squash --auto; then
-            echo "auto=yes" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch CI
+        id: ci
+        if: steps.pr.outputs.opened == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ steps.pr.outputs.sha }}
+          BRANCH: ${{ steps.pr.outputs.branch }}
+        run: |
+          set -euo pipefail
+          gh workflow run ci.yml --ref "$BRANCH"
+          run_id="$(python3 - <<'PY'
+          import json, os, subprocess, time
+          sha = os.environ["HEAD_SHA"]
+          branch = os.environ["BRANCH"]
+          for _ in range(30):
+              raw = subprocess.check_output(
+                  ["gh", "run", "list", "--workflow", "ci.yml", "--branch", branch, "--limit", "10",
+                   "--json", "databaseId,headSha,event,status"],
+                  text=True,
+              )
+              runs = [row for row in json.loads(raw) if row["headSha"] == sha and row["event"] == "workflow_dispatch"]
+              if runs:
+                  print(runs[0]["databaseId"])
+                  break
+              time.sleep(2)
+          else:
+              raise SystemExit("CI workflow_dispatch did not appear on the head SHA")
+          PY
+          )"
+          echo "run_id=${run_id}" >> "$GITHUB_OUTPUT"
+          if gh run watch "$run_id" --exit-status; then
+            echo "result=pass" >> "$GITHUB_OUTPUT"
           else
-            echo "auto=blocked" >> "$GITHUB_OUTPUT"
-            exit 1
+            echo "result=fail" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Record the agent-pr-gate status
+        id: gate
+        if: steps.pr.outputs.opened == 'true'
+        uses: 0xgui/agent-pr-gate@2da570e75f377b413e19bdfc338dab7c9e881538 # v1.0.3
+        with:
+          pr-number: ${{ steps.pr.outputs.number }}
+          ci-wait-seconds: '120'
+          status-context: agent-pr-gate
+          ignore-checks: mirror
+          fail-on-block: 'false'
+
+      - name: Require a passing gate
+        if: steps.pr.outputs.opened == 'true' && steps.gate.outputs.result != 'pass'
+        run: exit 1
+
+      - name: Enable auto-merge
+        if: steps.pr.outputs.opened == 'true' && steps.pr.outputs.auto == 'yes' && steps.pr.outputs.proof != 'yes' && steps.ci.outputs.result == 'pass' && steps.gate.outputs.result == 'pass'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        run: gh pr merge "$PR_URL" --squash --auto
 
       - name: Open or update a failure issue
         if: failure()
@@ -113,7 +207,7 @@ jobs:
 
           Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-          If auto-merge was the step that failed, enable **Allow auto-merge** in the repository settings and require the CI and \`agent-pr-gate\` checks. This workflow will not push to the default branch by itself.
+          Branch protection on main should require the check \`test\` and the commit status \`agent-pr-gate\`. This workflow dispatches CI and writes that status itself, because GITHUB_TOKEN does not start pull_request workflows.
           EOF
           )
           existing="$(gh issue list --state open --search "Binary Paths mirror failed in:title" --json number --jq '.[0].number')"
