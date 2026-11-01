@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Talks · Guilherme Silva</title>
+<meta name="description" content="Talks and slides on Kubernetes, WebAssembly, and platform engineering." />
+<meta name="theme-color" content="#16130f" />
+<meta property="og:type" content="website">
+<meta property="og:title" content="Talks · Guilherme Silva">
+<meta property="og:description" content="Talks and slides on Kubernetes, WebAssembly, and platform engineering.">
+<meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
+<meta property="og:url" content="https://silvags.com/talks/">
+<link rel="canonical" href="https://silvags.com/talks/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
+<style>
+/* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
+  --bg:var(--paper);--text:var(--ink);color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+  color-scheme:dark}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.waves{display:block;width:100%;height:170px;background:var(--paper);margin-bottom:1.75rem}
+.col{max-width:37rem;margin:0 auto;padding:.5rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:3.5rem;font-size:1.02rem}
+header .name{color:var(--ink);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover,header nav a[aria-current]{color:var(--ink)}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
+main{animation:rise .6s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.25rem 0 .9rem}
+h3{font-size:1.3rem;font-weight:500;margin:2.25rem 0 .4rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
+.lede{font-size:1.34rem;line-height:1.55}
+.sub{color:var(--muted)}
+.more{font-size:1rem}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.15rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+.build{margin:0 0 2.5rem}
+.build h3{margin:0 0 .15rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--ink)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
+figure.model figcaption{padding:0 2.5rem}
+model-viewer{display:block;width:100%;height:auto;aspect-ratio:3/2;background:transparent;--poster-color:transparent}
+model-viewer img[slot=poster]{width:100%;height:100%;object-fit:contain}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+@media (max-width:760px){figure.model{margin:2rem 0}figure.model figcaption{padding:0}}
+@media (max-width:600px){
+  body{font-size:1.12rem}
+  .waves{height:110px;margin-bottom:1.25rem}
+  .col{padding:.25rem 1.25rem 2.5rem}
+  header{margin-bottom:2.5rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+</style>
+
+</head>
+<body>
+<canvas class="waves" data-seed="4.6" aria-hidden="true"></canvas>
+<div class="col">
+<header>
+  <a class="name" href="../">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="../builds/">Builds</a><a href="../writing/">Writing</a><a href="../talks/" aria-current="page">Talks</a><a href="../about/">About</a></nav>
+</header>
+<main>
+<h1>Talks</h1>
+<p class="lede">My DevOps world: Kubernetes, WebAssembly, and platform engineering. These days my research is more about robotics, but I still work on cloud-native stuff.</p>
+<h2>Videos</h2>
+<ul class="plain">
+  <li><a href="https://youtu.be/GVWSm0GXfFg" target="_blank" rel="noopener">WebAssembly + Kubernetes: Future or Fad?</a></li>
+  <li><a href="https://youtu.be/1HnvtX5iFG0" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Intro</a> <span class="sub">— series</span></li>
+  <li><a href="https://youtu.be/4-IEQK75ASE" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Business</a> <span class="sub">— series</span></li>
+</ul>
+<h2>Slides</h2>
+<ul class="plain">
+  <li><a href="https://drive.google.com/file/d/1U3Fy4boqBCr6XJyx-QTuS1T4n3sX4yzg/view" target="_blank" rel="noopener">Beyond the Hype: K8s for Real Business Value</a></li>
+  <li><a href="https://drive.google.com/file/d/1mwjWJ6FR0OSCIx_EBlW-GnyAQMKGXbM9/view" target="_blank" rel="noopener">WebAssembly + Kubernetes</a></li>
+  <li><a href="https://drive.google.com/file/d/1JW9yt-4dkswd9lUxgyEnpinAHZaPleE0/view" target="_blank" rel="noopener">Maximizing Efficiency with K8s Multi-Tenancy</a></li>
+</ul>
+
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span>Leiria, Portugal · <button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
+</div>
+<script>
+(function(){
+var cv=document.querySelector('canvas.waves');if(!cv)return;
+var SEED=parseFloat(cv.dataset.seed)||0,root=document.documentElement;
+var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rgb(name){var v=getComputedStyle(root).getPropertyValue(name).trim(),m=v.match(/^#([0-9a-f]{6})$/i);
+  if(!m)return [0,0,0];var n=parseInt(m[1],16);return [(n>>16&255)/255,(n>>8&255)/255,(n&255)/255];}
+var ink,paper;function colors(){ink=rgb('--ink');paper=rgb('--paper');}colors();
+var dpr=Math.min(window.devicePixelRatio||1,2);
+function size(){var w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;return true}return false;}
+var gl=null;try{gl=cv.getContext('webgl',{antialias:false,alpha:false,preserveDrawingBuffer:true})}catch(e){}
+var draw;
+if(gl){
+  var VS='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var FS='precision mediump float;uniform vec2 R;uniform float T,S,C;uniform vec3 I,P;'+
+  'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'+
+  'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);'+
+  'return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+1.),f.x),f.y);}'+
+  'float b2(vec2 a){a=floor(a);return fract(a.x*.5+a.y*a.y*.75);}'+
+  'float b8(vec2 a){return (b2(a*.25)*.25+b2(a*.5))*.25+b2(a);}'+
+  'void main(){vec2 c=floor(gl_FragCoord.xy/C);vec2 u=c*C/R.y;float y=1.-gl_FragCoord.y/R.y;'+
+  'float t=T*.11+S;float f=y*7.;'+
+  'f+=sin(u.x*1.7+t*1.3)*.9+sin(u.x*3.1-t*.9+S)*.45+sin(u.x*5.3+t*1.7)*.18;'+
+  'f+=(n(vec2(u.x*1.6+t*.6,y*3.-t*.4))-.5)*2.2;'+
+  'float k=.5+.5*sin(f);k=max(k*k*k-.03,0.);'+
+  'float env=(1.-smoothstep(.05,.92,y))*.62;'+
+  'k*=env*(1.+.025*sin(T*11.)*sin(T*6.7));'+
+  'float th=max(b8(c)+(h(c+fract(T*.37)*97.)-.5)*.08,.02);'+
+  'gl_FragColor=vec4(mix(P,mix(P,I,.82),step(th,k)),1.);}';
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o;}
+  try{
+    var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));
+    gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error('link');gl.useProgram(pr);
+    var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
+    var U={};['R','T','S','C','I','P'].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
+    draw=function(t){size();gl.viewport(0,0,cv.width,cv.height);
+      gl.uniform2f(U.R,cv.width,cv.height);gl.uniform1f(U.T,t);gl.uniform1f(U.S,SEED);
+      gl.uniform1f(U.C,Math.max(1,Math.round(2*dpr)));gl.uniform3fv(U.I,ink);gl.uniform3fv(U.P,paper);
+      gl.drawArrays(gl.TRIANGLES,0,3);};
+  }catch(e){gl=null}
+}
+if(!gl){ // Canvas 2D fallback: one static frame of plain bands, no loop.
+  still=true;var x2=cv.getContext('2d');
+  draw=function(){size();var C=Math.max(1,Math.round(2*dpr)),W=Math.ceil(cv.width/C),H=Math.ceil(cv.height/C);
+    var im=x2.createImageData(W,H),B=[0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
+    for(var j=0;j<H;j++)for(var i=0;i<W;i++){var u=i*C/cv.height,y=j/H,
+      f=y*7+Math.sin(u*1.7+SEED)*.9+Math.sin(u*3.1+SEED)*.45,k=.5+.5*Math.sin(f);
+      k=Math.max(k*k*k-.03,0)*(1-Math.min(1,Math.max(0,(y-.05)/.87)))*.62;
+      var on=k>(B[(j%8)*8+i%8]+.5)/64,c=on?ink.map(function(v,q){return paper[q]+(v-paper[q])*.82}):paper,o=(j*W+i)*4;
+      im.data[o]=c[0]*255;im.data[o+1]=c[1]*255;im.data[o+2]=c[2]*255;im.data[o+3]=255;}
+    var tmp=document.createElement('canvas');tmp.width=W;tmp.height=H;tmp.getContext('2d').putImageData(im,0,0);
+    x2.imageSmoothingEnabled=false;x2.drawImage(tmp,0,0,W*C,H*C);};
+}
+var t0=performance.now(),raf=0,last=0,seen=true;
+function frame(now){raf=0;if(document.hidden||!seen)return;
+  if(now-last>33){last=now;draw((now-t0)/1000+SEED*3)}raf=requestAnimationFrame(frame);}
+function go(){if(!still&&!raf&&!document.hidden&&seen)raf=requestAnimationFrame(frame);}
+function once(){draw(SEED*3+4)}
+once();
+if(!still){
+  document.addEventListener('visibilitychange',go);
+  if('IntersectionObserver' in window)new IntersectionObserver(function(e){seen=e[0].isIntersecting;go()}).observe(cv);
+  go();
+}
+new MutationObserver(function(){colors();if(still||!raf)once()}).observe(root,{attributes:true,attributeFilter:['class']});
+addEventListener('resize',function(){if(size()&&(still||!raf))once()});
+})();
+</script>
+<script>
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
+function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
+try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
+</script>
+
+</body>
+</html>
