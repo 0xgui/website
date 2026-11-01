@@ -1,0 +1,37 @@
+# Gates PRs with 0xgui/agent-pr-gate. Config: .review-gate.yml
+name: agent-pr-gate
+on:
+  # Runs the workflow from the DEFAULT branch with a write token, also for fork PRs.
+  # GitHub always uses the default branch's copy, so the gate starts once this file
+  # is merged there. Never check out or run PR code in this workflow.
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened, ready_for_review, labeled, unlabeled]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: read
+  actions: read
+  statuses: write
+
+concurrency:
+  group: agent-pr-gate-${{ github.event.pull_request.number || github.event.workflow_run.pull_requests[0].number || github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
+
+jobs:
+  agent-pr-gate-job:
+    runs-on: ubuntu-latest
+    steps:
+      - id: gate
+        uses: 0xgui/agent-pr-gate@2da570e75f377b413e19bdfc338dab7c9e881538 # v1.0.3
+        with:
+          ci-wait-seconds: '300'
+      - if: always() && steps.gate.outputs.metrics-path != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: agent-pr-gate-metrics
+          path: ${{ steps.gate.outputs.metrics-path }}

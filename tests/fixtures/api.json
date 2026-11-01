@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "audience": "everyone",
+      "slug": "hello-world",
+      "title": "Hello world",
+      "canonical_url": "https://binarypaths.substack.com/p/hello-world",
+      "post_date": "2026-03-05T08:00:00.000Z",
+      "subtitle": "A normal essay",
+      "description": "A normal essay",
+      "body_html": "<p>The full essay.</p><script>alert(1)</script>",
+      "truncated_body_text": "The full",
+      "cover_image": ""
+    }
+  ],
+  "nextCursor": null
+}

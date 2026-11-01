@@ -1,558 +1,262 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Guilherme Silva — Building robots</title>
-<meta name="description" content="Engineering Manager at xgeeks exploring Physical AI. Building robots from scratch and writing about it at Binary Paths." />
+<title>Guilherme Silva</title>
+<meta name="description" content="Building small robots from scratch and writing about engineering and physical AI at Binary Paths." />
+<meta name="theme-color" content="#16130f" />
 <meta property="og:type" content="website">
 <meta property="og:title" content="Guilherme Silva">
-<meta property="og:description" content="Building robots from scratch and writing about it. Engineering Manager at xgeeks.">
+<meta property="og:description" content="Building small robots from scratch and writing about engineering and physical AI at Binary Paths.">
 <meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
-<meta property="og:image:alt" content="SO-101 robotic arms, built from scratch">
-<meta property="og:url" content="https://silvags.com">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://silvags.com">
+<meta property="og:url" content="https://silvags.com/">
+<link rel="canonical" href="https://silvags.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://rss.silvags.com" />
-<link rel="dns-prefetch" href="https://substack-post-media.s3.amazonaws.com" />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" /></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #fbfaf7;
-    --text: #1a1a1a;
-    --muted: #6b6b6b;
-    --soft: #9a9a9a;
-    --border: #e8e6e0;
-    --accent: #2a2a2a;
-    --card: #f4f2ec;
-    --warm: #b15a00;
-    --warm-bg: rgba(227,168,107,0.12);
-    --warm-border: #e3a86b66;
-  }
-  :root.dark {
-    --bg: #0e0e0e;
-    --text: #e8e6e1;
-    --muted: #8e8c86;
-    --soft: #5e5c58;
-    --border: #242220;
-    --accent: #ccc9c2;
-    --card: #161513;
-    --warm: #f0b370;
-    --warm-bg: rgba(227,168,107,0.08);
-    --warm-border: #4a3a1f;
-  }
-
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.65;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    transition: background 0.3s, color 0.3s;
-  }
-
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
-
-  /* ── NAV ── */
-  .site-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 1.5rem; position: sticky; top: 0;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    z-index: 10; max-width: 720px; margin: 0 auto;
-  }
-  .site-nav .brand {
-    font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15rem;
-    color: var(--text); text-decoration: none; border: none;
-  }
-  .nav-icons { display: flex; align-items: center; gap: 1rem; }
-  .nav-icons a {
-    display: flex; color: var(--muted); transition: color 0.2s; border: none;
-  }
-  .nav-icons a:hover { color: var(--text); }
-  .nav-icons svg { width: 18px; height: 18px; fill: currentColor; }
-  .theme-toggle {
-    background: none; border: none; color: var(--muted); cursor: pointer;
-    padding: 0; display: flex; border-radius: 4px;
-  }
-  .theme-toggle:hover { color: var(--text); }
-  .theme-toggle svg { width: 16px; height: 16px; fill: currentColor; }
-  .theme-toggle .icon-sun { display: none; }
-  .dark .theme-toggle .icon-moon { display: none; }
-  .dark .theme-toggle .icon-sun { display: inline; }
-
-  /* ── TYPOGRAPHY ── */
-  h1.name {
-    font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
-    font-size: clamp(2.6rem, 9vw, 4.6rem); line-height: 0.98;
-    letter-spacing: -0.022em; margin: 0.4rem 0 1.1rem;
-  }
-  h2.section-h {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: 2rem; line-height: 1.1; letter-spacing: -0.01em;
-    margin: 3.5rem 0 1.2rem; scroll-margin-top: 80px;
-  }
-  h2.section-h .count {
-    font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.1em; color: var(--soft);
-    margin-left: 0.5rem; vertical-align: middle;
-  }
-  a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
-  a:hover { border-color: var(--text); }
-  .plain { border: none; }
-
-  /* ── HERO ── */
-  .hero { padding: 2.5rem 0 1rem; }
-  .kicker {
-    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.12em; color: var(--warm); display: inline-flex;
-    align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;
-  }
-  .kicker .dot {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--warm);
-    display: inline-block; box-shadow: 0 0 0 4px var(--warm-bg);
-  }
-  .lede {
-    font-size: 1.08rem; color: var(--muted); max-width: 38em; margin-bottom: 1.5rem;
-  }
-  .lede strong { color: var(--text); font-weight: 500; }
-  .contact-row {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.25rem;
-    font-size: 0.92rem; color: var(--muted); margin-bottom: 0.5rem;
-  }
-  .contact-row a { color: var(--text); }
-  .hero-socials { display: flex; gap: 0.55rem; }
-  .hero-socials a { color: var(--muted); border: none; transition: color 0.2s; }
-  .hero-socials a:hover { color: var(--text); }
-  .hero-socials svg { width: 18px; height: 18px; fill: currentColor; }
-
-  /* ── BUILDS ── */
-  .builds-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
-  .builds-grid .build { min-width: 0; display: flex; flex-direction: column; margin-bottom: 0; }
-  .builds-grid .build-body { display: flex; flex-direction: column; flex: 1; padding: 1.25rem; }
-  .builds-grid .build h3.b-title { font-size: 1.65rem; }
-  .builds-grid .progress .steps { display: grid; grid-template-columns: 1fr; gap: 0.35rem; }
-  .build {
-    position: relative;
-    border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
-    background: var(--card); margin-bottom: 1.5rem;
-    transition: border-color 0.2s;
-  }
-  .build:hover { border-color: var(--text); }
-  .build:focus-within { outline: 2px solid var(--warm); outline-offset: 3px; }
-  .build-img {
-    display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; flex-shrink: 0;
-    background: var(--border);
-  }
-  .build-body { padding: 1.5rem; }
-  .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.85rem; }
-  .badge {
-    display: inline-flex; align-items: center; gap: 0.35rem;
-    font-size: 0.68rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.06em; padding: 0.22rem 0.65rem; border-radius: 999px;
-    border: 1px solid var(--border); color: var(--muted);
-  }
-  .badge.live {
-    color: var(--warm); border-color: var(--warm-border); background: var(--warm-bg);
-  }
-  .badge.live .pulse {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--warm);
-    animation: pulse 2.2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
-  }
-  .build h3.b-title {
-    font-family: 'Instrument Serif', serif; font-weight: 400;
-    font-size: 2rem; line-height: 1.1; margin-bottom: 0.6rem; letter-spacing: -0.01em;
-  }
-  .build p.b-desc { color: var(--text); margin-bottom: 1.1rem; font-size: 0.98rem; }
-
-  .progress { margin: 0 0 1.1rem; }
-  .progress .track {
-    display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.75rem;
-  }
-  .progress .seg {
-    flex: 1; height: 4px; border-radius: 2px; background: var(--border);
-  }
-  .progress .seg.done { background: var(--text); }
-  .progress .seg.active { background: var(--warm); }
-  .progress .steps {
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem 1rem;
-    font-size: 0.78rem; color: var(--muted);
-  }
-  .progress .steps .step { display: flex; align-items: center; gap: 0.35rem; }
-  .progress .steps .step .icon { font-size: 0.85rem; }
-  .progress .steps .step.done { color: var(--text); }
-  .progress .steps .step.active { color: var(--warm); }
-
-  .build .open {
-    margin-top: auto; align-self: flex-start;
-    display: inline-flex; align-items: center;
-    color: var(--warm); background: var(--warm-bg);
-    border: 1px solid var(--warm-border); border-radius: 999px;
-    padding: 0.5rem 0.95rem; font-size: 0.92rem; font-weight: 500; line-height: 1.2;
-  }
-  .build .open:hover { border-color: var(--warm); }
-  .build .open:focus { outline: none; }
-  .build .open::after {
-    content: ""; position: absolute; inset: 0;
-  }
-
-  /* ── WRITING ── */
-  .article-item {
-    padding: 1.1rem 0; border-bottom: 1px solid var(--border);
-    display: grid; grid-template-columns: 88px 1fr; gap: 1rem; align-items: start;
-  }
-  .article-item:last-child { border-bottom: none; }
-  .article-item .thumb {
-    width: 88px; height: 88px; border-radius: 8px; object-fit: cover; background: var(--border);
-  }
-  .article-item .meta { min-width: 0; }
-  .article-item time {
-    display: block; font-size: 0.7rem; color: var(--soft);
-    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem;
-  }
-  .article-item h3 {
-    font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-weight: 400;
-    line-height: 1.2; margin-bottom: 0.2rem;
-  }
-  .article-item h3 a { color: var(--text); border: none; }
-  .article-item h3 a:hover { color: var(--muted); }
-  .article-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
-
-  /* ── SUBSCRIBE CTA ── */
-  .subscribe-cta {
-    margin-top: 1.75rem; padding: 1.25rem 1.5rem; border: 1px solid var(--warm-border);
-    border-radius: 12px; background: var(--warm-bg); text-align: center;
-  }
-  .subscribe-cta a {
-    color: var(--warm); font-family: 'Instrument Serif', serif; font-size: 1.15rem;
-    border: none; border-bottom: 1px solid var(--warm-border); transition: border-color 0.2s;
-  }
-  .subscribe-cta a:hover { border-color: var(--warm); }
-
-  /* ── TALKS ── */
-  .talks-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;
-  }
-  .talk-card {
-    border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem;
-    transition: border-color 0.2s, transform 0.15s;
-  }
-  .talk-card:hover { border-color: var(--text); transform: translateY(-1px); }
-  .talk-card .t-tag {
-    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--soft); margin-bottom: 0.4rem;
-  }
-  .talk-card a {
-    color: var(--text); border: none; font-family: 'Instrument Serif', serif;
-    font-size: 1.05rem; line-height: 1.25; display: block;
-  }
-  .talk-card a:hover { color: var(--muted); }
-
-  /* ── ABOUT ── */
-  .about p { margin-bottom: 0.9rem; color: var(--text); }
-  .about p.muted { color: var(--muted); }
-  .about p.manifesto {
-    font-family: 'Instrument Serif', serif; font-size: 1.6rem; font-style: italic;
-    color: var(--warm); border-left: 3px solid var(--warm); padding-left: 1rem;
-    margin: 1.25rem 0 0; line-height: 1.3;
-  }
-  /* ── FOOTER ── */
-  footer {
-    margin-top: 4.5rem; padding: 2rem 0 3rem; border-top: 1px solid var(--border);
-    font-size: 0.8rem; color: var(--soft); text-align: center;
-  }
-  footer a { color: var(--muted); border: none; }
-  footer a:hover { color: var(--text); }
-  .updated { margin-top: 0.25rem; }
-
-  @media (max-width: 600px) {
-    .builds-grid { grid-template-columns: 1fr; }
-    .wrap, .site-nav { padding-left: 1.1rem; padding-right: 1.1rem; }
-    .site-nav { padding-top: 1rem; padding-bottom: 1rem; }
-    h1.name { font-size: 2.6rem; }
-    h2.section-h { font-size: 1.7rem; }
-    .build h3.b-title { font-size: 1.6rem; }
-    .article-item { grid-template-columns: 64px 1fr; }
-    .article-item .thumb { width: 64px; height: 64px; }
-    .talks-grid { grid-template-columns: 1fr; }
-    .progress .steps { gap: 0.35rem 0.85rem; font-size: 0.72rem; }
-  }
+/* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
+  --bg:var(--paper);--text:var(--ink);color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+  color-scheme:dark}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.hero{display:block;position:relative;height:230px;margin-bottom:1.5rem;overflow:hidden;background:var(--paper)}
+a.hero{cursor:pointer}
+a.hero:focus-visible{outline-offset:-4px}
+.hero .poster{position:absolute;inset:0;background:var(--ink);opacity:.85;-webkit-mask:var(--poster) center/auto 100% no-repeat;mask:var(--poster) center/auto 100% no-repeat}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s}
+.hero canvas.on{opacity:1}
+.col{max-width:37rem;margin:0 auto;padding:.5rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:3.5rem;font-size:1.02rem}
+header .name{color:var(--ink);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover,header nav a[aria-current]{color:var(--ink)}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
+main{animation:rise .6s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.25rem 0 .9rem}
+h3{font-size:1.3rem;font-weight:500;margin:2.25rem 0 .4rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
+.lede{font-size:1.34rem;line-height:1.55}
+.sub{color:var(--muted)}
+.more{font-size:1rem}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.15rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+.build{margin:0 0 2.5rem}
+.build h3{margin:0 0 .15rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--ink)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
+figure.model figcaption{padding:0 2.5rem}
+model-viewer{display:block;width:100%;height:auto;aspect-ratio:3/2;background:transparent;--poster-color:transparent}
+model-viewer img[slot=poster]{width:100%;height:100%;object-fit:contain}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+@media (max-width:760px){figure.model{margin:2rem 0}figure.model figcaption{padding:0}}
+@media (max-width:600px){
+  body{font-size:1.12rem}
+  .hero{height:150px;margin-bottom:1rem}
+  .col{padding:.25rem 1.25rem 2.5rem}
+  header{margin-bottom:2.5rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
 </style>
+
+<!-- agent:links -->
+<link rel="alternate" type="text/markdown" href="/index.md">
+<link rel="describedby" href="/llms.txt" type="text/plain">
+<link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
+<!-- /agent:links -->
+<!-- agent:ld -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Guilherme Silva",
+  "url": "https://silvags.com/",
+  "jobTitle": "Engineering Manager",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "xgeeks"
+  },
+  "email": "mailto:work@silvags.com",
+  "sameAs": [
+    "https://github.com/0xgui",
+    "https://www.linkedin.com/in/silva-gs"
+  ]
+}
+</script>
+<!-- /agent:ld -->
 </head>
 <body>
+<a class="hero" href="robots/so-101/" aria-label="SO-101 robotic arm, open the build log" data-robot="so101" data-anim="teleop" data-seed="0" data-glb="robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
+<div class="col">
+<header>
+  <a class="name" href="./">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="builds/">Builds</a><a href="writing/">Writing</a><a href="talks/">Talks</a><a href="about/">About</a></nav>
+</header>
+<main>
+<p class="lede">Hands-on Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
 
-<nav class="site-nav">
-  <span class="nav-icons">
-    <a href="https://github.com/0xgui" target="_blank" rel="noopener" aria-label="GitHub">
-      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-    </a>
-    <a href="https://www.linkedin.com/in/silva-gs" target="_blank" rel="noopener" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>
-    </a>
-    <a href="mailto:work@silvags.com" aria-label="Email">
-      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-    </a>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-    </button>
-  </span>
-</nav>
+<h2>On the bench</h2>
+<ul class="plain">
+  <li><a href="robots/so-101/">SO-101 robotic arm</a> <span class="sub">— two arms that mirror each other. Teaching them imitation learning now.</span></li>
+  <li><a href="robots/pico/">Pico</a> <span class="sub">— two servos and one job: get back up. It does, on real hardware.</span></li>
+</ul>
+<p class="more"><a href="builds/">All builds and open source</a></p>
 
-<div class="wrap">
+<h2>Latest writing</h2>
+<!-- mirror:posts -->
+<ul class="posts" id="articles">
+  <li><time datetime="2026-09-28">September 28, 2026</time><a href="writing/i-built-a-tiny-robot-that-refuses/">I built a tiny robot that refuses to stay down</a><span class="desc">Its name is Pico.</span></li>
+  <li><time datetime="2026-08-27">August 27, 2026</time><a href="writing/i-just-wanted-to-clean-my-house/">I just wanted to clean my house.</a><span class="desc">How cleaning one room turned into open-heart surgery on a robot vacuum</span></li>
+  <li><time datetime="2026-03-05">March 5, 2026</time><a href="writing/physical-ai-is-here-and-im-building/">Physical AI is here and I’m building for it.</a><span class="desc">I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</span></li>
+  <li><time datetime="2025-12-05">December 5, 2025</time><a href="writing/aiconomy/">AIconomy</a><span class="desc">AI agents will define the future global ecommerce</span></li>
+</ul>
+<!-- /mirror:posts -->
+<p class="more"><a href="writing/">All writing</a> · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe on Binary Paths</a></p>
 
-  <!-- ═══ HERO ═══ -->
-  <section class="hero">
-    <h1 class="name">Guilherme Silva</h1>
-    <p class="lede">
-      Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.
-    </p>
-  </section>
-
-  <!-- ═══ BUILDS ═══ -->
-  <h2 class="section-h" id="builds">Builds<span class="count">02 builds</span></h2>
-
-  <div class="builds-grid">
-  <article class="build">
-    <img class="build-img" src="robots/so-101/arms-wide.webp" alt="SO-101 robotic arms, built from scratch" loading="lazy" width="1600" height="955" />
-    <div class="build-body">
-      <div class="badges">
-        <span class="badge live"><span class="pulse"></span>In Progress</span>
-        <span class="badge">Robotics</span>
-        <span class="badge">Imitation Learning</span>
-      </div>
-      <h3 class="b-title">SO-101 Robotic Arm</h3>
-      <p class="b-desc">
-        Two 6-DOF arms built from scratch: 3D-printed from open-source designs, twelve STS3215 servos, leader-follower teleop. The first time I grabbed the leader and watched the follower mirror me in real time, that was the trigger. Now I'm teaching it to do things on its own.
-      </p>
-
-      <div class="progress">
-        <div class="track">
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg active"></div>
-          <div class="seg"></div>
-        </div>
-        <div class="steps">
-          <span class="step done"><span class="icon">✓</span> Build &amp; assemble</span>
-          <span class="step done"><span class="icon">✓</span> Teleop moving</span>
-          <span class="step active"><span class="icon">◉</span> Imitation learning</span>
-          <span class="step"><span class="icon">○</span> Sim-to-real + VLA</span>
-        </div>
-      </div>
-
-      <a class="open" href="robots/so-101/">Open SO-101 →</a>
-    </div>
-  </article>
-
-  <article class="build">
-    <img class="build-img" src="robots/pico/pico-preview.webp" alt="Render of Pico's simulation model with two servos and printed arms" loading="lazy" width="1600" height="900" />
-    <div class="build-body">
-      <div class="badges">
-        <span class="badge live"><span class="pulse"></span>Self-righting works</span>
-        <span class="badge">Robotics</span>
-        <span class="badge">Reinforcement Learning</span>
-      </div>
-      <h3 class="b-title">Pico</h3>
-      <p class="b-desc">
-        Two servos, a tiny ESP32 board, and one job: get back up. A policy trained in MuJoCo moves the arms when the robot falls. My build now recovers reliably on real hardware. Next comes measuring those recoveries and trying new ideas.
-      </p>
-      <div class="progress">
-        <div class="track" aria-hidden="true">
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg done"></div>
-          <div class="seg active"></div>
-        </div>
-        <div class="steps">
-          <span class="step done"><span class="icon">✓</span> Build &amp; assemble</span>
-          <span class="step done"><span class="icon">✓</span> Calibrate</span>
-          <span class="step done"><span class="icon">✓</span> Self-righting</span>
-          <span class="step active"><span class="icon">◉</span> Experiments next</span>
-        </div>
-      </div>
-      <a class="open" href="robots/pico/">Open Pico →</a>
-    </div>
-  </article>
-  </div>
-
-  <!-- ═══ WRITING ═══ -->
-  <h2 class="section-h">Writing<span class="count">Binary Paths</span></h2>
-  <p class="lede" style="margin-bottom:1.25rem;">On engineering, teams, and the strange joy of building things you can touch. From <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
-  <!-- A small published snapshot keeps first visits and no-JS visits useful during RSS outages. -->
-  <div id="articles">
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2026-08-27">August 27, 2026</time>
-        <h3><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a></h3>
-        <p>How cleaning one room turned into open-heart surgery on a robot vacuum</p>
-      </div>
-    </div>
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2026-03-05">March 5, 2026</time>
-        <h3><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a></h3>
-        <p>I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</p>
-      </div>
-    </div>
-    <div class="article-item">
-      <div></div><div class="meta">
-        <time datetime="2025-12-05">December 5, 2025</time>
-        <h3><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a></h3>
-        <p>AI agents will define the future global ecommerce</p>
-      </div>
-    </div>
-  </div>
-  <p id="articles-status" role="status" style="color:var(--muted);font-size:0.8rem;margin-top:0.75rem;">Selected posts · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">All posts on Binary Paths →</a></p>
-
-  <div class="subscribe-cta">
-    <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe to Binary Paths →</a>
-  </div>
-
-  <!-- ═══ TALKS ═══ -->
-  <h2 class="section-h">Previous Talks<span class="count">cloud &amp; platform</span></h2>
-  <p class="lede" style="margin-bottom:1.25rem;">My DevOps world. Kubernetes, WebAssembly, and platform engineering. These days my research is more about robotics, but I still continue to work on cloud-native stuff.</p>
-  <div class="talks-grid">
-    <div class="talk-card">
-      <div class="t-tag">Video</div>
-      <a href="https://youtu.be/GVWSm0GXfFg" target="_blank" rel="noopener">WebAssembly + Kubernetes: Future or Fad?</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Video · Series</div>
-      <a href="https://youtu.be/1HnvtX5iFG0" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Intro</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Video · Series</div>
-      <a href="https://youtu.be/4-IEQK75ASE" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Business</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Slides</div>
-      <a href="https://drive.google.com/file/d/1U3Fy4boqBCr6XJyx-QTuS1T4n3sX4yzg/view" target="_blank" rel="noopener">Beyond the Hype: K8s for Real Business Value</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Slides</div>
-      <a href="https://drive.google.com/file/d/1mwjWJ6FR0OSCIx_EBlW-GnyAQMKGXbM9/view" target="_blank" rel="noopener">WebAssembly + Kubernetes Presentation</a>
-    </div>
-    <div class="talk-card">
-      <div class="t-tag">Slides</div>
-      <a href="https://drive.google.com/file/d/1JW9yt-4dkswd9lUxgyEnpinAHZaPleE0/view" target="_blank" rel="noopener">Maximizing Efficiency with K8s Multi-Tenancy</a>
-    </div>
-  </div>
-
-  <!-- ═══ ABOUT ═══ -->
-  <h2 class="section-h">About</h2>
-  <div class="about">
-    <p>I started in automotive engineering, designing and building physical systems where tolerances are measured in millimetres and a wrong assumption means something breaks in the real world.</p>
-    <p>I moved into software, spending time working on cloud/infrastructure/devops/platform/etc and eventually became an Engineering Manager, where I build teams that build things.</p>
-    <p>Now I'm deeply interested in Physical AI: robots that have some kind of AI system to do their tasks instead of being programmed movement-by-movement. The SO-101 build is my self-education in public, my first real robot. A 3D printer, AliExpress, and the question:</p>
-    <p class="manifesto">what does it take to give a machine a brain?</p>
-  </div>
-
-  <footer>
-
-    <p class="updated">Last updated September 2026</p>
-  </footer>
-
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
 </div>
+<script type="module">
+// Header: a real GLB of the robot, rendered small, then dithered 8x8 to 1-bit ink on paper. Poster shows first.
+const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
+if(hero&&gl2&&(!reduce||POSTER)){
+const cv=hero.querySelector('canvas'),A=hero.dataset.anim,SEED=+hero.dataset.seed||0,R=document.documentElement;
+let seen=false,booted=false,run=null;
+const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
+new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
+document.readyState=='complete'?kick():addEventListener('load',kick);
+async function boot(){
+  const V='https://cdn.jsdelivr.net/npm/three@0.169.0';
+  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
+  const r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
+  const rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true});
+  const scene=new T.Scene();scene.background=new T.Color(0);
+  const shade=k=>new T.ShaderMaterial({uniforms:{k:{value:k}},
+    vertexShader:'varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);v=p.xyz;gl_Position=projectionMatrix*p;}',
+    fragmentShader:'uniform float k;varying vec3 v;void main(){vec3 n=normalize(cross(dFdx(v),dFdy(v))),e=normalize(-v);if(dot(n,e)<0.)n=-n;'+
+    'float d=max(dot(n,normalize(vec3(.45,.75,.55))),0.),f=max(dot(n,normalize(vec3(-.6,.1,.3))),0.)*.25,m=pow(1.-max(dot(n,e),0.),3.);'+
+    'gl_FragColor=vec4(vec3(clamp((.22+.7*d+f)*k+.8*m,.1,1.)),1.);}'});
+  const model=gltf.scene;model.traverse(o=>{if(o.isMesh){const c=o.material.color||{r:1,g:1,b:1};o.material=shade(c.r+c.g+c.b<.6?.55:1)}});
+  const box=new T.Box3().setFromObject(model),ctr=box.getCenter(new T.Vector3()),H=box.max.y-box.min.y;
+  const pivot=new T.Group(),spin=new T.Group();scene.add(spin);spin.add(pivot);pivot.add(model);
+  const pico=hero.dataset.robot=='pico';
+  model.position.set(pico?-ctr.x:-0.04,-box.min.y,-ctr.z);
+  if(pico){pivot.position.x=box.max.x-ctr.x;model.position.x-=pivot.position.x;spin.rotation.y=-.55}
+  const cam=new T.PerspectiveCamera(18,1,.01,20),dist=H*.5/.7/Math.tan(T.MathUtils.degToRad(9));
+  const ty=pico?H*.48:H*.6;cam.position.set(0,ty+dist*.22,dist);cam.lookAt(0,ty,0);
+  const J={};model.traverse(o=>{if(/^(shoulder|upper_arm|lower_arm|wrist|gripper|moving_jaw)/.test(o.name)&&!/visual/.test(o.name))J[o.name.split('_link')[0]]={o,q:o.quaternion.clone()}});
+  const Z=new T.Vector3(0,0,1),tq=new T.Quaternion();
+  const joint=(n,a)=>{const j=J[n];if(j)j.o.quaternion.copy(j.q).multiply(tq.setFromAxisAngle(Z,a))};
+  const hx=n=>{n=Math.sin(n*127.1+SEED*31.7)*43758.5453;return n-Math.floor(n)};
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+  const move=(j,t,lo,hi)=>{const P=1.6+hx(j+5)*.9,u=t/P+hx(j),i=Math.floor(u),a=lo+(hi-lo)*hx(i*13+j),b=lo+(hi-lo)*hx(i*13+13+j),w=Math.min(1,(u-i)*1.6);return a+(b-a)*ease(w)};
+  function pose(t){
+    if(A=='teleop'||A=='turn'){
+      spin.rotation.y=A=='turn'?t*.22+SEED*2:-.5+Math.sin(t*.12)*.55;
+      if(A=='teleop'){joint('shoulder',move(1,t,-.5,.5));joint('upper_arm',move(2,t,-.25,.2));joint('lower_arm',move(3,t,-.2,.35));
+        joint('wrist',move(4,t,-.6,.6));joint('gripper',move(6,t,-.8,.8));joint('moving_jaw',move(5,t,0,.6))}}
+    if(pico){if(A=='turn'){spin.rotation.y=t*.3+SEED*2;return}
+      const p=(t+SEED)%7.5;let a=Math.sin(t*2.3)*.008;
+      if(p>=2&&p<2.7){const u=(p-2)/.7;a=-1.42*u*u*u}
+      else if(p>=2.7&&p<3.9){const d=p-2.7;a=-1.42+.07*Math.exp(-d*7)*Math.abs(Math.sin(d*18))}
+      else if(p>=3.9&&p<5){const u=(p-3.9)/1.1,c=1.9,o=1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2);a=-1.42*(1-o)}
+      else if(p>=5&&p<6){const d=p-5;a=.035*Math.exp(-d*5)*Math.cos(d*14)}
+      pivot.rotation.z=a}}
+  const post=new T.ShaderMaterial({depthTest:false,uniforms:{D:{value:rt.texture},R:{value:new T.Vector2()},C:{value:2},I:{value:new T.Vector3()},P:{value:new T.Vector3()},t:{value:0}},
+    vertexShader:'void main(){gl_Position=vec4(position.xy,0.,1.);}',
+    fragmentShader:'uniform sampler2D D;uniform vec2 R;uniform float C,t;uniform vec3 I,P;'+
+    'float b2(vec2 a){a=floor(a);return fract(a.x*.5+a.y*a.y*.75);}float b8(vec2 a){return (b2(a*.25)*.25+b2(a*.5))*.25+b2(a);}'+
+    'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}'+
+    'void main(){vec2 c=floor(gl_FragCoord.xy/C);float l=texture2D(D,(c+.5)*C/R).r;'+
+    'if(l>0.){l=l*(1.+.03*sin(t*9.)*sin(t*5.3))+(h(c+floor(t*30.))-.5)*.07;}'+
+    'gl_FragColor=vec4(l>b8(c)+.003?I:P,1.);}'});
+  const ps=new T.Scene(),oc=new T.OrthographicCamera(-1,1,1,-1,0,1),q=new T.Mesh(new T.PlaneGeometry(2,2),post);q.frustumCulled=false;ps.add(q);
+  const col=n=>{const m=getComputedStyle(R).getPropertyValue(n).trim().match(/^#(\w{6})$/),v=m?parseInt(m[1],16):0;return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
+  const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
+    const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
+  const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
+  const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(cv.width==w&&cv.height==h)return;
+    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
+  const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
+  let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
+  draw(t);cv.classList.add('on');if(POSTER){hero.dataset.ready=1;return}
+  const frame=now=>{raf=0;if(document.hidden||!seen)return;if(now-last>=33){t+=Math.min(.1,(now-(last||now))/1000)||1/30;last=now;draw(t)}raf=requestAnimationFrame(frame)};
+  run=()=>{if(!raf&&seen&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}};
+  document.addEventListener('visibilitychange',run);
+  new MutationObserver(()=>{colors();draw(t)}).observe(R,{attributes:true,attributeFilter:['class']});run();
+}}
+</script>
 
 <script>
-// ── THEME TOGGLE ──
-const toggle = document.getElementById('theme-toggle');
-const html = document.documentElement;
-try { if (localStorage.getItem('theme') === 'dark') html.classList.add('dark'); } catch {}
-toggle.addEventListener('click', () => {
-  html.classList.toggle('dark');
-  try { localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); } catch {}
-});
-
-// ── ARTICLES FROM SUBSTACK (via Cloudflare Worker at rss.silvags.com) ──
-(async () => {
-  const container = document.getElementById("articles");
-  const status = document.getElementById("articles-status");
-  const cacheKey = "binary-paths-articles-v1";
-  const maxCacheAge = 7 * 24 * 60 * 60 * 1000;
-  function httpsURL(value) {
-    try { const url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch { return ''; }
-  }
-  function validItems(data) {
-    if (!Array.isArray(data?.items)) return [];
-    return data.items.filter(item => item && typeof item.title === 'string' && item.title.trim()
-      && typeof item.link === 'string' && httpsURL(item.link)).slice(0, 5);
-  }
-  function render(items) {
-    const fragment = document.createDocumentFragment();
-    for (const article of items) {
-      const div = document.createElement('div');
-      div.className = 'article-item';
-      const media = document.createElement('div');
-      const image = httpsURL(article.image);
-      if (image) {
-        const img = document.createElement('img');
-        img.className = 'thumb'; img.src = image; img.alt = ''; img.loading = 'lazy';
-        img.addEventListener('error', () => img.remove(), { once: true });
-        media.append(img);
-      }
-      const meta = document.createElement('div'); meta.className = 'meta';
-      const date = new Date(article.pubDate);
-      if (Number.isFinite(date.getTime())) {
-        const time = document.createElement('time'); time.dateTime = date.toISOString();
-        time.textContent = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        meta.append(time);
-      }
-      const heading = document.createElement('h3');
-      const link = document.createElement('a');
-      link.href = article.link; link.target = '_blank'; link.rel = 'noopener'; link.textContent = article.title;
-      heading.append(link); meta.append(heading);
-      const description = document.createElement('p');
-      const text = typeof article.description === 'string' ? article.description.replace(/<[^>]*>/g, '').trim() : '';
-      description.textContent = text.length > 150 ? text.slice(0, 150) + '…' : text;
-      meta.append(description); div.append(media, meta); fragment.append(div);
-    }
-    container.replaceChildren(fragment);
-  }
-  // Storage is optional: privacy settings and quota errors must not block articles.
-  try {
-    const cached = JSON.parse(localStorage.getItem(cacheKey));
-    const age = Date.now() - cached?.savedAt;
-    const items = validItems(cached);
-    if (items.length && age >= 0 && age < maxCacheAge) {
-      render(items); status.textContent = 'Saved posts · checking for updates…';
-    }
-  } catch {}
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    try {
-      const rsp = await fetch('https://rss.silvags.com', { signal: controller.signal });
-      if (!rsp.ok) throw new Error('Feed unavailable');
-      const data = await rsp.json();
-      const items = validItems(data);
-      if (!items.length) throw new Error('Invalid or empty feed');
-      render(items);
-      status.textContent = data.stale ? 'Saved posts · feed update delayed.' : '';
-      // Do not extend the age of a stale server snapshot on each visit.
-      const fetchedAt = Date.parse(data.fetchedAt);
-      const savedAt = Number.isFinite(fetchedAt) ? fetchedAt : Date.now();
-      try { localStorage.setItem(cacheKey, JSON.stringify({ items, savedAt })); } catch {}
-      return;
-    } catch {
-      if (attempt === 1) status.textContent = 'Showing saved or selected posts. Visit Binary Paths for the latest.';
-    } finally { clearTimeout(timeout); }
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  }
-})();
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
+function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
+try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
 </script>
 </body>
 </html>

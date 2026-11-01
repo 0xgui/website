@@ -8,16 +8,15 @@ A static personal website (silvags.com) + robotics build log. No framework, no b
 
 ```
 index.html              Homepage
-robots/
-  so-101/
-    index.html          Build log page (media alongside, relative paths)
-    arms-wide.webp
-    demo-1.webm
-    ...
-  pico/
-    index.html          Self-righting robot build notes
-    pico.glb            Neutral pose from the simulation meshes
-    pico-preview.webp   Render of the same geometry
+about/ builds/ talks/ writing/   Section pages
+writing/<slug>/         Mirrored Binary Paths essay (index.html, index.md, images/)
+robots/so-101/          SO-101 build log and media
+robots/pico/            Pico build notes and media
+llms.txt llms-full.txt  Agent index and full text, generated from the HTML
+robots.txt sitemap.xml feed.xml _headers _routes.json
+functions/_middleware.js   Accept: text/markdown negotiation
+scripts/                Mirror, agent-file builder, gate path check (not deployed)
+tests/                  Stdlib unittest plus one node:test file
 favicon.svg             Site icon
 worker.js               Cloudflare Worker (RSS proxy, deployed separately)
 ```
@@ -31,7 +30,7 @@ Each HTML page is fully self-contained:
 - `<script>` is inline — there is no external JS file (worker.js is the only standalone JS, deployed separately to Cloudflare)
 - Media lives alongside the page in the same `robots/<name>/` directory — use relative paths (e.g. `src="arms-wide.webp"`)
 
-Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need styles, add them to the page's `<style>` block.
+Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need styles, add them to the page's `<style>` block. `functions/_middleware.js` is the one exception: a Pages Function, not a browser script. New essays reuse the Writing page's inline style and scripts; do not invent a second visual system.
 
 ## Files
 
@@ -45,6 +44,11 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 | `robots/pico/index.html` | Pico build notes — recovery loop, hardware adaptation, progress |
 | `robots/pico/pico.glb` | Neutral robot model converted from SelfRisingRobot MuJoCo meshes |
 | `robots/pico/pico-preview.webp` | Static render used as the model poster, homepage card, and OG image |
+| `writing/<slug>/` | One mirrored Binary Paths essay: HTML, Markdown twin, optimized images |
+| `scripts/mirror_substack.py` | Fetches Binary Paths and writes `writing/<slug>/`. High-tier. |
+| `scripts/build_agent.py` | Regenerates Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `feed.xml`, `_headers` |
+| `functions/_middleware.js` | Serves `index.md` when `Accept` prefers `text/markdown` |
+| `llms.txt` | Spec index for agents. Links point at the Markdown twins |
 
 Pico's physical self-righting is confirmed working by the owner. Further measurements and training changes are planned. Its visual is labelled as simulation geometry; use actual supplied footage for any physical demo. Build notes use the same `day-XX` anchor pattern as SO-101 but descriptive labels instead of invented diary dates. The model uses the six meshes from `pico-self-rising-robot/RL/assets`, in their neutral pose, converted from Z-up to Y-up. The site's existing model-viewer component displays it, with a static poster fallback and reduced-motion support. Auto-rotation matches SO-101's 25 degrees/second; Start/Pause rotation lets visitors explicitly enable motion even when reduced motion is preferred.
 
@@ -64,7 +68,7 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 - `image` field comes from the RSS `<enclosure>` tag
 - Cache stays fresh for 1 hour; last-good articles are retained for up to 7 days and served immediately while stale data refreshes in the background. Cache is best-effort, not durable storage.
 - Upstream fetch times out after 6 seconds; malformed/empty feeds never replace a good cache.
-- Homepage includes a small published article snapshot, optionally restores a recent browser cache, and refreshes with an 8-second timeout plus one retry. Storage failures must not stop the page. Keep the snapshot links/titles current when editing the Writing section.
+- The homepage and Writing page no longer call this worker. They link to the local copies under `writing/<slug>/`. The worker remains the last-resort fallback for the mirror script if Substack and its API are both unreachable. It still returns titles and excerpts only, so it cannot replace a full essay.
 - Render feed strings as text, not interpolated HTML; only accept HTTPS article and image URLs.
 - Changes to worker.js in this repo do NOT take effect until redeployed to Cloudflare
 
@@ -81,8 +85,9 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 - Read the full file before editing — these are large inline HTML files
 - Match the existing style (inline CSS, no Tailwind, no framework)
 - Test with `python3 -m http.server 8000` and open in a browser
-- No test suite — do ad-hoc verification (tag balance, file reference checks)
-- Don't add dependencies — this project has none and should stay that way
+- Tests: `python3 -m unittest discover -s tests -v` and `node --test tests/negotiate.test.mjs`. CI runs both on pull requests.
+- `python3 scripts/build_agent.py --check` fails when Markdown twins or `llms.txt` drift from the HTML
+- Don't add dependencies — scripts use the Python stdlib. Image recompression shells out to `ffmpeg` when a download is not already a small WebP. GIFs become WebM.
 
 ## Adding a new robot build
 
@@ -138,9 +143,29 @@ In `index.html`, the Builds section currently contains SO-101 and Pico:
 
 Add the new project to the file table and note any project-specific conventions.
 
+## Agent files
+
+`python3 scripts/build_agent.py` reads every `index.html` and writes the Markdown twin beside it (`about/index.md`, and so on), plus `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `feed.xml`, and `_headers`. Each HTML page gets `<link rel="alternate" type="text/markdown">`, a `describedby` link to `/llms.txt`, and an Atom autodiscovery link. Home and About carry Person JSON-LD (`sameAs` is GitHub and LinkedIn only). Robot pages carry CreativeWork. Essays carry BlogPosting.
+
+`llms.txt` follows the v2 shape at https://llmstxt.org: one H1, a blockquote, then H2 sections whose items are Markdown links. Those links point at the twins on `https://silvags.com`.
+
+Content Signals default to `search=yes, ai-input=yes, ai-train=no`. Change `CONTENT_SIGNAL` in `scripts/build_agent.py`, set the same string in `functions/_middleware.js`, and re-run the builder. `tests/test_agent.py` fails if the three copies disagree. `robots.txt` is the file crawlers read. `_headers` repeats the signal on responses.
+
+`functions/_middleware.js` is the free-plan stand-in for Cloudflare Markdown for Agents (that product is not on the free plan). It serves the twin when `Accept` prefers `text/markdown`, with `Content-Type: text/markdown` and `Vary: Accept`. Direct fetches of `index.md` work without the function. `_routes.json` runs the function for HTML and Markdown and skips images, video, and models so those stay ordinary static files. The preview workflow uploads the static tree without the `functions/` directory; Wrangler reads `functions/` from the repo root while deploying that tree. Do not put `_worker.js` in the site or the function is ignored.
+
+The dithered header is the inline module on `.hero`: a poster image first, then a small GLB drawn with three.js from the existing jsDelivr URL and reduced to the page's ink and paper colours. Reduced motion keeps the poster. It is not part of the agent files.
+
+## Mirroring Binary Paths
+
+`python3 scripts/mirror_substack.py` copies every public essay to `writing/<slug>/` using the Writing page as the template. The HTML is sanitized with an allowlist. Images are saved next to the essay and kept under 1MB (GIFs become WebM). Each essay has `<link rel="canonical">` pointing at its `https://binarypaths.substack.com/p/...` URL, a visible "Originally published on Binary Paths" link, the publish date, and a Markdown twin.
+
+The homepage "Latest writing" list (four essays) and the Writing page link to these local copies. The subscribe link stays on Binary Paths. Paywalled or truncated posts become a local excerpt that links back. The script tries, in order, the Substack posts API, the archive API, the RSS feed, and `https://rss.silvags.com`. A challenge page, HTTP 403/503, empty feed, or malformed body is a failure. It retries with backoff. On failure it writes nothing. It never deletes an essay that is already on disk, and it never replaces a full essay with a shorter or paywalled body.
+
+`.github/workflows/mirror-substack.yml` runs that script every 6 hours (minute 17) and on `workflow_dispatch`. It opens a pull request. It does not push to the default branch. Auto-merge is requested only when `scripts/gate_paths.py` says the diff is not high tier and the PR body has Testing, Risk, and How to revert. A diff that touches a workflow, `_headers`, `_redirects`, `_routes.json`, `functions/`, `worker.js`, `wrangler.toml`, `.review-gate.yml`, or `scripts/mirror_substack.py` is left for a person. If the run fails, it opens or updates a GitHub issue titled "Binary Paths mirror failed" and leaves the live site alone. The schedule works only after this workflow file is on the default branch. Auto-merge also requires the repository setting "Allow auto-merge", and branch protection should require the `CI` and `agent-pr-gate` checks. `agent-pr-gate` itself runs from the default branch (`pull_request_target`), so it does not review anything until that workflow is on `main`.
+
 ## Cursor Cloud specific instructions
 
-There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. The homepage, `robots/so-101/`, and `robots/pico/` are the pages to check; the theme toggle is `#theme-toggle` and persists `theme` in localStorage.
+There is no package install and no build. `start` serves this directory with `python3 -m http.server 8000` (all interfaces). Open `http://127.0.0.1:8000`. Check `/`, `/writing/`, one `writing/<slug>/` essay, `/robots/so-101/`, and `/robots/pico/`. The theme toggle is `#theme-toggle` and persists `theme` in localStorage. `/llms.txt` and `/writing/<slug>/index.md` are static files the same server can return. `Accept: text/markdown` negotiation needs the Pages function; the Python server will not do it.
 
 `worker.js` is the Cloudflare RSS proxy. It is not started by the local server. Repo changes to it do nothing until the GitHub Action redeploys it.
 

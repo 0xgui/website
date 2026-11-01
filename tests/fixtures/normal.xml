@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Binary Paths</title>
+    <item>
+      <title>Hello world</title>
+      <link>https://binarypaths.substack.com/p/hello-world</link>
+      <pubDate>Mon, 05 Mar 2026 08:00:00 GMT</pubDate>
+      <description>A normal essay</description>
+      <enclosure url="https://cdn.example/cover.jpg" type="image/jpeg"/>
+      <content:encoded><![CDATA[<p>The full essay.</p><p><img src="https://cdn.example/pic.jpg" alt="A picture"></p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

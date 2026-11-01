@@ -1,0 +1,13 @@
+# Content Signals: https://contentsignals.org/
+# Change the yes/no values in scripts/build_agent.py (CONTENT_SIGNAL),
+# set the same string in functions/_middleware.js, then re-run this script.
+# search    — build a search index and show links and short excerpts.
+# ai-input  — use the content as input to a model at read time.
+# ai-train  — train or fine-tune a model.
+# Omitting a signal would mean no preference. This file sets all three.
+
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+Sitemap: https://silvags.com/sitemap.xml

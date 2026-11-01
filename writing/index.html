@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Writing · Guilherme Silva</title>
+<meta name="description" content="Posts from Binary Paths, on engineering, teams, and physical AI." />
+<meta name="theme-color" content="#16130f" />
+<meta property="og:type" content="website">
+<meta property="og:title" content="Writing · Guilherme Silva">
+<meta property="og:description" content="Posts from Binary Paths, on engineering, teams, and physical AI.">
+<meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
+<meta property="og:url" content="https://silvags.com/writing/">
+<link rel="canonical" href="https://silvags.com/writing/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
+<style>
+/* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
+  --bg:var(--paper);--text:var(--ink);color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+  color-scheme:dark}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.hero{display:block;position:relative;height:230px;margin-bottom:1.5rem;overflow:hidden;background:var(--paper)}
+a.hero{cursor:pointer}
+a.hero:focus-visible{outline-offset:-4px}
+.hero .poster{position:absolute;inset:0;background:var(--ink);opacity:.85;-webkit-mask:var(--poster) center/auto 100% no-repeat;mask:var(--poster) center/auto 100% no-repeat}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s}
+.hero canvas.on{opacity:1}
+.col{max-width:37rem;margin:0 auto;padding:.5rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:3.5rem;font-size:1.02rem}
+header .name{color:var(--ink);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover,header nav a[aria-current]{color:var(--ink)}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
+main{animation:rise .6s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.25rem 0 .9rem}
+h3{font-size:1.3rem;font-weight:500;margin:2.25rem 0 .4rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
+.lede{font-size:1.34rem;line-height:1.55}
+.sub{color:var(--muted)}
+.more{font-size:1rem}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.15rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+.build{margin:0 0 2.5rem}
+.build h3{margin:0 0 .15rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--ink)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
+figure.model figcaption{padding:0 2.5rem}
+model-viewer{display:block;width:100%;height:auto;aspect-ratio:3/2;background:transparent;--poster-color:transparent}
+model-viewer img[slot=poster]{width:100%;height:100%;object-fit:contain}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+@media (max-width:760px){figure.model{margin:2rem 0}figure.model figcaption{padding:0}}
+@media (max-width:600px){
+  body{font-size:1.12rem}
+  .hero{height:150px;margin-bottom:1rem}
+  .col{padding:.25rem 1.25rem 2.5rem}
+  header{margin-bottom:2.5rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+</style>
+
+<!-- agent:links -->
+<link rel="alternate" type="text/markdown" href="/writing/index.md">
+<link rel="describedby" href="/llms.txt" type="text/plain">
+<link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
+<!-- /agent:links -->
+</head>
+<body>
+<div class="hero" role="img" aria-label="Dithered animation of SO-101 robotic arm" data-robot="so101" data-anim="turn" data-seed="0" data-glb="../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></div>
+<div class="col">
+<header>
+  <a class="name" href="../">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="../builds/">Builds</a><a href="../writing/" aria-current="page">Writing</a><a href="../talks/">Talks</a><a href="../about/">About</a></nav>
+</header>
+<main>
+<h1>Writing</h1>
+<p class="lede">On engineering, teams, and the strange joy of building things you can touch. I publish at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
+<!-- mirror:posts -->
+<ul class="posts" id="articles">
+  <li><time datetime="2026-09-28">September 28, 2026</time><a href="i-built-a-tiny-robot-that-refuses/">I built a tiny robot that refuses to stay down</a><span class="desc">Its name is Pico.</span></li>
+  <li><time datetime="2026-08-27">August 27, 2026</time><a href="i-just-wanted-to-clean-my-house/">I just wanted to clean my house.</a><span class="desc">How cleaning one room turned into open-heart surgery on a robot vacuum</span></li>
+  <li><time datetime="2026-03-05">March 5, 2026</time><a href="physical-ai-is-here-and-im-building/">Physical AI is here and I’m building for it.</a><span class="desc">I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</span></li>
+  <li><time datetime="2025-12-05">December 5, 2025</time><a href="aiconomy/">AIconomy</a><span class="desc">AI agents will define the future global ecommerce</span></li>
+  <li><time datetime="2025-01-09">January 9, 2025</time><a href="5-tech-trends-that-will-define-2025/">5 Tech Trends That Will Define 2025</a><span class="desc">We are in the best timeline.</span></li>
+  <li><time datetime="2024-12-04">December 4, 2024</time><a href="engineering-estimates/">Engineering Estimates: 1 week means 4</a><span class="desc">Why your estimate is a lie you keep telling yourself</span></li>
+  <li><time datetime="2024-11-09">November 9, 2024</time><a href="when-engineers-need-to-talk-business/">When Engineers Need to Talk Business</a><span class="desc">Your code is perfect. Your business vocabulary isn't.</span></li>
+  <li><time datetime="2024-10-23">October 23, 2024</time><a href="you-cant-know-everything-in-tech/">You Can't Know Everything in Tech</a><span class="desc">Because tech moves fast, but you can move faster.</span></li>
+  <li><time datetime="2024-10-09">October 9, 2024</time><a href="speaking-in-front-of-250-people/">Speaking in Front of 250+ People</a><span class="desc">250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.</span></li>
+  <li><time datetime="2024-09-25">September 25, 2024</time><a href="the-art-of-juggling-life/">The Art of Juggling Life</a><span class="desc">Balls Drop, Balls Add, You Adapt.</span></li>
+  <li><time datetime="2024-09-04">September 4, 2024</time><a href="the-road-trip-of-kubernetes/">The Road Trip of Kubernetes</a><span class="desc">Don't follow the road that everyone is riding. Create your own road trip.</span></li>
+  <li><time datetime="2024-08-28">August 28, 2024</time><a href="why-platforms-must-be-products/">Why Platforms Must Be Products, Not Projects</a><span class="desc">It's not a set-and-forget thing. You need to nourish it. You need to take care of it.</span></li>
+  <li><time datetime="2024-08-14">August 14, 2024</time><a href="becoming-a-product-minded-engineer/">Becoming a Product-Minded Engineer</a><span class="desc">Because let's face it. Customers don't care about what tech you use. They care if what they use, works.</span></li>
+  <li><time datetime="2024-07-31">July 31, 2024</time><a href="imposter-syndrome-if-you-have-it/">Imposter Syndrome: If you have it, you are good</a><span class="desc">Look. If you are reading this, you probably have it. There is no permanent cure. You have to embrace it.</span></li>
+  <li><time datetime="2024-07-17">July 17, 2024</time><a href="personal-branding-as-an-engineer/">Why Personal Branding matters as a Engineer</a><span class="desc">Sometimes work doesn't speak for itself and you need to do more.</span></li>
+</ul>
+<!-- /mirror:posts -->
+<p id="articles-status" role="status" class="sub more">All posts and subscribe at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
+
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
+</div>
+<script type="module">
+// Header: a real GLB of the robot, rendered small, then dithered 8x8 to 1-bit ink on paper. Poster shows first.
+const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
+if(hero&&gl2&&(!reduce||POSTER)){
+const cv=hero.querySelector('canvas'),A=hero.dataset.anim,SEED=+hero.dataset.seed||0,R=document.documentElement;
+let seen=false,booted=false,run=null;
+const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
+new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
+document.readyState=='complete'?kick():addEventListener('load',kick);
+async function boot(){
+  const V='https://cdn.jsdelivr.net/npm/three@0.169.0';
+  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
+  const r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
+  const rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true});
+  const scene=new T.Scene();scene.background=new T.Color(0);
+  const shade=k=>new T.ShaderMaterial({uniforms:{k:{value:k}},
+    vertexShader:'varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);v=p.xyz;gl_Position=projectionMatrix*p;}',
+    fragmentShader:'uniform float k;varying vec3 v;void main(){vec3 n=normalize(cross(dFdx(v),dFdy(v))),e=normalize(-v);if(dot(n,e)<0.)n=-n;'+
+    'float d=max(dot(n,normalize(vec3(.45,.75,.55))),0.),f=max(dot(n,normalize(vec3(-.6,.1,.3))),0.)*.25,m=pow(1.-max(dot(n,e),0.),3.);'+
+    'gl_FragColor=vec4(vec3(clamp((.22+.7*d+f)*k+.8*m,.1,1.)),1.);}'});
+  const model=gltf.scene;model.traverse(o=>{if(o.isMesh){const c=o.material.color||{r:1,g:1,b:1};o.material=shade(c.r+c.g+c.b<.6?.55:1)}});
+  const box=new T.Box3().setFromObject(model),ctr=box.getCenter(new T.Vector3()),H=box.max.y-box.min.y;
+  const pivot=new T.Group(),spin=new T.Group();scene.add(spin);spin.add(pivot);pivot.add(model);
+  const pico=hero.dataset.robot=='pico';
+  model.position.set(pico?-ctr.x:-0.04,-box.min.y,-ctr.z);
+  if(pico){pivot.position.x=box.max.x-ctr.x;model.position.x-=pivot.position.x;spin.rotation.y=-.55}
+  const cam=new T.PerspectiveCamera(18,1,.01,20),dist=H*.5/.7/Math.tan(T.MathUtils.degToRad(9));
+  const ty=pico?H*.48:H*.6;cam.position.set(0,ty+dist*.22,dist);cam.lookAt(0,ty,0);
+  const J={};model.traverse(o=>{if(/^(shoulder|upper_arm|lower_arm|wrist|gripper|moving_jaw)/.test(o.name)&&!/visual/.test(o.name))J[o.name.split('_link')[0]]={o,q:o.quaternion.clone()}});
+  const Z=new T.Vector3(0,0,1),tq=new T.Quaternion();
+  const joint=(n,a)=>{const j=J[n];if(j)j.o.quaternion.copy(j.q).multiply(tq.setFromAxisAngle(Z,a))};
+  const hx=n=>{n=Math.sin(n*127.1+SEED*31.7)*43758.5453;return n-Math.floor(n)};
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+  const move=(j,t,lo,hi)=>{const P=1.6+hx(j+5)*.9,u=t/P+hx(j),i=Math.floor(u),a=lo+(hi-lo)*hx(i*13+j),b=lo+(hi-lo)*hx(i*13+13+j),w=Math.min(1,(u-i)*1.6);return a+(b-a)*ease(w)};
+  function pose(t){
+    if(A=='teleop'||A=='turn'){
+      spin.rotation.y=A=='turn'?t*.22+SEED*2:-.5+Math.sin(t*.12)*.55;
+      if(A=='teleop'){joint('shoulder',move(1,t,-.5,.5));joint('upper_arm',move(2,t,-.25,.2));joint('lower_arm',move(3,t,-.2,.35));
+        joint('wrist',move(4,t,-.6,.6));joint('gripper',move(6,t,-.8,.8));joint('moving_jaw',move(5,t,0,.6))}}
+    if(pico){if(A=='turn'){spin.rotation.y=t*.3+SEED*2;return}
+      const p=(t+SEED)%7.5;let a=Math.sin(t*2.3)*.008;
+      if(p>=2&&p<2.7){const u=(p-2)/.7;a=-1.42*u*u*u}
+      else if(p>=2.7&&p<3.9){const d=p-2.7;a=-1.42+.07*Math.exp(-d*7)*Math.abs(Math.sin(d*18))}
+      else if(p>=3.9&&p<5){const u=(p-3.9)/1.1,c=1.9,o=1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2);a=-1.42*(1-o)}
+      else if(p>=5&&p<6){const d=p-5;a=.035*Math.exp(-d*5)*Math.cos(d*14)}
+      pivot.rotation.z=a}}
+  const post=new T.ShaderMaterial({depthTest:false,uniforms:{D:{value:rt.texture},R:{value:new T.Vector2()},C:{value:2},I:{value:new T.Vector3()},P:{value:new T.Vector3()},t:{value:0}},
+    vertexShader:'void main(){gl_Position=vec4(position.xy,0.,1.);}',
+    fragmentShader:'uniform sampler2D D;uniform vec2 R;uniform float C,t;uniform vec3 I,P;'+
+    'float b2(vec2 a){a=floor(a);return fract(a.x*.5+a.y*a.y*.75);}float b8(vec2 a){return (b2(a*.25)*.25+b2(a*.5))*.25+b2(a);}'+
+    'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}'+
+    'void main(){vec2 c=floor(gl_FragCoord.xy/C);float l=texture2D(D,(c+.5)*C/R).r;'+
+    'if(l>0.){l=l*(1.+.03*sin(t*9.)*sin(t*5.3))+(h(c+floor(t*30.))-.5)*.07;}'+
+    'gl_FragColor=vec4(l>b8(c)+.003?I:P,1.);}'});
+  const ps=new T.Scene(),oc=new T.OrthographicCamera(-1,1,1,-1,0,1),q=new T.Mesh(new T.PlaneGeometry(2,2),post);q.frustumCulled=false;ps.add(q);
+  const col=n=>{const m=getComputedStyle(R).getPropertyValue(n).trim().match(/^#(\w{6})$/),v=m?parseInt(m[1],16):0;return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
+  const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
+    const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
+  const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
+  const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(cv.width==w&&cv.height==h)return;
+    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
+  const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
+  let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
+  draw(t);cv.classList.add('on');if(POSTER){hero.dataset.ready=1;return}
+  const frame=now=>{raf=0;if(document.hidden||!seen)return;if(now-last>=33){t+=Math.min(.1,(now-(last||now))/1000)||1/30;last=now;draw(t)}raf=requestAnimationFrame(frame)};
+  run=()=>{if(!raf&&seen&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}};
+  document.addEventListener('visibilitychange',run);
+  new MutationObserver(()=>{colors();draw(t)}).observe(R,{attributes:true,attributeFilter:['class']});run();
+}}
+</script>
+
+<script>
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
+function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
+try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
+</script>
+</body>
+</html>

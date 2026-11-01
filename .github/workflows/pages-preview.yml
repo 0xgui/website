@@ -67,13 +67,19 @@ jobs:
             --exclude='AGENTS.md' \
             --exclude='README.md' \
             --exclude='.gitignore' \
+            --exclude='functions' \
+            --exclude='scripts' \
+            --exclude='tests' \
             -cf - . | tar -C /tmp/silvags-site -xf -
           test -f /tmp/silvags-site/index.html
+          test -f /tmp/silvags-site/_routes.json
           test -d /tmp/silvags-site/robots
           test ! -e /tmp/silvags-site/worker.js
           test ! -e /tmp/silvags-site/wrangler.toml
           test ! -e /tmp/silvags-site/functions
           test ! -e /tmp/silvags-site/_worker.js
+          # wrangler reads functions/ from the repo root, not from the asset bundle.
+          test -f functions/_middleware.js
 
       - name: Ensure preview Pages project
         working-directory: /tmp

@@ -1,0 +1,124 @@
+# Fetch Binary Paths and open a PR. Never pushes straight to main.
+# Schedule runs only after this file is on the default branch.
+name: Mirror Binary Paths
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: mirror-binary-paths
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Mirror
+        id: mirror
+        run: python3 scripts/mirror_substack.py
+
+      - name: Validate
+        run: |
+          python3 -m unittest discover -s tests -v
+          node --test tests/negotiate.test.mjs
+
+      - name: Open a pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+            echo "opened=false" >> "$GITHUB_OUTPUT"
+            echo "No changes."
+            exit 0
+          fi
+          base="${GITHUB_REF_NAME}"
+          branch="mirror/binary-paths"
+          message="Mirror Binary Paths essays"
+          body_file="$(mktemp)"
+          python3 scripts/gate_paths.py body > "$body_file"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git stash push -u -m mirror
+          git fetch origin "$branch" || true
+          if git rev-parse --verify "origin/$branch" >/dev/null 2>&1; then
+            git checkout -B "$branch" "origin/$branch"
+            git merge --no-edit "origin/$base" || {
+              echo "Could not merge $base into $branch." >&2
+              exit 1
+            }
+          else
+            git checkout -B "$branch" "origin/$base"
+          fi
+          git stash pop
+          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+            echo "opened=false" >> "$GITHUB_OUTPUT"
+            echo "Mirror branch already has this content."
+            exit 0
+          fi
+          git add -A
+          git commit -m "$message"
+          git push -u origin "$branch"
+          if gh pr view "$branch" --json url --jq .url >/dev/null 2>&1; then
+            url="$(gh pr view "$branch" --json url --jq .url)"
+          else
+            url="$(gh pr create --base "$base" --head "$branch" --title "$message" --body-file "$body_file")"
+          fi
+          echo "opened=true" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          files="$(git diff --name-only "origin/$base...HEAD")"
+          decision="$(python3 scripts/gate_paths.py decide --files $files --body-file "$body_file")"
+          echo "$decision"
+          auto="$(python3 -c 'import json,sys; print("yes" if json.load(sys.stdin)["auto_merge"] else "no")' <<<"$decision")"
+          if [ "$auto" != "yes" ]; then
+            gh pr comment "$url" --body "Not enabling auto-merge. This diff includes a high-tier path, so it needs a person to merge it."
+            echo "auto=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if gh pr merge "$url" --squash --auto; then
+            echo "auto=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "auto=blocked" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Open or update a failure issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          marker="<!-- mirror-failure -->"
+          title="Binary Paths mirror failed"
+          body=$(cat <<EOF
+          $marker
+
+          The scheduled mirror did not update the site. The live site was left as it was.
+
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          If auto-merge was the step that failed, enable **Allow auto-merge** in the repository settings and require the CI and \`agent-pr-gate\` checks. This workflow will not push to the default branch by itself.
+          EOF
+          )
+          existing="$(gh issue list --state open --search "Binary Paths mirror failed in:title" --json number --jq '.[0].number')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
