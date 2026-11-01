@@ -1,0 +1,3564 @@
+# Guilherme Silva — full text
+
+> Generated from the HTML pages. Prefer llms.txt when you only need the map.
+
+---
+
+Source: https://silvags.com/
+
+# Guilherme Silva
+
+> Building small robots from scratch and writing about engineering and physical AI at Binary Paths.
+
+Hands-on Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at [Binary Paths](https://binarypaths.substack.com).
+
+## On the bench
+
+- [SO-101 robotic arm](https://silvags.com/robots/so-101/) — two arms that mirror each other. Teaching them imitation learning now.
+
+- [Pico](https://silvags.com/robots/pico/) — two servos and one job: get back up. It does, on real hardware.
+
+[All builds and open source](https://silvags.com/builds/)
+
+## Latest writing
+
+- September 28, 2026[I built a tiny robot that refuses to stay down](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/)Its name is Pico.
+
+- August 27, 2026[I just wanted to clean my house.](https://silvags.com/writing/i-just-wanted-to-clean-my-house/)How cleaning one room turned into open-heart surgery on a robot vacuum
+
+- March 5, 2026[Physical AI is here and I’m building for it.](https://silvags.com/writing/physical-ai-is-here-and-im-building/)I got a robotic arm moving for the first time. It was magic, but it lacks a brain.
+
+- December 5, 2025[AIconomy](https://silvags.com/writing/aiconomy/)AI agents will define the future global ecommerce
+
+[All writing](https://silvags.com/writing/) · [Subscribe on Binary Paths](https://binarypaths.substack.com)
+
+---
+
+Source: https://silvags.com/about/
+
+# About
+
+I’m Guilherme Silva. I build teams by day and small robots by night.
+
+I started in automotive engineering, designing and building physical systems where tolerances are measured in millimetres and a wrong assumption means something breaks in the real world.
+
+Then I moved into software, spending years on cloud, infrastructure and platform work, and eventually became an Engineering Manager, where I build teams that build things. That’s still my day job, at xgeeks.
+
+Now I’m deeply interested in physical AI: robots that have some kind of AI system to do their tasks instead of being programmed movement by movement. The [SO-101](https://silvags.com/robots/so-101/) is my self-education in public, my first real robot. A 3D printer, AliExpress, and the question:
+
+> what does it take to give a machine a brain?
+
+I write about the journey at [Binary Paths](https://binarypaths.substack.com), and I used to [give talks](https://silvags.com/talks/) on Kubernetes and WebAssembly.
+
+## Say hello
+
+Email is best: [work@silvags.com](mailto:work@silvags.com). I’m also on [GitHub](https://github.com/0xgui) and [LinkedIn](https://www.linkedin.com/in/silva-gs).
+
+---
+
+Source: https://silvags.com/builds/
+
+# Builds
+
+Things I’m making with my hands, and a few small tools I’ve made for myself and put on GitHub.
+
+## Robots
+
+### [SO-101 robotic arm](https://silvags.com/robots/so-101/)
+
+**In progress** · robotics, imitation learning
+
+Two 6-DOF arms built from scratch: 3D-printed from open-source designs, twelve STS3215 servos, leader-follower teleop. The first time I grabbed the leader and watched the follower mirror me in real time, that was the trigger. Now I’m teaching it to do things on its own.
+
+1. Build & assemble
+2. Teleop moving
+
+3. Imitation learning *now*
+4. Sim-to-real + VLA
+
+### [Pico](https://silvags.com/robots/pico/)
+
+**Self-righting works** · robotics, reinforcement learning
+
+Two servos, a tiny ESP32 board, and one job: get back up. A policy trained in MuJoCo moves the arms when the robot falls. My build now recovers reliably on real hardware. Next comes measuring those recoveries and trying new ideas.
+
+1. Build & assemble
+2. Calibrate
+
+3. Self-righting
+4. Experiments *next*
+
+I also tinker with smaller ESP32 gadgets. When one is worth writing up, it’ll show up here.
+
+## Open source
+
+- [agent-pr-gate](https://github.com/0xgui/agent-pr-gate) — a GitHub Action that gates agent-authored pull requests on risk tier, evidence, and review rounds.
+
+- [write](https://github.com/0xgui/write) — a minimal GTK writing app, for the simple pleasure of putting words on a page.
+
+More on [GitHub](https://github.com/0xgui).
+
+---
+
+Source: https://silvags.com/talks/
+
+# Talks
+
+My DevOps world: Kubernetes, WebAssembly, and platform engineering. These days my research is more about robotics, but I still work on cloud-native stuff.
+
+## Videos
+
+- [WebAssembly + Kubernetes: Future or Fad?](https://youtu.be/GVWSm0GXfFg)
+
+- [Kubernetes Multi-Tenancy Guide — Intro](https://youtu.be/1HnvtX5iFG0) — series
+
+- [Kubernetes Multi-Tenancy Guide — Business](https://youtu.be/4-IEQK75ASE) — series
+
+## Slides
+
+- [Beyond the Hype: K8s for Real Business Value](https://drive.google.com/file/d/1U3Fy4boqBCr6XJyx-QTuS1T4n3sX4yzg/view)
+
+- [WebAssembly + Kubernetes](https://drive.google.com/file/d/1mwjWJ6FR0OSCIx_EBlW-GnyAQMKGXbM9/view)
+
+- [Maximizing Efficiency with K8s Multi-Tenancy](https://drive.google.com/file/d/1JW9yt-4dkswd9lUxgyEnpinAHZaPleE0/view)
+
+---
+
+Source: https://silvags.com/writing/
+
+# Writing
+
+On engineering, teams, and the strange joy of building things you can touch. I publish at [Binary Paths](https://binarypaths.substack.com).
+
+- September 28, 2026[I built a tiny robot that refuses to stay down](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/)Its name is Pico.
+
+- August 27, 2026[I just wanted to clean my house.](https://silvags.com/writing/i-just-wanted-to-clean-my-house/)How cleaning one room turned into open-heart surgery on a robot vacuum
+
+- March 5, 2026[Physical AI is here and I’m building for it.](https://silvags.com/writing/physical-ai-is-here-and-im-building/)I got a robotic arm moving for the first time. It was magic, but it lacks a brain.
+
+- December 5, 2025[AIconomy](https://silvags.com/writing/aiconomy/)AI agents will define the future global ecommerce
+
+- January 9, 2025[5 Tech Trends That Will Define 2025](https://silvags.com/writing/5-tech-trends-that-will-define-2025/)We are in the best timeline.
+
+- December 4, 2024[Engineering Estimates: 1 week means 4](https://silvags.com/writing/engineering-estimates/)Why your estimate is a lie you keep telling yourself
+
+- November 9, 2024[When Engineers Need to Talk Business](https://silvags.com/writing/when-engineers-need-to-talk-business/)Your code is perfect. Your business vocabulary isn't.
+
+- October 23, 2024[You Can't Know Everything in Tech](https://silvags.com/writing/you-cant-know-everything-in-tech/)Because tech moves fast, but you can move faster.
+
+- October 9, 2024[Speaking in Front of 250+ People](https://silvags.com/writing/speaking-in-front-of-250-people/)250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.
+
+- September 25, 2024[The Art of Juggling Life](https://silvags.com/writing/the-art-of-juggling-life/)Balls Drop, Balls Add, You Adapt.
+
+- September 4, 2024[The Road Trip of Kubernetes](https://silvags.com/writing/the-road-trip-of-kubernetes/)Don't follow the road that everyone is riding. Create your own road trip.
+
+- August 28, 2024[Why Platforms Must Be Products, Not Projects](https://silvags.com/writing/why-platforms-must-be-products/)It's not a set-and-forget thing. You need to nourish it. You need to take care of it.
+
+- August 14, 2024[Becoming a Product-Minded Engineer](https://silvags.com/writing/becoming-a-product-minded-engineer/)Because let's face it. Customers don't care about what tech you use. They care if what they use, works.
+
+- July 31, 2024[Imposter Syndrome: If you have it, you are good](https://silvags.com/writing/imposter-syndrome-if-you-have-it/)Look. If you are reading this, you probably have it. There is no permanent cure. You have to embrace it.
+
+- July 17, 2024[Why Personal Branding matters as a Engineer](https://silvags.com/writing/personal-branding-as-an-engineer/)Sometimes work doesn't speak for itself and you need to do more.
+
+All posts and subscribe at [Binary Paths](https://binarypaths.substack.com).
+
+---
+
+Source: https://silvags.com/robots/pico/
+
+# Pico
+
+Build notes · physical recovery confirmed
+
+A small robot with two servos and one job: get back up. An onboard neural network moves its arms to recover from a fall. It’s now reliably self-righting on real hardware.
+
+**Status:** Self-righting works, experiments next
+
+**Progress:** ✓ Build & assemble
+✓ Calibrate
+✓ Self-righting
+→ **Experiments** (next)
+
+**Hardware:** ATOM Matrix, PTK 7465 MG × 2, printed parts
+
+**Stack:** MuJoCo, PPO, Arduino / PlatformIO
+
+**Links:** [GitHub](https://github.com/0xgui/pico-self-rising-robot)
+
+Pico simulation model: two servos and printed arms above a base with an ATOM Matrix. Drag to rotate.
+
+![](https://silvags.com/robots/pico/pico-preview.webp)
+
+*Simulation geometry, neutral pose. Drag to rotate.*
+
+## Note 01 · Two motors, back on its feet
+
+Pico has a printed base, two moving arms, and an M5Stack ATOM Matrix: a tiny ESP32 board with an inertial sensor. When the robot tips over, it estimates its tilt and uses the arms to work its way back upright. The recovery runs entirely on the robot once the firmware is flashed.
+
+The interesting part is the controller. A policy trained in the MuJoCo simulator takes four inputs (roll, pitch, and the two servo targets) and chooses how to change those targets. The firmware runs that small neural network about 50 times a second during a recovery attempt.
+
+- *Sense.* The IMU measures tilt. A sustained fall starts a recovery attempt.
+
+- *Move.* The policy updates both arm targets every 20 milliseconds.
+
+- *Recover.* The attempt ends after a steady upright hold, or a timeout.
+
+My build uses [HomeMadeGarbage’s SelfRisingRobot](https://github.com/homemadegarbage/SelfRisingRobot) design, simulation, and pretrained policy. My work here is assembling the robot, adapting the firmware, and exploring what I can do with it next.
+
+## Note 02 · Making the code match the build
+
+The wiring and orientation matter. On my assembly, GPIO 32 drives the lower servo and GPIO 26 drives the upper one. The joints turn in opposite directions, so the firmware maps each target accordingly. I also adjusted the IMU’s roll initialization to match the board’s orientation.
+
+Servo commands are limited to 15–165 degrees, and the upper joint has a home trim stored on the board. A local Wi-Fi page handles calibration and manual start/stop controls. The project builds and uploads through PlatformIO.
+
+One practical lesson: powering both servos from a PC’s USB port caused brownouts. Power delivery is part of getting this little robot working, alongside the model and code.
+
+## What’s next
+
+Self-righting now works reliably on the physical robot. Next I want to record recovery results from different starting poses and use those as a baseline for further experiments:
+
+- recovery measurements
+- LED status feedback
+- training experiments
+
+Code, parts, and experiments on [GitHub](https://github.com/0xgui/pico-self-rising-robot). [All builds](https://silvags.com/builds/)
+
+---
+
+Source: https://silvags.com/robots/so-101/
+
+# SO-101 robotic arm
+
+Build log · Day 01 · March 5, 2026
+
+A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-printed arms, leader-follower teleop, and a slowly growing brain.
+
+**Status:** In progress, step 3 of 4
+
+**Progress:** ✓ Build & assemble
+✓ Teleop moving
+→ **Imitation learning** (now)
+· Sim-to-real + VLA
+
+**Hardware:** STS3215 × 12, 3D-printed (PLA/PETG)
+
+**Stack:** Python, ROS2, LeRobot
+
+**Links:** [GitHub](https://github.com/0xgui/SO-101) · [Origin story](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building)
+
+3D model of the SO-101 robotic arm. Drag to rotate.
+
+![](https://silvags.com/robots/so-101/arms-wide.webp)
+
+*The real SO-101 CAD model. Drag to rotate, scroll to zoom.*
+
+## Day 01 · The arms, they move
+
+![Both SO-101 arms assembled on the desk](https://silvags.com/robots/so-101/arms-wide.webp)
+
+*Two arms, a lot of servos, built from scratch.*
+
+I 3D-printed it part by part with a Bambu printer I bought, ordered twelve STS3215 servos from AliExpress at €20 each, and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.
+
+Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup. I realized it only after everything was done, and had to redo it all from scratch.
+
+It’s also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There’s just something special about seeing something move. Atoms moving.
+
+3D printing the arms
+
+[Media](https://silvags.com/robots/so-101/teleop-v1.webm)
+
+*3D printing the arms.*
+
+> The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.
+
+It’s physical. It’s immediate. It’s hard. It’s real. Now I just need to give it a brain.
+
+Teleoperation: the follower arm mirrors the leader
+
+[Media](https://silvags.com/robots/so-101/teleop-v2.webm)
+
+*Teleop run.*
+
+Right now it’s pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to pull me completely into this new world of hardware.
+
+## What’s next
+
+- Teach the arms tasks by demonstration: move them through a motion a few dozen times and let them learn to replicate it (imitation learning). This is the current step.
+
+- Sim-to-real with [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) and [Gazebo](https://gazebosim.org/).
+
+- Finally, a vision-language-action model so it can see, reason, and act.
+
+More on the why and the bigger picture in the [origin story on Binary Paths](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building). Calibration scripts and more on [GitHub](https://github.com/0xgui/SO-101).
+
+*Next entry: imitation learning, first demonstrations.* [All builds](https://silvags.com/builds/)
+
+---
+
+Source: https://silvags.com/writing/5-tech-trends-that-will-define-2025/
+
+# 5 Tech Trends That Will Define 2025
+
+January 9, 2025 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/5-tech-trends-that-will-define-2025)
+
+After some long vacation break, it's time to get back.
+
+To all of you that read my articles, thank you. It means a lot.
+
+Hope to bring you a constant flux of new articles/ideas throughout the year.
+
+2025 here we go!
+
+---
+
+Do you ever feel like tech is moving too fast? Well, because it is.
+
+I've spent the last few weeks diving into emerging tech and testing new tools (such as AI agents). To be fair my brain is about to explode. So much new tools/information that he doesn't know where to start or what to start.
+
+Nonetheless, I've pinned it down to the five trends that I believe will somehow shape how we work and live in 2025.
+
+Why should you care?
+
+Because they will transform your life and you will notice it. And sometimes you won't.
+
+Whether you're a developer, manager, creator, executive, salesman, lawyer, chef, engineer… or human, these trends will matter to you.
+
+## 1. AI Agents Become Your New Work Colleague
+
+Remember when chatbots were just glorified FAQ systems? Those days are long gone.
+
+2024 was the year AI agents went from "interesting tech demos" to actually useful tools. In 2025, they're about to become fully powered digital workers.
+
+Your new work buddies.
+
+You will be using one or talking to one and you won't even know it.
+
+Just yesterday, on an Nvidia presentation: “AI agents are a multi-trillion dollar opportunity.” — Jensen Huang, Nvidia CEO
+
+![Image](https://silvags.com/writing/5-tech-trends-that-will-define-2025/images/01.webp)
+
+*[NVIDIA CEO Jensen Huang Keynote at CES 2025](https://www.youtube.com/watch?v=k82RwXqZHY8)*
+
+### Why This Changes the Game 🤖
+
+I've checked some AI agents and even built one myself, and the progress is mind-blowing. These aren't just chat interfaces anymore.
+
+They can:
+
+-
+
+See and understand images
+
+-
+
+Browse the web independently
+
+-
+
+Make purchases and transactions
+
+-
+
+Coordinate with other agents
+
+-
+
+Mimic full human personalities
+
+Just see these examples:
+
+Can you distinguish AI from Human now?
+
+### The Enterprise Gold Rush 💼
+
+The enterprise agent market is growing fast. Major players like Microsoft, Google, and Salesforce are in a fierce competition for dominance.
+
+Why? Because whoever wins this race might control the future of work.
+
+-
+
+Companies are already using agents for customer service, data analysis, and coding (hello Cursor).
+
+-
+
+SaaS companies are moving to agent-first approaches
+
+-
+
+Enterprise-focused agent platforms are raising massive funding rounds ([source](https://techcrunch.com/2024/11/28/ai-agent-startup-dev-agents-has-raised-a-massive-56m-seed-round-at-a-500m-valuation/))
+
+### The Dark Side 🌑
+
+But here's something not enough people are talking about: agents still make mistakes. And as they get more responsibility, those mistakes will have bigger consequences.
+
+My prediction? 2025/26 will likely see the first major "agent incident" that makes mainstream news.
+
+It will happen. Not if but when.
+
+### The Opportunity 🎯
+
+Despite the risks, the opportunity is massive. Companies that figure out how to effectively deploy and manage agents while minimizing risks will have a huge competitive advantage.
+
+-
+
+Cost reduction through automation
+
+-
+
+24/7 operation capability
+
+-
+
+Scalability without linear staff increases
+
+-
+
+Faster decision-making
+
+-
+
+No "people" problems.
+
+I'm preparing an article on how to create a simple AI agent. In the meantime, check [https://github.com/elizaOS/eliza](https://github.com/elizaOS/eliza) if you want to build one yourself.
+
+## 2. Nuclear Powers the AI Revolution
+
+![](https://silvags.com/writing/5-tech-trends-that-will-define-2025/images/02.webp)
+
+*Three Mile Island nuclear power generating station in Londonderry Township, Pennsylvania.*
+
+AI needs power. Lots of it.
+
+Training large AI models consumes massive amounts of energy. And as AI becomes more important, this energy demand is skyrocketing.
+
+With great power, comes great... energy consumption.
+
+### Enter Nuclear Power ⚛️
+
+This is where nuclear power's comeback begins.
+
+-
+
+Small Modular Reactors (SMRs) are making nuclear more accessible
+
+-
+
+New safety systems make meltdowns almost impossible
+
+-
+
+Waste recycling technologies are reducing environmental impact
+
+-
+
+Advanced materials are improving efficiency
+
+### The Tech Industry's Nuclear Push 🏢
+
+Major tech companies are already working in the shadows on it:
+
+-
+
+Microsoft is investing in nuclear projects for data centers ([source](https://www.bbc.com/news/articles/cx25v2d7zexo))
+
+-
+
+Google is exploring nuclear options for power-hungry AI operations([source](https://blog.google/outreach-initiatives/sustainability/google-kairos-power-nuclear-energy-agreement/))
+
+-
+
+Several startups are developing specialized nuclear solutions for tech companies([source](https://qz.com/nuclear-energy-startups-google-amazon-ai-altman-gates-1851693363))
+
+### Why This Matters 💭
+
+The implications are huge:
+
+-
+
+Sustainable AI development and other tech.
+
+-
+
+Reduced carbon emissions
+
+-
+
+More reliable power grids
+
+-
+
+Potential for energy price stability
+
+We need power. And we need it fast.
+
+## 3. Real World Assets Take Over
+
+![Crypto.com Real-World Assets: Bringing Real World Value to DeFi](https://silvags.com/writing/5-tech-trends-that-will-define-2025/images/03.webp)
+
+*Real World Assets will be traded on the blockchain*
+
+Blockchain has other uses besides crypto.
+
+Decentralized technologies have been moving from crypto into mainstream enterprise applications, especially through Real World Assets (RWAs).
+
+What are RWAs? Think real estate, gold, art, or even revenue from a business. Actual things with real value being brought onto the blockchain.
+
+Why this? Because decentralized technologies (e.g: blockchain) solve real problems around security, transparency, and efficiency in traditional markets.
+
+### The Revolution Begins 🚀
+
+Let's use an example.
+
+Imagine a luxury apartment building worth €10 million. Normally, you'd need to be pretty rich to invest in something like this.
+
+But with RWAs, that building can be split into thousands of tokens, each representing partial ownership. Suddenly, you could invest 1,000€ and own a piece of that building.
+
+This is already happening. ([source](https://beincrypto.com/maker-dao-position-real-world-tokenization-rwa/)).
+
+### What's Actually Changing? 💫
+
+Enterprise adoption is accelerating as businesses discover what's possible:
+
+-
+
+**Real Estate:** Buildings being split into affordable chunks for regular investors
+
+-
+
+**Art Markets:** Famous paintings being fractionally owned by multiple collectors
+
+-
+
+**Business Revenue:** Companies sharing their income streams through tokens
+
+-
+
+**Supply Chains:** Products tracked from factory to store, all on blockchain
+
+### Why This Matters Now 🎯
+
+The tech has existed for a while, but 2025 is different:
+
+-
+
+Traditional finance is finally embracing it
+
+-
+
+Regulatory frameworks are getting clearer
+
+-
+
+The infrastructure is actually ready
+
+-
+
+Real companies are using it, not just crypto enthusiasts
+
+Most users won't even know they're using decentralized tech. It'll just work better.
+
+Take "[Off The Grid](https://gameoffthegrid.com/)" for example. A new video game that uses blockchain technology on the background and people don't even know or think about it. ([source](https://coinmarketcap.com/academy/article/off-the-grids-unique-approach-to-blockchain-gaming)). They don't care. They just wanna play and things to work better.
+
+## 4. Gaming Goes Infinite
+
+![Free Woman immersed in virtual reality, surrounded by tech, in a dimly lit room. Stock Photo](https://silvags.com/writing/5-tech-trends-that-will-define-2025/images/04.webp)
+
+*Can you imagine? A never ending game? Can you detach from it? *
+
+The future of gaming isn't about finishing levels and reach the endgame.
+
+People want endless, evolving experiences. There is no endgame.
+
+Every day, a new, different, experience.
+
+"Infinite games" will change how we think about entertainment.
+
+These aren't normal games. They're persistent worlds. They evolve with their players.
+
+### What Makes Games Infinite? ♾️
+
+-
+
+AI-driven narratives that adapt to each player and each player action.
+
+-
+
+Procedurally generated content that never runs out
+
+-
+
+Player-created content that expands the game world
+
+-
+
+Real economies powered by blockchain
+
+### Beyond Entertainment 🎯
+
+All cool and nice but the impact can extend beyond gaming:
+
+-
+
+Virtual training environments
+
+-
+
+Educational simulations
+
+-
+
+Social platforms
+
+-
+
+Cultural experiences
+
+Can you imagine? A never ending game? Can you detach from it?
+
+## 5. AI-Generated Video Improves 🎥
+
+[Watch the video](https://www.youtube.com/watch?v=iVtqtu6HceI)
+
+AI is reshaping video creation, making it faster, cheaper, and more accessible.
+
+There is already out there photos and videos that you cannot distinguish between AI vs Human generated.
+
+Just watch the video above and tell me if you can detect if the human is AI generated or not.
+
+You need to get used to seeing new things that are not created by humans.
+
+### What’s Happening? 🌟
+
+AI tools for video creation are evolving to handle complex video tasks:
+
+-
+
+**Tailored Models:** Specialized for ads, education, or storytelling.
+
+-
+
+**Precision Control**: Adjust lighting, camera angles, and even character personalities.
+
+-
+
+**Cost Efficiency**: High-quality results at a fraction of the usual cost and time.
+
+Imagine, you, generating an entire movie, from script to final edit, with just a few clicks.
+
+The movie that you always wanted to exist.
+
+### The Opportunity 🎯
+
+AI video makes creativity accessible to everyone. Enabling anyone to produce impactful content.
+
+The quantity of content will exponancially improve.
+
+But what about quality?
+
+Whether you’re an individual or a business, this technology will transform how stories are told.
+
+And how you see the world.
+
+## What This Means Us
+
+These trends can and it will shape our future. But what really is the impact for us?
+
+Should we be scared? Should we be enthusiastic? Should we ignore it?
+
+### Career Implications
+
+-
+
+What new jobs will emerge?
+
+-
+
+Which skills will become obsolete?
+
+-
+
+How will your current role evolve?
+
+-
+
+What opportunities should we prepare for?
+
+### Personal Impact
+
+-
+
+How these technologies might affect our daily life?
+
+-
+
+What new capabilities we might have access to?
+
+-
+
+Potential risks and how to prepare for them?
+
+-
+
+How to take advantage of these changes?
+
+## The Future.
+
+The goal isn't to predict the future perfectly.
+
+Well, nobody can do it. At least that I know of.
+
+We just need to understand that the present as it is will change. And it will change a lot.
+
+In the meantime, let's see what happens.
+
+**The future is bright. **
+
+**We are in the best timeline.**
+
+![](https://silvags.com/writing/5-tech-trends-that-will-define-2025/images/05.webp)
+
+---
+
+### **
+**Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+Source: https://silvags.com/writing/aiconomy/
+
+# AIconomy
+
+December 5, 2025 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/aiconomy)
+
+You’re scrolling through your phone, and instead of spending 2 hours comparing prices across 12 different websites for that new laptop, you just tell your AI assistant:
+
+“Find me a laptop under 1200€ with good specs for video editing. I prefer to buy from shops with good return policies.”
+
+And then... it does.
+
+Not just “here are some options.” It actually finds the best deal, checks reviews, verifies the return policy, and completes the purchase. While you were grabbing coffee.
+
+Sounds too much?
+
+It’s not. It’s happening right now.
+
+This is **Agentic Commerce**.
+
+## Agentic commerce
+
+By now, you already know that the Internet changed the way you bought things. Instead of physically going to stores, you can browse and buy from your couch basically anything that you want.
+
+Agentic commerce is the next evolution. Instead of you browsing and buying, **AI agents do it for you**.
+
+![](https://silvags.com/writing/aiconomy/images/01.webp)
+
+The agents are able to:
+
+-
+
+Search for products across the entire internet
+
+-
+
+Compare prices, features, and reviews in seconds
+
+-
+
+Negotiate deals (yes, really)
+
+-
+
+Complete the purchase on your behalf
+
+-
+
+Track your order and handle returns
+
+AI doesn’t just help you find what to buy. It helps you buy it.
+
+We’re talking about AI agents talking to other AI agents. Your personal shopping agent negotiating with a shop’s agent. Automatically. 24/7. 365 days.
+
+This is the **A2A economy**: Agent-to-Agent commerce.
+
+[A2A](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/) is a protocol developed by Google in the beginning of this year that allows different AI agents to discover each other, understand their capabilities, and work together.
+
+## Numbers don’t lie
+
+![](https://silvags.com/writing/aiconomy/images/02.webp)
+
+The big players are already betting billions on this.
+
+Companies are projecting that agentic commerce could generate **$3 trillion to $5 trillion globally by 2030**. ([source](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-agentic-commerce-opportunity-how-ai-agents-are-ushering-in-a-new-era-for-consumers-and-merchants))
+
+ChatGPT now has over **800 million weekly users**. Google’s AI (Gemini etc) features reach **1.5 billion users** per month. These users are discovering products, comparing options and buying them.
+
+Traffic to sites from AI powered browsers and chat services increased 4,700% year-over-year in July 2025.
+
+**4,700%.**
+
+All those users, now with the possibility of buying things with AI.
+
+## Tech arms race
+
+Everyone’s racing to own this new opportunity. To be the first.
+
+**OpenAI** just launched “Instant Checkout” in ChatGPT. US users can now buy directly from Etsy sellers and Shopify merchants right inside the chat. No website needed. Just chat → buy → done. ([source](https://openai.com/index/buy-it-in-chatgpt/))
+
+**Google** dropped their Agent Payments Protocol (AP2) in September 2025. It’s an open standard backed by Mastercard, PayPal, American Express, Adobe, and Alibaba that establishes a framework for AI agents to securely **make payments on behalf of users**. ([source](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol))
+
+**PayPal** launched their own agentic commerce services. Merchants can now be discovered by AI agents across platforms through a single integration. ([source](https://www.paypal.com/us/business/ai))
+
+**Visa and Mastercard** are building the payment rails for AI agents. Because when your AI buys something, the money still needs to move. ([mastercard source](https://www.mastercard.com/global/en/business/artificial-intelligence/mastercard-agent-pay.html))([visa source](https://corporate.visa.com/en/products/intelligent-commerce.html))
+
+**Amazon** now let’s shoppers purchase goods from vendors that don’t even sell on Amazon, without leaving the Amazon ecosystem. ([source](https://techcrunch.com/2025/04/03/amazons-new-ai-agent-will-shop-third-party-stores-for-you/))
+
+This is a complete reinvention of how ecommerce works.
+
+## How does this actually work?
+
+![](https://silvags.com/writing/aiconomy/images/03.webp)
+
+You wake up and realize you need a birthday gift for your mom. Instead of spending your lunch break scrolling through endless options, you tell your AI:
+
+“I need a birthday gift for my mom. She loves gardening, hates anything too fancy, budget is $75, and I need it delivered by Saturday.”
+
+Here’s what happens behind the scenes:
+
+**Intent Understanding**: The AI parses what you want, basically gardening related stuff, practical, under $75, fast shipping
+
+**Product Discovery**: It searches across Amazon, Etsy, local stores, specialty gardening shops etc
+
+**Comparison**: It filters by ratings, price, delivery time, return policies
+
+**Selection**: It picks the best option based on your preferences (learned over time, as you might noticed chatgpt has memories from your previous chats and knows a lot about you already)
+
+**Checkout**: It completes the purchase using your saved payment method
+
+**Confirmation**: You get a notification. Done.
+
+Total time? Seconds. Maybe a minute if the AI asks for clarification.
+
+## The trust problem
+
+This whole thing sounds amazing in theory. But would you actually let an AI spend your money?
+
+Very few people currently feel comfortable using AI to complete purchases. The top concerns? Security and privacy.
+
+Trust isn’t a nice to have for this. You need it 110%.
+
+And honestly? This is the right response. We should be cautious about giving AI the ability to spend our money.
+
+## Who do you trust when you aren’t making the choice?
+
+When you walk into a store, the question is simple: Do I trust this brand? This merchant? This product?
+
+But when an AI shops for you, trust becomes complex. Mixed in layers of data, automation, and systems you don’t understand.
+
+Do you trust:
+
+-
+
+The AI platform (OpenAI, Google, Anthropic, etc)?
+
+-
+
+The payment provider (Visa, PayPal, Stripe, etc.)?
+
+-
+
+The merchant’s reputation?
+
+-
+
+All of the above working together?
+
+## Small businesses have an opportunity
+
+For years, big brands have dominated online commerce. They had the budget for SEO. They could pay for the top ad spots. They could buy attention.
+
+Agentic commerce might actually level the playing field.
+
+AI agents don’t care about flashy ads or big marketing budgets. They need for their inputs:
+
+-
+
+Product quality
+
+-
+
+Price
+
+-
+
+Reviews (they can be faked I know)
+
+-
+
+Availability
+
+-
+
+Relevance to what the user asked for
+
+If you’re a small business with a great product at a fair price? The AI might recommend you over a big brand.
+
+## Still a long (medium?) way to go
+
+Of course, this is the beginning. And there are some pains/fears in this.
+
+**Data quality is everything**
+
+If your product data sucks, AI agents won’t find you.
+
+AI agents struggle when for example the same description appears on dozens of sites. They can’t determine authority (who is the best one). So they deprioritize everyone.
+
+**You’re not just competing for human attention**
+
+In the current (old) world, you optimized for Google (SEO). You ran ads. You built brand awareness.
+
+In the agentic world? Your customer might never see your website. The AI makes the choice for them.
+
+This is both an opportunity and a threat. If the AI recommends you? Great. If it doesn’t? You might not even get a chance to compete.
+
+**Who’s liable when things go wrong?**
+
+What happens when an AI agent buys by mistake? Violates commercial rules? Makes an unauthorized purchase?
+
+Who’s responsible the consumer, the merchant, or the AI platform?
+
+**The privacy minefield**
+
+AI agents need access to your data to work effectively. Your preferences. Your purchase history. Your budget. Your payment info. Your address.
+
+That’s a lot of sensitive information concentrated in one place.
+
+Compliance with GDPR and other privacy regulations is already a clusterfuck.
+
+Now add autonomous AI agents on top of it.
+
+## What this means for you, me, us
+
+Whether you’re a consumer, a business owner, or just someone curious about where tech is heading, here’s what I think:
+
+**For consumers:**
+
+You don’t have to jump in immediately. Be cautious. But stay curious.
+
+Start small. Let AI help you research products. Compare prices. Find deals. You stay in control of the final purchase.
+
+As you get more comfortable, you can expand what you delegate.
+
+The people who figure this out early will save massive amounts of time. The people who resist forever will spend hours doing what takes others seconds. (time is the most valuable currency that we have)
+
+**For business owners**
+
+The time to prepare is now. Not next year. Not when “things settle down.”
+
+Key actions:
+
+-
+
+**Clean up your product data**: Rich, accurate, consistent descriptions. Make it “AI” ready.
+
+-
+
+**Think beyond your website**: Your product needs to be discoverable by AI agents, not just Google.
+
+-
+
+**Build trust signals**: Reviews, ratings, return policies, the stuff AI agents look for
+
+**For engineers and tech workers**
+
+The companies building this infrastructure need people who understand:
+
+-
+
+APIs and integrations
+
+-
+
+AI/ML systems
+
+-
+
+Payment protocols (cryptocurrency is something that can be used here)
+
+-
+
+Security and identity management
+
+If you’re looking for the next wave to ride, this is it imo.
+
+## Creative destruction
+
+In 1942, economist Joseph Schumpeter coined the term “creative destruction.” The idea that innovation doesn’t just improve existing systems, it destroys them while building new ones.
+
+Jobs disappear. Companies fail. Entire industries get destroyed
+
+But simultaneously? New jobs emerge. New companies are created. New industries are born.
+
+Agentic commerce is a creative destruction moment.
+
+It’s not about whether this happens. It’s about whether you’re ready when it does.
+
+The infrastructure is being built. The protocols are being standardized. The big players are investing billions. The adoption curves are real.
+
+Does that mean you should let an AI buy your groceries tomorrow? Probably not.
+
+But should you be paying attention? Learning how this works? Thinking about what it means for your work and life?
+
+Absolutely.
+
+**Shopping is about to become something you delegate, not something you do.**
+
+---
+
+### Until next time
+
+>
+
+Got thoughts? Questions? Just want to say hi? I’m all ears! You can find me on [LinkedIn](https://www.linkedin.com/in/silva-gs/) or X.
+
+I’m always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+Source: https://silvags.com/writing/becoming-a-product-minded-engineer/
+
+# Becoming a Product-Minded Engineer
+
+August 14, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/becoming-a-product-minded-engineer)
+
+![](https://silvags.com/writing/becoming-a-product-minded-engineer/images/01.webp)
+
+![](https://silvags.com/writing/becoming-a-product-minded-engineer/images/02.webp)
+
+As an engineer, you have the power to shape the products that touch millions of lives.
+
+But to truly make a difference, you need to go beyond just writing elegant code that nobody will see. You need to develop a deep understanding of the product itself and the business goals it aims to achieve.
+
+In other words, you need to become a product-minded engineer.
+
+## 👨‍💻The Traditional Engineer's Role
+
+The Traditional Engineer is focused only if the code/tech that they implement is elegant and it works.
+
+On the other side, you have a product manager or a product team that handles all the other stuff that they (the traditional engineer) don't want to worry about. New ideas for features, customer feedback, strategies for the product, and so on. Basically,  the long-term vision of a product.
+
+But there's a thing that we must understand. People, your end customers, don't care about code or what tech stack is implemented. They don't care if you managed to reduce the response time of a website by 0.5s. 
+
+They just want things to work. That's it. Nothing else.
+
+And things must work. Because if they don't, you will have angry customers.
+
+## 🧠What Does It Mean to be Product-Minded?
+
+Being product-minded means having a keen interest in the "why" behind the product. It's about understanding the users, the market, and the business objectives.
+
+When you're product-minded, you don't just focus on the technical aspects. You actively contribute to shaping the product's strategy. You shape what customers use.
+
+As a product-minded engineer, you:
+
+-
+
+Sync your work with the company's broader goals
+
+-
+
+Prioritize user feedback and strive to build products that solve real problems
+
+-
+
+Collaborate effectively with cross-functional teams, including product managers and designers.
+
+## **🌟**Why Your Product Mindset Matters
+
+In today's competitive landscape, having a product mindset is no longer optional - it's a must. Just like [building a personal brand.](https://silvags.com/writing/personal-branding-as-an-engineer/)
+
+### You innovate and become more efficient
+
+When you understand the product and business context, you identify opportunities to leverage technology in creative ways. 
+
+You suggest alternative approaches that balance technical feasibility with product impact, driving innovation and efficiency.
+
+You start to think out of the box.
+
+### Your team's confidence will improve.
+
+Product-minded engineers often become key contributors and the go-to people for product managers. 
+
+You offer ideas, you see blockers in the future, you consider tradeoffs, and much more. This will make your team one of the most valuable and have the most impact on the product. 
+
+Making your team valuable will make them feel less like [imposters](https://silvags.com/writing/imposter-syndrome-if-you-have-it/).
+
+### Open new doors
+
+Developing a strong product mindset can open up new career opportunities.
+
+You'll be sought out by managers for your valuable insights and overall thinking outside the box. You have a wider vision of everything. You can connect dots that most people do not see.
+
+This will make you valuable. You see things that others don't.
+
+## **🌿**Cultivating Your Product Mindset
+
+So, how can you create a mind that thinks outside the box? 
+
+1.
+
+**Be curious about the business**: Understand your company's business model, target users, and competitive landscape. Engage with users. Ask for the long-term vision of your company. If you like it, get on board with it.
+
+2.
+
+**Build relationships with product teams**: Collaborate more with product managers and designers. Participate in product discussions and offer feedback. If you think a new feature would be a nice addition, just spell it out.
+
+3.
+
+**Learn about data and metrics**: Learn about user behavior and business metrics. This can be boring, but data is data. And data can be your friend.
+
+4.
+
+**Think beyond the code**: Consider the end-to-end user experience. Don't ignore it completely. But from now on, the code/tech stack can become a second priority.
+
+5.
+
+**Continuously learning** : Treat each project as an opportunity to improve your product understanding. Seek feedback from your manager on how you can improve your product skills.
+
+#### Practical Tips:
+
+-
+
+📚 Read product-focused books: "The Lean Startup" by Eric Ries is a good one.
+
+-
+
+📰 Subscribe to newsletters:  Stay up-to-date on product trends and best practices.
+
+-
+
+🛠️ Practice product exercises: Pick a product and apply:
+
+  -
+
+Customer Empathy Mapping
+
+  -
+
+Product SWOT Analysis
+
+  -
+
+Feature Prioritization
+
+## **🧗‍♀️ **Overcoming Challenges
+
+You will not become a product-minded engineer the next day. It takes time. Especially if you work in an organization that isn't product-focused. 
+
+You may encounter resistance or lack clear incentives for taking on additional responsibilities. And budgets and other stuff overlap with the need to make a good product.
+
+Start small by building your product knowledge and collaborating closely with your product team. 
+
+Over time, you can show the value of a product mindset and maybe even shift your company's culture.
+
+## 🎯 Code with a Purpose
+
+I'm not saying you should become a Product Manager. No, that's no it.
+
+I just want everyone to think about the customer in the end. The product. Because this is what people will use. This is what people will interact with.
+
+By understanding the product, the users, and the business, you can make a real impact and accelerate your career growth.
+
+You can design the most beautiful code ever written to create a calculator.
+
+But if 1+1 = 3, then you created nothing.
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+---
+
+---
+
+Source: https://silvags.com/writing/engineering-estimates/
+
+# Engineering Estimates: 1 week means 4
+
+December 4, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/engineering-estimates)
+
+![](https://silvags.com/writing/engineering-estimates/images/01.webp)
+
+When you are asked "How long will this project take?" or "How long will it take for you to do this task?" your thought usually goes something like this:
+
+*"Well, if absolutely everything goes right, and I have no blockers, and I work full time on it... I can get probably get it done in 1 week. Okay, that is way too long... let's say 3 days. That still sounds good and I'll look good if I can deliver it on time."*
+
+And there it is, the saga of the terrible software estimates continues.
+
+We've all been there. Massively underestimating the time and effort required for a project, only to push out the timeline again and again and again.
+
+It's a common problem that plagues tech.
+
+But why does this keep happening? Are we all just shit at doing basic math and project planning?
+
+Well, it's complex.
+
+## Yeah, humans suck.
+
+The main issue with estimates boils down to a few key cognitive biases that affect our judgment, even when we have experience that should indicate otherwise:
+
+1.
+
+**The Planning**: We tend to underestimate how long a task will take, even when we have lots of historical data indicating otherwise. We focus on the best-case scenario rather than the average case.
+
+2.
+
+**The Optimism**: We overestimate the probability of positive events and underestimate negative ones. We assume that surely nothing will go wrong *this* time!:)
+
+3.
+
+**The Number**: We latch onto the first number put forward in the planning process, often an unrealistically low one, and then have trouble adjusting sufficiently from that starting point even when given new information.
+
+4.
+
+**The Dunning-Kruger Effect**: The less you know about a domain, the more you tend to underestimate its complexity. This can lead to overconfidence in our ability to complete tasks quickly, without fully grasping the intricacies involved.
+
+You can read more about the effect here:
+
+These biases, just show that humans just suck at estimating things.
+
+Also, we don't have the ability to see the future. Thank god for that.
+
+![](https://silvags.com/writing/engineering-estimates/images/02.webp)
+
+## What can we do?
+
+So what can we do?
+
+Estimates are a necessary evil in SDLC (software development lifecycle).
+
+We needed a shift in mindset. We need to rethink how we communicate estimates.
+
+1.
+
+**Risk is part of it**: We need to stop pretending that we have a crystal ball that can predict the future. Estimates as ranges, not single numbers deadlines.
+
+  1.
+
+"This will likely take 2-4 months, with an optimistic scenario of 6 weeks if X, Y, Z."
+
+2.
+
+**Estimate in Effort, Not Time**: I know that this might be hard in the beginning but try estimating in terms of effort or rather than dates.
+
+  1.
+
+"This feels like an 8-point task, which usually takes us 1-2 sprints." The problem with time estimates is that it assumes 100% capacity, which never happens in the real world.
+
+3.
+
+**Explain your decision**: Talk about the assumptions and risks that led you into your estimates.
+
+  1.
+
+"This assumes we get that critical integration on time with the client's internal team. If that doesn't happen, it could push the timeline back by several weeks."
+
+4.
+
+**Iterate, iterate, iterate**: Review estimates regularly as you gain new information. Don't forget to continuously update and communicate your new estimates to stakeholders.
+
+Estimates are not set in stone.
+
+Most people think like that but they really aren't.
+
+I'm not saying that we should postpone things indefinitely.
+
+What I'm saying is that sometimes we need to do some tradeoffs and delay or postpone something.
+
+![](https://silvags.com/writing/engineering-estimates/images/03.webp)
+
+## "It'll take longer than you want."
+
+As important as the mindset shift is, the hardest part is often saying no to unrealistic timelines to stakeholders. Pushing back on aggressive timelines and promising less than hoped for can be uncomfortable.
+
+-
+
+**There is always a positive side**: "Taking the time to do this right sets us up for long term success and fewer shitstorms in the future."
+
+-
+
+**Explain the tradeoffs**: "We could cut corners to hit that date, but it will generate a lot of technical debt that will slow us down and create quality issues later."
+
+-
+
+**Offer alternatives**: "If going live in Q2 is a hard requirement, let's scope down the MVP to features that bring value and move the nice to haves to a later date."
+
+-
+
+**Talk with your team**: "Here's our current estimate range. What constraints and risks do you see that we should look into? Any super priority things?"
+
+-
+
+**Show your damn work**: Provide regular demos, show milestones hits, and celebrate small wins to build trust in the process.
+
+**You're not pushing back because you don't want to work. **
+
+**You're pushing back because you know what it takes to make it work.**
+
+## TL;DR - Estimates sucks, but we need to do them.
+
+Estimates in software engineering will always be 50% art 50% science.
+
+Unexpected issues appear, requirements change, and [life happens.](https://silvags.com/writing/the-art-of-juggling-life/)
+
+Estimates are educated guesses.
+
+Perfect estimates don't exist.
+
+It's okay to be wrong (you will be).
+
+**Communication > Accuracy.**
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+Source: https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/
+
+# I built a tiny robot that refuses to stay down
+
+September 28, 2026 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses)
+
+Have you ever seen something cool that looked simple on the internet and told yourself “I should try this” and then spent the rest of the time evaluating your life’s decisions?
+
+I had one of those.
+
+The “something cool”: a tiny robot that stands up. I knock it over, I let go, and it tries to get up by itself. Every time. I think that is cool.
+
+I also like learning more about robotics and a robot on the desk is a better way to do that than another tab of your web browser.
+
+![](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/01.webp)
+
+*Pico.*
+
+## The plan
+
+It all started when I saw a maker called *HomeMadeGarbage* who built this tiny robot that would always get up. Always! I thought it was so cool and interesting that I had to make my own.
+
+So, like the naive engineer that I am, I tried to build it and add my improvements on top of it.
+
+Pico is small. Two servomotors, 3D printed parts, a little drone battery, and a development board about the size of a small candy.
+
+You tell the robot “go to this angle” and it will try. The board has the same kind of sensor that knows you flipped your phone. A small program looks at the tilt and moves the arms.
+
+People who already work in robotics call that program a policy.
+
+The source code for it and more is [here on my github](https://github.com/0xgui/pico-self-rising-robot).
+
+The plan:
+
+Print the foot. Print the arms. Screw the motors on. Plug the wires in. Flash the firmware.
+
+In my head, that was the plan.
+
+Video
+
+[Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/02.webm)
+
+*First parts being printed.*
+
+## The plan is never straightforward
+
+**First problem, assembly.**
+
+If you knew how many times I had to reprint the part below, just because I messed it up with the wrong type of screws, or because it would not fit the servo motor correctly, or because I damaged it somehow…
+
+I don’t want to talk about it. Let’s just say I don’t have black filament anymore and I had to print it in red.
+
+![](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/03.webp)
+
+*Still have nightmares about it.*
+
+**Second problem, the wires.**
+
+When testing the robot, some wires got loose because of the movement and the general jankiness of it. Since it was the first prototype, I thought that for testing, duct tape and a bit of soldering was enough.
+
+I guess it was not.
+
+I stopped being a caveman and set the cables in a sturdier way.
+
+![](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/04.webp)
+
+*Wires just got loose after some tests.*
+
+**Third problem, the arms were connected wrong.**
+
+Each motor has a signal wire, and that wire has to land on the right pin. The motor also has to turn the direction the program expects. Mine didn’t. Wrong pins. Wrong direction. A command that meant “move up” went down, and the robot threw itself at the table like it meant to.
+
+The code was fine. My wiring was not.
+
+So I sent one command, watched which arm moved, wrote it down, and sent another, until the arms agreed with the version on the code.
+
+Thank god we have AI nowadays to help troubleshoot these things.
+
+**Fourth problem, the robot thought up was down.**
+
+Video
+
+[Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/05.webm)
+
+*That little grey cube’s position was the issue.*
+
+Pico sitting flat on the desk, perfectly still, and the program was certain it was upside down. Every get-up attempt started from a lie.
+
+The tilt math. My board, the little grey cube (the brain of all of this) is mounted in a different orientation than the original build, and the formula was 180 degrees off.
+
+It should be faced up and not down as I mounted it.
+
+But hey, at least it was moving! Progress!
+
+Patched the code and off it went.
+
+**Fifth problem, the USB port said no.**
+
+Video
+
+[Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/06.webm)
+
+*USB Ports didn’t have enough power to handle the motors load.*
+
+With both motors moving at the same time plus the development board draining energy, my USB ports just did not have enough juice to handle all the load when the load hit its peak.
+
+Solution?
+Why won’t you just connect the battery and try it?
+
+It worked.
+(Thanks AI gods again)
+
+**No more problems.**
+
+Five problems. Reprints. Loose wires. Wrong pins. Tilt upside down. Power collapse.
+
+Two of them were just building the thing. The other three looked like code bugs. None of them were the code.
+
+It never changed. I changed everything around it without realizing and because of that I needed to adapt the code to the way I built it.
+
+Hardware is hard!
+
+## It works. Rise!
+
+Video
+
+[Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/07.webm)
+
+*Happy little guy.*
+
+Below is a video so you can hear the motors and see how it behaves:
+
+I knocked it over and over again.
+
+The arms moved. The body moved.
+
+It stood up, and stayed up.
+
+Every time.
+
+I knocked it over maybe fifty times, and about five of those it stayed down, unable to get up. I think that’s pretty good!
+
+I can finally say it: **I added a new robot to my collection.
+**
+
+## Where the “get up” comes from
+
+Nobody wrote “swing this arm, then that one” by hand for every situation or environment.
+
+The program learned the motion in a simulator, before it ever touched the robot.
+
+The simulator, MuJoCo, think a physics engine for robots, drops a virtual Pico on its side, over and over. Every attempt gets a score: points for being more upright, penalties for staying tilted, for wiggling once it’s already up, for the wrong body height.
+
+Video
+
+[Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/08.webm)
+
+*Pico in simulation*
+
+A training method called PPO (Proximal Policy Optimization) nudges the program toward better scores.
+
+Try, score, adjust. Thousands of times.
+
+It didn’t start from zero. The original author scripted a get up by hand and made the robot train on it.
+
+Also, pretty nice to have AI and simulations to help us before we spend money on real hardware.
+
+---
+
+Is the robot useful now? Probably not.
+
+Was it a pain to build? For sure.
+Was it fun? For sure.
+
+Maybe next I try to make it jump.
+
+*GS*
+
+---
+
+Source: https://silvags.com/writing/i-just-wanted-to-clean-my-house/
+
+# I just wanted to clean my house.
+
+August 27, 2026 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house)
+
+Have you ever had one of those moments where you just get super mad and wish things were not so complicated?
+
+I had one of those moments.
+
+I want to tell you about the most complicated thing I have ever done to avoid pushing a vacuum around by hand.
+
+## The app wanted me to log in
+
+The task was: clean my office. One room. Not the whole house.
+
+I own a robot vacuum for exactly this class of problem. It's a Roborock S7, four years old, still perfectly decent at its job. I opened the app to press the button.
+
+The app wanted me to log in.
+
+Fine. Sessions expire. I logged in again, and the robot was gone from my account. Also fine. I started the pairing process over, the setup wizard asked me to connect the robot to my Wi-Fi, and the robot declined.
+
+It declined through everything I tried. I deleted the app and reinstalled it. I reset the robot. I restarted the router. I did some voodoo in the middle, the details of which I will not disclose. By the end of the ritual, the score was app: 1, me: 0.
+
+Somewhere around the router’s third reboot, the useful thought arrived. If this was annoying me, it had annoyed someone with more patience first, and that someone had probably already built the alternative.
+
+After some research, there it was: **Valetudo**.
+
+Valetudo (made by Sören Beye) is a cloud replacement for vacuum robots enabling local-only operation. No account. No app. No server on another continent holding a centimeter accurate map of my house and deciding, on any given morning, whether my vacuum should work or not.
+
+You will be in control of your own robot.
+
+No one else will.
+
+## Part 1: It’s never easy
+
+You see, Valetudo has a list of compatible robots that can use it and there are several ways to install it. Some robots you just use OTA (over the air updates) method requiring no disassembly nor attaching any cables and for others you literally have to take the entire robot apart until you reach the circuits to solder jump wires to the PCB board to get access to the bootloader.
+
+Guess which one I got.
+
+The S7 is the second kind. The method is called [FEL rooting](https://valetudo.cloud/pages/installation/roborock/#fel-rooting), and the first step is "completely disassemble the robot," a phrase the documentation means with total sincerity. Top shell off. LiDAR turret off. Second shell off. Battery out. A dozen ribbon cables thinner than a fingernail, until you reach the mainboard at the very bottom, sitting under every other component like the last pringle in the can.
+
+![](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/01.webp)
+
+*Disassembly process *
+
+## Part 2: Hacking it
+
+Once you reach the PCB you can see the TPA17 and GND SH1 pads on the board. The rooting process works by shorting the two at exactly the right moment. Neither is a port. Neither has a connector. They are bare metal pads about the size of a grain of rice, and the intended tool is your hand.
+
+Since I was alone and didn’t want to mess it up (like touching another part of the board with the wire’s loose ends), I decided to solder one terminal of the jumper wire to the SH1 GND and then use my hands just to operate the TPA17.
+
+This way I know that I could be safe from accidentally disconnecting the jumper wire from GND and I only had to worry with TPA17.
+
+Video
+
+[Media](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/02.webm)
+
+*Soldering the jumper wire*
+
+I won't post all the necessary steps to reach the bootloader because that’s in the docs but this is the line that matters:
+
+*“Press the power button for 3 seconds and keep the TPA17 connected to GND for 5 more seconds after that.”*
+
+![](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/03.webp)
+
+*Jumper wire to connect TPA17 and GND(SH1)*
+
+Do it right, and the robot appears on your laptop’s USB bus as Allwinner Technology sunxi SoC OTG connector in FEL/flashing mode.
+
+![](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/04.webp)
+
+*Uploading the new firmware*
+
+After rebooting several times and sending a lot of files between my laptop and the robot, if all went ok after the robot has rebooted, connect to the robot’s own Wi-Fi AP, wait for a minute or two and then open the Valetudo Web interface in your browser to connect the robot to your Wi-Fi network.
+
+For that, just browse to http://192.168.8.1, and voilá you are inside your robot.
+
+![](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/05.webp)
+
+*Valetudo Interface*
+
+This is the point where you have full control of your robot with no need for an app or a company telling you what to do.
+
+Now you control the robot, not the other way around.
+
+With that done, I had to reassemble the robot and that was a pain, not gonna lie.
+
+## Part 3: Valetudo, mas vale mesmo tudo!
+
+Now that you can control your robot you can literally do things like change its voice, schedule times, lower the volume of the voice commands (which I did because the lady is annoying) and even control it like it’s an RC car!
+
+Video
+
+[Media](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/06.webm)
+
+There a lot more things you can do now with Valetudo since you now have full control of your robot vacuum cleaner, but truth be told **I just wanted to clean the office and that’s what I did next!**
+
+### **Freedom to do what you want with your own stuff**
+
+It seems that every day there is a new app and a new subscription service for you to pay to be able to access all the features that the hardware that you bought is capable of. It’s tiring. Why can’t we just fully use what we already paid for? Why do we need to be locked out from so many features on the software or hardware that we use?
+
+Subscriptions are a good source of recurring revenue for companies and I understand that and sometimes there are some subscriptions that are truly useful.
+
+But when a 4 year old vacuum needs permission from a server on another continent to clean one room, something is off. If everything needs an account and a monthly fee just to function, do you own your stuff,
+
+or are you just predictable revenue for someone else?
+
+*My S7 is cleaning the office now.*
+
+GS
+
+---
+
+Source: https://silvags.com/writing/imposter-syndrome-if-you-have-it/
+
+# Imposter Syndrome: If you have it, you are good
+
+July 31, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/imposter-syndrome-if-you-have-it)
+
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/01.webp)
+
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/02.webp)
+
+-
+
+CEOs and top executives
+
+-
+
+Middle managers
+
+-
+
+Entrepreneurs and startup founders
+
+-
+
+Academics and researchers
+
+-
+
+Artists and creative professionals
+
+-
+
+Writers and authors
+
+-
+
+Software engineers
+
+-
+
+...
+
+What do all these have in common? Yup, they all feel like imposters at some point in their lives.
+
+In more than half a decade of experience, I lost count of the times that I had it. The fear of being fake. 
+
+Now? I just embrace it and use it to my advantage.
+
+## You probably heard of it
+
+Throughout your career, you had someone mention it to you one time. You probably felt the same and thought that you aren't alone in the world.
+
+Guess what? You aren't.
+
+The term Imposter Syndrome was first coined in 1978 by Pauline R. Clance and Suzanne A. Imes. ([source](https://en.wikipedia.org/wiki/Impostor_syndrome))
+
+To keep it simple, Imposter Syndrome is a psychological phenomenon in which you feel like a fraud (Imposter) even if you are really good at something.
+
+You completely ignore your success, achievements, goals reached, etc., all of these with proper evidence.
+
+It will impact you. It will impact your mental health, your anxiety, your self-esteem, your stress, and the people around you.
+
+And no, you can't fix it with drugs.
+
+## It's just a matter of time ⏳
+
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/03.webp)
+
+There will be a time in your career/personal life (you probably already reached that time) where you will feel doubts about yourself. 
+
+The probability of this happening is higher in non-technical roles, like management. The work you do in this scope is less "tangible". You don't have tickets or tasks that you can mark as completed. You have way more meetings. It's a never ending work to achieve bigger goals.
+
+Because of this, you feel that you are doing nothing special, and your peers are doing all the hard work.
+
+But this can go both ways, too. With remote work becoming more common, Individual Contributors tend to feel the syndrome more often due to the lack of their manager's feedback or the poor visibility of their work.
+
+No matter who you are, you will be impacted by it.
+
+## The "I'm Smart" effect 🧠
+
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/04.webp)
+
+There's one effect that goes pretty hand in hand with the imposter syndrome. The Dunning-Kruger effect. Or, as I like to call it, the "I'm Smart" effect.
+
+The Dunning-Kruger effect, shows that people with lower skills tend to be more overconfident about their abilities, and when their skills start to improve, their confidence starts to go down. This is where the Imposter Syndrome likes to appear.
+
+This is why I think that if you have Imposter syndrome, you are good. You don't consider yourself the best, and you now have solid skills. 
+
+From now on, you can only improve.
+
+You will eventually find balance, but until then, you have to handle the imposter.
+
+## Why it can be good 🌟
+
+Ok, you are at your lowest. You feel like a fraud. Is this bad?
+
+Well yes and no.
+
+Yes, because it will impact you and your self-esteem in the short term.
+
+No, because you will want to get over it. You will trigger actions that will make you feel more confident.
+
+### You have been assigned a new task.
+
+Someone asked you to create a new infrastructure to handle a simple e-commerce website. At the start, you start to feel the pressure, and the imposter syndrome starts to creep in. 
+
+You have already worked with multiple e-commerce websites, and you know the general wit of it. But, at that moment, you choose to ignore your past achievements.
+
+### What can you do to get rid of this pressure?
+
+You start by searching for similar architectures for the infrastructure that was assigned to you. You start to get familiar with the concepts again.
+
+Not only that, but you start to remember similar work that you did in the past, and you just need to change some minor things.
+
+Your confidence builds up. Once again, you managed to find balance. You got rid with some of the pressure. At the same time, you learned more useful skills that will compound throughout your career.
+
+This was a very simple example, but the core of it is:  pain in the short term, rewards in the long term.
+
+You can also be the other kind of person who does nothing and just complains that things are hard and that you are afraid. Well, good luck to you:D
+
+## Imposter Syndrome in Engineering Teams 👨‍💻👩‍💻
+
+As you saw, the syndrome will impact people. It will impact people's mental health and people's confidence.
+
+This can happen in your engineering teams and you need to be on the lookout for it.
+
+It can happen for several reasons:
+
+-
+
+New technologies emerging. 🚀
+
+-
+
+Deadline pressures. ⏰
+
+-
+
+Complexity of the product. 🧩
+
+-
+
+Comparison with other peers 👥
+
+If you assign a task to an engineer and you start to see him having doubts about himself, this can impact the morale of the whole team.
+
+Remember, a team is as strong as your weakest link. I truly believe that. It's like having 100000 MB/s of bandwidth available, but your computer can only download at 100 MB/s.
+
+It's your job to help this engineer get through the task and learn at the same time. If you do this, you are helping your entire team.
+
+Your engineer will have a boost in his self-esteem. Not because of you. But because, for him, he is contributing to the team. He is helping the team. He is moving along with the team.
+
+He is part of the team.
+
+This is what most of the engineers want. To feel that they contribute to a team, to a product, to a goal. 
+
+## Just embrace it 🌱
+
+Every time that you notice that you are starting to feel like a fraud, embrace it as an opportunity to grow and to learn more. As an opportunity to get out of your comfort zone.
+
+It will happen more often than you think. Just be graceful for it.
+
+I know that these are just words, and words mean nothing. But actions do.
+
+You need to take action on it. Do not be consumed by it.
+
+Enjoy being a beginner again. 
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+---
+
+Source: https://silvags.com/writing/personal-branding-as-an-engineer/
+
+# Why Personal Branding matters as a Engineer
+
+July 17, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/personal-branding-as-an-engineer)
+
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/01.webp)
+
+When you hear the word *brand*, you probably think about Coca-Cola, Nike, Microsoft, Apple, Gucci, Google and so on. These companies spend millions and millions of dollars perfecting their brand identities. The objective for this is simple. The next time you see their brand, they want to transmit to you their values. They want to transmit to you who they are, what they are and what they do. And they want you to talk about them with the values that they passed on to you when they are not around.
+
+We don't even need to use companies as an example. We can use single individuals. Look at football players. Look at Ronaldo. Ronaldo created a huge personal brand that is well known everywhere around the globe. If someone mentions the word "Ronaldo", you instantly know who he is and what he does.
+
+I'm not saying that you should become as famous as Ronaldo. But you should at least try to be known for what you are worth for.
+
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/02.webp)
+
+## Put Yourself out There
+
+You need to remember that you are competing with remote work. This means that you are competing with an **estimated 26.9 million software engineers**. ([source](https://en.wikipedia.org/wiki/Software_engineering_demographics#:~:text=Software%20engineers%20form%20a%20noticeable,from%2021%20million%20in%202016.)).
+
+That's a lot of engineers.
+
+You need to stand out. There is no other way around. It's a must at this point. If you want to get those six-figure jobs, you need to stand out and have incredible technical and soft skills.
+
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/03.webp)
+
+## Why You Need to Promote Yourself
+
+Let's face it. Most engineers are terrible at marketing themselves. Their energy is spent solving engineering problems, and that's what they are good at. But this doesn't mean that you should ignore what people say about you when you are not in the room.
+
+If people understand a bit better about who you are this will lead to:
+
+-
+
+More leads that gives you more chances to sell
+
+-
+
+More opportunities in your inbox
+
+-
+
+More interviews for you to prepare for
+
+I saw the following quote somewhere, which summarizes it pretty well:
+
+"***Your brand is the key that unlocks doors that you can’t see.***"
+
+## Treat Yourself as a Business
+
+If a personal brand is something that still doesn't make sense to you, think yourself like a business.
+
+People need to see what your business can offer and what it is good at. People need to see the work that your business has already done and what a partnership with your business will give them.
+
+If you think of yourself as a business, you will want to invest in your business. You will want to invest in you.
+
+This means that your business will grow. You will grow.
+
+### Showing What You are Worth is not Cringe
+
+Don't think of it as cringe. You might think that you are "selling" yourself and your dignity. But you are not. You are just showing to the world what you do and what your values are. Of course, if you try to sell something you are not, you are going to have a bad time.
+
+See it as a strategy for your business. If you want your business to succeed in the long term, you need a brand. This brand will evolve over time. But you need a brand for your business.
+
+In the end, you will want people to talk about your business when you are not around. And people want to be associated with your business. With you.
+
+## Before creating your Brand
+
+I know that this is an Engineering newsletter, and I should give you practical straight forward bullet points, but for you to begin creating your personal brand you need to figure some things first by yourself:
+
+-
+
+Figure out Who you are.
+
+-
+
+When you know Who you are, figure out What you want to be known for
+
+-
+
+Who is your audience? Who should you target?
+
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/04.webp)
+
+Don't think that this is a one-way stop. This will be a continuous cycle until the end of your career. Like most businesses evolve through time, so should you. 
+
+You will want to meditate from time to time if you are going in the right direction for you. If your values remain the same. 
+
+If they don't, approach this as a new opportunity to learn new things and to grow your business.
+
+## Start With the Basics
+
+You don't need to start a huge portfolio website with the latest tech and shiny visuals or do 50+ Side Projects on GitHub to show your worth. Just start with LinkedIn.
+
+In recent months, my experience on LinkedIn has significantly contributed to my growth as an Engineer, beyond just accumulating followers or likes. The platform has provided numerous valuable opportunities:
+
+-
+
+**Networking**: You will connect with a multitude of professionals who will share their ideas with you.
+
+-
+
+**Communication skills**: My ability to articulate ideas has improved across all areas of my life, including my professional role.
+
+-
+
+**Opportunities**: New leads have come to me because I met someone in person for a few hours and then we stayed in contact through LinkedIn.
+
+-
+
+**Interviews**: Recruiters will pick you if you have a solid profile that checks all their points.
+
+### How to start on LinkedIn
+
+I don't like to reinvent the wheel. So, instead of creating a guide of my own, I will point you towards an article that helped me get my shit together on LinkedIn and also create this article.
+
+[Engineer's Guide to LinkedIn](https://hybridhacker.email/p/engineers-guide-to-linkedin) by [Nicola Ballotta](https://substack.com/@hybridhacker)
+
+The guide will get you started on how to create a solid LinkedIn Profile to increase your Personal Brand.
+
+## Just Keep Showing your Value
+
+I know a lot of great people who have a lot of hidden potential. The problem with these people is that they don't show their work enough times to be distinguished from the others. This could hurt them in the long term, and I want to help those people. 
+
+That's why I think a Personal Brand is a must these days. Remember, invest in your business. Invest in yourself.
+
+Just continue to show your value, and unknown doors will open to you.
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+---
+
+Source: https://silvags.com/writing/physical-ai-is-here-and-im-building/
+
+# Physical AI is here and I’m building for it.
+
+March 5, 2026 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building)
+
+The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger.
+
+There’s something about seeing a machine you built with your own hands actually move that hits differently than anything you’ve experienced before in the software world.
+
+It’s physical. It’s immediate. It’s hard. It’s real.
+
+Now I just need to give it a **brain**.
+
+![](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/01.webp)
+
+## I built some robotic arms
+
+I 3D printed them. Part by part. With a 3D printer I bought, ordered some servomotors from AliExpress and followed open-source designs and instructions.
+
+Two arms, built completely from scratch. [(you can find some scripts that I created to calibrate the arms on my github repository)](https://github.com/0xgui/SO-101)
+
+The 3D printing took about 2 days for both arms. The most expensive parts were the servomotors, almost €20 each and you need 12 of them.
+
+Did I assemble everything on the first try?
+
+Ahah, no.
+
+At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup, realized it only after everything was done. Had to redo it all from scratch.
+
+Video
+
+[Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/02.webm)
+
+## So what is Physical AI?
+
+Now you’re probably wondering, why did I build robotic arms at all?
+
+Well to start, robotics is something that always interested me, and second because we’re at the beginning of something I can’t ignore.
+
+You already know AI. You use it every day probably. But all the AI you interact with lives in the digital world. It reads text, generates images, writes code. 1s and 0s.
+
+Physical AI is AI that acts in the real world. Through robots/machines. Through arms, legs, wheels, grippers, humanoids, drones, etc. It doesn’t just generate an answer or a cute cat image.
+
+It ***does something***** **in physical space.
+
+We’re talking about:
+
+-
+
+Robotic arms assembling parts in factories
+
+-
+
+Humanoid robots working on car manufacturing plants
+
+-
+
+Agricultural bots harvesting crops autonomously
+
+And much much more.
+
+At first I really thought like everyone else that “Physical AI” was just another buzzword that someone invented with the word AI on it, just to sell more.** **
+
+**But I was wrong. **
+
+![The Current Generation of Humanoid Robots (2025)](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/03.webp)
+
+*[(source)](https://www.voronoiapp.com/technology/The-Current-Generation-of-Humanoid-Robots-2025-4656)*
+
+## Robots have been “the future” for decades. What’s different now?
+
+Well, AI.
+
+The AI models powering robots today are fundamentally different from what existed 5 years ago. **Vision-Language-Action models**, or VLAs, can see their environment, reason about what they’re seeing and decide what physical action to take next. They’re built on top of the same foundation models that power today’s chatbots and image generators, but extended to produce real-world actions.
+
+And the hardware is catching up fast. All thanks to AI.
+
+The entry to hardware just lowered by a lot. Not in terms of capital to build the hardware itself but to understand what to build and how to build. Open-source designs, code and communities sharing knowledge have made it possible for someone like me to build a functional robotic arm on a desk in my home.
+
+For decades, robotics was hard for a simple reason: you had to program every single movement by hand. Every scenario. Every edge case. Explicitly, in code.
+
+VLAs and imitation learning broke through that ceiling.
+
+Now a robot can watch you perform a task a few dozen times and learn to do it on its own (this is called imitation learning). It can handle objects it’s never seen. It can adapt when things don’t go exactly as expected.
+
+This is the shift from **programmed robots** to **learning robots**.
+
+It changes everything about what robots can actually be used for.
+
+Comos Reason GIF.
+
+[Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/04.webm)
+
+*[(source Nvidia)](https://developer.nvidia.com/blog/curating-synthetic-datasets-to-train-physical-ai-models-with-nvidia-cosmos-reason/)*
+
+## Simulation to the real world (sim-to-real)
+
+You can’t just throw an AI model at a physical robot and hope for the best. Robots are expensive (it’s hardware and not a simple software rollback).
+
+Mistakes are physical. A confused robot doesn’t just crash a server. It can break itself, break things around it, or worse, hurt people.
+
+That’s where simulation comes in.
+
+Tools like **[NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim)** and **[Gazebo](https://gazebosim.org/home)** let you build a full virtual replica of your robot and its environment. You can train it, test it, crash it a thousand times, and it costs you nothing. No broken parts. No downtime.
+
+Isaac Sim in particular is remarkable. It uses the same physics engine that powers video game worlds, but tuned for robotics. You can simulate gravity, friction, sensor noise, even lighting conditions. The robot learns in a virtual world that’s close enough to the real one that the skills transfer.
+
+This is called **sim-to-real transfer**. It’s one of the most important concepts in modern robotics.
+
+Why does it matter? Because it means a robot can accumulate millions of hours of “experience” in simulation before it ever touches the physical world. Things that would take years in reality can happen in days.
+
+That’s how you build robots that actually work.
+
+Sim-to-real is one of my next steps. I want to simulate my arms in Isaac Sim, run experiments virtually, and then transfer what works to the physical arms on my desk.
+
+The link between the virtual and the physical.
+
+Video
+
+[Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/05.webm)
+
+*[(source)](https://github.com/isaac-sim/OmniIsaacGymEnvs)*
+
+## Finally some fun
+
+I haven’t put AI on my arms. Yet.
+
+Right now it’s pure teleoperation: I move one arm, the other follows. That moment alone was enough to trigger the curiosity in me completely into this new world of hardware.
+
+Next, is teaching the arms tasks by demonstration. I move them through a motion a few dozen times, and it learns to replicate it on its own.
+
+Then things get really interesting and we start to put some VLAs to give it a brain.
+
+It’s also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer.
+
+Video
+
+[Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/06.webm)
+
+## Hardware might be next
+
+Multiple industries are being rebuilt around robots that can learn, adapt, and operate autonomously.
+
+To put things in perspective: China just registered 64000 new robotics companies. **In the last 3 months. ([source](https://www.36kr.com/p/3702849154380164), you need to translate from Chinese).**
+
+The honest answer is nobody knows exactly how this plays out.
+
+Will humanoid robots be everywhere in 5 years? I don’t think so. Will they be in factories doing some specific tasks? probably.
+
+AI went from generating text, to generating images, to generating video. Each step felt impossible until it wasn’t. Physical AI is the next step imo. AI that doesn’t just generate 1s and 0s.
+
+**It acts.**
+
+![](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/07.webp)
+
+---
+
+Source: https://silvags.com/writing/speaking-in-front-of-250-people/
+
+# Speaking in Front of 250+ People
+
+October 9, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/speaking-in-front-of-250-people)
+
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/01.webp)
+
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/02.webp)
+
+"What will they think of me?" "What if I say something wrong?" "How will they judge me?"
+
+All valid questions for someone who is about to enter the spotlight.
+
+---
+
+This September, I got the opportunity to speak at a conference. The CNCF KCD Porto. The first KCD ever there, organized alongside [Synvert xgeeks](https://xgeeks.com/).
+
+I got the opportunity to meet old friends from past companies and new friends from different ones.
+
+I also got the opportunity to talk on the main stage. Where, on that day, everyone would be present because there were no parallel talks. 250+ people.
+
+I have been speaking at tech meetups. This event was the biggest one that I have attended.
+
+Since I already gave a bunch of talks, I would like to explain my journey so far into public speaking and why it's important for engineers to train this skill.
+
+## Why Engineers Need to Master the Mic 🗣️
+
+As an Engineer, you may think that your technical skills and knowledge are the most important assets for success in your field.
+
+While these are certainly critical, there's another skill that can make a significant impact on your career growth and opportunities: **Public Speaking.**
+
+Engineers like to solve problems. No doubt about that. But what they are not good, normally, is to communicate the solutions to non-technical people.
+
+The way some engineers communicate their ideas is somewhat weak to persuade others. And the use of technical terms sometimes only make it worse.
+
+Because of this, engineers start to get frustrated and think that everyone around them is dumb because they don't understand their idea.
+
+This is why communication, and more specifically, public speaking is important.
+
+We need to pitch our ideas to the stakeholders in a way that they fully comprehend what we just said.
+
+**There should be no questions in the way we say it. There should be questions in what we say.**
+
+We also have the other bonus that come along with public speaking:
+
+-
+
+Increasing your professional network
+
+-
+
+Building Confidence
+
+-
+
+Gaining recognition for your work
+
+-
+
+Getting feedback from people.
+
+-
+
+Building your personal branding.
+
+## Yes, it will be scary at first 😰
+
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/03.webp)
+
+*(me at Cloud Native Lisbon)*
+
+Your manager/boss comes to you and asks you to present your project or the technology that you work with at a local tech meetup.
+
+You start to get anxious. Just before he finishes his phrase. You never talked in public in your career, and you hated to do it in school.
+
+"Why me?". You think.
+
+The answer is simple. You are the expert on the subject. Only you or a few individuals know about what you are going to talk.
+
+This is why your boss chose you. He knows that you know your shit. And he would like you to share your knowledge to the world.
+
+Just Share It.
+
+How can you be sure that what you create or what you think is correct? You need to share it to have other validation than yourself.
+
+Just like this article that you are reading at this exact moment. I could just write it and keep it to myself. But how would I know that what I say makes sense and people may or may not like it? Or even share the same thoughts as I?
+
+Start with local tech meetups. Train your presence on stage. Get feedback.
+
+If possible, try to get a speaker mentor that already has done a couple of talks.
+
+You can also start by doing remote talks. It will help your flow in the slides. But remember. Live, on stage, you will feel things that you do not feel remotely.
+
+## Going International 🌍
+
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/04.webp)
+
+*(me at Munich, Germany)*
+
+The jokes. The culture. The way they think.
+
+Different cultures have different ways of perceiving information. What works in your country might not work in another.
+
+I know this because, when I went to do a talk in Munich, Germany, at a tech meetup, some jokes there did not work. It was awkward to say the least.
+
+We need to adapt. We need to research. We need to understand the audience.
+
+This is a challenge. But it's also an opportunity to grow. To learn new perspectives. To broaden our horizons.
+
+Start small. Maybe a remote international meetup. Then work your way up.
+
+## Conferences 🏆
+
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/05.webp)
+
+*(me at KCD Porto 2024)*
+
+Like I mention, this was my first one. I'm no expert whatsoever in this type of setting.
+
+But what I can tell you is this: If people are present in your talk, it is because they find your topic interesting. They want to absorb the knowledge that you have and try to use it for themselves.
+
+If some people leave during your talk, that's ok. It's normal. People have different interests and opinions. And people want to connect to what matters to them the most.
+
+Conferences are not just about speaking. They're about learning. Networking. Growing.
+
+Don't just give your talk and leave. Attend other sessions. Talk to people. Ask questions.
+
+You might find your next opportunity. Your next collaboration. Your next big idea.
+
+## Tips and Tricks for Speakers 💡
+
+1.
+
+📊 Learn how to create good presentations. This matters. Wall of text = no good.
+
+2.
+
+🔑 Get a key message in each slide. Just a small phrase. This is what you want to remember when you see the slide.
+
+3.
+
+🎭 Use animations to create flow. You can create curiosity or suspense with the audience.
+
+4.
+
+😄 Use small jokes in the beginning to set or see the mood of the audience.
+
+5.
+
+👀 Don't stare at the slides when you are talking. Don't stare at the floor. Don't stare at one person in the audience. (Sorry for those who got this from me in the beginning 😅)
+
+6.
+
+🙋‍♂️ Interact with the audience if possible. E.g: Asking a question for them to raise their hands.
+
+7.
+
+🔄 Practice. This will depend on the person, but what works for me is to watch the flow of the slides 1 hour before the talk. Just the flow. No rehearsal or nothing like that. 5-15 min max.
+
+## The Q&A Part 🤔
+
+Let's talk about the Q&A. It's part of the process.
+
+You just gave a talk. You know your shit. Most questions? You can handle them.
+
+But what if you don't know the answer? It's fine. Just be honest.
+
+You can say:
+
+-
+
+"I haven't looked into that yet."
+
+-
+
+"I'll need to check that and get back to you."
+
+-
+
+"Let's talk more after the session."
+
+Sometimes people ask questions to show off. Don't let it get to you. Thank them and move on.
+
+The Q&A is a chance to learn. You might get ideas for your next talk.
+
+If a question is off-topic or too complex, offer to discuss it later.
+
+Remember, it's not an exam. It's a conversation.
+
+## Mitigating Fear 😰➡️💪
+
+Sorry, I lie. It will always be a bit scary. Not just in the beginning. The good news is that, it will just get easier as time goes by.
+
+This means, as we already discussed previously, that we are growing. We are in discomfort. We are learning.
+
+Remember, the one and only that knows what the talk is about is you. You are the expert.
+
+The fear? It's normal. It means you care. It means what you're doing matters.
+
+Use it.
+
+## From Keyboard to Keynote 🎤
+
+Public speaking is a skill. Like coding, it improves with practice.
+
+It's not just about the talk. It's about growth. Personal and professional.
+
+It opens doors. Creates opportunities. Builds your [personal brand](https://silvags.com/writing/personal-branding-as-an-engineer/).
+
+Every expert speaker started as a nervous beginner. The difference? They kept going.
+
+Remember, [feeling like an impostor](https://silvags.com/writing/imposter-syndrome-if-you-have-it/) is part of the journey. Embrace it. Use it to fuel your growth.
+
+Now go. Speak.
+
+**The stage is yours.**
+
+###
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/silva-gs/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+Source: https://silvags.com/writing/the-art-of-juggling-life/
+
+# The Art of Juggling Life
+
+September 25, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/the-art-of-juggling-life)
+
+![](https://silvags.com/writing/the-art-of-juggling-life/images/01.webp)
+
+Welcome back to another piece of Binary Paths!
+
+I'm back from vacations and because of that, I decided to do something different for this piece.
+
+As I mentioned before, this newsletter is constantly evolving, and evolution requires testing new traits.
+
+This piece will be less technical, touching more on the emotional side of things. It's a short one but I really liked to write it.
+
+I had some busy vacations, but I still had time to think about multiple stuff.
+
+Self-doubt was one of them.
+
+But it wasn't the only thing. Juggling multiple projects, goals, and responsibilities was another.
+
+It's not easy to keep all the balls in the air at once.
+
+You drop some. You pick them back up. You keep juggling.
+
+## That's life. That's the game we play.
+
+There will be a time when you will doubt about yourself. Don't try to say that you don't have or won't have it. You're just lying to yourself and others.
+
+You will doubt if you're really capable of the things you propose to do.
+
+You will doubt if you have what it takes.
+
+But really ask yourself. Does it matter? Does it matter spending energy on your useless thoughts about the pessimistic view you create? Does it matter if you don't have what it takes?
+
+No.
+
+What matters is if you do it or not. Not if you think about it or not.
+
+The movie you create inside your head, and whether it has a good or bad ending, doesn't matter.
+
+Ideation doesn't matter. Actions do.
+
+Choose a decision. Any decision. It doesn't matter which one. To move forward, you must choose one. Do you really want to stay in the same place? Or do you want to move forward?
+
+You decide.
+
+And once you decide, commit to it. Stick with it through the ups and downs.
+
+Through the self-doubt and the juggling act.
+
+Through the dropped balls and the added ones.
+
+Keep going. Keep juggling. Keep moving forward.
+
+One step at a time. One decision at a time. That's how you navigate the multiple things in life. That's how you keep all the balls in the air.
+
+It's not easy, but it's possible.
+
+You just have to decide to do it.
+
+**And then do it.**
+
+---
+
+Source: https://silvags.com/writing/the-road-trip-of-kubernetes/
+
+# The Road Trip of Kubernetes
+
+September 4, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/the-road-trip-of-kubernetes)
+
+Imagine this: Your boss pulls you aside one day, eyes sparkling with excitement. "Kubernetes," he says. "It's the next big thing, and everyone's doing it. We need to get on board, pronto!"
+
+And just like that, you're handed the keys to this shiny new vehicle called Kubernetes, with a vague instruction manual and a half-folded map. 😅
+
+Confused, you start digging into what this new shiny thing is that everyone is using.
+
+You encounter "Kubernetes".
+
+---
+
+### ☸️ Kubernetes?
+
+To make it simple, and because I don't want to make this piece about the technical details of Kubernetes, we need to understand what Kubernetes is.
+
+Kubernetes, also known as K8s, is an open-source platform that automates the deployment, scaling, and management of containerized applications.
+
+That's it. A thing that manages containers. That manages applications.
+
+With that out of the way, Kubernetes has in fact become the go-to platform for container orchestration.
+
+But should everyone jump on the bandwagon?
+
+### 💭 The Dream
+
+If you go around the web to learn more about Kubernetes, you will find some benefits that K8s "*can*" bring into your organization:
+
+-
+
+📈 Scalability and Flexibility
+
+-
+
+⏰ Increased Efficiency and Productivity
+
+-
+
+💰 Cost Optimization
+
+-
+
+🔒 Reliability and High Availability
+
+-
+
+👥 Community and Ecosystem
+
+-
+
+🔐 Enhanced Security
+
+I outlined the word "*can*" because if you ever tried to implement Kubernetes into your company, it's far from a dream. Especially if you have legacy systems and integrations in place.
+
+If you try to adopt it without a proper strategy, you will have a bad time.
+
+So, how can we have a smooth ride when trying to use Kubernetes for the first time?
+
+### 🏍️ Let's start the Road Trip
+
+Imagine that you want to take a road trip. A road trip to reach a destination, a place you really want to visit.
+
+As a motorcycle lover myself, I like to do road trips with my motorcycle. I love the thrill of hitting the open road on two wheels. The feeling of freedom is unbelievable.
+
+It's my meditation.
+
+![](https://silvags.com/writing/the-road-trip-of-kubernetes/images/01.webp)
+
+*(me at the highest point of the trip)*
+
+Just like a road trip, you don't want your Kubernetes journey to fail. So you will try to prepare for it and make it happen the best way you can.
+
+The same needs to happen if you are going to use Kubernetes inside your organization.
+
+You need to set a destination. You need to prepare for it. You need to adapt along the way.
+
+Yes, sure, you can just jump into your vehicle and leave, but you know that the trip will be must harder, and you might not even reach the destination that you want.
+
+### 🎯 Set the destination
+
+Before hitting the road, you need a destination that you want to go.
+
+Yes, you can have pit stops along the way, but in the end, you want to reach somewhere.
+
+This final destination are your business objectives.
+
+What are the objectives that you want to reach?
+
+-
+
+⏩ Faster time to market?
+
+-
+
+🏗️ Efficient use of your infrastructure?
+
+-
+
+🦾 More resilience?
+
+-
+
+📈 Scalability?
+
+Only you know what needs to improve. Only you can set the destination to reach the target objective of your organization.
+
+Real business value is about delivering value to customers and getting the return for it. You have a business that creates value. Your customers want to consume that value. You get paid for that value.
+
+**Avoid adopting Kubernetes just because it's the latest trend = Avoid going to a popular place just because everyone is doing it**
+
+### 📋 Preparing for your trip
+
+![](https://silvags.com/writing/the-road-trip-of-kubernetes/images/02.webp)
+
+*(only pack the essentials when traveling with limited space)*
+
+You now have a destination to go. Real objectives to target inside your company.
+
+Now you need a vehicle. This is where Kubernetes comes in.
+
+But operating a vehicle like Kubernetes is not easy.
+
+It requires significant investments in building and maintaining a skilled team, refactoring applications to be containerized, implementing automation tools (e.g. Helm) and ongoing maintenance for it to run smoothly (k8s upgrades).
+
+You need to honestly assess if your organization has the necessary resources and skills to adopt Kubernetes.
+
+If you see that you lack the necessary capabilities to run K8s, you might want to postpone the trip and plan for a little longer.
+
+#### Not the right Vehicle 🚫🚗
+
+For simple applications, the overhead of k8s might be overkill.
+
+Yes, you can use Managed Kubernetes services and the likes, but don't forget that an application requires more than an engine to run.
+
+Don't be afraid to choose a smaller vehicle for your needs. It might be everything that you needed without the complicated maintenance (overhead) and it might even save you some fuel.
+
+### 🚀 Start! But try to start small
+
+Trying to migrate all your applications to Kubernetes at once, is like going on a 3-month International Trip without any stops and without previous experience on any kind of road trips.
+
+Risky and exhausting. Likely to fail.
+
+Start small. Domestic travel.
+
+Start with low-risk, high-value applications that your organization has. These are applications that bring tangible benefits to customers.
+
+Use Kubernetes for new developments before tackling legacy monoliths with complex integrations.
+
+After getting comfortable and gaining more experience, you can start to plan for bigger trips.
+
+### 🕳️ Navigating the Potholes
+
+Along the way, during your journey, you will encounter challenges. Like in any adventure.
+
+While Kubernetes might bring benefits to the organization, it can also bring challenges like:
+
+1.
+
+📚 Complexity and Steep Learning Curve
+
+  -
+
+Kubernetes has a complex architecture and requires significant investment in learning and skills development.
+
+2.
+
+🔧 Application Refactoring and Modernization
+
+  -
+
+Existing applications may require substantial refactoring to be Kubernetes-friendly, and migrating legacy monoliths can be time-consuming and costly.
+
+3.
+
+🔍 Operational Overhead and Management
+
+  -
+
+Kubernetes might introduce additional operational complexity, requiring ongoing management, updates, and troubleshooting.
+
+4.
+
+🚀 Scalability and Performance Tuning
+
+  -
+
+Scaling Kubernetes clusters effectively can be challenging and requires careful configuration and tuning.
+
+5.
+
+🔒 Security and Compliance Concerns
+
+  -
+
+Kubernetes introduces new security considerations and requires robust security practices, policies, and tools.
+
+6.
+
+🌐 Integrating with Existing Ecosystems
+
+  -
+
+Integrating Kubernetes with existing tools and platforms can be challenging, requiring careful planning for backwards compatibility.
+
+You will inevitably step on some of these potholes. But at least now you can avoid the big ones.
+
+### 🧠 Don't forget why you are doing this trip
+
+You might get tired during the trip, and that's completely normal. Just don't forget why you are doing this.
+
+Kubernetes is a powerful vehicle, but it won't magically create business value. It works best when aligned with a [product mindset](https://silvags.com/writing/why-platforms-must-be-products/).
+
+Don’t forget. Focus on the fundamentals:
+
+-
+
+🗺️ Develop a Roadmap. Prioritize.
+
+-
+
+🧩 Build loosely coupled microservices that can quickly adapt.
+
+-
+
+👁️ Add tests and monitoring to help you and customers along the way.
+
+-
+
+⏰ Find a time slot to let your team tackle tech debt.
+
+-
+
+💬 Get Feedback. Act on it.
+
+Road trips are more enjoyable when you have a clear path.
+
+### 🏁You reached your destination
+
+You finally did it! You reached your main destination. Now what?
+
+Well, now you will want to reflect on the trip to see what you missed, what could improve in the next one and what you learned along the way.
+
+-
+
+**Did you reach all your business objectives? If not, why?**
+
+-
+
+**What were the most significant benefits from your Kubernetes implementation?**
+
+-
+
+**Did you achieve the desired improvements in customer value, innovation, efficiency, or other key metrics?**
+
+-
+
+**What challenges did you face along the way, and how did you overcome them?**
+
+-
+
+**How well did your team adapt to the new Kubernetes landscape? Are your software developers liking it?**
+
+These are just example questions that I would advise you to answer.
+
+### 🌄 Remember, it's all about the journey not the destination
+
+![](https://silvags.com/writing/the-road-trip-of-kubernetes/images/03.webp)
+
+*(one of the best trips of my life: Iceland.)*
+
+Yeah Yeah, I know, it's a cliché thing to say.
+
+But guess what? It's the truth.
+
+Kubernetes is a powerful tool, but it's not a silver bullet.
+
+Adopting Kubernetes is not a one-time event; it's an ongoing process of learning, adapting, and improving.
+
+You will always learn more each time you take the helm (yes, pun intended).
+
+Happiness is a temporary event when you reach your destination.
+
+One of the many reasons why you should never stop traveling.
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+---
+
+Source: https://silvags.com/writing/when-engineers-need-to-talk-business/
+
+# When Engineers Need to Talk Business
+
+November 9, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/when-engineers-need-to-talk-business)
+
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/01.webp)
+
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/02.webp)
+
+*Sorry for the delay. Life got in the way the past few days. Better late than never.*
+
+You're in a meeting with the business people. You're ready to talk about your team's technical achievements. Then someone says: "We need to focus on EBITDA this quarter" or "Our CAC is too high."
+
+Your brain goes:
+
+"What?"
+
+"Is CAC some new AWS service?"
+
+If you know nothing about business terms this probably already happened to you.
+
+## Why These Terms Matter Now 💼
+
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/03.webp)
+
+I get it. A few years back, I thought knowing terms like "MVP" and "KPI" was enough. I was wrong.
+
+As you grow in your career, especially moving towards staff+ or engineering management roles, you'll encounter a whole new dictionary of terms that actually move business decisions.
+
+Understanding business terms isn't about becoming a “suit” executive.
+
+It's about:
+
+-
+
+Making better technical decisions 🤔
+
+-
+
+Getting your ideas approved faster ✅
+
+-
+
+Understanding the "why" behind project priorities 🎯
+
+-
+
+Speaking the same language as stakeholders 🗣️
+
+-
+
+Career growth (yes, even as an IC) 📈
+
+Ever wondered why that critical refactoring got denied, but some new shiny feature got instant approval? Or why your perfectly scalable architecture proposal was denied in favor of a "quick fix"?
+
+The answer often lies in understanding the business side of things.
+
+## The Reality Check 🌟
+
+After years in engineering, here's what I've noticed:
+
+**Technical expertise alone doesn't get projects approved.**
+
+Most engineering initiatives die in planning meetings not because they're technically wrong, but because engineers can't explain their business value.
+
+You see this everywhere:
+
+-
+
+Critical refactoring project gets denied
+
+-
+
+Your infrastructure upgrade keeps getting postponed
+
+-
+
+Your team's headcount request gets rejected
+
+-
+
+The "quick temporary fix" wins over your scalable solution
+
+Why? The lack of ability to translate tech needs into business value.
+
+This is why understanding business terms matters. Not to sound smart in meetings, but to fight for what your team actually needs.
+
+## The Essential Business Dictionary for Engineers 📚
+
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/04.webp)
+
+Let's break some examples that we might encounter in meetings:
+
+### The Money Game 💰
+
+1.
+
+**EBITDA** (**E**arnings **B**efore **I**nterest, **T**axes, **D**epreciation, and **A**mortization)
+
+  -
+
+What it means: How much money the company really makes from its core business
+
+  -
+
+Engineer translation: "The money we make excluding some expenses"
+
+  -
+
+Why you should care: This often determines if you get that extra headcount or that new tool you wanted.
+
+2.
+
+**Burn Rate and Runway**
+
+  -
+
+What it means: How fast we're spending money and how long until we run out
+
+  -
+
+Engineer translation: "We are spending too much. We need to optimize cloud costs. "
+
+  -
+
+Why you should care: Affects technical decisions about scaling, infrastructure, and features, etc..
+
+3.
+
+**Revenue**
+
+  -
+
+What it means: Money we make from our customers before any expenses
+
+  -
+
+Engineer translation: "All the money coming in"
+
+  -
+
+Why you should care:
+
+    -
+
+If your project gets approved
+
+    -
+
+How many engineers we can hire
+
+    -
+
+Which features to build first
+
+4.
+
+**Gross Margin**
+
+  -
+
+What it means: Revenue - cost of goods sold, as a percentage
+
+  -
+
+Engineer translation: "The percentage of money we keep after paying for our core service costs"
+
+  -
+
+Why you should care: Influences decisions about infrastructure optimization and system architecture, features, etc..
+
+5.
+
+**P&L (Profit & Loss)**
+
+  -
+
+What it means: A financial statement that shows revenue, costs, and expenses over a period
+
+  -
+
+Engineer translation: "The number that shows if we're winning or losing money"
+
+  -
+
+Why you should care: This drives most technical investment decisions
+
+### The Growth Game 📈
+
+1.
+
+**CAC (Customer Acquisition Cost)**
+
+  -
+
+What it means: How much we spend to get one new customer
+
+  -
+
+Engineer translation: "Why we need to make onboarding easier"
+
+  -
+
+Why you should care: The system or features should not be complex.
+
+2.
+
+**LTV (Customer Lifetime Value)**
+
+  -
+
+What it means: How much money we expect to make from one customer
+
+  -
+
+Engineer translation: "Why we care more about some customer’s feature requests than others"
+
+  -
+
+Why you should care: Influences which features or optimizations get done first
+
+These are just some of the simplest terms to start. There are many more.
+
+## When Business Terms Hit Engineering World 👨‍💻
+
+These terms usually appear when:
+
+-
+
+Your team wants resources (people, tools, infrastructure)
+
+-
+
+You're proposing major technical changes
+
+-
+
+Feature Priority discussions
+
+-
+
+Budget season arrives
+
+-
+
+Company is planning next year objectives
+
+## Speaking Both Languages 🔄
+
+When you understand business terms, you can pitch technical needs differently:
+
+Instead of: "We need to refactor this service"
+
+We can try: "This refactoring will reduce our burn rate by optimizing our cloud resource usage by 25%"
+
+Instead of: "We should implement caching"
+
+We can try: "Adding caching will improve customer retention by making the app 3x faster, directly impacting our LTV"
+
+**Numbers matter for biz people.**
+
+## Startup vs Enterprise: The Language Differs 🏢
+
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/05.webp)
+
+The terms you'll hear depend on your company's stage.
+
+As an example:
+
+**Startups focus more on:**
+
+-
+
+Burn rate and runway
+
+-
+
+Growth metrics (CAC, LTV)
+
+-
+
+Market size
+
+**Enterprises care more about:**
+
+-
+
+EBITDA and operating margins
+
+-
+
+Cost optimization
+
+-
+
+Return on investment (ROI)
+
+## When NOT to Use These Terms 🚫
+
+Understanding business terms is important, but using them incorrectly can bring more harm than good.
+
+-
+
+Don't use them in technical discussions with your team: It adds unnecessary complexity.
+
+-
+
+Avoid using them if you're not 100% sure what they mean. Learn them first.
+
+-
+
+Don't throw them around just to sound smart. It's obvious and counterproductive.
+
+## The Bottom Line 💡
+
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/06.webp)
+
+Remember:
+
+-
+
+You don't need to become a business expert
+
+-
+
+You do need to understand enough to make your technical case heard
+
+-
+
+Every term you learn is a new tool that you can use
+
+-
+
+Business is complex
+
+The best engineers aren't just great at code.
+
+**They're good at understanding why they're writing that code.**
+
+---
+
+## Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/silva-gs/)) or the digital playground (Twitter).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+Source: https://silvags.com/writing/why-platforms-must-be-products/
+
+# Why Platforms Must Be Products, Not Projects
+
+August 28, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/why-platforms-must-be-products)
+
+![](https://silvags.com/writing/why-platforms-must-be-products/images/01.webp)
+
+(I tried to use AI to create an image of a “packaged product platform” 😅 )
+
+In the previous article on [becoming a product-minded engineer](https://silvags.com/writing/becoming-a-product-minded-engineer/), we discussed the importance of thinking beyond just writing code and considering the broader impact of your work. 
+
+This product mindset is especially critical when it comes to building internal platforms.
+
+Too often, organizations treat internal platforms as one-off projects with a defined start and end. Once the initial development is complete, the platform team moves on, leaving the platform to stagnate.
+
+This project-centric approach leads to several issues:
+
+-
+
+Lack of user-centricity and empathy for developer needs
+
+-
+
+Fragmented tools developed in silos without a clear vision
+
+-
+
+Reactive work and frustration for platform teams
+
+-
+
+Underutilized platforms that fail to drive adoption and value
+
+Sound familiar?
+
+In the fast-paced world of software development, it's easy to fall into the trap of treating internal platforms as one-off projects. Teams rush to build a platform, launch it, and then move on to the next shiny thing. 
+
+This approach frequently leads to platforms that are underutilized, poorly maintained, and fail to deliver real value to the organization.
+
+**The solution? Treat your internal platform as a product, not a project.** 
+
+As the folks at [Humanitec](https://humanitec.com/blog/platform-as-a-product-the-evolution-of-devops-and-platform-engineering) put it, “Platform as a Product is the evolution of DevOps and Platform Engineering.” It's about applying product management skills to the development and operation of your internal platform.
+
+### 🤔 What Does Platform as a Product Really Mean?
+
+At its core, the platform as a product approach means treating your internal platform like you would any other software product. This includes:
+
+-
+
+**Defining a clear product vision and strategy**: Your platform needs a clear purpose. What problems does it solve for your developers and your organization? Why are you building it in the first place? 
+
+-
+
+**Understanding your users**: Understand your developer's needs and pain. What can your platform do to make their lives easier? After all, it's them who will use what you build.
+
+-
+
+**Building a roadmap**: Roadmaps sometimes suck, but your platform should be driven by the needs of your users, not just by technical considerations. You should plan for the user's needs.
+
+-
+
+**Establishing metrics for success**: How do you know that you are doing a good job? Measure it. Adoption, satisfaction, and impact.
+
+-
+
+**Continuously iterating and improving**: Just remember that it's continuous work. User feedback is what will keep the train going.
+
+### 🌟 The Benefits of a Platform as a Product Approach
+
+![](https://silvags.com/writing/why-platforms-must-be-products/images/02.webp)
+
+Why is this good? Well, adopting a platform as a product mindset gets you some benefits, such as:
+
+-
+
+**Increased adoption and satisfaction**: By building a platform that developers love to use, you drive organic adoption. People will come to you. If it's good, why not use it? 
+
+-
+
+**Greater agility and innovation**: You have the power to increase innovation with your platform. You increase the speed of development for your peers. You allow new things to be built, faster.
+
+-
+
+**Improved efficiency and consistency**: You provide a standardized set of tools and workflows. Your platform reduces duplication and promotes best practices across teams.
+
+-
+
+**Better alignment with business outcomes**: By treating your platform as a product, you ensure that it delivers measurable value to the organization, not just to individual teams.
+
+### Making the Shift to Platform as a Product
+
+Let's face it, it's not easy. You need to shift how you build and operate your internal platform. Maybe even change a bit of the culture inside your company.
+
+The following steps are what I think works best to have a successful platform:
+
+-
+
+**Establishing a dedicated platform team**: Create a cross-functional team of engineers, product managers, and designers who are only focused on the platform.
+
+-
+
+**Investing in user research and design**: Continuously talk with your developers to understand their needs and involve them in the platform design process. You are building this for them.
+
+-
+
+**Defining platform KPIs**: Have clear metrics for platform adoption, satisfaction, and impact, and use them to guide your future decisions.
+
+-
+
+**Don't forget marketing**: Treat your platform launch and updates as you would a product launch. You may not like it, but you will have to do a little bit of marketing internally.
+
+-
+
+**Teach the users**: If you are using a new product for the first time, you would like to know how it works. Do the same for your platform.
+
+### 🌍 Accelerating Innovation
+
+![](https://silvags.com/writing/why-platforms-must-be-products/images/03.webp)
+
+As software continues to eat the world, the importance of internal platforms will only continue to grow. Organizations that treat their platforms as products will be best positioned to innovate, compete, and win. 
+
+Why? Well, because they want to be more efficient and spend less money, of course. And spending less money on operations allows you to spend more money on innovation.
+
+So if you're responsible for an internal platform, I encourage you to embrace the platform as a product mindset. It won't be easy. But if you manage to pull it off, developers will love you.
+
+Put your developers at the center. 
+
+Continuously deliver value. 
+
+You'll build a platform that accelerates innovation.
+
+And innovation if one of the things that keeps the world going.
+
+---
+
+### Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---
+
+---
+
+Source: https://silvags.com/writing/you-cant-know-everything-in-tech/
+
+# You Can't Know Everything in Tech
+
+October 23, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/you-cant-know-everything-in-tech)
+
+![](https://silvags.com/writing/you-cant-know-everything-in-tech/images/01.webp)
+
+Imagine this: You're at a tech conference or chatting with friends, and suddenly you're drowning in buzzwords you've never heard of. Your colleagues are discussing some new framework or tool, and you're thinking:
+
+*"When did this even come out?" *
+
+*"Should I know this?"*
+
+Sound familiar? You're not alone.
+
+Keeping up with tech can feel like a full-time job.
+
+Today, let's dive into how to stay current in this crazy, ever-evolving tech landscape.
+
+## Why Keeping Up Matters 🤔
+
+Before we jump into the How, let's talk about the Why.
+
+In tech, standing still means moving backward. Staying updated matters for several reasons:
+
+1.
+
+Career Growth 📈: New skills unlock new doors.
+
+2.
+
+Problem-Solving 🧩: Latest tech often brings better solutions to old problems.
+
+3.
+
+Competitive Edge 🏆: In a saturated market, staying up to date sets you apart.
+
+4.
+
+Innovation 💡: You can't think outside the box if you don't know what's inside it.
+
+It's not about knowing everything—it's about knowing enough to adapt and thrive.
+
+And trust me, you'll never know everything. But more on this later.
+
+## The Overwhelm is Real 🤯
+
+Let's be honest: the amount of new tech dropping every day is overwhelming.
+
+Every day there's a new tool or, especially right now, some revolutionary AI thing that supposedly will change your life forever. Miss it, and you're left behind.
+
+FOMO kicks in hard.
+
+But here's the truth: even the most senior tech engineers don't know everything. What makes them different? They know how to adapt.
+
+The key isn't finding a way to know everything—it's finding your way to adapt.
+
+## Curiosity Matters 🧐
+
+![](https://silvags.com/writing/you-cant-know-everything-in-tech/images/02.webp)
+
+Before diving into strategies, let me share what I think is the most crucial trait to have.
+
+I've noticed this in people who are always ready to learn more, try new things, and challenge old ideas.
+
+People who are always building new things. People who know how to adapt.
+
+The trait? Curiosity.
+
+Curiosity pushes you to learn more naturally. Why? Speaking for myself, I'm always hunting for better ways to improve things. Curious to see if *X* change can have *Y* improvement. Curious to see if the new thing can replace the old thing.
+
+Even when something works, I rarely leave it alone. This can be both good and bad, sure. But I learn from both the failures and the wins from doing this.
+
+Not naturally curious? That's fine. But keeping up with the tsunami of new tech might be harder for you.
+
+The overwhelm hits faster when you're forcing yourself to learn just because you think you should.
+
+You'll need to find your own way to manage this.
+
+## Strategies for Staying in the Loop 🔄
+
+### 1. Build Up Some Sources 📚
+
+-
+
+**Tech Influencers** 🐦: Follow people in your areas of interest on social media. Twitter is gold for quick tech updates and discussions. Here are some of my go to follows:
+
+  -
+
+General
+
+    -
+
+    -
+
+    -
+
+    -
+
+    -
+
+  -
+
+AI:
+
+    -
+
+    -
+
+    -
+
+    -
+
+    -
+
+(I know, it's weird, but the best ones on AI are all anime avatars for some reason.)
+
+-
+
+**Eng/Tech Newsletters** 📧: Get curated content in your inbox. These are my favorites:
+
+  -
+
+ writes
+
+  -
+
+ writes
+
+  -
+
+ and write
+
+  -
+
+ writes
+
+  -
+
+ writes
+
+-
+
+**Online Communities**: Dive into Reddit (r/programming, r/technology, r/devops)
+
+-
+
+**Hacker News** 📰: Sometimes you'll find real gems of tech news and discussions [here](http://hackernews.com).
+
+-
+
+**Tech Business** 💼: Sometimes I check [TechCrunch](https://techcrunch.com/) to keep up with the business side of tech.
+
+### 2. Learn to Filter the Noise 🎧
+
+Not all tech news deserves your attention.
+
+Remember: tech is a business like any other.
+
+Some things exist purely as hype and marketing plays.
+
+-
+
+**Warning** ⚠️: Many "tech influencers" get paid to promote certain technologies by "using" them. Always do your due diligence first.
+
+-
+
+Focus on tech that's relevant to your work or interests.
+
+-
+
+If you keep hearing about something everywhere, it's either worth checking out or pure hype. Learn to spot the difference.
+
+Get good at separating real value from hype trains.
+
+### 3. Get Your Hands Dirty 🛠️
+
+Reading articles and watching YouTube videos is fine, but imo nothing beats actually building stuff:
+
+-
+
+Mini Side Projects: Try a new technology with a small project. Keep it simple. Aim to start and finish in a single afternoon.
+
+-
+
+Open Source: Learn from others and give back to the community.
+
+-
+
+Hackathons: Perfect for intense learning and networking, if that's your thing.
+
+### 4. Make it a Habit 🔁
+
+Build learning into your routine.
+
+Set aside time for learning. Even 15 minutes a day helps. And hey, 15 minutes a week beats zero minutes all the time.
+
+Don't fall into the trap of constantly restarting projects just because some shiny new tech caught your eye. Try to stick with it for a while.
+
+But…
+
+If you can't stick with it, maybe it's not that interesting to you.
+
+That's fine. Move on to something else that is enjoyable for you.
+
+## Avoiding Burnout: The Dark Side of Keeping Up 🔥
+
+![](https://silvags.com/writing/you-cant-know-everything-in-tech/images/03.webp)
+
+Here's the truth: trying to keep up with everything will burn you out faster than you can say "new JavaScript framework."
+
+-
+
+Not knowing everything is normal. It's the norm for everyone.
+
+-
+
+Focus on understanding concepts over memorizing details.
+
+-
+
+Take breaks. Let information sink in. Going full speed all the time will cost you later.
+
+-
+
+Your colleagues know things you don't, and you know things they don't. That's normal.
+
+Don't chase every shiny new thing. Take your time.
+
+## You Will Never Learn Everything (And That's Great) 🌟
+
+Nobody knows everything in tech. That's what makes it exciting. Be grateful about what you don't know yet. It means you've got room to grow.
+
+Think about it: if you knew everything, what would be left to discover? Sounds a world boring as hell to be honest.
+
+I still stress about not knowing enough. But here's what I learned.
+
+The best engineers I know aren't the ones who know everything. They're the ones who:
+
+-
+
+Get excited about learning new things 🎯
+
+-
+
+Admit when they don't know something 🤝
+
+-
+
+Know how to find answers quickly 🔍
+
+-
+
+Share what they learn with others 🗣️
+
+The tech world is huge. Just think about it:
+
+-
+
+Frontend development
+
+-
+
+Backend development
+
+-
+
+Mobile development
+
+-
+
+Cloud infrastructure
+
+-
+
+Machine Learning
+
+-
+
+DevOps practices
+
+-
+
+Databases
+
+-
+
+Security
+
+-
+
+AI
+
+-
+
+...
+
+Each of these fields is large enough to spend a lifetime learning. And they keep evolving and growing.
+
+And guess what? The moment you think you've mastered something, a new framework or tool comes out that changes the game.
+
+That's not a bug. It's a feature.
+
+## What Really Matters 💡
+
+Keeping up with tech isn't about knowing everything. It's about learning how to learn anything.
+
+Let's be real:
+
+-
+
+You won't master everything
+
+-
+
+You don't need to know it all
+
+-
+
+You shouldn't try to keep up with every trend
+
+Try to:
+
+-
+
+Staying curious about what interests YOU
+
+-
+
+Being selective about what you learn
+
+-
+
+Actually building stuff, not just reading about it
+
+-
+
+Making learning part of your routine
+
+-
+
+Finding your own pace
+
+Focus on understanding the why, not just the how.
+
+At the end of the day, tech is just a tool.
+
+**What matters is what you build with it.**
+
+---
+
+## Until Next Time 😎
+
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on [LinkedIn](https://www.linkedin.com/in/silva-gs/) or on X.
+
+I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
+
+---

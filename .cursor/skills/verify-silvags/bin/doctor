@@ -62,6 +62,12 @@ else
 fi
 
 check "/" "homepage" html
+check "/writing/" "writing index" html
+check "/writing/i-built-a-tiny-robot-that-refuses/" "mirrored essay" html
+check "/llms.txt" "llms.txt" asset
+check "/robots.txt" "robots.txt" asset
+check "/sitemap.xml" "sitemap" asset
+check "/feed.xml" "atom feed" asset
 check "/robots/so-101/" "so-101 build log" html
 check "/robots/pico/" "pico build notes" html
 check "/favicon.svg" "favicon" asset

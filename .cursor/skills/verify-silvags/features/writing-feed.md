@@ -1,18 +1,19 @@
-# Writing feed
+# Writing
 
-The Writing section shows Binary Paths posts: a static snapshot for first paint / no-JS, then a live refresh from `https://rss.silvags.com` that rewrites `#articles` and updates `#articles-status`.
+Writing is a static list of essays mirrored from Binary Paths. Each title links to `/writing/<slug>/` on this site. The page still links to Binary Paths for the original and for subscribing.
 
 ## Sub-features
 
-- `writing-snapshot` HTML snapshot articles are present before or without a successful feed.
-- `writing-live` a successful fetch replaces `#articles` with feed items (HTTPS links only).
-- `writing-status` `#articles-status` reflects loading, success, stale, or fallback copy.
-- `writing-cache` successful items may land in `localStorage` key `binary-paths-articles-v1`.
+- `writing-local` `#articles` links to local essay pages, with a date and a short description.
+- `writing-essay` an essay page shows the title, the publish date, the full text, and "Originally published on Binary Paths".
+- `writing-canonical` the essay's canonical URL is the Binary Paths post.
+- `writing-subscribe` the Writing page and the homepage keep a Binary Paths subscribe link.
 
 ## How to get to it (user POV)
 
-- Open `/` and scroll to the `Writing` heading (or land there via page scroll).
-- Optionally follow `Subscribe to Binary Paths →` or an article title (external Substack).
+- Open `/` and read `Latest writing`, or open `/writing/` from the nav.
+- Open an essay title. It stays on this site.
+- Use the Binary Paths link when you want the original or the subscribe page.
 
 ## Driving it with Cursor browser
 
@@ -20,18 +21,16 @@ Preconditions:
 
 - `bin/doctor` is HEALTHY.
 - Start at `$VERIFY_URL/`.
-- Network to `https://rss.silvags.com` is available for the live path. If not, prove snapshot + fallback status only and record the unmet precondition.
 
-- **Snapshot present.** Immediately after load (or with JS disabled conceptually via reading source), `#articles` contains at least one link to `binarypaths.substack.com`. Note titles such as house-cleaning or Physical AI posts if still the snapshot.
-- **Live refresh.** Wait up to ~10s for the fetch (8s timeout + one retry). Snapshot `#articles`. Article headings are links with `https:` hrefs. `#articles-status` is empty on fresh success, or shows delayed/fallback text otherwise. Screenshot `artifacts/writing-feed/articles.png`.
-- **Status role.** Confirm `#articles-status` has `role="status"`.
-- **Cache (when live succeeds).** CDP: `JSON.parse(localStorage.getItem('binary-paths-articles-v1')||'null')` has an `items` array with titles and https links.
-- **No HTML injection.** Titles/descriptions render as text nodes (no raw markup from the feed visible as executed HTML). Spot-check via snapshot text, not `innerHTML` assignment proofs.
-- **Proof.** Save snapshot text to `artifacts/writing-feed/aria.txt` and `artifacts/writing-feed/notes.md` with whether live or snapshot path was proven.
+- **Homepage list.** `#articles` has at least one link whose href contains `/writing/` and does not point at `binarypaths.substack.com`. The subscribe link to `https://binarypaths.substack.com` is still on the page. Screenshot `artifacts/writing-feed/home-list.png`.
+- **Writing index.** Open `Writing` in the nav. URL ends with `/writing/`. `#articles` lists the same kind of local links. `#articles-status` is present and mentions Binary Paths. Screenshot `artifacts/writing-feed/index.png`.
+- **Essay.** Open the first title. The heading matches the link text. A time element shows the date. The words `Originally published on Binary Paths` are visible, and that link goes to `binarypaths.substack.com`. Screenshot `artifacts/writing-feed/essay.png`.
+- **No live rewrite.** Wait a couple of seconds. `#articles` hrefs are still local. There is no request required to `rss.silvags.com`.
+- **Proof.** Save `artifacts/writing-feed/aria.txt` and `artifacts/writing-feed/notes.md` with feature ID `writing-feed`.
 
 ## Gotchas
 
-- The worker is not started by `bin/launch`. Live proof depends on production `rss.silvags.com`.
-- First paint already has three snapshot articles; a failed fetch must still leave useful content — assert that, do not require live success for a partial pass.
-- Cache age is seven days; a stale browser cache can show old posts before refresh. Clear `binary-paths-articles-v1` when proving a clean live fetch.
-- Do not open Substack in the verify browser as proof of the site feature; stay on `$VERIFY_URL`.
+- The Python static server does not apply `Accept: text/markdown`. Fetch `index.md` directly if you need the twin. Negotiation is the Pages function.
+- Essay canonical links leave the site. Proof is the href on the essay page, not a visit to Substack.
+- The old `binary-paths-articles-v1` localStorage key is unused. Do not require it.
+- Homepage shows four essays. The Writing page shows every mirrored essay.

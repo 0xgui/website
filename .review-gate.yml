@@ -1,0 +1,42 @@
+# agent-pr-gate config. See https://github.com/0xgui/agent-pr-gate#configuration
+# One maintainer. Low and medium need no review. High is not auto-merged by the
+# mirror workflow. Approvals stay at 0 because a second person cannot approve,
+# and this repo does not use CODEOWNERS.
+default_tier: low
+
+tiers:
+  medium:
+    - "scripts/**"
+    - "tests/**"
+  high:
+    - ".github/workflows/**"
+    - "_headers"
+    - "_redirects"
+    - "_routes.json"
+    - "functions/**"
+    - "worker.js"
+    - "wrangler.toml"
+    - ".review-gate.yml"
+    - "scripts/mirror_substack.py"
+
+evidence:
+  sections:
+    - Testing
+    - Risk
+    - name: How to revert
+      aliases: [Rollback, Revert plan]
+  require_green_ci: true
+
+routing:
+  approvals:
+    low: 0
+    medium: 0
+    high: 0
+  high_requires_codeowners: false
+
+rounds:
+  cap: 2
+  review_states: [CHANGES_REQUESTED]
+
+maintainers:
+  - 0xgui

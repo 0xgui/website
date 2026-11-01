@@ -33,7 +33,7 @@ Each feature file starts with an H1 and one paragraph, then exactly four H2s: `S
 ## Features
 
 - [Theme toggle](./theme-toggle.md) — light/dark class and `localStorage` persistence across pages.
-- [Homepage builds](./homepage-workbench.md) — Builds heading, SO-101 and Pico cards, navigate into each robot page and back.
-- [Writing feed](./writing-feed.md) — Binary Paths snapshot, live RSS refresh, status text, offline fallback.
-- [Pico model viewer](./pico-model.md) — GLB viewer, poster fallback path, Start/Pause rotation.
-- [SO-101 build log](./so-101-build-log.md) — hero, model, Day 01 entry, deep-link `#day-01`.
+- [Homepage builds](./homepage-workbench.md) — On the bench links for SO-101 and Pico, and the way back home.
+- [Writing](./writing-feed.md) — local Binary Paths essays, subscribe link, no live rewrite of `#articles`.
+- [Pico model](./pico-model.md) — GLB viewer and poster. No separate rotation button.
+- [SO-101 build log](./so-101-build-log.md) — heading, model, Day 01 section.

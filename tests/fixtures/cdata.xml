@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <item>
+      <title><![CDATA[Hello & welcome]]></title>
+      <link>https://binarypaths.substack.com/p/hello-and-welcome</link>
+      <pubDate>Mon, 05 Mar 2026 08:00:00 GMT</pubDate>
+      <description><![CDATA[Line & more]]></description>
+      <content:encoded><![CDATA[<p>Body with CDATA & symbols</p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,16 @@
+{
+  "images": [
+    {
+      "file": "01.webp",
+      "source_sha256": "d8bf0a552fe838780fc2815e0f44e60d9858a1350d65836d9c3ca4085a459cd3"
+    },
+    {
+      "file": "02.webp",
+      "source_sha256": "8cb18e8802696ed97c1ad9a7e7bef4e37af451911752eaf9be2c6b6c4ed374dd"
+    },
+    {
+      "file": "03.webp",
+      "source_sha256": "8212facf5e369cc675cf7846e90ae756a435f52721264574a056bb104225dd16"
+    }
+  ]
+}

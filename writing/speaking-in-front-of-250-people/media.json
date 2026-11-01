@@ -1,0 +1,24 @@
+{
+  "images": [
+    {
+      "file": "01.webp",
+      "source_sha256": "d01f82df8e2fc314c53bcee83aca0a2403dba7eca816b18b1eb0dd5bd7318812"
+    },
+    {
+      "file": "02.webp",
+      "source_sha256": "4c1570c535ed48a49981840d6c7450f7bff8a3788cb0ba027d539ac6d8113de0"
+    },
+    {
+      "file": "03.webp",
+      "source_sha256": "d1020109a32643df1c8d8e792a52006384200d0164e33db60bb6d934fc91fc56"
+    },
+    {
+      "file": "04.webp",
+      "source_sha256": "13ba147f46d5775f46b1761568b10bd204a7e70d8752d826e3376dba71d45e7e"
+    },
+    {
+      "file": "05.webp",
+      "source_sha256": "51f81f09df98ed13392a697b99696be3b7a2a5d23a369c2872d4d98394f7ff11"
+    }
+  ]
+}

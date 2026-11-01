@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>You Can't Know Everything in Tech · Guilherme Silva</title>
+<meta name="description" content="Because tech moves fast, but you can move faster.">
+<meta name="theme-color" content="#16130f" />
+<meta property="og:type" content="article">
+<meta property="og:title" content="You Can't Know Everything in Tech">
+<meta property="og:description" content="Because tech moves fast, but you can move faster.">
+<meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
+<meta property="og:url" content="https://binarypaths.substack.com/p/you-cant-know-everything-in-tech">
+<link rel="canonical" href="https://binarypaths.substack.com/p/you-cant-know-everything-in-tech">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
+<style>
+/* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
+  --bg:var(--paper);--text:var(--ink);color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+  color-scheme:dark}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.hero{display:block;position:relative;height:230px;margin-bottom:1.5rem;overflow:hidden;background:var(--paper)}
+a.hero{cursor:pointer}
+a.hero:focus-visible{outline-offset:-4px}
+.hero .poster{position:absolute;inset:0;background:var(--ink);opacity:.85;-webkit-mask:var(--poster) center/auto 100% no-repeat;mask:var(--poster) center/auto 100% no-repeat}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s}
+.hero canvas.on{opacity:1}
+.col{max-width:37rem;margin:0 auto;padding:.5rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:3.5rem;font-size:1.02rem}
+header .name{color:var(--ink);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover,header nav a[aria-current]{color:var(--ink)}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
+main{animation:rise .6s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.25rem 0 .9rem}
+h3{font-size:1.3rem;font-weight:500;margin:2.25rem 0 .4rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
+.lede{font-size:1.34rem;line-height:1.55}
+.sub{color:var(--muted)}
+.more{font-size:1rem}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.15rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+.build{margin:0 0 2.5rem}
+.build h3{margin:0 0 .15rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--ink)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
+figure.model figcaption{padding:0 2.5rem}
+model-viewer{display:block;width:100%;height:auto;aspect-ratio:3/2;background:transparent;--poster-color:transparent}
+model-viewer img[slot=poster]{width:100%;height:100%;object-fit:contain}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+@media (max-width:760px){figure.model{margin:2rem 0}figure.model figcaption{padding:0}}
+@media (max-width:600px){
+  body{font-size:1.12rem}
+  .hero{height:150px;margin-bottom:1rem}
+  .col{padding:.25rem 1.25rem 2.5rem}
+  header{margin-bottom:2.5rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+</style>
+
+<!-- agent:links -->
+<link rel="alternate" type="text/markdown" href="/writing/you-cant-know-everything-in-tech/index.md">
+<link rel="describedby" href="/llms.txt" type="text/plain">
+<link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
+<!-- /agent:links -->
+<!-- agent:ld -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "You Can't Know Everything in Tech",
+  "description": "Because tech moves fast, but you can move faster.",
+  "datePublished": "2024-10-23T13:02:33Z",
+  "author": {
+    "@type": "Person",
+    "name": "Guilherme Silva",
+    "url": "https://silvags.com/"
+  },
+  "mainEntityOfPage": "https://silvags.com/writing/you-cant-know-everything-in-tech/",
+  "url": "https://silvags.com/writing/you-cant-know-everything-in-tech/",
+  "isBasedOn": "https://binarypaths.substack.com/p/you-cant-know-everything-in-tech"
+}
+</script>
+<!-- /agent:ld -->
+<meta name="author" content="Guilherme Silva">
+<meta name="mirror-kind" content="full">
+<meta name="mirror-id" content="150583660">
+</head>
+<body>
+<div class="hero" role="img" aria-label="Dithered animation of SO-101 robotic arm" data-robot="so101" data-anim="turn" data-seed="0" data-glb="../../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></div>
+<div class="col">
+<header>
+  <a class="name" href="../../">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="../../builds/">Builds</a><a href="../../writing/" aria-current="page">Writing</a><a href="../../talks/">Talks</a><a href="../../about/">About</a></nav>
+</header>
+<main>
+<h1>You Can't Know Everything in Tech</h1>
+<p class="meta"><time datetime="2024-10-23">October 23, 2024</time> · Originally published on <a href="https://binarypaths.substack.com/p/you-cant-know-everything-in-tech" target="_blank" rel="noopener">Binary Paths</a></p>
+<article class="post">
+<figure><img src="images/01.webp" alt=""></figure>
+<p>Imagine this: You're at a tech conference or chatting with friends, and suddenly you're drowning in buzzwords you've never heard of. Your colleagues are discussing some new framework or tool, and you're thinking:</p>
+<p><em>"When did this even come out?" </em></p>
+<p><em>"Should I know this?"</em></p>
+<p>Sound familiar? You're not alone.</p>
+<p>Keeping up with tech can feel like a full-time job.</p>
+<p>Today, let's dive into how to stay current in this crazy, ever-evolving tech landscape.</p>
+<h2>Why Keeping Up Matters 🤔</h2>
+<p>Before we jump into the How, let's talk about the Why.</p>
+<p>In tech, standing still means moving backward. Staying updated matters for several reasons:</p>
+<ol><li><p>Career Growth 📈: New skills unlock new doors.</p>
+</li>
+<li><p>Problem-Solving 🧩: Latest tech often brings better solutions to old problems.</p>
+</li>
+<li><p>Competitive Edge 🏆: In a saturated market, staying up to date sets you apart.</p>
+</li>
+<li><p>Innovation 💡: You can't think outside the box if you don't know what's inside it.</p>
+</li>
+</ol>
+<p>It's not about knowing everything—it's about knowing enough to adapt and thrive.</p>
+<p>And trust me, you'll never know everything. But more on this later.</p>
+<h2>The Overwhelm is Real 🤯</h2>
+<p>Let's be honest: the amount of new tech dropping every day is overwhelming.</p>
+<p>Every day there's a new tool or, especially right now, some revolutionary AI thing that supposedly will change your life forever. Miss it, and you're left behind.</p>
+<p>FOMO kicks in hard.</p>
+<p>But here's the truth: even the most senior tech engineers don't know everything. What makes them different? They know how to adapt.</p>
+<p>The key isn't finding a way to know everything—it's finding your way to adapt.</p>
+<h2>Curiosity Matters 🧐</h2>
+<figure><img src="images/02.webp" alt=""></figure>
+<p>Before diving into strategies, let me share what I think is the most crucial trait to have.</p>
+<p>I've noticed this in people who are always ready to learn more, try new things, and challenge old ideas.</p>
+<p>People who are always building new things. People who know how to adapt.</p>
+<p>The trait? Curiosity.</p>
+<p>Curiosity pushes you to learn more naturally. Why? Speaking for myself, I'm always hunting for better ways to improve things. Curious to see if <em>X</em> change can have <em>Y</em> improvement. Curious to see if the new thing can replace the old thing.</p>
+<p>Even when something works, I rarely leave it alone. This can be both good and bad, sure. But I learn from both the failures and the wins from doing this.</p>
+<p>Not naturally curious? That's fine. But keeping up with the tsunami of new tech might be harder for you.</p>
+<p>The overwhelm hits faster when you're forcing yourself to learn just because you think you should.</p>
+<p>You'll need to find your own way to manage this.</p>
+<h2>Strategies for Staying in the Loop 🔄</h2>
+<h3>1. Build Up Some Sources 📚</h3>
+<ul><li><p><strong>Tech Influencers</strong> 🐦: Follow people in your areas of interest on social media. Twitter is gold for quick tech updates and discussions. Here are some of my go to follows:</p>
+<ul><li><p>General</p>
+<ul><li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+</li>
+<li><p>AI:</p>
+<ul><li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p>(I know, it's weird, but the best ones on AI are all anime avatars for some reason.)</p>
+</li>
+</ul>
+<ul><li><p><strong>Eng/Tech Newsletters</strong> 📧: Get curated content in your inbox. These are my favorites:</p>
+<ul><li><p> writes  </p>
+</li>
+<li><p> writes </p>
+</li>
+<li><p> and  write </p>
+</li>
+<li><p> writes  </p>
+</li>
+<li><p> writes  </p>
+</li>
+</ul>
+</li>
+</ul>
+<ul><li><p><strong>Online Communities</strong>: Dive into Reddit (r/programming, r/technology, r/devops)</p>
+</li>
+<li><p><strong>Hacker News</strong> 📰: Sometimes you'll find real gems of tech news and discussions <a href="http://hackernews.com" target="_blank" rel="noopener">here</a>.</p>
+</li>
+<li><p><strong>Tech Business</strong> 💼: Sometimes I check <a href="https://techcrunch.com/" target="_blank" rel="noopener">TechCrunch</a> to keep up with the business side of tech.</p>
+</li>
+</ul>
+<h3>2. Learn to Filter the Noise 🎧</h3>
+<p>Not all tech news deserves your attention.</p>
+<p>Remember: tech is a business like any other.</p>
+<p>Some things exist purely as hype and marketing plays.</p>
+<ul><li><p><strong>Warning</strong> ⚠️: Many "tech influencers" get paid to promote certain technologies by "using" them. Always do your due diligence first.</p>
+</li>
+<li><p>Focus on tech that's relevant to your work or interests.</p>
+</li>
+<li><p>If you keep hearing about something everywhere, it's either worth checking out or pure hype. Learn to spot the difference.</p>
+</li>
+</ul>
+<p>Get good at separating real value from hype trains.</p>
+<h3>3. Get Your Hands Dirty 🛠️</h3>
+<p>Reading articles and watching YouTube videos is fine, but imo nothing beats actually building stuff:</p>
+<ul><li><p>Mini Side Projects: Try a new technology with a small project. Keep it simple. Aim to start and finish in a single afternoon.</p>
+</li>
+<li><p>Open Source: Learn from others and give back to the community.</p>
+</li>
+<li><p>Hackathons: Perfect for intense learning and networking, if that's your thing.</p>
+</li>
+</ul>
+<h3>4. Make it a Habit 🔁</h3>
+<p>Build learning into your routine.</p>
+<p>Set aside time for learning. Even 15 minutes a day helps. And hey, 15 minutes a week beats zero minutes all the time.</p>
+<p>Don't fall into the trap of constantly restarting projects just because some shiny new tech caught your eye. Try to stick with it for a while.</p>
+<p>But…</p>
+<p>If you can't stick with it, maybe it's not that interesting to you.</p>
+<p>That's fine. Move on to something else that is enjoyable for you.</p>
+<h2>Avoiding Burnout: The Dark Side of Keeping Up 🔥</h2>
+<figure><img src="images/03.webp" alt=""></figure>
+<p>Here's the truth: trying to keep up with everything will burn you out faster than you can say "new JavaScript framework."</p>
+<ul><li><p>Not knowing everything is normal. It's the norm for everyone.</p>
+</li>
+<li><p>Focus on understanding concepts over memorizing details.</p>
+</li>
+<li><p>Take breaks. Let information sink in. Going full speed all the time will cost you later.</p>
+</li>
+<li><p>Your colleagues know things you don't, and you know things they don't. That's normal.</p>
+</li>
+</ul>
+<p>Don't chase every shiny new thing. Take your time.</p>
+<h2>You Will Never Learn Everything (And That's Great) 🌟</h2>
+<p>Nobody knows everything in tech. That's what makes it exciting. Be grateful about what you don't know yet. It means you've got room to grow.</p>
+<p>Think about it: if you knew everything, what would be left to discover? Sounds a world boring as hell to be honest.</p>
+<p>I still stress about not knowing enough. But here's what I learned.</p>
+<p>The best engineers I know aren't the ones who know everything. They're the ones who:</p>
+<ul><li><p>Get excited about learning new things 🎯</p>
+</li>
+<li><p>Admit when they don't know something 🤝</p>
+</li>
+<li><p>Know how to find answers quickly 🔍</p>
+</li>
+<li><p>Share what they learn with others 🗣️</p>
+</li>
+</ul>
+<p>The tech world is huge. Just think about it:</p>
+<ul><li><p>Frontend development</p>
+</li>
+<li><p>Backend development</p>
+</li>
+<li><p>Mobile development</p>
+</li>
+<li><p>Cloud infrastructure</p>
+</li>
+<li><p>Machine Learning</p>
+</li>
+<li><p>DevOps practices</p>
+</li>
+<li><p>Databases</p>
+</li>
+<li><p>Security</p>
+</li>
+<li><p>AI</p>
+</li>
+<li><p>...</p>
+</li>
+</ul>
+<p>Each of these fields is large enough to spend a lifetime learning. And they keep evolving and growing.</p>
+<p>And guess what? The moment you think you've mastered something, a new framework or tool comes out that changes the game.</p>
+<p>That's not a bug. It's a feature.</p>
+<h2>What Really Matters 💡</h2>
+<p>Keeping up with tech isn't about knowing everything. It's about learning how to learn anything.</p>
+<p>Let's be real:</p>
+<ul><li><p>You won't master everything</p>
+</li>
+<li><p>You don't need to know it all</p>
+</li>
+<li><p>You shouldn't try to keep up with every trend</p>
+</li>
+</ul>
+<p>Try to:</p>
+<ul><li><p>Staying curious about what interests YOU</p>
+</li>
+<li><p>Being selective about what you learn</p>
+</li>
+<li><p>Actually building stuff, not just reading about it</p>
+</li>
+<li><p>Making learning part of your routine</p>
+</li>
+<li><p>Finding your own pace</p>
+</li>
+</ul>
+<p>Focus on understanding the why, not just the how.</p>
+<p>At the end of the day, tech is just a tool.</p>
+<p><strong>What matters is what you build with it.</strong></p>
+<hr><h2>Until Next Time 😎</h2>
+<p>Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on <a href="https://www.linkedin.com/in/silva-gs/" target="_blank" rel="noopener">LinkedIn</a> or on X.</p>
+<p>I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.</p>
+<hr>
+</article>
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
+</div>
+<script type="module">
+// Header: a real GLB of the robot, rendered small, then dithered 8x8 to 1-bit ink on paper. Poster shows first.
+const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
+if(hero&&gl2&&(!reduce||POSTER)){
+const cv=hero.querySelector('canvas'),A=hero.dataset.anim,SEED=+hero.dataset.seed||0,R=document.documentElement;
+let seen=false,booted=false,run=null;
+const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
+new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
+document.readyState=='complete'?kick():addEventListener('load',kick);
+async function boot(){
+  const V='https://cdn.jsdelivr.net/npm/three@0.169.0';
+  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
+  const r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
+  const rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true});
+  const scene=new T.Scene();scene.background=new T.Color(0);
+  const shade=k=>new T.ShaderMaterial({uniforms:{k:{value:k}},
+    vertexShader:'varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);v=p.xyz;gl_Position=projectionMatrix*p;}',
+    fragmentShader:'uniform float k;varying vec3 v;void main(){vec3 n=normalize(cross(dFdx(v),dFdy(v))),e=normalize(-v);if(dot(n,e)<0.)n=-n;'+
+    'float d=max(dot(n,normalize(vec3(.45,.75,.55))),0.),f=max(dot(n,normalize(vec3(-.6,.1,.3))),0.)*.25,m=pow(1.-max(dot(n,e),0.),3.);'+
+    'gl_FragColor=vec4(vec3(clamp((.22+.7*d+f)*k+.8*m,.1,1.)),1.);}'});
+  const model=gltf.scene;model.traverse(o=>{if(o.isMesh){const c=o.material.color||{r:1,g:1,b:1};o.material=shade(c.r+c.g+c.b<.6?.55:1)}});
+  const box=new T.Box3().setFromObject(model),ctr=box.getCenter(new T.Vector3()),H=box.max.y-box.min.y;
+  const pivot=new T.Group(),spin=new T.Group();scene.add(spin);spin.add(pivot);pivot.add(model);
+  const pico=hero.dataset.robot=='pico';
+  model.position.set(pico?-ctr.x:-0.04,-box.min.y,-ctr.z);
+  if(pico){pivot.position.x=box.max.x-ctr.x;model.position.x-=pivot.position.x;spin.rotation.y=-.55}
+  const cam=new T.PerspectiveCamera(18,1,.01,20),dist=H*.5/.7/Math.tan(T.MathUtils.degToRad(9));
+  const ty=pico?H*.48:H*.6;cam.position.set(0,ty+dist*.22,dist);cam.lookAt(0,ty,0);
+  const J={};model.traverse(o=>{if(/^(shoulder|upper_arm|lower_arm|wrist|gripper|moving_jaw)/.test(o.name)&&!/visual/.test(o.name))J[o.name.split('_link')[0]]={o,q:o.quaternion.clone()}});
+  const Z=new T.Vector3(0,0,1),tq=new T.Quaternion();
+  const joint=(n,a)=>{const j=J[n];if(j)j.o.quaternion.copy(j.q).multiply(tq.setFromAxisAngle(Z,a))};
+  const hx=n=>{n=Math.sin(n*127.1+SEED*31.7)*43758.5453;return n-Math.floor(n)};
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+  const move=(j,t,lo,hi)=>{const P=1.6+hx(j+5)*.9,u=t/P+hx(j),i=Math.floor(u),a=lo+(hi-lo)*hx(i*13+j),b=lo+(hi-lo)*hx(i*13+13+j),w=Math.min(1,(u-i)*1.6);return a+(b-a)*ease(w)};
+  function pose(t){
+    if(A=='teleop'||A=='turn'){
+      spin.rotation.y=A=='turn'?t*.22+SEED*2:-.5+Math.sin(t*.12)*.55;
+      if(A=='teleop'){joint('shoulder',move(1,t,-.5,.5));joint('upper_arm',move(2,t,-.25,.2));joint('lower_arm',move(3,t,-.2,.35));
+        joint('wrist',move(4,t,-.6,.6));joint('gripper',move(6,t,-.8,.8));joint('moving_jaw',move(5,t,0,.6))}}
+    if(pico){if(A=='turn'){spin.rotation.y=t*.3+SEED*2;return}
+      const p=(t+SEED)%7.5;let a=Math.sin(t*2.3)*.008;
+      if(p>=2&&p<2.7){const u=(p-2)/.7;a=-1.42*u*u*u}
+      else if(p>=2.7&&p<3.9){const d=p-2.7;a=-1.42+.07*Math.exp(-d*7)*Math.abs(Math.sin(d*18))}
+      else if(p>=3.9&&p<5){const u=(p-3.9)/1.1,c=1.9,o=1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2);a=-1.42*(1-o)}
+      else if(p>=5&&p<6){const d=p-5;a=.035*Math.exp(-d*5)*Math.cos(d*14)}
+      pivot.rotation.z=a}}
+  const post=new T.ShaderMaterial({depthTest:false,uniforms:{D:{value:rt.texture},R:{value:new T.Vector2()},C:{value:2},I:{value:new T.Vector3()},P:{value:new T.Vector3()},t:{value:0}},
+    vertexShader:'void main(){gl_Position=vec4(position.xy,0.,1.);}',
+    fragmentShader:'uniform sampler2D D;uniform vec2 R;uniform float C,t;uniform vec3 I,P;'+
+    'float b2(vec2 a){a=floor(a);return fract(a.x*.5+a.y*a.y*.75);}float b8(vec2 a){return (b2(a*.25)*.25+b2(a*.5))*.25+b2(a);}'+
+    'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}'+
+    'void main(){vec2 c=floor(gl_FragCoord.xy/C);float l=texture2D(D,(c+.5)*C/R).r;'+
+    'if(l>0.){l=l*(1.+.03*sin(t*9.)*sin(t*5.3))+(h(c+floor(t*30.))-.5)*.07;}'+
+    'gl_FragColor=vec4(l>b8(c)+.003?I:P,1.);}'});
+  const ps=new T.Scene(),oc=new T.OrthographicCamera(-1,1,1,-1,0,1),q=new T.Mesh(new T.PlaneGeometry(2,2),post);q.frustumCulled=false;ps.add(q);
+  const col=n=>{const m=getComputedStyle(R).getPropertyValue(n).trim().match(/^#(\w{6})$/),v=m?parseInt(m[1],16):0;return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
+  const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
+    const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
+  const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
+  const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(cv.width==w&&cv.height==h)return;
+    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
+  const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
+  let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
+  draw(t);cv.classList.add('on');if(POSTER){hero.dataset.ready=1;return}
+  const frame=now=>{raf=0;if(document.hidden||!seen)return;if(now-last>=33){t+=Math.min(.1,(now-(last||now))/1000)||1/30;last=now;draw(t)}raf=requestAnimationFrame(frame)};
+  run=()=>{if(!raf&&seen&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}};
+  document.addEventListener('visibilitychange',run);
+  new MutationObserver(()=>{colors();draw(t)}).observe(R,{attributes:true,attributeFilter:['class']});run();
+}}
+</script>
+
+<script>
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
+function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
+try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
+</script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Speaking in Front of 250+ People · Guilherme Silva</title>
+<meta name="description" content="250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.">
+<meta name="theme-color" content="#16130f" />
+<meta property="og:type" content="article">
+<meta property="og:title" content="Speaking in Front of 250+ People">
+<meta property="og:description" content="250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.">
+<meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
+<meta property="og:url" content="https://binarypaths.substack.com/p/speaking-in-front-of-250-people">
+<link rel="canonical" href="https://binarypaths.substack.com/p/speaking-in-front-of-250-people">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
+<style>
+/* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
+  --bg:var(--paper);--text:var(--ink);color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+  color-scheme:dark}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.hero{display:block;position:relative;height:230px;margin-bottom:1.5rem;overflow:hidden;background:var(--paper)}
+a.hero{cursor:pointer}
+a.hero:focus-visible{outline-offset:-4px}
+.hero .poster{position:absolute;inset:0;background:var(--ink);opacity:.85;-webkit-mask:var(--poster) center/auto 100% no-repeat;mask:var(--poster) center/auto 100% no-repeat}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s}
+.hero canvas.on{opacity:1}
+.col{max-width:37rem;margin:0 auto;padding:.5rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:3.5rem;font-size:1.02rem}
+header .name{color:var(--ink);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover,header nav a[aria-current]{color:var(--ink)}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
+main{animation:rise .6s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.25rem 0 .9rem}
+h3{font-size:1.3rem;font-weight:500;margin:2.25rem 0 .4rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
+.lede{font-size:1.34rem;line-height:1.55}
+.sub{color:var(--muted)}
+.more{font-size:1rem}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.15rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+.build{margin:0 0 2.5rem}
+.build h3{margin:0 0 .15rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--ink)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
+figure.model figcaption{padding:0 2.5rem}
+model-viewer{display:block;width:100%;height:auto;aspect-ratio:3/2;background:transparent;--poster-color:transparent}
+model-viewer img[slot=poster]{width:100%;height:100%;object-fit:contain}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+@media (max-width:760px){figure.model{margin:2rem 0}figure.model figcaption{padding:0}}
+@media (max-width:600px){
+  body{font-size:1.12rem}
+  .hero{height:150px;margin-bottom:1rem}
+  .col{padding:.25rem 1.25rem 2.5rem}
+  header{margin-bottom:2.5rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+</style>
+
+<!-- agent:links -->
+<link rel="alternate" type="text/markdown" href="/writing/speaking-in-front-of-250-people/index.md">
+<link rel="describedby" href="/llms.txt" type="text/plain">
+<link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
+<!-- /agent:links -->
+<!-- agent:ld -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Speaking in Front of 250+ People",
+  "description": "250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.",
+  "datePublished": "2024-10-09T13:03:02Z",
+  "author": {
+    "@type": "Person",
+    "name": "Guilherme Silva",
+    "url": "https://silvags.com/"
+  },
+  "mainEntityOfPage": "https://silvags.com/writing/speaking-in-front-of-250-people/",
+  "url": "https://silvags.com/writing/speaking-in-front-of-250-people/",
+  "isBasedOn": "https://binarypaths.substack.com/p/speaking-in-front-of-250-people"
+}
+</script>
+<!-- /agent:ld -->
+<meta name="author" content="Guilherme Silva">
+<meta name="mirror-kind" content="full">
+<meta name="mirror-id" content="149960454">
+</head>
+<body>
+<div class="hero" role="img" aria-label="Dithered animation of SO-101 robotic arm" data-robot="so101" data-anim="turn" data-seed="0" data-glb="../../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></div>
+<div class="col">
+<header>
+  <a class="name" href="../../">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="../../builds/">Builds</a><a href="../../writing/" aria-current="page">Writing</a><a href="../../talks/">Talks</a><a href="../../about/">About</a></nav>
+</header>
+<main>
+<h1>Speaking in Front of 250+ People</h1>
+<p class="meta"><time datetime="2024-10-09">October 9, 2024</time> · Originally published on <a href="https://binarypaths.substack.com/p/speaking-in-front-of-250-people" target="_blank" rel="noopener">Binary Paths</a></p>
+<article class="post">
+<figure><img src="images/01.webp" alt=""></figure>
+
+<figure><img src="images/02.webp" alt=""></figure>
+<p>"What will they think of me?" "What if I say something wrong?" "How will they judge me?"</p>
+<p>All valid questions for someone who is about to enter the spotlight.</p>
+<hr><p>This September, I got the opportunity to speak at a conference. The CNCF KCD Porto. The first KCD ever there, organized alongside <a href="https://xgeeks.com/" target="_blank" rel="noopener">Synvert xgeeks</a>.</p>
+<p>I got the opportunity to meet old friends from past companies and new friends from different ones.</p>
+<p>I also got the opportunity to talk on the main stage. Where, on that day, everyone would be present because there were no parallel talks. 250+ people.</p>
+<p>I have been speaking at tech meetups. This event was the biggest one that I have attended.</p>
+<p>Since I already gave a bunch of talks, I would like to explain my journey so far into public speaking and why it's important for engineers to train this skill.</p>
+<h2>Why Engineers Need to Master the Mic 🗣️</h2>
+<p>As an Engineer, you may think that your technical skills and knowledge are the most important assets for success in your field.</p>
+<p>While these are certainly critical, there's another skill that can make a significant impact on your career growth and opportunities: <strong>Public Speaking.</strong></p>
+<p>Engineers like to solve problems. No doubt about that. But what they are not good, normally, is to communicate the solutions to non-technical people.</p>
+<p>The way some engineers communicate their ideas is somewhat weak to persuade others. And the use of technical terms sometimes only make it worse.</p>
+<p>Because of this, engineers start to get frustrated and think that everyone around them is dumb because they don't understand their idea.</p>
+<p>This is why communication, and more specifically, public speaking is important.</p>
+<p>We need to pitch our ideas to the stakeholders in a way that they fully comprehend what we just said.</p>
+<p><strong>There should be no questions in the way we say it. There should be questions in what we say.</strong></p>
+<p>We also have the other bonus that come along with public speaking:</p>
+<ul><li><p>Increasing your professional network</p>
+</li>
+<li><p>Building Confidence</p>
+</li>
+<li><p>Gaining recognition for your work</p>
+</li>
+<li><p>Getting feedback from people.</p>
+</li>
+<li><p>Building your personal branding.</p>
+</li>
+</ul>
+<h2>Yes, it will be scary at first 😰</h2>
+<figure><img src="images/03.webp" alt=""></figure>
+<p><em>(me at Cloud Native Lisbon)</em></p>
+<p>Your manager/boss comes to you and asks you to present your project or the technology that you work with at a local tech meetup.</p>
+<p>You start to get anxious. Just before he finishes his phrase. You never talked in public in your career, and you hated to do it in school.</p>
+<p>"Why me?". You think.</p>
+<p>The answer is simple. You are the expert on the subject. Only you or a few individuals know about what you are going to talk.</p>
+<p>This is why your boss chose you. He knows that you know your shit. And he would like you to share your knowledge to the world.</p>
+<p>Just Share It.</p>
+<p>How can you be sure that what you create or what you think is correct? You need to share it to have other validation than yourself.</p>
+<p>Just like this article that you are reading at this exact moment. I could just write it and keep it to myself. But how would I know that what I say makes sense and people may or may not like it? Or even share the same thoughts as I?</p>
+<p>Start with local tech meetups. Train your presence on stage. Get feedback.</p>
+<p>If possible, try to get a speaker mentor that already has done a couple of talks.</p>
+<p>You can also start by doing remote talks. It will help your flow in the slides. But remember. Live, on stage, you will feel things that you do not feel remotely.</p>
+<h2>Going International 🌍</h2>
+<figure><img src="images/04.webp" alt=""></figure>
+<p><em>(me at Munich, Germany)</em></p>
+<p>The jokes. The culture. The way they think.</p>
+<p>Different cultures have different ways of perceiving information. What works in your country might not work in another.</p>
+<p>I know this because, when I went to do a talk in Munich, Germany, at a tech meetup, some jokes there did not work. It was awkward to say the least.</p>
+<p>We need to adapt. We need to research. We need to understand the audience.</p>
+<p>This is a challenge. But it's also an opportunity to grow. To learn new perspectives. To broaden our horizons.</p>
+<p>Start small. Maybe a remote international meetup. Then work your way up.</p>
+<h2>Conferences 🏆</h2>
+<figure><img src="images/05.webp" alt=""></figure>
+<p><em>(me at KCD Porto 2024)</em></p>
+<p>Like I mention, this was my first one. I'm no expert whatsoever in this type of setting.</p>
+<p>But what I can tell you is this: If people are present in your talk, it is because they find your topic interesting. They want to absorb the knowledge that you have and try to use it for themselves.</p>
+<p>If some people leave during your talk, that's ok. It's normal. People have different interests and opinions. And people want to connect to what matters to them the most.</p>
+<p>Conferences are not just about speaking. They're about learning. Networking. Growing.</p>
+<p>Don't just give your talk and leave. Attend other sessions. Talk to people. Ask questions.</p>
+<p>You might find your next opportunity. Your next collaboration. Your next big idea.</p>
+<h2>Tips and Tricks for Speakers 💡</h2>
+<ol><li><p>📊 Learn how to create good presentations. This matters. Wall of text = no good.</p>
+</li>
+<li><p>🔑 Get a key message in each slide. Just a small phrase. This is what you want to remember when you see the slide.</p>
+</li>
+<li><p>🎭 Use animations to create flow. You can create curiosity or suspense with the audience.</p>
+</li>
+<li><p>😄 Use small jokes in the beginning to set or see the mood of the audience.</p>
+</li>
+<li><p>👀 Don't stare at the slides when you are talking. Don't stare at the floor. Don't stare at one person in the audience. (Sorry for those who got this from me in the beginning 😅)</p>
+</li>
+<li><p>🙋‍♂️ Interact with the audience if possible. E.g: Asking a question for them to raise their hands.</p>
+</li>
+<li><p>🔄 Practice. This will depend on the person, but what works for me is to watch the flow of the slides 1 hour before the talk. Just the flow. No rehearsal or nothing like that. 5-15 min max.</p>
+</li>
+</ol>
+<h2>The Q&amp;A Part 🤔</h2>
+<p>Let's talk about the Q&amp;A. It's part of the process.</p>
+<p>You just gave a talk. You know your shit. Most questions? You can handle them.</p>
+<p>But what if you don't know the answer? It's fine. Just be honest.</p>
+<p>You can say:</p>
+<ul><li><p>"I haven't looked into that yet."</p>
+</li>
+<li><p>"I'll need to check that and get back to you."</p>
+</li>
+<li><p>"Let's talk more after the session."</p>
+</li>
+</ul>
+<p>Sometimes people ask questions to show off. Don't let it get to you. Thank them and move on.</p>
+<p>The Q&amp;A is a chance to learn. You might get ideas for your next talk.</p>
+<p>If a question is off-topic or too complex, offer to discuss it later.</p>
+<p>Remember, it's not an exam. It's a conversation.</p>
+<h2>Mitigating Fear 😰➡️💪</h2>
+<p>Sorry, I lie. It will always be a bit scary. Not just in the beginning. The good news is that, it will just get easier as time goes by.</p>
+<p>This means, as we already discussed previously, that we are growing. We are in discomfort. We are learning.</p>
+<p>Remember, the one and only that knows what the talk is about is you. You are the expert.</p>
+<p>The fear? It's normal. It means you care. It means what you're doing matters.</p>
+<p>Use it.</p>
+<h2>From Keyboard to Keynote 🎤</h2>
+<p>Public speaking is a skill. Like coding, it improves with practice.</p>
+<p>It's not just about the talk. It's about growth. Personal and professional.</p>
+<p>It opens doors. Creates opportunities. Builds your <a href="../personal-branding-as-an-engineer/">personal brand</a>.</p>
+<p>Every expert speaker started as a nervous beginner. The difference? They kept going.</p>
+<p>Remember, <a href="../imposter-syndrome-if-you-have-it/">feeling like an impostor</a> is part of the journey. Embrace it. Use it to fuel your growth.</p>
+<p>Now go. Speak.</p>
+<p><strong>The stage is yours.</strong></p>
+<h3></h3>
+<hr><h3>Until Next Time 😎</h3>
+<p>Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network (<a href="https://www.linkedin.com/in/silva-gs/" target="_blank" rel="noopener">LinkedIn</a>) or the digital playground (X).</p>
+<p>I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.</p>
+</article>
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
+</div>
+<script type="module">
+// Header: a real GLB of the robot, rendered small, then dithered 8x8 to 1-bit ink on paper. Poster shows first.
+const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
+if(hero&&gl2&&(!reduce||POSTER)){
+const cv=hero.querySelector('canvas'),A=hero.dataset.anim,SEED=+hero.dataset.seed||0,R=document.documentElement;
+let seen=false,booted=false,run=null;
+const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
+new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
+document.readyState=='complete'?kick():addEventListener('load',kick);
+async function boot(){
+  const V='https://cdn.jsdelivr.net/npm/three@0.169.0';
+  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
+  const r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
+  const rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true});
+  const scene=new T.Scene();scene.background=new T.Color(0);
+  const shade=k=>new T.ShaderMaterial({uniforms:{k:{value:k}},
+    vertexShader:'varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);v=p.xyz;gl_Position=projectionMatrix*p;}',
+    fragmentShader:'uniform float k;varying vec3 v;void main(){vec3 n=normalize(cross(dFdx(v),dFdy(v))),e=normalize(-v);if(dot(n,e)<0.)n=-n;'+
+    'float d=max(dot(n,normalize(vec3(.45,.75,.55))),0.),f=max(dot(n,normalize(vec3(-.6,.1,.3))),0.)*.25,m=pow(1.-max(dot(n,e),0.),3.);'+
+    'gl_FragColor=vec4(vec3(clamp((.22+.7*d+f)*k+.8*m,.1,1.)),1.);}'});
+  const model=gltf.scene;model.traverse(o=>{if(o.isMesh){const c=o.material.color||{r:1,g:1,b:1};o.material=shade(c.r+c.g+c.b<.6?.55:1)}});
+  const box=new T.Box3().setFromObject(model),ctr=box.getCenter(new T.Vector3()),H=box.max.y-box.min.y;
+  const pivot=new T.Group(),spin=new T.Group();scene.add(spin);spin.add(pivot);pivot.add(model);
+  const pico=hero.dataset.robot=='pico';
+  model.position.set(pico?-ctr.x:-0.04,-box.min.y,-ctr.z);
+  if(pico){pivot.position.x=box.max.x-ctr.x;model.position.x-=pivot.position.x;spin.rotation.y=-.55}
+  const cam=new T.PerspectiveCamera(18,1,.01,20),dist=H*.5/.7/Math.tan(T.MathUtils.degToRad(9));
+  const ty=pico?H*.48:H*.6;cam.position.set(0,ty+dist*.22,dist);cam.lookAt(0,ty,0);
+  const J={};model.traverse(o=>{if(/^(shoulder|upper_arm|lower_arm|wrist|gripper|moving_jaw)/.test(o.name)&&!/visual/.test(o.name))J[o.name.split('_link')[0]]={o,q:o.quaternion.clone()}});
+  const Z=new T.Vector3(0,0,1),tq=new T.Quaternion();
+  const joint=(n,a)=>{const j=J[n];if(j)j.o.quaternion.copy(j.q).multiply(tq.setFromAxisAngle(Z,a))};
+  const hx=n=>{n=Math.sin(n*127.1+SEED*31.7)*43758.5453;return n-Math.floor(n)};
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+  const move=(j,t,lo,hi)=>{const P=1.6+hx(j+5)*.9,u=t/P+hx(j),i=Math.floor(u),a=lo+(hi-lo)*hx(i*13+j),b=lo+(hi-lo)*hx(i*13+13+j),w=Math.min(1,(u-i)*1.6);return a+(b-a)*ease(w)};
+  function pose(t){
+    if(A=='teleop'||A=='turn'){
+      spin.rotation.y=A=='turn'?t*.22+SEED*2:-.5+Math.sin(t*.12)*.55;
+      if(A=='teleop'){joint('shoulder',move(1,t,-.5,.5));joint('upper_arm',move(2,t,-.25,.2));joint('lower_arm',move(3,t,-.2,.35));
+        joint('wrist',move(4,t,-.6,.6));joint('gripper',move(6,t,-.8,.8));joint('moving_jaw',move(5,t,0,.6))}}
+    if(pico){if(A=='turn'){spin.rotation.y=t*.3+SEED*2;return}
+      const p=(t+SEED)%7.5;let a=Math.sin(t*2.3)*.008;
+      if(p>=2&&p<2.7){const u=(p-2)/.7;a=-1.42*u*u*u}
+      else if(p>=2.7&&p<3.9){const d=p-2.7;a=-1.42+.07*Math.exp(-d*7)*Math.abs(Math.sin(d*18))}
+      else if(p>=3.9&&p<5){const u=(p-3.9)/1.1,c=1.9,o=1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2);a=-1.42*(1-o)}
+      else if(p>=5&&p<6){const d=p-5;a=.035*Math.exp(-d*5)*Math.cos(d*14)}
+      pivot.rotation.z=a}}
+  const post=new T.ShaderMaterial({depthTest:false,uniforms:{D:{value:rt.texture},R:{value:new T.Vector2()},C:{value:2},I:{value:new T.Vector3()},P:{value:new T.Vector3()},t:{value:0}},
+    vertexShader:'void main(){gl_Position=vec4(position.xy,0.,1.);}',
+    fragmentShader:'uniform sampler2D D;uniform vec2 R;uniform float C,t;uniform vec3 I,P;'+
+    'float b2(vec2 a){a=floor(a);return fract(a.x*.5+a.y*a.y*.75);}float b8(vec2 a){return (b2(a*.25)*.25+b2(a*.5))*.25+b2(a);}'+
+    'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}'+
+    'void main(){vec2 c=floor(gl_FragCoord.xy/C);float l=texture2D(D,(c+.5)*C/R).r;'+
+    'if(l>0.){l=l*(1.+.03*sin(t*9.)*sin(t*5.3))+(h(c+floor(t*30.))-.5)*.07;}'+
+    'gl_FragColor=vec4(l>b8(c)+.003?I:P,1.);}'});
+  const ps=new T.Scene(),oc=new T.OrthographicCamera(-1,1,1,-1,0,1),q=new T.Mesh(new T.PlaneGeometry(2,2),post);q.frustumCulled=false;ps.add(q);
+  const col=n=>{const m=getComputedStyle(R).getPropertyValue(n).trim().match(/^#(\w{6})$/),v=m?parseInt(m[1],16):0;return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
+  const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
+    const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
+  const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
+  const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(cv.width==w&&cv.height==h)return;
+    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
+  const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
+  let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
+  draw(t);cv.classList.add('on');if(POSTER){hero.dataset.ready=1;return}
+  const frame=now=>{raf=0;if(document.hidden||!seen)return;if(now-last>=33){t+=Math.min(.1,(now-(last||now))/1000)||1/30;last=now;draw(t)}raf=requestAnimationFrame(frame)};
+  run=()=>{if(!raf&&seen&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}};
+  document.addEventListener('visibilitychange',run);
+  new MutationObserver(()=>{colors();draw(t)}).observe(R,{attributes:true,attributeFilter:['class']});run();
+}}
+</script>
+
+<script>
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
+function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
+try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
+</script>
+</body>
+</html>

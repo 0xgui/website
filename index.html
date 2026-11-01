@@ -118,6 +118,31 @@ footer a{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
 </style>
 
+<!-- agent:links -->
+<link rel="alternate" type="text/markdown" href="/index.md">
+<link rel="describedby" href="/llms.txt" type="text/plain">
+<link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
+<!-- /agent:links -->
+<!-- agent:ld -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Guilherme Silva",
+  "url": "https://silvags.com/",
+  "jobTitle": "Engineering Manager",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "xgeeks"
+  },
+  "email": "mailto:work@silvags.com",
+  "sameAs": [
+    "https://github.com/0xgui",
+    "https://www.linkedin.com/in/silva-gs"
+  ]
+}
+</script>
+<!-- /agent:ld -->
 </head>
 <body>
 <a class="hero" href="robots/so-101/" aria-label="SO-101 robotic arm, open the build log" data-robot="so101" data-anim="teleop" data-seed="0" data-glb="robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
@@ -137,12 +162,14 @@ footer a{color:var(--muted)}
 <p class="more"><a href="builds/">All builds and open source</a></p>
 
 <h2>Latest writing</h2>
+<!-- mirror:posts -->
 <ul class="posts" id="articles">
-  <li><time datetime="2026-09-28">September 28, 2026</time><a href="https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses" target="_blank" rel="noopener">I built a tiny robot that refuses to stay down</a><span class="desc">Its name is Pico.</span></li>
-  <li><time datetime="2026-08-27">August 27, 2026</time><a href="https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house" target="_blank" rel="noopener">I just wanted to clean my house.</a><span class="desc">How cleaning one room turned into open-heart surgery on a robot vacuum</span></li>
-  <li><time datetime="2026-03-05">March 5, 2026</time><a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Physical AI is here and I’m building for it.</a><span class="desc">I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</span></li>
-  <li><time datetime="2025-12-05">December 5, 2025</time><a href="https://binarypaths.substack.com/p/aiconomy" target="_blank" rel="noopener">AIconomy</a><span class="desc">AI agents will define the future global ecommerce</span></li>
+  <li><time datetime="2026-09-28">September 28, 2026</time><a href="writing/i-built-a-tiny-robot-that-refuses/">I built a tiny robot that refuses to stay down</a><span class="desc">Its name is Pico.</span></li>
+  <li><time datetime="2026-08-27">August 27, 2026</time><a href="writing/i-just-wanted-to-clean-my-house/">I just wanted to clean my house.</a><span class="desc">How cleaning one room turned into open-heart surgery on a robot vacuum</span></li>
+  <li><time datetime="2026-03-05">March 5, 2026</time><a href="writing/physical-ai-is-here-and-im-building/">Physical AI is here and I’m building for it.</a><span class="desc">I got a robotic arm moving for the first time. It was magic, but it lacks a brain.</span></li>
+  <li><time datetime="2025-12-05">December 5, 2025</time><a href="writing/aiconomy/">AIconomy</a><span class="desc">AI agents will define the future global ecommerce</span></li>
 </ul>
+<!-- /mirror:posts -->
 <p class="more"><a href="writing/">All writing</a> · <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Subscribe on Binary Paths</a></p>
 
 </main>
@@ -230,31 +257,6 @@ async function boot(){
 function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
 label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
 try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
-</script>
-<script>
-// Binary Paths via rss.silvags.com (worker.js). Text only, HTTPS only; the snapshot stays on failure.
-(async function(){
-  var list=document.getElementById('articles'),status=document.getElementById('articles-status'),LIMIT=3;
-  var key='binary-paths-articles-v1',maxAge=6048e5;
-  function ok(u){try{return new URL(u).protocol==='https:'}catch(e){return false}}
-  function valid(d){return Array.isArray(d&&d.items)?d.items.filter(function(i){return i&&typeof i.title==='string'&&i.title.trim()&&typeof i.link==='string'&&ok(i.link)}).slice(0,20):[]}
-  function render(items){var f=document.createDocumentFragment();items.slice(0,LIMIT).forEach(function(it){
-    var li=document.createElement('li'),d=new Date(it.pubDate);
-    if(isFinite(d)){var t=document.createElement('time');t.dateTime=d.toISOString();
-      t.textContent=d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});li.append(t);}
-    var a=document.createElement('a');a.href=it.link;a.target='_blank';a.rel='noopener';a.textContent=it.title;li.append(a);
-    var x=typeof it.description==='string'?it.description.replace(/<[^>]*>/g,'').trim():'';
-    if(x){var sp=document.createElement('span');sp.className='desc';sp.textContent=x.length>150?x.slice(0,150)+'…':x;li.append(sp);}
-    f.append(li);});list.replaceChildren(f);}
-  try{var c=JSON.parse(localStorage.getItem(key)),age=Date.now()-(c&&c.savedAt),ci=valid(c);if(ci.length&&age>=0&&age<maxAge)render(ci);}catch(e){}
-  for(var n=0;n<2;n++){var ac=new AbortController(),to=setTimeout(function(){ac.abort()},8000);
-    try{var r=await fetch('https://rss.silvags.com',{signal:ac.signal});if(!r.ok)throw 0;
-      var data=await r.json(),items=valid(data);if(!items.length)throw 0;render(items);
-      if(status&&data.stale)status.textContent='Saved posts · feed update delayed.';
-      var fa=Date.parse(data.fetchedAt);try{localStorage.setItem(key,JSON.stringify({items:items,savedAt:isFinite(fa)?fa:Date.now()}))}catch(e){}
-      return;}catch(e){}finally{clearTimeout(to)}
-    await new Promise(function(r){setTimeout(r,1000)});}
-})();
 </script>
 </body>
 </html>

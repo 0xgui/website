@@ -1,9 +1,10 @@
 ---
 name: verify-silvags
 description: >-
-  Drive the silvags.com static site (homepage + robot build logs) in a real
-  browser to prove user-facing behavior. Use when verifying theme, navigation,
-  writing feed, Pico model viewer, or SO-101 build log changes.
+  Drive the silvags.com static site (homepage, section pages, mirrored essays,
+  and robot build logs) in a real browser to prove user-facing behavior. Use
+  when verifying theme, navigation, writing, the dithered header, Pico or
+  SO-101 pages, or agent-file changes.
 ---
 
 # Verify silvags.com
@@ -36,7 +37,7 @@ Teardown: `.cursor/skills/verify-silvags/bin/cleanup` (kills only the recorded p
 .cursor/skills/verify-silvags/bin/doctor
 ```
 
-Must print `doctor: HEALTHY` before driving. Checks process, homepage, `/robots/so-101/`, `/robots/pico/`, favicon, key media (webp/glb), theme-toggle presence, and homepage identity (`Guilherme Silva`). If anything looks off mid-run, re-run doctor first.
+Must print `doctor: HEALTHY` before driving. Checks process, homepage, `/writing/`, one mirrored essay, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/feed.xml`, `/robots/so-101/`, `/robots/pico/`, favicon, key media (webp/glb), theme-toggle presence, and homepage identity (`Guilherme Silva`). If anything looks off mid-run, re-run doctor first.
 
 ## Drive
 
@@ -46,7 +47,7 @@ Must print `doctor: HEALTHY` before driving. Checks process, homepage, `/robots/
 4. Stable IDs when ARIA is thin: `#theme-toggle`, `#articles`, `#articles-status`, `#pico-model`, `#rotation-toggle`, `#day-01`, `#day-02`, `#so-model`.
 5. Follow the feature file under `features/`. One feature per proof is enough unless the change spans several.
 
-Pages to cover when relevant: `/`, `/robots/so-101/`, `/robots/pico/`.
+Pages to cover when relevant: `/`, `/writing/`, `/writing/<slug>/`, `/robots/so-101/`, `/robots/pico/`. The dithered header is the `.hero` canvas (poster first, then a GLB drawn in the page colours). Writing entries are local essays, not a live rewrite of `#articles`. Agent files (`/llms.txt`, `index.md`) are static; this server does not negotiate `Accept: text/markdown` (that is `functions/_middleware.js` on Pages).
 
 ## Evidence
 
@@ -63,7 +64,7 @@ Proof standards:
 - Exercise the real user path in the browser (click the control visitors use).
 - Capture the action and the resulting state, not only the final screen.
 - Theme: assert `document.documentElement.classList.contains('dark')` and `localStorage.theme` via CDP `Runtime.evaluate`, plus a screenshot showing light vs dark.
-- Writing feed: assert `#articles` has article links after load (or explicit offline snapshot if the live feed fails); do not treat a green HTTP status alone as proof.
+- Writing: assert `#articles` links to local `/writing/<slug>/` paths and the Binary Paths subscribe link is still present. Do not require a fetch to `rss.silvags.com`.
 - Model viewer: wait for `model-viewer` load / visible rotation control; poster-only after error is a failure for the GLB path.
 - Side effects: `localStorage` for theme; article cache key `binary-paths-articles-v1` when proving feed persistence.
 - Do not mock `rss.silvags.com`. If the network fails, prove the static snapshot path and record the unmet live-feed precondition in notes.

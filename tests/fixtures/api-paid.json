@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": 2,
+      "audience": "only_paid",
+      "slug": "paid-essay",
+      "title": "Paid essay",
+      "canonical_url": "https://binarypaths.substack.com/p/paid-essay",
+      "post_date": "2026-03-05T08:00:00.000Z",
+      "subtitle": "The public excerpt.",
+      "description": "The public excerpt.",
+      "body_html": "<p>secret full text that must not be stored</p>",
+      "truncated_body_text": "The public excerpt."
+    }
+  ]
+}

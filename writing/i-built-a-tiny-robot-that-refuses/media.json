@@ -1,0 +1,36 @@
+{
+  "images": [
+    {
+      "file": "01.webp",
+      "source_sha256": "8dd2772e58a60ff8d378727ff78e005033985a31600c699df7ecca0f837bc8ea"
+    },
+    {
+      "file": "02.webm",
+      "source_sha256": "2e39d84b1b2346022e235e0f727321c16fce789aa574c73fd9c0c73350c5c9ac"
+    },
+    {
+      "file": "03.webp",
+      "source_sha256": "d186d2a58a0303419a10aae8c2a011973b270866b5d6efd57ad438e0e60fc1f7"
+    },
+    {
+      "file": "04.webp",
+      "source_sha256": "d1ef60cae1c8ebc4f1cb5a04b2773cf41ee2b07a91a40638336a7d62ce5659ce"
+    },
+    {
+      "file": "05.webm",
+      "source_sha256": "9073c0ad813dcf5d2446a3da79badb38409fb16d3731bc5100ae8d09ca99d8bf"
+    },
+    {
+      "file": "06.webm",
+      "source_sha256": "52861e670b0279fd5e3d98bf0222c682eea4354e95946bda4de259e699a62bb0"
+    },
+    {
+      "file": "07.webm",
+      "source_sha256": "85bfe0b64c26b3ff4700d9e2012dc8831c88baae199bd820f4c284a56d08e7ba"
+    },
+    {
+      "file": "08.webm",
+      "source_sha256": "47d7ba79920817ba8889777db3b92bfdd67f9378f3109f1141b9fd1d40629d8e"
+    }
+  ]
+}

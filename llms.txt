@@ -1,0 +1,42 @@
+# Guilherme Silva
+
+> Personal site of Guilherme Silva, engineering manager at xgeeks. Robotics build logs, and essays first published on Binary Paths.
+
+Canonical site: https://silvags.com. Essays keep a canonical link to https://binarypaths.substack.com. Content-Signal: search=yes, ai-input=yes, ai-train=no.
+
+## Site
+
+- [Guilherme Silva](https://silvags.com/index.md): Building small robots from scratch and writing about engineering and physical AI at Binary Paths.
+- [About](https://silvags.com/about/index.md): Guilherme Silva: automotive engineer turned platform engineer turned robot tinkerer.
+- [Builds](https://silvags.com/builds/index.md): Robots I’m building (SO-101, Pico) and small open-source tools.
+- [Writing](https://silvags.com/writing/index.md): Posts from Binary Paths, on engineering, teams, and physical AI.
+- [Talks](https://silvags.com/talks/index.md): Talks and slides on Kubernetes, WebAssembly, and platform engineering.
+
+## Builds
+
+- [SO-101 robotic arm](https://silvags.com/robots/so-101/index.md): Building a 6-DOF robotic arm from scratch. Build log: teleop, imitation learning, sim-to-real.
+- [Pico](https://silvags.com/robots/pico/index.md): Pico: my two-servo self-righting robot. An ATOM Matrix, a policy trained in MuJoCo, and recovery working on real hardware.
+
+## Writing
+
+- [I built a tiny robot that refuses to stay down](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/index.md): 2026-09-28. Its name is Pico.
+- [I just wanted to clean my house.](https://silvags.com/writing/i-just-wanted-to-clean-my-house/index.md): 2026-08-27. How cleaning one room turned into open-heart surgery on a robot vacuum
+- [Physical AI is here and I’m building for it.](https://silvags.com/writing/physical-ai-is-here-and-im-building/index.md): 2026-03-05. I got a robotic arm moving for the first time. It was magic, but it lacks a brain.
+- [AIconomy](https://silvags.com/writing/aiconomy/index.md): 2025-12-05. AI agents will define the future global ecommerce
+- [5 Tech Trends That Will Define 2025](https://silvags.com/writing/5-tech-trends-that-will-define-2025/index.md): 2025-01-09. We are in the best timeline.
+- [Engineering Estimates: 1 week means 4](https://silvags.com/writing/engineering-estimates/index.md): 2024-12-04. Why your estimate is a lie you keep telling yourself
+- [When Engineers Need to Talk Business](https://silvags.com/writing/when-engineers-need-to-talk-business/index.md): 2024-11-09. Your code is perfect. Your business vocabulary isn't.
+- [You Can't Know Everything in Tech](https://silvags.com/writing/you-cant-know-everything-in-tech/index.md): 2024-10-23. Because tech moves fast, but you can move faster.
+- [Speaking in Front of 250+ People](https://silvags.com/writing/speaking-in-front-of-250-people/index.md): 2024-10-09. 250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.
+- [The Art of Juggling Life](https://silvags.com/writing/the-art-of-juggling-life/index.md): 2024-09-25. Balls Drop, Balls Add, You Adapt.
+- [The Road Trip of Kubernetes](https://silvags.com/writing/the-road-trip-of-kubernetes/index.md): 2024-09-04. Don't follow the road that everyone is riding. Create your own road trip.
+- [Why Platforms Must Be Products, Not Projects](https://silvags.com/writing/why-platforms-must-be-products/index.md): 2024-08-28. It's not a set-and-forget thing. You need to nourish it. You need to take care of it.
+- [Becoming a Product-Minded Engineer](https://silvags.com/writing/becoming-a-product-minded-engineer/index.md): 2024-08-14. Because let's face it. Customers don't care about what tech you use. They care if what they use, works.
+- [Imposter Syndrome: If you have it, you are good](https://silvags.com/writing/imposter-syndrome-if-you-have-it/index.md): 2024-07-31. Look. If you are reading this, you probably have it. There is no permanent cure. You have to embrace it.
+- [Why Personal Branding matters as a Engineer](https://silvags.com/writing/personal-branding-as-an-engineer/index.md): 2024-07-17. Sometimes work doesn't speak for itself and you need to do more.
+
+## Optional
+
+- [Full text](https://silvags.com/llms-full.txt): Every page in one Markdown file
+- [Atom feed](https://silvags.com/feed.xml): Essays mirrored from Binary Paths
+- [Sitemap](https://silvags.com/sitemap.xml): HTML pages on this site
