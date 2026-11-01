@@ -17,11 +17,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import hashlib
 import json
+import os
 import re
 import tempfile
 import time
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 
 from scripts.build_agent import apply as apply_agent
 from scripts.build_agent import links_block
@@ -34,7 +36,6 @@ from scripts.feeds import (
     looks_like_challenge,
     post_from_mapping,
     posts_from_rss,
-    posts_from_worker,
 )
 from scripts.htmltext import (
     attr_map,
@@ -51,7 +52,12 @@ from scripts.htmltext import (
 from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]  # noqa: F811 — Path imported above
-UA = "silvags-mirror/1.0 (+https://silvags.com)"
+# Substack answers 403 to the default Python client and to short bot names from
+# GitHub-hosted runners. A normal browser User-Agent is the request it accepts.
+UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+)
 HOME_LIMIT = 4
 SITE = "https://silvags.com"
 MONTHS = [
@@ -72,6 +78,14 @@ FEED_SCRIPT_RE = re.compile(
 )
 IMAGE_MAX = 1_000_000
 IMAGE_TARGET = 500_000
+# Rewritten after a successful fetch when the file is missing or older than this.
+STAMP_EVERY = 24 * 60 * 60
+# A failed fetch stays quiet while the newest good data is younger than this.
+QUIET_AFTER = 48 * 60 * 60
+LAST_GOOD = "writing/last-good.txt"
+# workers.dev is outside the silvags.com zone. The account subdomain is zer0hex.
+DEFAULT_WORKERS_DEV = "https://rss-worker.zer0hex.workers.dev/raw.xml"
+RSS_HOST_SNAPSHOT = "https://rss.silvags.com/raw.xml"
 
 
 def format_date(post: Post) -> str:
@@ -83,17 +97,22 @@ def http_get(url: str, accept: str, timeout: int = 25, attempts: int = 3, sleep=
     last: Exception | None = None
     for attempt in range(attempts):
         try:
-            request = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
+            request = urllib.request.Request(url, headers={
+                "User-Agent": UA,
+                "Accept": accept,
+                "Accept-Language": "en-US,en;q=0.9",
+            })
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.status, response.headers.get("content-type", ""), response.read()
         except urllib.error.HTTPError as exc:
             raw = exc.read() if exc.fp else b""
             ctype = exc.headers.get("content-type", "") if exc.headers else ""
             text = raw.decode("utf-8", "replace")
+            detail = " ".join(text[:180].split())
             if looks_like_challenge(exc.code, text, ctype):
-                last = ChallengeError(f"{url} returned {exc.code}")
+                last = ChallengeError(f"{url} returned {exc.code} ({ctype}) {detail}")
             else:
-                last = FeedError(f"{url} returned {exc.code}")
+                last = FeedError(f"{url} returned {exc.code} ({ctype}) {detail}")
         except Exception as exc:  # noqa: BLE001 — network failures become FeedError
             last = FeedError(f"{url} failed: {exc}")
         if attempt + 1 < attempts:
@@ -111,19 +130,45 @@ def _decode(status: int, ctype: str, body: bytes, url: str) -> str:
     return text
 
 
-def fetch_posts(get=http_get) -> list[Post]:
+def default_snapshot_urls() -> list[tuple[str, str]]:
+    """workers.dev first. The silvags.com zone's bot settings do not apply there."""
+    found = []
+    dev = os.environ.get("WORKERS_DEV_SNAPSHOT", DEFAULT_WORKERS_DEV).strip()
+    if dev:
+        if not dev.endswith("/raw.xml"):
+            dev = dev.rstrip("/") + "/raw.xml"
+        found.append(("workers-dev", dev))
+    found.append(("rss-host", RSS_HOST_SNAPSHOT))
+    return found
+
+
+def _posts_from_snapshot(get, url: str) -> list[Post]:
+    text = _decode(*get(
+        url,
+        "application/rss+xml, application/xml, text/xml",
+    ), url)
+    return posts_from_rss(text)
+
+
+def fetch_posts(get=http_get, snapshots=None) -> list[Post]:
+    """Posts API, archive, RSS, then the worker's stored snapshot.
+
+    A challenge, empty body, or malformed snapshot is one failed source.
+    The next source is tried. Nothing is deleted.
+    """
     errors = []
-    for name, fn in (
+    sources: list[tuple[str, object]] = [
         ("api", lambda: _posts_api(get)),
         ("archive", lambda: _posts_archive(get)),
         ("rss", lambda: posts_from_rss(_decode(*get(
             "https://binarypaths.substack.com/feed",
             "application/rss+xml, application/xml, text/xml",
         ), "https://binarypaths.substack.com/feed"))),
-        ("worker", lambda: posts_from_worker(_decode(*get(
-            "https://rss.silvags.com", "application/json",
-        ), "https://rss.silvags.com"))),
-    ):
+    ]
+    chosen = default_snapshot_urls() if snapshots is None else list(snapshots)
+    for name, url in chosen:
+        sources.append((name, lambda url=url: _posts_from_snapshot(get, url)))
+    for name, fn in sources:
         try:
             posts = fn()
             if not posts:
@@ -132,6 +177,77 @@ def fetch_posts(get=http_get) -> list[Post]:
         except FeedError as exc:
             errors.append(f"{name}: {exc}")
     raise FeedError("all feed sources failed:\n" + "\n".join(errors))
+
+
+def _parse_stamp(text: str) -> datetime:
+    text = text.strip()
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    found = datetime.fromisoformat(text)
+    if found.tzinfo is None:
+        found = found.replace(tzinfo=timezone.utc)
+    return found.astimezone(timezone.utc)
+
+
+def last_good_at(root: Path) -> datetime | None:
+    path = root / LAST_GOOD
+    if not path.is_file():
+        return None
+    text = path.read_text(encoding="utf-8").strip()
+    if not text:
+        return None
+    try:
+        return _parse_stamp(text)
+    except ValueError:
+        return None
+
+
+def outage_is_loud(root: Path, now: datetime | None = None) -> bool:
+    """True when no path worked and the newest good data is missing or >= 48h old."""
+    stamp = last_good_at(root)
+    if stamp is None:
+        return True
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    return (now.astimezone(timezone.utc) - stamp).total_seconds() >= QUIET_AFTER
+
+
+def note_success(root: Path, now: datetime | None = None) -> bool:
+    """Record a successful fetch, at most once per 24h, so a no-op run stays quiet."""
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    now = now.astimezone(timezone.utc).replace(microsecond=0)
+    stamp = last_good_at(root)
+    if stamp is not None and (now - stamp).total_seconds() < STAMP_EVERY:
+        return False
+    path = root / LAST_GOOD
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ") + "\n", encoding="utf-8")
+    return True
+
+
+def run_mirror(root: Path, get=http_get, now: datetime | None = None, snapshots=None) -> int:
+    try:
+        posts = fetch_posts(get, snapshots=snapshots)
+        changed = apply_mirror(root, posts)
+        if note_success(root, now):
+            changed.append(LAST_GOOD)
+    except FeedError as exc:
+        if outage_is_loud(root, now):
+            print(f"mirror failed: {exc}", file=sys.stderr)
+            return 1
+        print(
+            "mirror sources failed; newest good data is under 48h, so this run stays quiet:\n"
+            + str(exc)
+        )
+        return 0
+    if changed:
+        print(f"updated {len(changed)} file(s)")
+    else:
+        print("mirror is up to date")
+    return 0
 
 
 def _collect(rows: list[dict], seen: dict[str, Post]) -> None:
@@ -676,18 +792,35 @@ def apply_mirror(root: Path, posts: list[Post], *, fetch_bytes=default_fetch_byt
     return changed
 
 
+def refresh_indexes(root: Path) -> list[str]:
+    """Rebuild the homepage list, the writing list, and agent files from disk."""
+    saved = discover(root)
+    posts = sorted((row[0] for row in saved.values()), key=lambda post: (post.published, post.slug), reverse=True)
+    home = root / "index.html"
+    writing = root / "writing" / "index.html"
+    changed = []
+    for path, markup in (
+        (home, list_markup(posts, lambda post: f"writing/{post.slug}/", HOME_LIMIT)),
+        (writing, list_markup(posts, lambda post: f"{post.slug}/", None)),
+    ):
+        updated = replace_list(path.read_text(encoding="utf-8"), markup)
+        if path.read_text(encoding="utf-8") != updated:
+            path.write_text(updated, encoding="utf-8")
+            changed.append(str(path.relative_to(root)))
+    changed.extend(apply_agent(root))
+    return changed
+
+
 def main(argv: list[str]) -> int:
-    try:
-        posts = fetch_posts()
-        changed = apply_mirror(ROOT, posts)
-    except FeedError as exc:
-        print(f"mirror failed: {exc}", file=sys.stderr)
-        return 1
-    if changed:
-        print(f"updated {len(changed)} file(s)")
-    else:
-        print("mirror is up to date")
-    return 0
+    if "--reindex" in argv:
+        try:
+            changed = refresh_indexes(ROOT)
+        except FeedError as exc:
+            print(f"reindex failed: {exc}", file=sys.stderr)
+            return 1
+        print(f"reindexed {len(changed)} file(s)" if changed else "indexes are up to date")
+        return 0
+    return run_mirror(ROOT)
 
 
 if __name__ == "__main__":

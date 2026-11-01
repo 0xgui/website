@@ -35,5 +35,6 @@ Each feature file starts with an H1 and one paragraph, then exactly four H2s: `S
 - [Theme toggle](./theme-toggle.md) — light/dark class and `localStorage` persistence across pages.
 - [Homepage builds](./homepage-workbench.md) — On the bench links for SO-101 and Pico, and the way back home.
 - [Writing](./writing-feed.md) — local Binary Paths essays, subscribe link, no live rewrite of `#articles`.
+- [Mirror loop](./mirror-loop.md) — a bot-opened pull request gets the `test` check and the `agent-pr-gate` status, and would auto-merge.
 - [Pico model](./pico-model.md) — GLB viewer and poster. No separate rotation button.
 - [SO-101 build log](./so-101-build-log.md) — heading, model, Day 01 section.

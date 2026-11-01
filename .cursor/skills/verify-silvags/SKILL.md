@@ -9,7 +9,7 @@ description: >-
 
 # Verify silvags.com
 
-Static personal site: pure HTML/CSS/JS, no build step. Primary surface is the web UI at a local `python3 -m http.server`. Secondary surface: Cloudflare Worker RSS at `https://rss.silvags.com` (not started locally; homepage fetches it live). Drive with Cursor's browser tools (navigate / snapshot / click / screenshot / CDP). Do not invent Playwright or other harnesses.
+Static personal site: pure HTML/CSS/JS, no build step. Primary surface is the web UI at a local `python3 -m http.server`. The mirror loop is a GitHub Actions proof, not a browser proof. Drive pages with Cursor's browser tools (navigate / snapshot / click / screenshot / CDP). Do not invent Playwright or other harnesses.
 
 Read `features/README.md` before a run. Use the matching feature file as the recipe.
 
@@ -67,7 +67,7 @@ Proof standards:
 - Writing: assert `#articles` links to local `/writing/<slug>/` paths and the Binary Paths subscribe link is still present. Do not require a fetch to `rss.silvags.com`.
 - Model viewer: wait for `model-viewer` load / visible rotation control; poster-only after error is a failure for the GLB path.
 - Side effects: `localStorage` for theme; article cache key `binary-paths-articles-v1` when proving feed persistence.
-- Do not mock `rss.silvags.com`. If the network fails, prove the static snapshot path and record the unmet live-feed precondition in notes.
+- Writing pages do not fetch `rss.silvags.com`. Do not require that host.
 
 ## Cleanup
 

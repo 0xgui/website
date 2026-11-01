@@ -19,3 +19,25 @@ jobs:
 
       - name: Markdown negotiation tests
         run: node --test tests/negotiate.test.mjs
+
+      - name: Worker snapshot tests
+        run: node --experimental-detect-module --test tests/worker-snapshot.test.mjs
+
+  # Check name is the job id `test`. Branch protection should require that
+  # name and the commit status `agent-pr-gate` only.
+  worker-dry-run:
+    name: worker dry-run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install Wrangler 4
+        run: npm install --prefix "$RUNNER_TEMP/wrangler" wrangler@4
+
+      - name: Whoami, KV snapshot, and deploy dry-run
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER: ${{ runner.temp }}/wrangler/node_modules/.bin/wrangler
+        run: python3 scripts/worker_dry_run.py
