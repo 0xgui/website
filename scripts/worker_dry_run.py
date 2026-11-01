@@ -147,8 +147,6 @@ def main() -> int:
     print(f"WORKERS_DEV_ENABLED={str(enabled).lower()}")
     if not enabled:
         print("workers.dev is not enabled on the current worker. The next deploy turns it on.")
-        return _committed_namespace(original, namespace)
-
     fetch_status, fetch_body, fetch_type = _fetch(snapshot)
     print(f"WORKERS_DEV_FETCH={fetch_status} {fetch_type}")
     sample = " ".join(fetch_body[:180].split())
@@ -157,7 +155,27 @@ def main() -> int:
     if "just a moment" in lowered or "cf-browser-verification" in lowered or "challenge-platform" in lowered:
         print("workers.dev returned a challenge page.", file=sys.stderr)
         return 1
+    if enabled and fetch_status == 0:
+        print("workers.dev is enabled but the runner could not fetch it.", file=sys.stderr)
+        return 1
+    url_status = _committed_workers_dev(snapshot)
+    if url_status != 0:
+        return url_status
     return _committed_namespace(original, namespace)
+
+
+def _committed_workers_dev(snapshot: str) -> int:
+    text = (ROOT / "scripts" / "mirror_substack.py").read_text(encoding="utf-8")
+    match = re.search(r'^DEFAULT_WORKERS_DEV = "([^"]*)"', text, re.M)
+    committed = match.group(1) if match else ""
+    if committed != snapshot:
+        print(
+            f"DEFAULT_WORKERS_DEV is {committed!r}; the workers.dev snapshot is {snapshot}. "
+            "Commit that URL.",
+            file=sys.stderr,
+        )
+        return 1
+    return 0
 
 
 def _committed_namespace(original: str, namespace: str) -> int:
@@ -187,6 +205,8 @@ def _fetch(url: str) -> tuple[int, str, str]:
         body = exc.read().decode("utf-8", "replace") if exc.fp else ""
         ctype = exc.headers.get("content-type", "") if exc.headers else ""
         return exc.code, body, ctype
+    except urllib.error.URLError as exc:
+        return 0, str(exc.reason), ""
 
 
 if __name__ == "__main__":

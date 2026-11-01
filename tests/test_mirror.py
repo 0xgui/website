@@ -314,6 +314,18 @@ class FetchPathTests(unittest.TestCase):
         for name in ("api:", "archive:", "rss:", "workers-dev:", "rss-host:"):
             self.assertIn(name, message)
 
+    def test_committed_workers_dev_is_first(self):
+        import os
+        from unittest.mock import patch
+        from scripts.mirror_substack import DEFAULT_WORKERS_DEV, default_snapshot_urls
+        self.assertTrue(DEFAULT_WORKERS_DEV.startswith("https://rss-worker."))
+        self.assertTrue(DEFAULT_WORKERS_DEV.endswith(".workers.dev/raw.xml"))
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("WORKERS_DEV_SNAPSHOT", None)
+            urls = default_snapshot_urls()
+        self.assertEqual(urls[0], ("workers-dev", DEFAULT_WORKERS_DEV))
+        self.assertEqual(urls[1][0], "rss-host")
+
     def test_snapshot_order_prefers_workers_dev(self):
         import os
         from unittest.mock import patch

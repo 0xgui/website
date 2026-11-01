@@ -83,8 +83,8 @@ STAMP_EVERY = 24 * 60 * 60
 # A failed fetch stays quiet while the newest good data is younger than this.
 QUIET_AFTER = 48 * 60 * 60
 LAST_GOOD = "writing/last-good.txt"
-# Set after CI reads the account workers.dev subdomain. Empty skips that source.
-DEFAULT_WORKERS_DEV = ""
+# workers.dev is outside the silvags.com zone. The account subdomain is zer0hex.
+DEFAULT_WORKERS_DEV = "https://rss-worker.zer0hex.workers.dev/raw.xml"
 RSS_HOST_SNAPSHOT = "https://rss.silvags.com/raw.xml"
 
 
