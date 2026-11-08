@@ -18,9 +18,13 @@ permissions:
   actions: read
   statuses: write
 
+# One gate run per PR at a time. Don't cancel a run that has started: the PR event
+# and the CI workflow_run event usually overlap, and cancelling left a red, cancelled
+# agent-pr-gate-job check on the PR even though the later run passed. A newer run
+# waits in line instead (only the newest waiting run is kept).
 concurrency:
   group: agent-pr-gate-${{ github.event.pull_request.number || github.event.workflow_run.pull_requests[0].number || github.event.workflow_run.head_sha }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   agent-pr-gate-job:
