@@ -12,6 +12,8 @@ My DevOps world: Kubernetes, WebAssembly, and platform engineering. These days m
 
 ## Slides
 
+- [The Bottleneck Moved](https://silvags.com/talks/bottleneck-moved/) — KCD Porto × DevOpsDays 2026 · slides and sources
+
 - [Beyond the Hype: K8s for Real Business Value](https://drive.google.com/file/d/1U3Fy4boqBCr6XJyx-QTuS1T4n3sX4yzg/view)
 
 - [WebAssembly + Kubernetes](https://drive.google.com/file/d/1mwjWJ6FR0OSCIx_EBlW-GnyAQMKGXbM9/view)
