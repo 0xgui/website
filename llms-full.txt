@@ -306,7 +306,7 @@ Platform engineering when AI writes the code: how a team can know that an AI-wri
 
 KCD Porto × DevOpsDays · 19 November 2026
 
-[Open the slides](https://silvags.com/talks/bottleneck-moved/slides.html) — use the arrow keys to move
+[Open the slides](https://silvags.com/talks/bottleneck-moved/slides.html) — arrow keys on a laptop; swipe on a phone (turn it sideways)
 
 ## Sources
 
