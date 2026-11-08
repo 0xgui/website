@@ -648,6 +648,12 @@ def _set_attr_meta(html: str, attr: str, key: str, content: str) -> str:
     return html.replace("</head>", repl + "\n</head>", 1)
 
 
+def essay_cover(body: str, page_url: str) -> str | None:
+    """Absolute URL of the essay's first local image (the Substack cover when there is one), for link previews."""
+    match = re.search(r'<img src="(images/[^"]+)"', body or "")
+    return page_url + match.group(1) if match else None
+
+
 def render_article(template: str, post: Post, body: str) -> str:
     local = f"{SITE}/writing/{post.slug}/"
     title = clean_text(post.title).strip()
@@ -687,6 +693,9 @@ def render_article(template: str, post: Post, body: str) -> str:
             f'<article class="post">\n{body.strip()}\n</article>\n'
         )
     html = re.sub(r"<main>.*?</main>", "<main>\n" + article + "</main>", html, count=1, flags=re.S)
+    cover = essay_cover(body, local)
+    if cover:
+        html = _set_attr_meta(html, "property", "og:image", cover)
     ld = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -698,6 +707,8 @@ def render_article(template: str, post: Post, body: str) -> str:
         "url": local,
         "isBasedOn": post.canonical,
     }
+    if cover:
+        ld["image"] = cover
     payload = json.dumps(ld, ensure_ascii=False, indent=2).replace("<", "\\u003c")
     block = "\n".join([
         links_block(Path("writing") / post.slug / "index.html"),

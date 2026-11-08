@@ -116,6 +116,18 @@ export async function onRequest(context) {
       }
       const html = rangeQ(accept, "text/html");
       if (html.q <= 0) {
+        // No twin. If the page itself does not exist, say so (404) rather than blaming the format (406).
+        const page = await context.next();
+        if (page.status === 404) {
+          return new Response("Not found\n", {
+            status: 404,
+            headers: {
+              "Content-Type": "text/plain; charset=utf-8",
+              Vary: "Accept",
+              "Content-Signal": CONTENT_SIGNAL,
+            },
+          });
+        }
         return new Response("No markdown representation\n", {
           status: 406,
           headers: {
