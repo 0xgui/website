@@ -28,6 +28,7 @@ if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.clas
 :root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
   color-scheme:dark}
 @view-transition{navigation:auto}
+.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}main:focus{outline:0}
 *{box-sizing:border-box}
 html{background:var(--paper)}
 body{margin:0;background:var(--paper);color:var(--ink);
@@ -125,7 +126,7 @@ footer a{color:var(--muted)}
 <!-- /agent:links -->
 </head>
 <body>
-<a class="hero" href="../robots/so-101/" aria-label="SO-101 robotic arm, open the build log" data-robot="so101" data-anim="teleop" data-seed="1" data-glb="../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
+<a class="hero" href="../" aria-label="Guilherme Silva, home" data-robot="so101" data-anim="teleop" data-seed="1" data-glb="../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
 <div class="col">
 <header>
   <a class="name" href="../">Guilherme Silva</a>
@@ -174,17 +175,22 @@ footer a{color:var(--muted)}
 const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
 if(hero&&gl2&&(!reduce||POSTER)){
-const cv=hero.querySelector('canvas'),A=hero.dataset.anim,SEED=+hero.dataset.seed||0,R=document.documentElement;
-let seen=false,booted=false,run=null;
+const cv=hero.querySelector('canvas'),R=document.documentElement,id=()=>hero.dataset.glb+hero.dataset.anim+hero.dataset.seed;
+// One renderer for the page's life. After an in-place navigation (site:swap) with a different robot, boot() loads the
+// new GLB (cached) and swaps scenes; the old frame stays up until the new one draws.
+let A,SEED,seen=false,booted=false,run=null,stop=null,cur='',r,rt;
 const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
 new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
 document.readyState=='complete'?kick():addEventListener('load',kick);
 async function boot(){
-  const V='https://cdn.jsdelivr.net/npm/three@0.169.0';
+  const key=cur=id(),V='https://cdn.jsdelivr.net/npm/three@0.169.0';
   const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
   const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
-  const r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
-  const rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true});
+  if(key!==cur)return;
+  if(stop){stop();stop=run=null}
+  A=hero.dataset.anim;SEED=+hero.dataset.seed||0;
+  if(!r){r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
+    rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true})}
   const scene=new T.Scene();scene.background=new T.Color(0);
   const shade=k=>new T.ShaderMaterial({uniforms:{k:{value:k}},
     vertexShader:'varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);v=p.xyz;gl_Position=projectionMatrix*p;}',
@@ -230,7 +236,7 @@ async function boot(){
   const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
     const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
   const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
-  const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(cv.width==w&&cv.height==h)return;
+  let sized=false;const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(sized&&cv.width==w&&cv.height==h)return;sized=true;
     r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
   const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
   let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
@@ -238,16 +244,71 @@ async function boot(){
   const frame=now=>{raf=0;if(document.hidden||!seen)return;if(now-last>=33){t+=Math.min(.1,(now-(last||now))/1000)||1/30;last=now;draw(t)}raf=requestAnimationFrame(frame)};
   run=()=>{if(!raf&&seen&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}};
   document.addEventListener('visibilitychange',run);
-  new MutationObserver(()=>{colors();draw(t)}).observe(R,{attributes:true,attributeFilter:['class']});run();
-}}
+  const mo=new MutationObserver(()=>{colors();draw(t)});mo.observe(R,{attributes:true,attributeFilter:['class']});
+  stop=()=>{cancelAnimationFrame(raf);raf=0;document.removeEventListener('visibilitychange',run);mo.disconnect();
+    [scene,ps].forEach(s=>s.traverse(o=>{o.geometry&&o.geometry.dispose();o.material&&o.material.dispose()}))};
+  run();
+}
+document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()=>{})});
+}
 </script>
 
 <script>
 // Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
-(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
-function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
-label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
-try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
+// Delegated, so it survives the content swap below.
+(function(){var h=document.documentElement;
+function label(){var b=document.getElementById('theme-toggle');if(b)b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();document.addEventListener('site:swap',label);
+document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('#theme-toggle'))return;
+h.classList.toggle('dark');label();try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(x){}});})();
+
+// Instant navigation: fetch same-site pages on hover, then swap .col and keep the hero (and its WebGL) running.
+// Any failure falls back to a normal page load.
+(function(){
+var col=document.querySelector('.col'),hero=document.querySelector('.hero');
+if(!col||!hero||!window.fetch||!window.DOMParser||!history.pushState)return;
+var cache=new Map(),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+history.scrollRestoration='manual';
+function key(u){u=new URL(u,location.href);u.hash='';return u.href}
+function page(a){return a&&a.href&&a.origin===location.origin&&(!a.target||a.target==='_self')&&!a.hasAttribute('download')&&/(\/|\.html)$/.test(a.pathname)}
+function get(u){var k=key(u);if(!cache.has(k)){var p=fetch(k,{headers:{Accept:'text/html'}}).then(function(r){
+  if(!r.ok||!/html/.test(r.headers.get('content-type')||''))throw Error(r.status);return r.text()});
+  p.catch(function(){cache.delete(k)});cache.set(k,p)}return cache.get(k)}
+function save(){history.replaceState({y:scrollY},'')}
+function swap(html,url,y){
+  var d=new DOMParser().parseFromString(html,'text/html'),nc=d.querySelector('.col'),nh=d.querySelector('.hero');
+  if(!nc)throw Error('no .col');
+  d.head.querySelectorAll('script[src]').forEach(function(s){var src=new URL(s.getAttribute('src'),url).href;
+    if(![].some.call(document.scripts,function(o){return o.src===src})){var n=document.createElement('script');if(s.type)n.type=s.type;n.src=src;document.head.appendChild(n)}});
+  document.title=d.title;
+  [['meta[name="description"]','content'],['link[rel="canonical"]','href']].forEach(function(p){var a=document.querySelector(p[0]),b=d.querySelector(p[0]);if(a&&b)a.setAttribute(p[1],b.getAttribute(p[1]))});
+  if(nh){['href','aria-current','aria-label','data-robot','data-anim','data-seed','data-glb'].forEach(function(n){nh.hasAttribute(n)?hero.setAttribute(n,nh.getAttribute(n)):hero.removeAttribute(n)});
+    var op=hero.querySelector('.poster'),np=nh.querySelector('.poster');if(op&&np)op.setAttribute('style',np.getAttribute('style'))}
+  col.replaceChildren.apply(col,[].map.call(nc.childNodes,function(n){return document.importNode(n,true)}));
+  var t=url.hash&&document.getElementById(decodeURIComponent(url.hash.slice(1)));
+  if(y!=null)scrollTo(0,y);else if(t)t.scrollIntoView();else scrollTo(0,0);
+  var m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true})}
+  document.dispatchEvent(new Event('site:swap'));
+}
+function go(href,push,y){
+  var url=new URL(href,location.href);
+  return get(url).then(function(html){
+    if(push){save();history.pushState({y:0},'',url.href)}
+    var run=function(){swap(html,url,y)};
+    if(document.startViewTransition&&!reduce)document.startViewTransition(run);else run();
+  }).catch(function(){push?location.assign(url.href):location.reload()});
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a');
+  if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||!page(a))return;
+  if(key(a.href)===key(location.href)){if(a.hash)return;e.preventDefault();scrollTo({top:0,behavior:reduce?'auto':'smooth'});return}
+  e.preventDefault();go(a.href,true);
+});
+addEventListener('popstate',function(e){go(location.href,false,e.state&&e.state.y||0)});
+var warm=function(e){var a=e.target.closest&&e.target.closest('a');if(page(a)&&key(a.href)!==key(location.href))get(a.href)};
+document.addEventListener('pointerover',warm,{passive:true});document.addEventListener('touchstart',warm,{passive:true});document.addEventListener('focusin',warm);
+(window.requestIdleCallback||setTimeout)(function(){document.querySelectorAll('.col>header a').forEach(function(a){if(page(a)&&key(a.href)!==key(location.href))get(a.href)})},{timeout:3000});
+})();
 </script>
 
 </body>
