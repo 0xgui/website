@@ -159,7 +159,7 @@ Content Signals default to `search=yes, ai-input=yes, ai-train=no`. Change `CONT
 
 The dithered header is the inline module on `.hero`: a poster image first, then a small GLB drawn with three.js from the existing jsDelivr URL and reduced to the page's ink and paper colours. Reduced motion keeps the poster. It is not part of the agent files.
 
-Navigation: the header hero is the home link on every page except the homepage, where it is a plain `div`. Every page carries the same `<script type="speculationrules">` in `<head>` (prefetch the header links, prerender other same-site links on hover) and names `.hero` and `.col>header` for the cross-document view transition, so they stay still while the content changes. Keep all three when adding a page; essays inherit them from `writing/index.html`.
+Navigation: the header hero is the home link on every page (`aria-current="page"` on the homepage). The last inline script on every page fetches same-site pages on hover and swaps the children of `.col` in place, so the hero and its WebGL keep running; title, description, canonical and the hero's `href`/`aria-*` are copied from the fetched page, and missing head `<script src>` (model-viewer) are added. Anything unexpected falls back to a normal load. So every page must keep the `.col` > `header` + `main` + `footer` shape and the identical `<style>`, and page-specific behaviour must not depend on inline scripts inside `.col` (they are not run after a swap). The theme toggle is delegated and listens for the `site:swap` event. Essays inherit all of this from `writing/index.html`; the script must not contain `../`, which the mirror template rewrites.
 
 ## Mirroring Binary Paths
 

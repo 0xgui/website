@@ -28,7 +28,7 @@ if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.clas
 :root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
   color-scheme:dark}
 @view-transition{navigation:auto}
-.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}
+.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}main:focus{outline:0}
 *{box-sizing:border-box}
 html{background:var(--paper)}
 body{margin:0;background:var(--paper);color:var(--ink);
@@ -140,10 +140,6 @@ footer a{color:var(--muted)}
 }
 </script>
 <!-- /agent:ld -->
-<script type="speculationrules">
-{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/*.md","/*.xml","/*.txt","/*.glb"]}},{"not":{"selector_matches":"[target=_blank], [download]"}}]},"eagerness":"moderate"}],
- "prefetch":[{"where":{"selector_matches":".col > header a, a.hero"},"eagerness":"eager"}]}
-</script>
 </head>
 <body>
 <a class="hero" href="../../" aria-label="Guilherme Silva, home" data-robot="so101" data-anim="teleop" data-seed="2" data-glb="../../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
@@ -279,10 +275,59 @@ async function boot(){
 
 <script>
 // Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
-(function(){var b=document.getElementById('theme-toggle'),h=document.documentElement;
-function label(){b.textContent=h.classList.contains('dark')?'light':'dark';}
-label();b.addEventListener('click',function(){h.classList.toggle('dark');label();
-try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(e){}});})();
+// Delegated, so it survives the content swap below.
+(function(){var h=document.documentElement;
+function label(){var b=document.getElementById('theme-toggle');if(b)b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();document.addEventListener('site:swap',label);
+document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('#theme-toggle'))return;
+h.classList.toggle('dark');label();try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(x){}});})();
+
+// Instant navigation: fetch same-site pages on hover, then swap .col and keep the hero (and its WebGL) running.
+// Any failure falls back to a normal page load.
+(function(){
+var col=document.querySelector('.col'),hero=document.querySelector('.hero');
+if(!col||!hero||!window.fetch||!window.DOMParser||!history.pushState)return;
+var cache=new Map(),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+history.scrollRestoration='manual';
+function key(u){u=new URL(u,location.href);u.hash='';return u.href}
+function page(a){return a&&a.href&&a.origin===location.origin&&(!a.target||a.target==='_self')&&!a.hasAttribute('download')&&/(\/|\.html)$/.test(a.pathname)}
+function get(u){var k=key(u);if(!cache.has(k)){var p=fetch(k,{headers:{Accept:'text/html'}}).then(function(r){
+  if(!r.ok||!/html/.test(r.headers.get('content-type')||''))throw Error(r.status);return r.text()});
+  p.catch(function(){cache.delete(k)});cache.set(k,p)}return cache.get(k)}
+function save(){history.replaceState({y:scrollY},'')}
+function swap(html,url,y){
+  var d=new DOMParser().parseFromString(html,'text/html'),nc=d.querySelector('.col'),nh=d.querySelector('.hero');
+  if(!nc)throw Error('no .col');
+  d.head.querySelectorAll('script[src]').forEach(function(s){var src=new URL(s.getAttribute('src'),url).href;
+    if(![].some.call(document.scripts,function(o){return o.src===src})){var n=document.createElement('script');if(s.type)n.type=s.type;n.src=src;document.head.appendChild(n)}});
+  document.title=d.title;
+  [['meta[name="description"]','content'],['link[rel="canonical"]','href']].forEach(function(p){var a=document.querySelector(p[0]),b=d.querySelector(p[0]);if(a&&b)a.setAttribute(p[1],b.getAttribute(p[1]))});
+  if(nh)['href','aria-current','aria-label'].forEach(function(n){nh.hasAttribute(n)?hero.setAttribute(n,nh.getAttribute(n)):hero.removeAttribute(n)});
+  col.replaceChildren.apply(col,[].map.call(nc.childNodes,function(n){return document.importNode(n,true)}));
+  var t=url.hash&&document.getElementById(decodeURIComponent(url.hash.slice(1)));
+  if(y!=null)scrollTo(0,y);else if(t)t.scrollIntoView();else scrollTo(0,0);
+  var m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true})}
+  document.dispatchEvent(new Event('site:swap'));
+}
+function go(href,push,y){
+  var url=new URL(href,location.href);
+  return get(url).then(function(html){
+    if(push){save();history.pushState({y:0},'',url.href)}
+    var run=function(){swap(html,url,y)};
+    if(document.startViewTransition&&!reduce)document.startViewTransition(run);else run();
+  }).catch(function(){push?location.assign(url.href):location.reload()});
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a');
+  if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||!page(a))return;
+  if(key(a.href)===key(location.href)){if(a.hash)return;e.preventDefault();scrollTo({top:0,behavior:reduce?'auto':'smooth'});return}
+  e.preventDefault();go(a.href,true);
+});
+addEventListener('popstate',function(e){go(location.href,false,e.state&&e.state.y||0)});
+var warm=function(e){var a=e.target.closest&&e.target.closest('a');if(page(a)&&key(a.href)!==key(location.href))get(a.href)};
+document.addEventListener('pointerover',warm,{passive:true});document.addEventListener('touchstart',warm,{passive:true});document.addEventListener('focusin',warm);
+(window.requestIdleCallback||setTimeout)(function(){document.querySelectorAll('.col>header a').forEach(function(a){if(page(a)&&key(a.href)!==key(location.href))get(a.href)})},{timeout:3000});
+})();
 </script>
 
 </body>
