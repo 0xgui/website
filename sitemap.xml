@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://silvags.com/</loc>
+    <lastmod>2026-09-28</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/about/</loc>
@@ -23,50 +24,66 @@
   </url>
   <url>
     <loc>https://silvags.com/writing/</loc>
+    <lastmod>2026-09-28</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/5-tech-trends-that-will-define-2025/</loc>
+    <lastmod>2025-01-09</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/aiconomy/</loc>
+    <lastmod>2025-12-05</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/becoming-a-product-minded-engineer/</loc>
+    <lastmod>2024-08-14</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/engineering-estimates/</loc>
+    <lastmod>2024-12-04</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/</loc>
+    <lastmod>2026-09-28</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/i-just-wanted-to-clean-my-house/</loc>
+    <lastmod>2026-08-27</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/imposter-syndrome-if-you-have-it/</loc>
+    <lastmod>2024-07-31</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/personal-branding-as-an-engineer/</loc>
+    <lastmod>2024-07-17</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/physical-ai-is-here-and-im-building/</loc>
+    <lastmod>2026-03-05</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/speaking-in-front-of-250-people/</loc>
+    <lastmod>2024-10-09</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/the-art-of-juggling-life/</loc>
+    <lastmod>2024-09-25</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/the-road-trip-of-kubernetes/</loc>
+    <lastmod>2024-09-04</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/when-engineers-need-to-talk-business/</loc>
+    <lastmod>2024-11-09</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/why-platforms-must-be-products/</loc>
+    <lastmod>2024-08-28</lastmod>
   </url>
   <url>
     <loc>https://silvags.com/writing/you-cant-know-everything-in-tech/</loc>
+    <lastmod>2024-10-23</lastmod>
   </url>
 </urlset>

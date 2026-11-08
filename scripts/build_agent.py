@@ -226,15 +226,23 @@ def build_llms_full(pages: list[tuple[Path, str, str]]) -> str:
     return "\n".join(chunks).rstrip() + "\n"
 
 
-def build_sitemap(pages: list[Path]) -> str:
-    urls = [page_url(rel) for rel in pages]
+def build_sitemap(pages: list[tuple[Path, str]]) -> str:
+    # lastmod only where the HTML carries a trustworthy date: an essay's publish date, and the newest
+    # essay for the homepage and Writing list (they change when one is added). Other pages get none.
+    dates = {rel: published[:10] for published, rel, _doc in _articles(pages) if published}
+    newest = max(dates.values(), default="")
+    if newest:
+        dates[Path("index.html")] = newest
+        dates[Path("writing/index.html")] = newest
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
-    for url in sorted(urls):
+    for url, rel in sorted((page_url(rel), rel) for rel, _doc in pages):
         lines.append("  <url>")
         lines.append(f"    <loc>{_xml(url)}</loc>")
+        if rel in dates:
+            lines.append(f"    <lastmod>{dates[rel]}</lastmod>")
         lines.append("  </url>")
     lines.append("</urlset>")
     lines.append("")
@@ -390,7 +398,7 @@ def outputs(root: Path) -> dict[str, str]:
     files = dict(updated_html)
     files["llms.txt"] = build_llms(root, pages)
     files["llms-full.txt"] = build_llms_full(markdowns)
-    files["sitemap.xml"] = build_sitemap([rel for rel, _doc in pages])
+    files["sitemap.xml"] = build_sitemap(pages)
     files["robots.txt"] = build_robots()
     files["feed.xml"] = build_feed(pages)
     files["_headers"] = build_headers()

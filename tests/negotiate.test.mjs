@@ -5,6 +5,7 @@ import {
   CONTENT_SIGNAL,
   estimateTokens,
   markdownAssetPath,
+  onRequest,
   prefersMarkdown,
 } from "../functions/_middleware.js";
 
@@ -40,4 +41,22 @@ test("signal and token estimate stay stable", () => {
   assert.equal(CONTENT_SIGNAL, "search=yes, ai-input=yes, ai-train=no");
   assert.equal(estimateTokens("abcd"), 1);
   assert.equal(estimateTokens("abcde"), 2);
+});
+
+function context(path, accept, pages) {
+  const respond = (p) => (p in pages ? new Response(pages[p], { status: 200 }) : new Response("missing", { status: 404 }));
+  return {
+    request: new Request("https://silvags.com" + path, { headers: { Accept: accept } }),
+    env: { ASSETS: { fetch: async (req) => respond(new URL(req.url).pathname) } },
+    next: async () => respond(path),
+  };
+}
+
+test("markdown-only client: twin, missing page, page without twin", async () => {
+  const pages = { "/about/": "<html>", "/about/index.md": "# About", "/demo/": "<html>" };
+  const twin = await onRequest(context("/about/", "text/markdown", pages));
+  assert.equal(twin.status, 200);
+  assert.equal(await twin.text(), "# About");
+  assert.equal((await onRequest(context("/nope/", "text/markdown", pages))).status, 404);
+  assert.equal((await onRequest(context("/demo/", "text/markdown", pages))).status, 406);
 });

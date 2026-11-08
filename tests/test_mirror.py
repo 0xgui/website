@@ -11,6 +11,7 @@ from scripts.mirror_substack import (
     fetch_posts,
     outage_is_loud,
     run_mirror,
+    essay_cover,
     size_images,
     webp_size,
 )
@@ -445,3 +446,16 @@ class ImageSizeTests(unittest.TestCase):
     def test_size_images_without_bytes_keeps_the_image(self):
         out = size_images('<img src="images/09.webp" alt="">', {})
         self.assertEqual(out, '<img src="images/09.webp" alt="" decoding="async">')
+
+
+class CoverTests(unittest.TestCase):
+    def test_cover_is_first_local_image(self):
+        body = '<p>x</p><figure><img src="images/01.webp" alt=""></figure><img src="images/02.webp" alt="">'
+        self.assertEqual(essay_cover(body, "https://silvags.com/writing/a/"), "https://silvags.com/writing/a/images/01.webp")
+        self.assertIsNone(essay_cover("<p>no images</p>", "https://silvags.com/writing/a/"))
+
+    def test_committed_essays_preview_their_own_cover(self):
+        for path in (Path(__file__).parent.parent / "writing").glob("*/index.html"):
+            html = path.read_text(encoding="utf-8")
+            if '<img src="images/' in html:
+                self.assertIn(f'og:image" content="https://silvags.com/writing/{path.parent.name}/images/', html, path)
