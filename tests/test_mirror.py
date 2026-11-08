@@ -11,6 +11,8 @@ from scripts.mirror_substack import (
     fetch_posts,
     outage_is_loud,
     run_mirror,
+    size_images,
+    webp_size,
 )
 
 FIX = Path(__file__).parent / "fixtures"
@@ -421,3 +423,25 @@ class StalenessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ImageSizeTests(unittest.TestCase):
+    def test_webp_size_reads_vp8_header(self):
+        self.assertEqual(webp_size(TINY_WEBP), (8, 8))
+        self.assertIsNone(webp_size(b"not an image"))
+
+    def test_committed_essay_images_all_parse(self):
+        for path in (Path(__file__).parent.parent / "writing").glob("*/images/*.webp"):
+            size = webp_size(path.read_bytes())
+            self.assertIsNotNone(size, path)
+            self.assertTrue(all(0 < n <= 16383 for n in size), path)
+
+    def test_size_images_adds_dimensions_and_lazy_after_first(self):
+        body = '<figure><img src="images/01.webp" alt="A"></figure><figure><img src="images/02.webp" alt=""></figure>'
+        out = size_images(body, {"images/01.webp": TINY_WEBP, "images/02.webp": TINY_WEBP})
+        self.assertIn('<img src="images/01.webp" alt="A" width="8" height="8" decoding="async">', out)
+        self.assertIn('<img src="images/02.webp" alt="" width="8" height="8" loading="lazy" decoding="async">', out)
+
+    def test_size_images_without_bytes_keeps_the_image(self):
+        out = size_images('<img src="images/09.webp" alt="">', {})
+        self.assertEqual(out, '<img src="images/09.webp" alt="" decoding="async">')

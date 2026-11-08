@@ -65,7 +65,7 @@ Proof standards:
 - Capture the action and the resulting state, not only the final screen.
 - Theme: assert `document.documentElement.classList.contains('dark')` and `localStorage.theme` via CDP `Runtime.evaluate`, plus a screenshot showing light vs dark.
 - Writing: assert `#articles` links to local `/writing/<slug>/` paths and the Binary Paths subscribe link is still present. Do not require a fetch to `rss.silvags.com`.
-- Model viewer: wait for `model-viewer` load / visible rotation control; poster-only after error is a failure for the GLB path.
+- Model viewer: scroll `.viewer` into view and wait for it to get the `ready` class (a `<canvas>` appears and the poster fades); poster-only after error is a failure for the GLB path.
 - Side effects: `localStorage` for theme; article cache key `binary-paths-articles-v1` when proving feed persistence.
 - Writing pages do not fetch `rss.silvags.com`. Do not require that host.
 

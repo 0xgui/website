@@ -288,7 +288,20 @@ def build_headers() -> str:
         "/feed.xml",
         "  Content-Type: application/atom+xml; charset=utf-8",
         "",
+        # Media file names are not fingerprinted: a day fresh, then served stale while it revalidates.
+        *[line for ext in MEDIA_EXTS for line in (
+            f"/*.{ext}",
+            "  Cache-Control: public, max-age=86400, stale-while-revalidate=604800",
+            "",
+        )],
+        # Self-hosted fonts never change in place; a new version gets a new file name.
+        "/fonts/*",
+        "  Cache-Control: public, max-age=31536000, immutable",
+        "",
     ])
+
+
+MEDIA_EXTS = ("glb", "webp", "webm", "png", "mp4", "svg")
 
 
 def _xml(value: str) -> str:

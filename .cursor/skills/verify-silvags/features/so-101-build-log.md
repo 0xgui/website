@@ -5,7 +5,7 @@ The SO-101 page is the robotic-arm build log: dithered header, summary, 3D model
 ## Sub-features
 
 - `so101-page` page loads with heading `SO-101 robotic arm`.
-- `so101-model` `model-viewer` is present with `so101.glb` and poster `arms-wide.webp`.
+- `so101-model` `.viewer` is present with `data-glb="so101.glb"` and poster `arms-wide.webp`.
 - `so101-day01` the section `Day 01 · The arms, they move` is visible, with `arms-wide.webp`.
 - `so101-back` the brand link `Guilherme Silva` returns home.
 
@@ -23,7 +23,7 @@ Preconditions:
 - Start from `$VERIFY_URL/robots/so-101/`.
 
 - **Open log.** Heading `SO-101 robotic arm` is visible. Screenshot `artifacts/so-101-build-log/page.png`.
-- **Model.** `model-viewer` is in the page and its poster `img` points at `arms-wide.webp`.
+- **Model.** `.viewer` is in the page, its poster `img` points at `arms-wide.webp`, and it gets the `ready` class once in view.
 - **Day 01.** Heading `Day 01 · The arms, they move` is in the page, with the desk photo.
 - **Back.** Click `Guilherme Silva`. Homepage returns.
 - **Proof.** Save `artifacts/so-101-build-log/notes.md` with feature ID `so-101-build-log`.

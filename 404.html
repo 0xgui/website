@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page not found · Guilherme Silva</title>
+<meta name="description" content="This page does not exist on silvags.com." />
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#16130f" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" href="/fonts/newsreader-normal-latin-v26.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+// Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
+(function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+</script>
+<style>
+/* Newsreader, self-hosted (fonts/, SIL OFL). One variable file per style covers 400 and 500. */
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-v26.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-ext-v26.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-italic-latin-v26.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-italic-latin-ext-v26.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
+  --bg:var(--paper);--text:var(--ink);color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+  color-scheme:dark}
+@view-transition{navigation:auto}
+.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}main:focus{outline:0}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.hero{display:block;position:relative;height:230px;margin-bottom:1.5rem;overflow:hidden;background:var(--paper)}
+a.hero{cursor:pointer}
+a.hero:focus-visible{outline-offset:-4px}
+.hero .poster{position:absolute;inset:0;background:var(--ink);opacity:.85;-webkit-mask:var(--poster) center/auto 100% no-repeat;mask:var(--poster) center/auto 100% no-repeat}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s}
+.hero canvas.on{opacity:1}
+.col{max-width:37rem;margin:0 auto;padding:.5rem 1.5rem 3rem}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
+  text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
+  margin-bottom:3.5rem;font-size:1.02rem}
+header .name{color:var(--ink);text-decoration:none;font-weight:500}
+header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
+header nav a:first-child{margin-left:0}
+header nav a:hover,header nav a[aria-current]{color:var(--ink)}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
+main{animation:rise .6s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
+h2{font-size:1.55rem;margin:3.25rem 0 .9rem}
+h3{font-size:1.3rem;font-weight:500;margin:2.25rem 0 .4rem}
+p{margin:0 0 1.1rem}
+.meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
+.lede{font-size:1.34rem;line-height:1.55}
+.sub{color:var(--muted)}
+.more{font-size:1rem}
+ul{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin:.35rem 0}
+li::marker{color:var(--muted)}
+ul.plain{list-style:none;padding:0}
+ul.plain li{margin:.55rem 0}
+ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
+ul.posts li{margin:0 0 1.15rem}
+ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+.build{margin:0 0 2.5rem}
+.build h3{margin:0 0 .15rem}
+.status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
+.status b{font-weight:500;font-style:normal;color:var(--link)}
+ol.steps{list-style:none;padding:0;margin:.4rem 0 .6rem;font-size:.98rem;color:var(--muted)}
+ol.steps li{margin:.15rem 0;padding-left:1.6rem;position:relative}
+ol.steps li::before{position:absolute;left:0;width:1.2rem;text-align:center}
+ol.steps .done::before{content:"✓"}
+ol.steps .now{color:var(--ink)}
+ol.steps .now::before{content:"→";color:var(--link)}
+ol.steps .next::before{content:"·"}
+ol.steps .now em{color:var(--link);font-size:.92rem}
+.facts{display:grid;grid-template-columns:7rem 1fr;gap:.2rem 1rem;margin:0 0 1.5rem;font-size:.98rem}
+.facts dt{font-style:italic;color:var(--muted)}
+.facts dd{margin:0}
+.facts b{font-weight:500}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+figure{margin:2rem 0}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
+figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+:root.dark figure img{filter:brightness(.92)}
+figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
+figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
+figure.model figcaption{padding:0 2.5rem}
+.viewer{position:relative;width:100%;aspect-ratio:3/2}
+.viewer img,.viewer canvas{position:absolute;inset:0;width:100%;height:100%}
+.viewer img{object-fit:contain;transition:opacity .4s}
+.viewer canvas{opacity:0;transition:opacity .4s;cursor:grab}.viewer canvas:active{cursor:grabbing}
+.viewer.ready canvas{opacity:1}.viewer.ready img{opacity:0}
+footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+footer a{color:var(--muted)}
+#theme-toggle{font:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:.18em}
+#theme-toggle:hover{color:var(--link)}
+@media (max-width:760px){figure.model{margin:2rem 0}figure.model figcaption{padding:0}}
+@media (max-width:600px){
+  body{font-size:1.12rem}
+  .hero{height:150px;margin-bottom:1rem}
+  .col{padding:.25rem 1.25rem 2.5rem}
+  header{margin-bottom:2.5rem}
+  h1{font-size:2rem}
+  h2{margin-top:2.75rem}
+  figure.tall video{width:100%}
+  .facts{grid-template-columns:1fr;gap:0}
+  .facts dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+</style>
+
+</head>
+<body>
+<a class="hero" href="/" aria-label="Guilherme Silva, home" data-robot="so101" data-anim="turn" data-seed="2" data-glb="/robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(/robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
+<div class="col">
+<header>
+  <a class="name" href="/">Guilherme Silva</a>
+  <nav aria-label="Site"><a href="/builds/">Builds</a><a href="/writing/">Writing</a><a href="/talks/">Talks</a><a href="/about/">About</a></nav>
+</header>
+<main>
+<h1>Page not found</h1>
+<p class="lede">Nothing lives at this address. The robot looked everywhere.</p>
+<p>It may have moved, or the link has a typo. Try one of these:</p>
+<ul class="plain">
+  <li><a href="/">Home</a></li>
+  <li><a href="/builds/">Builds</a> <span class="sub">— SO-101 and Pico</span></li>
+  <li><a href="/writing/">Writing</a> <span class="sub">— every Binary Paths essay</span></li>
+  <li><a href="/talks/">Talks</a></li>
+</ul>
+</main>
+<footer>
+  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+</footer>
+</div>
+<script type="module">
+// Header: a real GLB of the robot, rendered small, then dithered 8x8 to 1-bit ink on paper. Poster shows first.
+const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
+if(hero&&gl2&&(!reduce||POSTER)){
+const cv=hero.querySelector('canvas'),R=document.documentElement,id=()=>hero.dataset.glb+hero.dataset.anim+hero.dataset.seed;
+// One renderer for the page's life. After an in-place navigation (site:swap) with a different robot, boot() loads the
+// new GLB (cached) and swaps scenes; the old frame stays up until the new one draws.
+let A,SEED,seen=false,booted=false,run=null,stop=null,cur='',r,rt;
+const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
+new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
+document.readyState=='complete'?kick():addEventListener('load',kick);
+async function boot(){
+  const key=cur=id(),V='https://cdn.jsdelivr.net/npm/three@0.169.0';
+  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
+  if(key!==cur)return;
+  if(stop){stop();stop=run=null}
+  A=hero.dataset.anim;SEED=+hero.dataset.seed||0;
+  if(!r){r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
+    rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true})}
+  const scene=new T.Scene();scene.background=new T.Color(0);
+  const shade=k=>new T.ShaderMaterial({uniforms:{k:{value:k}},
+    vertexShader:'varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);v=p.xyz;gl_Position=projectionMatrix*p;}',
+    fragmentShader:'uniform float k;varying vec3 v;void main(){vec3 n=normalize(cross(dFdx(v),dFdy(v))),e=normalize(-v);if(dot(n,e)<0.)n=-n;'+
+    'float d=max(dot(n,normalize(vec3(.45,.75,.55))),0.),f=max(dot(n,normalize(vec3(-.6,.1,.3))),0.)*.25,m=pow(1.-max(dot(n,e),0.),3.);'+
+    'gl_FragColor=vec4(vec3(clamp((.22+.7*d+f)*k+.8*m,.1,1.)),1.);}'});
+  const model=gltf.scene;model.traverse(o=>{if(o.isMesh){const c=o.material.color||{r:1,g:1,b:1};o.material=shade(c.r+c.g+c.b<.6?.55:1)}});
+  const box=new T.Box3().setFromObject(model),ctr=box.getCenter(new T.Vector3()),H=box.max.y-box.min.y;
+  const pivot=new T.Group(),spin=new T.Group();scene.add(spin);spin.add(pivot);pivot.add(model);
+  const pico=hero.dataset.robot=='pico';
+  model.position.set(pico?-ctr.x:-0.04,-box.min.y,-ctr.z);
+  if(pico){pivot.position.x=box.max.x-ctr.x;model.position.x-=pivot.position.x;spin.rotation.y=-.55}
+  const cam=new T.PerspectiveCamera(18,1,.01,20),dist=H*.5/.7/Math.tan(T.MathUtils.degToRad(9));
+  const ty=pico?H*.48:H*.6;cam.position.set(0,ty+dist*.22,dist);cam.lookAt(0,ty,0);
+  const J={};model.traverse(o=>{if(/^(shoulder|upper_arm|lower_arm|wrist|gripper|moving_jaw)/.test(o.name)&&!/visual/.test(o.name))J[o.name.split('_link')[0]]={o,q:o.quaternion.clone()}});
+  const Z=new T.Vector3(0,0,1),tq=new T.Quaternion();
+  const joint=(n,a)=>{const j=J[n];if(j)j.o.quaternion.copy(j.q).multiply(tq.setFromAxisAngle(Z,a))};
+  const hx=n=>{n=Math.sin(n*127.1+SEED*31.7)*43758.5453;return n-Math.floor(n)};
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+  const move=(j,t,lo,hi)=>{const P=1.6+hx(j+5)*.9,u=t/P+hx(j),i=Math.floor(u),a=lo+(hi-lo)*hx(i*13+j),b=lo+(hi-lo)*hx(i*13+13+j),w=Math.min(1,(u-i)*1.6);return a+(b-a)*ease(w)};
+  function pose(t){
+    if(A=='teleop'||A=='turn'){
+      spin.rotation.y=A=='turn'?t*.22+SEED*2:-.5+Math.sin(t*.12)*.55;
+      if(A=='teleop'){joint('shoulder',move(1,t,-.5,.5));joint('upper_arm',move(2,t,-.25,.2));joint('lower_arm',move(3,t,-.2,.35));
+        joint('wrist',move(4,t,-.6,.6));joint('gripper',move(6,t,-.8,.8));joint('moving_jaw',move(5,t,0,.6))}}
+    if(pico){if(A=='turn'){spin.rotation.y=t*.3+SEED*2;return}
+      const p=(t+SEED)%7.5;let a=Math.sin(t*2.3)*.008;
+      if(p>=2&&p<2.7){const u=(p-2)/.7;a=-1.42*u*u*u}
+      else if(p>=2.7&&p<3.9){const d=p-2.7;a=-1.42+.07*Math.exp(-d*7)*Math.abs(Math.sin(d*18))}
+      else if(p>=3.9&&p<5){const u=(p-3.9)/1.1,c=1.9,o=1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2);a=-1.42*(1-o)}
+      else if(p>=5&&p<6){const d=p-5;a=.035*Math.exp(-d*5)*Math.cos(d*14)}
+      pivot.rotation.z=a}}
+  const post=new T.ShaderMaterial({depthTest:false,uniforms:{D:{value:rt.texture},R:{value:new T.Vector2()},C:{value:2},I:{value:new T.Vector3()},P:{value:new T.Vector3()},t:{value:0}},
+    vertexShader:'void main(){gl_Position=vec4(position.xy,0.,1.);}',
+    fragmentShader:'uniform sampler2D D;uniform vec2 R;uniform float C,t;uniform vec3 I,P;'+
+    'float b2(vec2 a){a=floor(a);return fract(a.x*.5+a.y*a.y*.75);}float b8(vec2 a){return (b2(a*.25)*.25+b2(a*.5))*.25+b2(a);}'+
+    'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}'+
+    'void main(){vec2 c=floor(gl_FragCoord.xy/C);float l=texture2D(D,(c+.5)*C/R).r;'+
+    'if(l>0.){l=l*(1.+.03*sin(t*9.)*sin(t*5.3))+(h(c+floor(t*30.))-.5)*.07;}'+
+    'gl_FragColor=vec4(l>b8(c)+.003?I:P,1.);}'});
+  const ps=new T.Scene(),oc=new T.OrthographicCamera(-1,1,1,-1,0,1),q=new T.Mesh(new T.PlaneGeometry(2,2),post);q.frustumCulled=false;ps.add(q);
+  const col=n=>{const m=getComputedStyle(R).getPropertyValue(n).trim().match(/^#(\w{6})$/),v=m?parseInt(m[1],16):0;return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
+  const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
+    const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
+  const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
+  let sized=false;const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(sized&&cv.width==w&&cv.height==h)return;sized=true;
+    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
+  const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
+  let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
+  draw(t);cv.classList.add('on');if(POSTER){hero.dataset.ready=1;return}
+  const frame=now=>{raf=0;if(document.hidden||!seen)return;if(now-last>=33){t+=Math.min(.1,(now-(last||now))/1000)||1/30;last=now;draw(t)}raf=requestAnimationFrame(frame)};
+  run=()=>{if(!raf&&seen&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}};
+  document.addEventListener('visibilitychange',run);
+  const mo=new MutationObserver(()=>{colors();draw(t)});mo.observe(R,{attributes:true,attributeFilter:['class']});
+  stop=()=>{cancelAnimationFrame(raf);raf=0;document.removeEventListener('visibilitychange',run);mo.disconnect();
+    [scene,ps].forEach(s=>s.traverse(o=>{o.geometry&&o.geometry.dispose();o.material&&o.material.dispose()}))};
+  run();
+}
+document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()=>{})});
+}
+</script>
+
+<script type="module">
+// 3D viewers (.viewer in a robot page): the header's three.js build plus OrbitControls, loaded only when a viewer
+// nears the viewport. Drag to rotate, scroll or pinch to zoom; the poster stays if WebGL or the load fails.
+// Runs on every page because in-place navigation (below) can bring a viewer in; dead viewers free their GL context.
+const V='https://cdn.jsdelivr.net/npm/three@0.169.0',live=new Set();let lib=null;
+const load=()=>lib||(lib=Promise.all(['/+esm','/examples/jsm/loaders/GLTFLoader.js/+esm','/examples/jsm/controls/OrbitControls.js/+esm',
+  '/examples/jsm/environments/RoomEnvironment.js/+esm','/examples/jsm/loaders/DRACOLoader.js/+esm'].map(p=>import(V+p))));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);boot(e.target).catch(()=>{lib=null})}),{rootMargin:'300px'});
+const gl2=!!document.createElement('canvas').getContext('webgl2');
+function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}});
+  if(gl2)document.querySelectorAll('.viewer:not([data-seen])').forEach(el=>{el.dataset.seen=1;io.observe(el)})}
+async function boot(el){
+  const [T,{GLTFLoader},{OrbitControls},{RoomEnvironment},{DRACOLoader}]=await load();
+  // so101.glb is Draco-compressed; the decoder (from the same three build) is fetched only for models that need it.
+  const draco=new DRACOLoader().setDecoderPath(V+'/examples/jsm/libs/draco/gltf/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
+  if(!el.isConnected)return;
+  const cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');el.appendChild(cv);
+  const r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));r.toneMapping=T.NeutralToneMapping;
+  const scene=new T.Scene(),pm=new T.PMREMGenerator(r),env=pm.fromScene(new RoomEnvironment(),.04).texture;pm.dispose();scene.environment=env;
+  const model=gltf.scene;scene.add(model);
+  const c=new T.Box3().setFromObject(model).getCenter(new T.Vector3()),rad=new T.Box3().setFromObject(model).getBoundingSphere(new T.Sphere()).radius;
+  const [az,po]=(el.dataset.orbit||'0 80').split(' ').map(n=>T.MathUtils.degToRad(+n)),d=rad/Math.sin(T.MathUtils.degToRad(15))*1.05;
+  const cam=new T.PerspectiveCamera(30,1,rad/100,rad*20);cam.position.setFromSphericalCoords(d,po,az).add(c);
+  const ctl=new OrbitControls(cam,cv);ctl.target.copy(c);ctl.enableDamping=true;ctl.enablePan=false;ctl.minDistance=d*.4;ctl.maxDistance=d*2;ctl.update();
+  cv.style.touchAction='pan-y';
+  let raf=0,idle=0;const draw=()=>r.render(scene,cam);
+  const tick=()=>{raf=0;if(ctl.update()){draw();idle=0}else idle++;if(idle<10&&!raf)raf=requestAnimationFrame(tick)};
+  const wake=()=>{idle=0;if(!raf)raf=requestAnimationFrame(tick)};
+  ctl.addEventListener('start',wake);ctl.addEventListener('change',wake);
+  const size=()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();draw()};
+  const ro=new ResizeObserver(size);ro.observe(cv);size();el.classList.add('ready');
+  live.add({el,stop(){cancelAnimationFrame(raf);ro.disconnect();ctl.dispose();
+    scene.traverse(o=>{o.geometry&&o.geometry.dispose();[].concat(o.material||[]).forEach(m=>{Object.values(m).forEach(v=>v&&v.isTexture&&v.dispose());m.dispose()})});
+    env.dispose();r.dispose();r.forceContextLoss()}});
+}
+scan();document.addEventListener('site:swap',scan);
+</script>
+<script>
+// Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
+// Delegated, so it survives the content swap below.
+(function(){var h=document.documentElement;
+function label(){var b=document.getElementById('theme-toggle');if(b)b.textContent=h.classList.contains('dark')?'light':'dark';}
+label();document.addEventListener('site:swap',label);
+document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('#theme-toggle'))return;
+h.classList.toggle('dark');label();try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(x){}});})();
+
+// Instant navigation: fetch same-site pages on hover, then swap .col and keep the hero (and its WebGL) running.
+// Any failure falls back to a normal page load.
+(function(){
+var col=document.querySelector('.col'),hero=document.querySelector('.hero');
+if(!col||!hero||!window.fetch||!window.DOMParser||!history.pushState)return;
+var cache=new Map(),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+history.scrollRestoration='manual';
+function key(u){u=new URL(u,location.href);u.hash='';return u.href}
+function page(a){return a&&a.href&&a.origin===location.origin&&(!a.target||a.target==='_self')&&!a.hasAttribute('download')&&/(\/|\.html)$/.test(a.pathname)}
+function get(u){var k=key(u);if(!cache.has(k)){var p=fetch(k,{headers:{Accept:'text/html'}}).then(function(r){
+  if(!r.ok||!/html/.test(r.headers.get('content-type')||''))throw Error(r.status);return r.text()});
+  p.catch(function(){cache.delete(k)});cache.set(k,p)}return cache.get(k)}
+function save(){history.replaceState({y:scrollY},'')}
+function swap(html,url,y){
+  var d=new DOMParser().parseFromString(html,'text/html'),nc=d.querySelector('.col'),nh=d.querySelector('.hero');
+  if(!nc)throw Error('no .col');
+  d.head.querySelectorAll('script[src]').forEach(function(s){var src=new URL(s.getAttribute('src'),url).href;
+    if(![].some.call(document.scripts,function(o){return o.src===src})){var n=document.createElement('script');if(s.type)n.type=s.type;n.src=src;document.head.appendChild(n)}});
+  document.title=d.title;
+  [['meta[name="description"]','content'],['link[rel="canonical"]','href']].forEach(function(p){var a=document.querySelector(p[0]),b=d.querySelector(p[0]);if(a&&b)a.setAttribute(p[1],b.getAttribute(p[1]))});
+  if(nh){['href','aria-current','aria-label','data-robot','data-anim','data-seed','data-glb'].forEach(function(n){nh.hasAttribute(n)?hero.setAttribute(n,nh.getAttribute(n)):hero.removeAttribute(n)});
+    var op=hero.querySelector('.poster'),np=nh.querySelector('.poster');if(op&&np)op.setAttribute('style',np.getAttribute('style'))}
+  col.replaceChildren.apply(col,[].map.call(nc.childNodes,function(n){return document.importNode(n,true)}));
+  var t=url.hash&&document.getElementById(decodeURIComponent(url.hash.slice(1)));
+  if(y!=null)scrollTo(0,y);else if(t)t.scrollIntoView();else scrollTo(0,0);
+  var m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true})}
+  document.dispatchEvent(new Event('site:swap'));
+}
+function go(href,push,y){
+  var url=new URL(href,location.href);
+  return get(url).then(function(html){
+    if(push){save();history.pushState({y:0},'',url.href)}
+    var run=function(){swap(html,url,y)};
+    if(document.startViewTransition&&!reduce)document.startViewTransition(run);else run();
+  }).catch(function(){push?location.assign(url.href):location.reload()});
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a');
+  if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||!page(a))return;
+  if(key(a.href)===key(location.href)){if(a.hash)return;e.preventDefault();scrollTo({top:0,behavior:reduce?'auto':'smooth'});return}
+  e.preventDefault();go(a.href,true);
+});
+addEventListener('popstate',function(e){go(location.href,false,e.state&&e.state.y||0)});
+var warm=function(e){var a=e.target.closest&&e.target.closest('a');if(page(a)&&key(a.href)!==key(location.href))get(a.href)};
+document.addEventListener('pointerover',warm,{passive:true});document.addEventListener('touchstart',warm,{passive:true});document.addEventListener('focusin',warm);
+(window.requestIdleCallback||setTimeout)(function(){document.querySelectorAll('.col>header a').forEach(function(a){if(page(a)&&key(a.href)!==key(location.href))get(a.href)})},{timeout:3000});
+})();
+</script>
+
+</body>
+</html>
