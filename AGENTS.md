@@ -159,6 +159,8 @@ Content Signals default to `search=yes, ai-input=yes, ai-train=no`. Change `CONT
 
 The dithered header is the inline module on `.hero`: a poster image first, then a small GLB drawn with three.js from the existing jsDelivr URL and reduced to the page's ink and paper colours. Reduced motion keeps the poster. It is not part of the agent files.
 
+Navigation: the header hero is the home link on every page except the homepage, where it is a plain `div`. Every page carries the same `<script type="speculationrules">` in `<head>` (prefetch the header links, prerender other same-site links on hover) and names `.hero` and `.col>header` for the cross-document view transition, so they stay still while the content changes. Keep all three when adding a page; essays inherit them from `writing/index.html`.
+
 ## Mirroring Binary Paths
 
 `python3 scripts/mirror_substack.py` copies every public essay to `writing/<slug>/` using the Writing page as the template. The HTML is sanitized with an allowlist. Images are saved next to the essay and kept under 1MB (GIFs become WebM). Each essay has `<link rel="canonical">` pointing at its `https://binarypaths.substack.com/p/...` URL, a visible "Originally published on Binary Paths" link, the publish date, and a Markdown twin.

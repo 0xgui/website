@@ -28,6 +28,7 @@ if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.clas
 :root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
   color-scheme:dark}
 @view-transition{navigation:auto}
+.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}
 *{box-sizing:border-box}
 html{background:var(--paper)}
 body{margin:0;background:var(--paper);color:var(--ink);
@@ -123,9 +124,13 @@ footer a{color:var(--muted)}
 <link rel="describedby" href="/llms.txt" type="text/plain">
 <link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
 <!-- /agent:links -->
+<script type="speculationrules">
+{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/*.md","/*.xml","/*.txt","/*.glb"]}},{"not":{"selector_matches":"[target=_blank], [download]"}}]},"eagerness":"moderate"}],
+ "prefetch":[{"where":{"selector_matches":".col > header a, a.hero"},"eagerness":"eager"}]}
+</script>
 </head>
 <body>
-<a class="hero" href="../robots/so-101/" aria-label="SO-101 robotic arm, open the build log" data-robot="so101" data-anim="teleop" data-seed="1" data-glb="../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
+<a class="hero" href="../" aria-label="Guilherme Silva, home" data-robot="so101" data-anim="teleop" data-seed="1" data-glb="../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(../robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
 <div class="col">
 <header>
   <a class="name" href="../">Guilherme Silva</a>
