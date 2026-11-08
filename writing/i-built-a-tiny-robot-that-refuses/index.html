@@ -13,15 +13,18 @@
 <meta property="og:url" content="https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses">
 <link rel="canonical" href="https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<link rel="preload" href="/fonts/newsreader-normal-latin-v26.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 // Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
 (function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
 if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
 </script>
 <style>
+/* Newsreader, self-hosted (fonts/, SIL OFL). One variable file per style covers 400 and 500. */
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-v26.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-ext-v26.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-italic-latin-v26.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-italic-latin-ext-v26.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
 /* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
 :root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
   --bg:var(--paper);--text:var(--ink);color-scheme:light}
@@ -96,8 +99,11 @@ figure.tall video{width:62%;max-height:34rem;object-fit:cover}
 figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
 figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
 figure.model figcaption{padding:0 2.5rem}
-model-viewer{display:block;width:100%;height:auto;aspect-ratio:3/2;background:transparent;--poster-color:transparent}
-model-viewer img[slot=poster]{width:100%;height:100%;object-fit:contain}
+.viewer{position:relative;width:100%;aspect-ratio:3/2}
+.viewer img,.viewer canvas{position:absolute;inset:0;width:100%;height:100%}
+.viewer img{object-fit:contain;transition:opacity .4s}
+.viewer canvas{opacity:0;transition:opacity .4s;cursor:grab}.viewer canvas:active{cursor:grabbing}
+.viewer.ready canvas{opacity:1}.viewer.ready img{opacity:0}
 footer{margin-top:5rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.95rem;
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
 footer a{color:var(--muted)}
@@ -162,7 +168,7 @@ footer a{color:var(--muted)}
 <p>I had one of those.</p>
 <p>The “something cool”: a tiny robot that stands up. I knock it over, I let go, and it tries to get up by itself. Every time. I think that is cool. </p>
 <p>I also like learning more about robotics and a robot on the desk is a better way to do that than another tab of your web browser. </p>
-<figure><img src="images/01.webp" alt=""><figcaption>Pico.</figcaption>
+<figure><img src="images/01.webp" alt="" width="1600" height="2133" decoding="async"><figcaption>Pico.</figcaption>
 </figure>
 <h2>The plan</h2>
 <p>It all started when I saw a maker called <em>HomeMadeGarbage</em> who built this tiny robot that would always get up. Always! I thought it was so cool and interesting that I had to make my own. </p>
@@ -180,13 +186,13 @@ footer a{color:var(--muted)}
 <p><strong>First problem, assembly.</strong></p>
 <p>If you knew how many times I had to reprint the part below, just because I messed it up with the wrong type of screws, or because it would not fit the servo motor correctly, or because I damaged it somehow…</p>
 <p>I don’t want to talk about it. Let’s just say I don’t have black filament anymore and I had to print it in red.</p>
-<figure><img src="images/03.webp" alt=""><figcaption>Still have nightmares about it.</figcaption>
+<figure><img src="images/03.webp" alt="" width="254" height="274" loading="lazy" decoding="async"><figcaption>Still have nightmares about it.</figcaption>
 </figure>
 <p><strong>Second problem, the wires.</strong></p>
 <p>When testing the robot, some wires got loose because of the movement and the general jankiness of it. Since it was the first prototype, I thought that for testing, duct tape and a bit of soldering was enough.</p>
 <p>I guess it was not.</p>
 <p>I stopped being a caveman and set the cables in a sturdier way.</p>
-<figure><img src="images/04.webp" alt=""><figcaption>Wires just got loose after some tests.</figcaption>
+<figure><img src="images/04.webp" alt="" width="1200" height="934" loading="lazy" decoding="async"><figcaption>Wires just got loose after some tests.</figcaption>
 </figure>
 <p><strong>Third problem, the arms were connected wrong.</strong></p>
 <p>Each motor has a signal wire, and that wire has to land on the right pin. The motor also has to turn the direction the program expects. Mine didn’t. Wrong pins. Wrong direction. A command that meant “move up” went down, and the robot threw itself at the table like it meant to.</p>
@@ -322,6 +328,43 @@ document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()
 }
 </script>
 
+<script type="module">
+// 3D viewers (.viewer in a robot page): the header's three.js build plus OrbitControls, loaded only when a viewer
+// nears the viewport. Drag to rotate, scroll or pinch to zoom; the poster stays if WebGL or the load fails.
+// Runs on every page because in-place navigation (below) can bring a viewer in; dead viewers free their GL context.
+const V='https://cdn.jsdelivr.net/npm/three@0.169.0',live=new Set();let lib=null;
+const load=()=>lib||(lib=Promise.all(['/+esm','/examples/jsm/loaders/GLTFLoader.js/+esm','/examples/jsm/controls/OrbitControls.js/+esm',
+  '/examples/jsm/environments/RoomEnvironment.js/+esm','/examples/jsm/loaders/DRACOLoader.js/+esm'].map(p=>import(V+p))));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);boot(e.target).catch(()=>{lib=null})}),{rootMargin:'300px'});
+const gl2=!!document.createElement('canvas').getContext('webgl2');
+function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}});
+  if(gl2)document.querySelectorAll('.viewer:not([data-seen])').forEach(el=>{el.dataset.seen=1;io.observe(el)})}
+async function boot(el){
+  const [T,{GLTFLoader},{OrbitControls},{RoomEnvironment},{DRACOLoader}]=await load();
+  // so101.glb is Draco-compressed; the decoder (from the same three build) is fetched only for models that need it.
+  const draco=new DRACOLoader().setDecoderPath(V+'/examples/jsm/libs/draco/gltf/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
+  if(!el.isConnected)return;
+  const cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');el.appendChild(cv);
+  const r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));r.toneMapping=T.NeutralToneMapping;
+  const scene=new T.Scene(),pm=new T.PMREMGenerator(r),env=pm.fromScene(new RoomEnvironment(),.04).texture;pm.dispose();scene.environment=env;
+  const model=gltf.scene;scene.add(model);
+  const c=new T.Box3().setFromObject(model).getCenter(new T.Vector3()),rad=new T.Box3().setFromObject(model).getBoundingSphere(new T.Sphere()).radius;
+  const [az,po]=(el.dataset.orbit||'0 80').split(' ').map(n=>T.MathUtils.degToRad(+n)),d=rad/Math.sin(T.MathUtils.degToRad(15))*1.05;
+  const cam=new T.PerspectiveCamera(30,1,rad/100,rad*20);cam.position.setFromSphericalCoords(d,po,az).add(c);
+  const ctl=new OrbitControls(cam,cv);ctl.target.copy(c);ctl.enableDamping=true;ctl.enablePan=false;ctl.minDistance=d*.4;ctl.maxDistance=d*2;ctl.update();
+  cv.style.touchAction='pan-y';
+  let raf=0,idle=0;const draw=()=>r.render(scene,cam);
+  const tick=()=>{raf=0;if(ctl.update()){draw();idle=0}else idle++;if(idle<10&&!raf)raf=requestAnimationFrame(tick)};
+  const wake=()=>{idle=0;if(!raf)raf=requestAnimationFrame(tick)};
+  ctl.addEventListener('start',wake);ctl.addEventListener('change',wake);
+  const size=()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();draw()};
+  const ro=new ResizeObserver(size);ro.observe(cv);size();el.classList.add('ready');
+  live.add({el,stop(){cancelAnimationFrame(raf);ro.disconnect();ctl.dispose();
+    scene.traverse(o=>{o.geometry&&o.geometry.dispose();[].concat(o.material||[]).forEach(m=>{Object.values(m).forEach(v=>v&&v.isTexture&&v.dispose());m.dispose()})});
+    env.dispose();r.dispose();r.forceContextLoss()}});
+}
+scan();document.addEventListener('site:swap',scan);
+</script>
 <script>
 // Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
 // Delegated, so it survives the content swap below.

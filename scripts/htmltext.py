@@ -341,8 +341,8 @@ class Markdown(HTMLParser):
         if tag == "figcaption":
             self.parts.append("\n\n*")
             return
-        if tag == "model-viewer":
-            alt = clean_text(attrs.get("alt", "")).strip()
+        if tag == "model-viewer" or (tag == "div" and "viewer" in attrs.get("class", "").split()):
+            alt = clean_text(attrs.get("alt", "") or attrs.get("aria-label", "")).strip()
             if alt:
                 self.parts.append(f"\n\n{alt}\n\n")
             return

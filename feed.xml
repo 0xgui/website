@@ -20,7 +20,7 @@
 &lt;p&gt;I had one of those.&lt;/p&gt;
 &lt;p&gt;The “something cool”: a tiny robot that stands up. I knock it over, I let go, and it tries to get up by itself. Every time. I think that is cool. &lt;/p&gt;
 &lt;p&gt;I also like learning more about robotics and a robot on the desk is a better way to do that than another tab of your web browser. &lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Pico.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;2133&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Pico.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;The plan&lt;/h2&gt;
 &lt;p&gt;It all started when I saw a maker called &lt;em&gt;HomeMadeGarbage&lt;/em&gt; who built this tiny robot that would always get up. Always! I thought it was so cool and interesting that I had to make my own. &lt;/p&gt;
@@ -38,13 +38,13 @@
 &lt;p&gt;&lt;strong&gt;First problem, assembly.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;If you knew how many times I had to reprint the part below, just because I messed it up with the wrong type of screws, or because it would not fit the servo motor correctly, or because I damaged it somehow…&lt;/p&gt;
 &lt;p&gt;I don’t want to talk about it. Let’s just say I don’t have black filament anymore and I had to print it in red.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Still have nightmares about it.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;254&quot; height=&quot;274&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Still have nightmares about it.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;&lt;strong&gt;Second problem, the wires.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;When testing the robot, some wires got loose because of the movement and the general jankiness of it. Since it was the first prototype, I thought that for testing, duct tape and a bit of soldering was enough.&lt;/p&gt;
 &lt;p&gt;I guess it was not.&lt;/p&gt;
 &lt;p&gt;I stopped being a caveman and set the cables in a sturdier way.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Wires just got loose after some tests.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot; width=&quot;1200&quot; height=&quot;934&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Wires just got loose after some tests.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;&lt;strong&gt;Third problem, the arms were connected wrong.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Each motor has a signal wire, and that wire has to land on the right pin. The motor also has to turn the direction the program expects. Mine didn’t. Wrong pins. Wrong direction. A command that meant “move up” went down, and the robot threw itself at the table like it meant to.&lt;/p&gt;
@@ -117,7 +117,7 @@
 &lt;p&gt;You see, Valetudo has a list of compatible robots that can use it and there are several ways to install it. Some robots you just use OTA (over the air updates) method requiring no disassembly nor attaching any cables and for others you literally have to take the entire robot apart until you reach the circuits to solder jump wires to the PCB board to get access to the bootloader.&lt;/p&gt;
 &lt;p&gt;Guess which one I got.&lt;/p&gt;
 &lt;p&gt;The S7 is the second kind. The method is called &lt;a href=&quot;https://valetudo.cloud/pages/installation/roborock/#fel-rooting&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;FEL rooting&lt;/a&gt;, and the first step is &quot;completely disassemble the robot,&quot; a phrase the documentation means with total sincerity. Top shell off. LiDAR turret off. Second shell off. Battery out. A dozen ribbon cables thinner than a fingernail, until you reach the mainboard at the very bottom, sitting under every other component like the last pringle in the can.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Disassembly process &lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;2133&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Disassembly process &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;Part 2: Hacking it&lt;/h2&gt;
 &lt;p&gt;Once you reach the PCB you can see the TPA17 and GND SH1 pads on the board. The rooting process works by shorting the two at exactly the right moment. Neither is a port. Neither has a connector. They are bare metal pads about the size of a grain of rice, and the intended tool is your hand. &lt;/p&gt;
@@ -127,14 +127,14 @@
 &lt;/figure&gt;
 &lt;p&gt;I won't post all the necessary steps to reach the bootloader because that’s in the docs but this is the line that matters:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;“Press the power button for 3 seconds and keep the TPA17 connected to GND for 5 more seconds after that.”&lt;/em&gt;&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Jumper wire to connect TPA17 and GND(SH1)&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;2133&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Jumper wire to connect TPA17 and GND(SH1)&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Do it right, and the robot appears on your laptop’s USB bus as Allwinner Technology sunxi SoC OTG connector in FEL/flashing mode. &lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Uploading the new firmware&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;1200&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Uploading the new firmware&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;After rebooting several times and sending a lot of files between my laptop and the robot, if all went ok after the robot has rebooted, connect to the robot’s own Wi-Fi AP, wait for a minute or two and then open the Valetudo Web interface in your browser to connect the robot to your Wi-Fi network.&lt;/p&gt;
 &lt;p&gt;For that, just browse to http://192.168.8.1, and voilá you are inside your robot.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Valetudo Interface&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot; width=&quot;919&quot; height=&quot;853&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Valetudo Interface&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;This is the point where you have full control of your robot with no need for an app or a company telling you what to do.&lt;/p&gt;
 &lt;p&gt;Now you control the robot, not the other way around.&lt;/p&gt;
@@ -160,7 +160,7 @@
     <content type="html">&lt;p&gt;The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger.&lt;/p&gt;
 &lt;p&gt;There’s something about seeing a machine you built with your own hands actually move that hits differently than anything you’ve experienced before in the software world. &lt;/p&gt;
 &lt;p&gt;It’s physical. It’s immediate. It’s hard. It’s real.&lt;br&gt;&lt;br&gt;Now I just need to give it a &lt;strong&gt;brain&lt;/strong&gt;.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;2133&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;h2&gt;I built some robotic arms &lt;/h2&gt;
 &lt;p&gt;I 3D printed them. Part by part. With a 3D printer I bought, ordered some servomotors from AliExpress and followed open-source designs and instructions. &lt;/p&gt;
 &lt;p&gt;Two arms, built completely from scratch. &lt;a href=&quot;https://github.com/0xgui/SO-101&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(you can find some scripts that I created to calibrate the arms on my github repository)&lt;/a&gt;&lt;br&gt;&lt;br&gt;The 3D printing took about 2 days for both arms. The most expensive parts were the servomotors, almost €20 each and you need 12 of them.&lt;/p&gt;
@@ -185,7 +185,7 @@
 &lt;p&gt;And much much more.&lt;/p&gt;
 &lt;p&gt;At first I really thought like everyone else that “Physical AI” was just another buzzword that someone invented with the word AI on it, just to sell more.&lt;strong&gt; &lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;But I was wrong. &lt;/strong&gt;&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;The Current Generation of Humanoid Robots (2025)&quot;&gt;&lt;figcaption&gt;&lt;a href=&quot;https://www.voronoiapp.com/technology/The-Current-Generation-of-Humanoid-Robots-2025-4656&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(source)&lt;/a&gt;&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;The Current Generation of Humanoid Robots (2025)&quot; width=&quot;1600&quot; height=&quot;1214&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;&lt;a href=&quot;https://www.voronoiapp.com/technology/The-Current-Generation-of-Humanoid-Robots-2025-4656&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(source)&lt;/a&gt;&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;Robots have been “the future” for decades. What’s different now?&lt;/h2&gt;
 &lt;p&gt;Well, AI.&lt;/p&gt;
@@ -224,7 +224,7 @@
 &lt;p&gt;Will humanoid robots be everywhere in 5 years? I don’t think so. Will they be in factories doing some specific tasks? probably.&lt;/p&gt;
 &lt;p&gt;AI went from generating text, to generating images, to generating video. Each step felt impossible until it wasn’t. Physical AI is the next step imo. AI that doesn’t just generate 1s and 0s. &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;It acts.&lt;/strong&gt;&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/07.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;</content>
+&lt;figure&gt;&lt;img src=&quot;images/07.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;956&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;</content>
   </entry>
   <entry>
     <title>AIconomy</title>
@@ -245,7 +245,7 @@
 &lt;h2&gt;Agentic commerce&lt;/h2&gt;
 &lt;p&gt;By now, you already know that the Internet changed the way you bought things. Instead of physically going to stores, you can browse and buy from your couch basically anything that you want.&lt;/p&gt;
 &lt;p&gt;Agentic commerce is the next evolution. Instead of you browsing and buying, &lt;strong&gt;AI agents do it for you&lt;/strong&gt;.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1532&quot; height=&quot;702&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;The agents are able to:&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;&lt;p&gt;Search for products across the entire internet&lt;/p&gt;
 &lt;/li&gt;
@@ -262,7 +262,7 @@
 &lt;p&gt;We’re talking about AI agents talking to other AI agents. Your personal shopping agent negotiating with a shop’s agent. Automatically. 24/7. 365 days.&lt;/p&gt;
 &lt;p&gt;This is the &lt;strong&gt;A2A economy&lt;/strong&gt;: Agent-to-Agent commerce.&lt;br&gt;&lt;br&gt;&lt;a href=&quot;https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;A2A&lt;/a&gt; is a protocol developed by Google in the beginning of this year that allows different AI agents to discover each other, understand their capabilities, and work together.&lt;/p&gt;
 &lt;h2&gt;Numbers don’t lie&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;468&quot; height=&quot;364&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;The big players are already betting billions on this.&lt;/p&gt;
 &lt;p&gt;Companies are projecting that agentic commerce could generate &lt;strong&gt;$3 trillion to $5 trillion globally by 2030&lt;/strong&gt;. (&lt;a href=&quot;https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-agentic-commerce-opportunity-how-ai-agents-are-ushering-in-a-new-era-for-consumers-and-merchants&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;source&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;ChatGPT now has over &lt;strong&gt;800 million weekly users&lt;/strong&gt;. Google’s AI (Gemini etc) features reach &lt;strong&gt;1.5 billion users&lt;/strong&gt; per month. These users are discovering products, comparing options and buying them.&lt;/p&gt;
@@ -278,7 +278,7 @@
 &lt;p&gt;&lt;strong&gt;Amazon&lt;/strong&gt; now let’s shoppers purchase goods from vendors that don’t even sell on Amazon, without leaving the Amazon ecosystem. (&lt;a href=&quot;https://techcrunch.com/2025/04/03/amazons-new-ai-agent-will-shop-third-party-stores-for-you/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;source&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;This is a complete reinvention of how ecommerce works.&lt;/p&gt;
 &lt;h2&gt;How does this actually work?&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;1144&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;You wake up and realize you need a birthday gift for your mom. Instead of spending your lunch break scrolling through endless options, you tell your AI:&lt;/p&gt;
 &lt;p&gt;“I need a birthday gift for my mom. She loves gardening, hates anything too fancy, budget is $75, and I need it delivered by Saturday.”&lt;/p&gt;
 &lt;p&gt;Here’s what happens behind the scenes:&lt;/p&gt;
@@ -410,7 +410,7 @@
 &lt;p&gt;Your new work buddies.&lt;/p&gt;
 &lt;p&gt;You will be using one or talking to one and you won't even know it.&lt;/p&gt;
 &lt;p&gt;Just yesterday, on an Nvidia presentation: “AI agents are a multi-trillion dollar opportunity.” — Jensen Huang, Nvidia CEO&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;Image&quot;&gt;&lt;figcaption&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=k82RwXqZHY8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;NVIDIA CEO Jensen Huang Keynote at CES 2025&lt;/a&gt;&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;Image&quot; width=&quot;1600&quot; height=&quot;922&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=k82RwXqZHY8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;NVIDIA CEO Jensen Huang Keynote at CES 2025&lt;/a&gt;&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h3&gt;Why This Changes the Game 🤖&lt;/h3&gt;
 &lt;p&gt;I've checked some AI agents and even built one myself, and the progress is mind-blowing. These aren't just chat interfaces anymore.&lt;/p&gt;
@@ -457,7 +457,7 @@
 &lt;/ul&gt;
 &lt;p&gt;I'm preparing an article on how to create a simple AI agent. In the meantime, check &lt;a href=&quot;https://github.com/elizaOS/eliza&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/elizaOS/eliza&lt;/a&gt; if you want to build one yourself.&lt;/p&gt;
 &lt;h2&gt;2. Nuclear Powers the AI Revolution&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;figcaption&gt;Three Mile Island nuclear power generating station in Londonderry Township, Pennsylvania.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;645&quot; height=&quot;362&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Three Mile Island nuclear power generating station in Londonderry Township, Pennsylvania.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;AI needs power. Lots of it.&lt;/p&gt;
 &lt;p&gt;Training large AI models consumes massive amounts of energy. And as AI becomes more important, this energy demand is skyrocketing.&lt;/p&gt;
@@ -495,7 +495,7 @@
 &lt;/ul&gt;
 &lt;p&gt;We need power. And we need it fast.&lt;/p&gt;
 &lt;h2&gt;3. Real World Assets Take Over&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;Crypto.com Real-World Assets: Bringing Real World Value to DeFi&quot;&gt;&lt;figcaption&gt;Real World Assets will be traded on the blockchain&lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;Crypto.com Real-World Assets: Bringing Real World Value to DeFi&quot; width=&quot;1600&quot; height=&quot;971&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Real World Assets will be traded on the blockchain&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Blockchain has other uses besides crypto.&lt;/p&gt;
 &lt;p&gt;Decentralized technologies have been moving from crypto into mainstream enterprise applications, especially through Real World Assets (RWAs).&lt;/p&gt;
@@ -531,7 +531,7 @@
 &lt;p&gt;Most users won't even know they're using decentralized tech. It'll just work better.&lt;/p&gt;
 &lt;p&gt;Take &quot;&lt;a href=&quot;https://gameoffthegrid.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Off The Grid&lt;/a&gt;&quot; for example. A new video game that uses blockchain technology on the background and people don't even know or think about it. (&lt;a href=&quot;https://coinmarketcap.com/academy/article/off-the-grids-unique-approach-to-blockchain-gaming&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;source&lt;/a&gt;). They don't care. They just wanna play and things to work better.&lt;/p&gt;
 &lt;h2&gt;4. Gaming Goes Infinite&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;Free Woman immersed in virtual reality, surrounded by tech, in a dimly lit room. Stock Photo&quot;&gt;&lt;figcaption&gt;Can you imagine? A never ending game? Can you detach from it? &lt;/figcaption&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;Free Woman immersed in virtual reality, surrounded by tech, in a dimly lit room. Stock Photo&quot; width=&quot;1600&quot; height=&quot;1067&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;figcaption&gt;Can you imagine? A never ending game? Can you detach from it? &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;The future of gaming isn't about finishing levels and reach the endgame.&lt;/p&gt;
 &lt;p&gt;People want endless, evolving experiences. There is no endgame.&lt;/p&gt;
@@ -613,7 +613,7 @@
 &lt;p&gt;In the meantime, let's see what happens.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The future is bright. &lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;We are in the best timeline.&lt;/strong&gt;&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;893&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;hr&gt;&lt;h3&gt;&lt;strong&gt;&lt;br&gt;&lt;/strong&gt;Until Next Time 😎&lt;/h3&gt;
 &lt;p&gt;Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network (&lt;a href=&quot;https://www.linkedin.com/in/gssilva-link/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;LinkedIn&lt;/a&gt;) or the digital playground (X).&lt;/p&gt;
 &lt;p&gt;I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.&lt;/p&gt;</content>
@@ -627,7 +627,7 @@
     <updated>2024-12-04T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Why your estimate is a lie you keep telling yourself</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;1024&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;When you are asked &quot;How long will this project take?&quot; or &quot;How long will it take for you to do this task?&quot; your thought usually goes something like this:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&quot;Well, if absolutely everything goes right, and I have no blockers, and I work full time on it... I can get probably get it done in 1 week. Okay, that is way too long... let's say 3 days. That still sounds good and I'll look good if I can deliver it on time.&quot;&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;And there it is, the saga of the terrible software estimates continues.&lt;/p&gt;
@@ -649,7 +649,7 @@
 &lt;/ol&gt;
 &lt;p&gt;These biases, just show that humans just suck at estimating things.&lt;/p&gt;
 &lt;p&gt;Also, we don't have the ability to see the future. Thank god for that.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;1024&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;h2&gt;What can we do?&lt;/h2&gt;
 &lt;p&gt;So what can we do?&lt;/p&gt;
 &lt;p&gt;Estimates are a necessary evil in SDLC (software development lifecycle).&lt;/p&gt;
@@ -676,7 +676,7 @@
 &lt;p&gt;Most people think like that but they really aren't.&lt;/p&gt;
 &lt;p&gt;I'm not saying that we should postpone things indefinitely. &lt;/p&gt;
 &lt;p&gt;What I'm saying is that sometimes we need to do some tradeoffs and delay or postpone something.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;1024&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;h2&gt;&quot;It'll take longer than you want.&quot;&lt;/h2&gt;
 &lt;p&gt;As important as the mindset shift is, the hardest part is often saying no to unrealistic timelines to stakeholders. Pushing back on aggressive timelines and promising less than hoped for can be uncomfortable.&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;There is always a positive side&lt;/strong&gt;: &quot;Taking the time to do this right sets us up for long term success and fewer shitstorms in the future.&quot;&lt;/p&gt;
@@ -712,9 +712,9 @@
     <updated>2024-11-09T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Your code is perfect. Your business vocabulary isn't.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;*Sorry for the delay. Life got in the way the past few days. Better late than never.*&lt;/p&gt;
 &lt;p&gt;You're in a meeting with the business people. You're ready to talk about your team's technical achievements. Then someone says: &quot;We need to focus on EBITDA this quarter&quot; or &quot;Our CAC is too high.&quot;&lt;/p&gt;
 &lt;p&gt;Your brain goes:&lt;/p&gt;
@@ -722,7 +722,7 @@
 &lt;p&gt;&quot;Is CAC some new AWS service?&quot;&lt;/p&gt;
 &lt;p&gt;If you know nothing about business terms this probably already happened to you.&lt;/p&gt;
 &lt;h2&gt;Why These Terms Matter Now 💼&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;I get it. A few years back, I thought knowing terms like &quot;MVP&quot; and &quot;KPI&quot; was enough. I was wrong.&lt;/p&gt;
 &lt;p&gt;As you grow in your career, especially moving towards staff+ or engineering management roles, you'll encounter a whole new dictionary of terms that actually move business decisions.&lt;/p&gt;
 &lt;p&gt;Understanding business terms isn't about becoming a “suit” executive. &lt;/p&gt;
@@ -757,7 +757,7 @@
 &lt;p&gt;Why? The lack of ability to translate tech needs into business value.&lt;/p&gt;
 &lt;p&gt;This is why understanding business terms matters. Not to sound smart in meetings, but to fight for what your team actually needs.&lt;/p&gt;
 &lt;h2&gt;The Essential Business Dictionary for Engineers 📚&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Let's break some examples that we might encounter in meetings:&lt;/p&gt;
 &lt;h3&gt;The Money Game 💰&lt;/h3&gt;
 &lt;ol&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;EBITDA&lt;/strong&gt; (&lt;strong&gt;E&lt;/strong&gt;arnings &lt;strong&gt;B&lt;/strong&gt;efore &lt;strong&gt;I&lt;/strong&gt;nterest, &lt;strong&gt;T&lt;/strong&gt;axes, &lt;strong&gt;D&lt;/strong&gt;epreciation, and &lt;strong&gt;A&lt;/strong&gt;mortization)&lt;/p&gt;
@@ -855,7 +855,7 @@
 &lt;p&gt;We can try: &quot;Adding caching will improve customer retention by making the app 3x faster, directly impacting our LTV&quot;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Numbers matter for biz people.&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;Startup vs Enterprise: The Language Differs 🏢&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;The terms you'll hear depend on your company's stage.&lt;/p&gt;
 &lt;p&gt;As an example:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Startups focus more on:&lt;/strong&gt;&lt;/p&gt;
@@ -884,7 +884,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;The Bottom Line 💡&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/06.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/06.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Remember:&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;&lt;p&gt;You don't need to become a business expert&lt;/p&gt;
 &lt;/li&gt;
@@ -910,7 +910,7 @@
     <updated>2024-10-23T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Because tech moves fast, but you can move faster.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;1024&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Imagine this: You're at a tech conference or chatting with friends, and suddenly you're drowning in buzzwords you've never heard of. Your colleagues are discussing some new framework or tool, and you're thinking:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&quot;When did this even come out?&quot; &lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&quot;Should I know this?&quot;&lt;/em&gt;&lt;/p&gt;
@@ -938,7 +938,7 @@
 &lt;p&gt;But here's the truth: even the most senior tech engineers don't know everything. What makes them different? They know how to adapt.&lt;/p&gt;
 &lt;p&gt;The key isn't finding a way to know everything—it's finding your way to adapt.&lt;/p&gt;
 &lt;h2&gt;Curiosity Matters 🧐&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;1024&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Before diving into strategies, let me share what I think is the most crucial trait to have.&lt;/p&gt;
 &lt;p&gt;I've noticed this in people who are always ready to learn more, try new things, and challenge old ideas.&lt;/p&gt;
 &lt;p&gt;People who are always building new things. People who know how to adapt.&lt;/p&gt;
@@ -1021,7 +1021,7 @@
 &lt;p&gt;If you can't stick with it, maybe it's not that interesting to you.&lt;/p&gt;
 &lt;p&gt;That's fine. Move on to something else that is enjoyable for you.&lt;/p&gt;
 &lt;h2&gt;Avoiding Burnout: The Dark Side of Keeping Up 🔥&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;915&quot; height=&quot;330&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Here's the truth: trying to keep up with everything will burn you out faster than you can say &quot;new JavaScript framework.&quot;&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;&lt;p&gt;Not knowing everything is normal. It's the norm for everyone.&lt;/p&gt;
 &lt;/li&gt;
@@ -1111,9 +1111,9 @@
     <updated>2024-10-09T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>250+ pairs of eyes fixed on you. Palms sweaty. Heart racing. Welcome to the world of public speaking.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;740&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;739&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&quot;What will they think of me?&quot; &quot;What if I say something wrong?&quot; &quot;How will they judge me?&quot;&lt;/p&gt;
 &lt;p&gt;All valid questions for someone who is about to enter the spotlight.&lt;/p&gt;
 &lt;hr&gt;&lt;p&gt;This September, I got the opportunity to speak at a conference. The CNCF KCD Porto. The first KCD ever there, organized alongside &lt;a href=&quot;https://xgeeks.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Synvert xgeeks&lt;/a&gt;.&lt;/p&gt;
@@ -1143,7 +1143,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Yes, it will be scary at first 😰&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;800&quot; height=&quot;602&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;em&gt;(me at Cloud Native Lisbon)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Your manager/boss comes to you and asks you to present your project or the technology that you work with at a local tech meetup.&lt;/p&gt;
 &lt;p&gt;You start to get anxious. Just before he finishes his phrase. You never talked in public in your career, and you hated to do it in school.&lt;/p&gt;
@@ -1157,7 +1157,7 @@
 &lt;p&gt;If possible, try to get a speaker mentor that already has done a couple of talks.&lt;/p&gt;
 &lt;p&gt;You can also start by doing remote talks. It will help your flow in the slides. But remember. Live, on stage, you will feel things that you do not feel remotely.&lt;/p&gt;
 &lt;h2&gt;Going International 🌍&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot; width=&quot;600&quot; height=&quot;800&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;em&gt;(me at Munich, Germany)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The jokes. The culture. The way they think.&lt;/p&gt;
 &lt;p&gt;Different cultures have different ways of perceiving information. What works in your country might not work in another.&lt;/p&gt;
@@ -1166,7 +1166,7 @@
 &lt;p&gt;This is a challenge. But it's also an opportunity to grow. To learn new perspectives. To broaden our horizons.&lt;/p&gt;
 &lt;p&gt;Start small. Maybe a remote international meetup. Then work your way up.&lt;/p&gt;
 &lt;h2&gt;Conferences 🏆&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/05.webp&quot; alt=&quot;&quot; width=&quot;462&quot; height=&quot;1000&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;em&gt;(me at KCD Porto 2024)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Like I mention, this was my first one. I'm no expert whatsoever in this type of setting.&lt;/p&gt;
 &lt;p&gt;But what I can tell you is this: If people are present in your talk, it is because they find your topic interesting. They want to absorb the knowledge that you have and try to use it for themselves.&lt;/p&gt;
@@ -1234,7 +1234,7 @@
     <updated>2024-09-25T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Balls Drop, Balls Add, You Adapt.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1200&quot; height=&quot;810&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 
 &lt;p&gt;Welcome back to another piece of Binary Paths!&lt;/p&gt;
 &lt;p&gt;I'm back from vacations and because of that, I decided to do something different for this piece.&lt;/p&gt;
@@ -1306,7 +1306,7 @@
 &lt;p&gt;Imagine that you want to take a road trip. A road trip to reach a destination, a place you really want to visit.&lt;/p&gt;
 &lt;p&gt;As a motorcycle lover myself, I like to do road trips with my motorcycle. I love the thrill of hitting the open road on two wheels. The feeling of freedom is unbelievable. &lt;/p&gt;
 &lt;p&gt;It's my meditation.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1229&quot; height=&quot;1352&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;em&gt;(me at the highest point of the trip)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Just like a road trip, you don't want your Kubernetes journey to fail. So you will try to prepare for it and make it happen the best way you can.&lt;/p&gt;
 &lt;p&gt;The same needs to happen if you are going to use Kubernetes inside your organization.&lt;/p&gt;
@@ -1330,7 +1330,7 @@
 &lt;p&gt;Real business value is about delivering value to customers and getting the return for it. You have a business that creates value. Your customers want to consume that value. You get paid for that value.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Avoid adopting Kubernetes just because it's the latest trend = Avoid going to a popular place just because everyone is doing it&lt;/strong&gt;&lt;/p&gt;
 &lt;h3&gt;📋 Preparing for your trip&lt;/h3&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;1195&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;em&gt;(only pack the essentials when traveling with limited space)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;You now have a destination to go. Real objectives to target inside your company.&lt;/p&gt;
 &lt;p&gt;Now you need a vehicle. This is where Kubernetes comes in.&lt;/p&gt;
@@ -1416,7 +1416,7 @@
 &lt;/ul&gt;
 &lt;p&gt;These are just example questions that I would advise you to answer.&lt;/p&gt;
 &lt;h3&gt;🌄 Remember, it's all about the journey not the destination&lt;/h3&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;1200&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;em&gt;(one of the best trips of my life: Iceland.)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Yeah Yeah, I know, it's a cliché thing to say.&lt;/p&gt;
 &lt;p&gt;But guess what? It's the truth.&lt;/p&gt;
@@ -1439,7 +1439,7 @@
     <updated>2024-08-28T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>It's not a set-and-forget thing. You need to nourish it. You need to take care of it.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;(I tried to use AI to create an image of a “packaged product platform” 😅 )&lt;/p&gt;
 &lt;p&gt;In the previous article on &lt;a href=&quot;../becoming-a-product-minded-engineer/&quot;&gt;becoming a product-minded engineer&lt;/a&gt;, we discussed the importance of thinking beyond just writing code and considering the broader impact of your work. &lt;/p&gt;
 &lt;p&gt;This product mindset is especially critical when it comes to building internal platforms.&lt;/p&gt;
@@ -1473,7 +1473,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;🌟 The Benefits of a Platform as a Product Approach&lt;/h3&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;768&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Why is this good? Well, adopting a platform as a product mindset gets you some benefits, such as:&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;Increased adoption and satisfaction&lt;/strong&gt;: By building a platform that developers love to use, you drive organic adoption. People will come to you. If it's good, why not use it? &lt;/p&gt;
 &lt;/li&gt;
@@ -1499,7 +1499,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;🌍 Accelerating Innovation&lt;/h3&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;1447&quot; height=&quot;905&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;As software continues to eat the world, the importance of internal platforms will only continue to grow. Organizations that treat their platforms as products will be best positioned to innovate, compete, and win. &lt;/p&gt;
 &lt;p&gt;Why? Well, because they want to be more efficient and spend less money, of course. And spending less money on operations allows you to spend more money on innovation.&lt;/p&gt;
 &lt;p&gt;So if you're responsible for an internal platform, I encourage you to embrace the platform as a product mindset. It won't be easy. But if you manage to pull it off, developers will love you.&lt;/p&gt;
@@ -1521,9 +1521,9 @@
     <updated>2024-08-14T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Because let's face it. Customers don't care about what tech you use. They care if what they use, works.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;896&quot; height=&quot;826&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;896&quot; height=&quot;825&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;As an engineer, you have the power to shape the products that touch millions of lives.&lt;/p&gt;
 &lt;p&gt;But to truly make a difference, you need to go beyond just writing elegant code that nobody will see. You need to develop a deep understanding of the product itself and the business goals it aims to achieve. &lt;/p&gt;
 &lt;p&gt;In other words, you need to become a product-minded engineer.&lt;/p&gt;
@@ -1611,9 +1611,9 @@
     <updated>2024-07-31T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Look. If you are reading this, you probably have it. There is no permanent cure. You have to embrace it.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1024&quot; height=&quot;1024&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;578&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;ul&gt;&lt;li&gt;&lt;p&gt;CEOs and top executives&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Middle managers&lt;/p&gt;
@@ -1643,14 +1643,14 @@
 &lt;p&gt;It will impact you. It will impact your mental health, your anxiety, your self-esteem, your stress, and the people around you.&lt;/p&gt;
 &lt;p&gt;And no, you can't fix it with drugs.&lt;/p&gt;
 &lt;h2&gt;It's just a matter of time ⏳&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;283&quot; height=&quot;310&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;There will be a time in your career/personal life (you probably already reached that time) where you will feel doubts about yourself. &lt;/p&gt;
 &lt;p&gt;The probability of this happening is higher in non-technical roles, like management. The work you do in this scope is less &quot;tangible&quot;. You don't have tickets or tasks that you can mark as completed. You have way more meetings. It's a never ending work to achieve bigger goals.&lt;/p&gt;
 &lt;p&gt;Because of this, you feel that you are doing nothing special, and your peers are doing all the hard work.&lt;/p&gt;
 &lt;p&gt;But this can go both ways, too. With remote work becoming more common, Individual Contributors tend to feel the syndrome more often due to the lack of their manager's feedback or the poor visibility of their work.&lt;/p&gt;
 &lt;p&gt;No matter who you are, you will be impacted by it.&lt;/p&gt;
 &lt;h2&gt;The &quot;I'm Smart&quot; effect 🧠&lt;/h2&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot; width=&quot;1300&quot; height=&quot;750&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;There's one effect that goes pretty hand in hand with the imposter syndrome. The Dunning-Kruger effect. Or, as I like to call it, the &quot;I'm Smart&quot; effect.&lt;/p&gt;
 &lt;p&gt;The Dunning-Kruger effect, shows that people with lower skills tend to be more overconfident about their abilities, and when their skills start to improve, their confidence starts to go down. This is where the Imposter Syndrome likes to appear.&lt;/p&gt;
 &lt;p&gt;This is why I think that if you have Imposter syndrome, you are good. You don't consider yourself the best, and you now have solid skills. &lt;/p&gt;
@@ -1709,17 +1709,17 @@
     <updated>2024-07-17T00:00:00Z</updated>
     <author><name>Guilherme Silva</name></author>
     <summary>Sometimes work doesn't speak for itself and you need to do more.</summary>
-    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+    <content type="html">&lt;figure&gt;&lt;img src=&quot;images/01.webp&quot; alt=&quot;&quot; width=&quot;1291&quot; height=&quot;742&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 
 &lt;p&gt;When you hear the word &lt;em&gt;brand&lt;/em&gt;, you probably think about Coca-Cola, Nike, Microsoft, Apple, Gucci, Google and so on. These companies spend millions and millions of dollars perfecting their brand identities. The objective for this is simple. The next time you see their brand, they want to transmit to you their values. They want to transmit to you who they are, what they are and what they do. And they want you to talk about them with the values that they passed on to you when they are not around.&lt;/p&gt;
 &lt;p&gt;We don't even need to use companies as an example. We can use single individuals. Look at football players. Look at Ronaldo. Ronaldo created a huge personal brand that is well known everywhere around the globe. If someone mentions the word &quot;Ronaldo&quot;, you instantly know who he is and what he does.&lt;/p&gt;
 &lt;p&gt;I'm not saying that you should become as famous as Ronaldo. But you should at least try to be known for what you are worth for.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/02.webp&quot; alt=&quot;&quot; width=&quot;1291&quot; height=&quot;742&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;h2&gt;Put Yourself out There&lt;/h2&gt;
 &lt;p&gt;You need to remember that you are competing with remote work. This means that you are competing with an &lt;strong&gt;estimated 26.9 million software engineers&lt;/strong&gt;. (&lt;a href=&quot;https://en.wikipedia.org/wiki/Software_engineering_demographics#:~:text=Software%20engineers%20form%20a%20noticeable,from%2021%20million%20in%202016.&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;source&lt;/a&gt;). &lt;/p&gt;
 &lt;p&gt;That's a lot of engineers.&lt;/p&gt;
 &lt;p&gt;You need to stand out. There is no other way around. It's a must at this point. If you want to get those six-figure jobs, you need to stand out and have incredible technical and soft skills.&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/03.webp&quot; alt=&quot;&quot; width=&quot;455&quot; height=&quot;242&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;h2&gt;Why You Need to Promote Yourself&lt;/h2&gt;
 &lt;p&gt;Let's face it. Most engineers are terrible at marketing themselves. Their energy is spent solving engineering problems, and that's what they are good at. But this doesn't mean that you should ignore what people say about you when you are not in the room.&lt;/p&gt;
 &lt;p&gt;If people understand a bit better about who you are this will lead to:&lt;/p&gt;
@@ -1750,7 +1750,7 @@
 &lt;li&gt;&lt;p&gt;Who is your audience? Who should you target?&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot;&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;img src=&quot;images/04.webp&quot; alt=&quot;&quot; width=&quot;1600&quot; height=&quot;940&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;&gt;&lt;/figure&gt;
 &lt;p&gt;Don't think that this is a one-way stop. This will be a continuous cycle until the end of your career. Like most businesses evolve through time, so should you. &lt;/p&gt;
 &lt;p&gt;You will want to meditate from time to time if you are going in the right direction for you. If your values remain the same. &lt;/p&gt;
 &lt;p&gt;If they don't, approach this as a new opportunity to learn new things and to grow your business.&lt;/p&gt;

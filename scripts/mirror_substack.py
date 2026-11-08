@@ -502,6 +502,40 @@ def prepare_images(post: Post, fetch_bytes, previous: dict) -> tuple[dict[str, s
     return image_map, files, body, json.dumps(manifest, indent=2) + "\n"
 
 
+def webp_size(data: bytes) -> tuple[int, int] | None:
+    """Width and height from a WebP header (VP8, VP8L or VP8X), or None."""
+    if not _is_webp(data) or len(data) < 30:
+        return None
+    chunk = data[12:16]
+    if chunk == b"VP8X":
+        return 1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little")
+    if chunk == b"VP8L" and data[20] == 0x2F:
+        bits = int.from_bytes(data[21:25], "little")
+        return (bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1
+    if chunk == b"VP8 " and data[23:26] == b"\x9d\x01\x2a":
+        return int.from_bytes(data[26:28], "little") & 0x3FFF, int.from_bytes(data[28:30], "little") & 0x3FFF
+    return None
+
+
+IMG_TAG_RE = re.compile(r'<img src="([^"]+)" alt="([^"]*)">')
+
+
+def size_images(body: str, files: dict[str, bytes]) -> str:
+    """Give each local <img> its intrinsic size (no layout shift) and lazy-load all but the first."""
+    count = 0
+
+    def repl(match: re.Match) -> str:
+        nonlocal count
+        count += 1
+        src, alt = match.group(1), match.group(2)
+        size = webp_size(files.get(src, b""))
+        dims = f' width="{size[0]}" height="{size[1]}"' if size else ""
+        lazy = ' loading="lazy"' if count > 1 else ""
+        return f'<img src="{src}" alt="{alt}"{dims}{lazy} decoding="async">'
+
+    return IMG_TAG_RE.sub(repl, body)
+
+
 def post_dir_file(previous: dict, name: str) -> bytes | None:
     raw = previous.get("_bytes", {}).get(name)
     return raw
@@ -724,6 +758,7 @@ def render_posts(root: Path, posts: list[Post], render_slugs: set[str], saved: d
         if post.kind == "full":
             image_map, files, body, manifest = prepare_images(post, fetch_bytes, previous)
             body = sanitize(body, link_map=sibling_links(posts, post.slug), image_map=image_map)
+            body = size_images(body, files)
         else:
             files, manifest = {}, '{ "images": [] }\n'
             body = ""
