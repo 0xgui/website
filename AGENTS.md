@@ -1,24 +1,54 @@
-# AGENTS.md — Guidance for AI coding agents working on this repo
+# AGENTS.md
 
-## What this is
+Guidance for AI agents working on silvags.com: Guilherme Silva's personal website and robot build log. Plain HTML, CSS and vanilla JS. No framework, no build step, no package manager, no dependencies.
 
-A static personal website (silvags.com) + robotics build log. No framework, no build step, no package manager. Pure HTML/CSS/vanilla JS.
+## Rules (read first)
+
+1. **Never push to `main`.** Work on a branch and open a pull request.
+2. **Every PR body needs `## Testing`, `## Risk` and `## How to revert`**, or `agent-pr-gate` blocks the merge.
+3. **High-tier paths need a person to merge:** `.github/workflows/`, `_headers`, `_redirects`, `_routes.json`, `functions/`, `worker.js`, `wrangler.toml`, `.review-gate.yml`, `scripts/mirror_substack.py`.
+4. **CSS and JS stay inline in each page.** Never create `style.css`, `app.js` or any other external CSS/JS file.
+5. **Every page keeps the `.col` > `header` + `main` + `footer` shape and the identical `<style>`.** In-place navigation depends on it (see "Navigation" under Agent files).
+6. **Regenerate after any HTML change:** `python3 scripts/build_agent.py`. Never hand-edit `index.md`, `llms.txt`, `llms-full.txt`, `sitemap.xml`, `feed.xml`, `robots.txt` or `_headers`.
+7. **Media under 1 MB each** (aim for 500 KB). Images as WebP, video as WebM. No GIFs or PNGs.
+8. **No X/Twitter links**, anywhere.
+9. **xgeeks is the current employer** (Engineering Manager). Do not change it.
+10. **The Substack is "Binary Paths"** at `binarypaths.substack.com`. Do not rename it or change the URL.
+11. **Do not edit `writing/<slug>/` by hand.** The mirror script regenerates it from Substack.
+12. **No new dependencies.** Scripts use the Python stdlib only.
+
+## Commands
+
+```bash
+python3 -m http.server 8000                       # serve at http://127.0.0.1:8000
+python3 scripts/build_agent.py                    # regenerate Markdown twins, llms.txt, sitemap, feed, _headers
+python3 scripts/build_agent.py --check            # fails if generated files drift (CI runs this)
+python3 -m unittest discover -s tests -v          # Python tests
+node --test tests/negotiate.test.mjs              # Pages function test
+node --experimental-detect-module --test tests/worker-snapshot.test.mjs   # Worker test
+```
+
+Before you finish: run the builder, `--check`, and all three test commands. Then open the PR.
 
 ## Structure
 
 ```
 index.html              Homepage
+404.html                Not-found page (root-absolute URLs only)
 about/ builds/ talks/ writing/   Section pages
+talks/<slug>/           One talk: page, slides, media
 writing/<slug>/         Mirrored Binary Paths essay (index.html, index.md, images/)
 robots/so-101/          SO-101 build log and media
 robots/pico/            Pico build notes and media
+fonts/                  Self-hosted Newsreader (woff2, OFL)
 llms.txt llms-full.txt  Agent index and full text, generated from the HTML
 robots.txt sitemap.xml feed.xml _headers _routes.json
 functions/_middleware.js   Accept: text/markdown negotiation
-scripts/                Mirror, agent-file builder, gate path check (not deployed)
-tests/                  Stdlib unittest plus one node:test file
+scripts/                Mirror, agent-file builder, gate path check
+tests/                  Stdlib unittest plus node:test files
 favicon.svg             Site icon
-worker.js               Cloudflare Worker (RSS proxy, deployed separately)
+worker.js wrangler.toml Cloudflare Worker (RSS proxy, deployed separately)
+.cursor/skills/verify-silvags/   Cursor skill for checking the site in a browser
 ```
 
 Each robot lives in `robots/<name>/` with its page and media together. Adding a robot = new directory, zero root clutter.
@@ -52,13 +82,9 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 
 Pico's physical self-righting is confirmed working by the owner. Further measurements and training changes are planned. Its visual is labelled as simulation geometry; use actual supplied footage for any physical demo. Build notes use the same `day-XX` anchor pattern as SO-101 but descriptive labels instead of invented diary dates. The model uses the six meshes from `pico-self-rising-robot/RL/assets`, in their neutral pose, converted from Z-up to Y-up. The site's `.viewer` (see 3D viewers below) displays it, with the static poster as fallback. It does not auto-rotate.
 
-## Important rules
+## Theme
 
-1. **No X/Twitter links** — do not link any X/Twitter profile or handle anywhere in these files.
-2. **Keep xgeeks as current employer** — the user is still Engineering Manager there.
-3. **Substack is "Binary Paths"** — do not rename it or change the URL.
-4. **Media must be optimized** — no files over 1MB. Convert GIFs to webm, PNGs to webp before adding.
-5. **Theme system** — `:root` is light, `:root.dark` is dark. Toggle via `#theme-toggle` button. State persisted in localStorage key `theme`.
+`:root` is light, `:root.dark` is dark. The `#theme-toggle` button switches it, and the choice is stored in localStorage key `theme`.
 
 ## Worker.js (Cloudflare Worker)
 
@@ -78,20 +104,17 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 
 ## CSS conventions
 
-- Variables defined in `:root` and `:root.dark` (same names, different values)
-- `--warm` is the accent color (orange/amber)
-- `--bg`, `--text`, `--muted`, `--soft`, `--border`, `--card` are the palette
-- Fonts: Instrument Serif for headings, Inter for body
-- Max content width: 720px (`.wrap` class)
+- Variables live in `:root` (light) and `:root.dark` (dark), with the same names: `--paper`, `--ink`, `--muted`, `--link`, `--rule`, `--line`.
+- One font: Newsreader, self-hosted (see Fonts below).
+- Content column: `.col`, `max-width: 37rem`.
+- Reuse the existing variables and classes. Do not add a second visual system.
 
 ## When making changes
 
-- Read the full file before editing — these are large inline HTML files
-- Match the existing style (inline CSS, no Tailwind, no framework)
-- Test with `python3 -m http.server 8000` and open in a browser
-- Tests: `python3 -m unittest discover -s tests -v`, `node --test tests/negotiate.test.mjs`, and `node --experimental-detect-module --test tests/worker-snapshot.test.mjs`. CI runs all three on pull requests. The `worker dry-run` job runs `scripts/worker_dry_run.py` (whoami, KV, `wrangler deploy --dry-run`) and does not deploy.
-- `python3 scripts/build_agent.py --check` fails when Markdown twins or `llms.txt` drift from the HTML
-- Don't add dependencies — scripts use the Python stdlib. Image recompression shells out to `ffmpeg` when a download is not already a small WebP. GIFs become WebM.
+- Read the whole file before editing. The pages are large inline HTML files.
+- Check in a browser with `python3 -m http.server 8000`.
+- CI also runs a `worker dry-run` job (`scripts/worker_dry_run.py`: whoami, KV, `wrangler deploy --dry-run`). It does not deploy.
+- Image recompression shells out to `ffmpeg` when a download is not already a small WebP. GIFs become WebM.
 
 ## Adding a new robot build
 
