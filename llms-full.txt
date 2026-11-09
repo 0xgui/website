@@ -344,11 +344,15 @@ Every number and quote in the talk, all published in 2026. Company posts are sel
 
 - [GitHub Agentic Workflows technical preview](https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/) — GitHub, Feb 2026. Step 1: read-only by default, writes through pre-approved outputs.
 
-- [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude) — Anthropic, May 2026. Steps 1–2.
+- [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude) — Anthropic, May 2026. Step 1.
 
-- [Minions: Stripe's one-shot, end-to-end coding agents](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — Stripe, Feb 2026. Steps 2, 5, 6: a devbox per task, scoped tools, two CI rounds then a human.
+- [Minions: Stripe's one-shot, end-to-end coding agents](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — Stripe, Feb 2026. Steps 1, 2, 3: a devbox per task, scoped tools, two CI rounds then a human.
 
-- [Sandboxing Untrusted AI Agents at Scale](https://opensource.googleblog.com/2026/11/sandboxing-untrusted-ai-agents-at-scale.html) — Google, Nov 2026. Step 2: Agent Substrate and gVisor donated to the CNCF.
+- [Sandboxing Untrusted AI Agents at Scale](https://opensource.googleblog.com/2026/11/sandboxing-untrusted-ai-agents-at-scale.html) — Google, Nov 2026. Step 1: Agent Substrate and gVisor donated to the CNCF.
+
+- [The AI engineering stack we built internally](https://blog.cloudflare.com/internal-ai-engineering-stack/) — Cloudflare, Apr 2026. Step 2: AGENTS.md across ~3,900 repos.
+
+- [Evaluating AGENTS.md](https://arxiv.org/abs/2602.11988) — ETH Zurich, ICLR 2026. Step 2: keep context files short, and test them.
 
 - [Using AI to Delete Code](https://www.uber.com/us/en/blog/ai-code-cleanup/) — Uber, Oct 2026. Step 3: a change “can pass CI and still be wrong”.
 
@@ -360,13 +364,9 @@ Every number and quote in the talk, all published in 2026. Company posts are sel
 
 - [Speeding up code review with small-change](https://lethain.com/small-changes/) — Will Larson, Oct 2026. Step 4.
 
-- [The AI engineering stack we built internally](https://blog.cloudflare.com/internal-ai-engineering-stack/) — Cloudflare, Apr 2026. Step 5: AGENTS.md across ~3,900 repos.
+- [Catching Bugs Before They Land: JiTTesting](https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/) — Meta, Oct 2026. Step 5.
 
-- [Evaluating AGENTS.md](https://arxiv.org/abs/2602.11988) — ETH Zurich, ICLR 2026. Step 5: keep context files short, and test them.
-
-- [Catching Bugs Before They Land: JiTTesting](https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/) — Meta, Oct 2026. Step 7.
-
-- [Argo Rollouts](https://argoproj.github.io/rollouts/) — CNCF project. Step 7: canary releases with automatic rollback.
+- [Argo Rollouts](https://argoproj.github.io/rollouts/) — CNCF project. Step 5: canary releases with automatic rollback.
 
 ### Measure it, and does it work?
 
