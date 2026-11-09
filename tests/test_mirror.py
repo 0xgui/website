@@ -125,6 +125,19 @@ class MirrorTests(unittest.TestCase):
             self.assertEqual(snap, again)
             self.assertIn("This sentence must survive a bad fetch.", before)
 
+    def test_feed_without_ids_keeps_the_saved_id(self):
+        import tempfile
+        from dataclasses import replace
+        posts = posts_from_api(json.loads((FIX / "api.json").read_text(encoding="utf-8")))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            apply_mirror(root, [replace(p, post_id="12345") for p in posts], fetch_bytes=lambda url: TINY_WEBP)
+            hello = root / "writing" / "hello-world" / "index.html"
+            self.assertIn('<meta name="mirror-id" content="12345">', hello.read_text(encoding="utf-8"))
+            apply_mirror(root, [replace(p, post_id="") for p in posts], fetch_bytes=lambda url: TINY_WEBP)
+            self.assertIn('<meta name="mirror-id" content="12345">', hello.read_text(encoding="utf-8"))
+
     def test_stub_does_not_replace_a_full_essay(self):
         import tempfile
         paid = posts_from_api(json.loads((FIX / "api-paid.json").read_text(encoding="utf-8")))
