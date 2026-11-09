@@ -81,27 +81,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [ -z "$proof" ]; then
-            git stash push -u -m mirror
-            git fetch origin "$branch" || true
-            if git rev-parse --verify "origin/$branch" >/dev/null 2>&1; then
-              git checkout -B "$branch" "origin/$branch"
-              git merge --no-edit "origin/$base" || {
-                echo "Could not merge $base into $branch." >&2
-                exit 1
-              }
-            else
-              git checkout -B "$branch" "origin/$base"
-            fi
-            git stash pop
+            # The mirror output is regenerated from scratch on top of $base, so
+            # the branch is rebuilt from $base each run instead of merging into
+            # an older mirror branch (that merge conflicted on last-good.txt).
+            git checkout -B "$branch"
           fi
-          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+          git fetch origin "$branch" || true
+          git add -A
+          git commit -m "$message"
+          if git rev-parse --verify "origin/$branch" >/dev/null 2>&1 && git diff --quiet "origin/$branch" HEAD; then
             echo "opened=false" >> "$GITHUB_OUTPUT"
             echo "Mirror branch already has this content."
             exit 0
           fi
-          git add -A
-          git commit -m "$message"
-          git push -u origin "$branch"
+          git push -u --force-with-lease origin "$branch"
           if gh pr view "$branch" --json url --jq .url >/dev/null 2>&1; then
             url="$(gh pr view "$branch" --json url --jq .url)"
           else
