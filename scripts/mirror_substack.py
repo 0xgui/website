@@ -23,6 +23,7 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
+from dataclasses import replace
 from datetime import datetime, timezone
 
 from scripts.build_agent import apply as apply_agent
@@ -612,6 +613,9 @@ def merge(saved: dict, fetched: list[Post]) -> tuple[list[Post], set[str]]:
             if previous.kind == "full" and (post.kind != "full" or (old_len and new_len < int(old_len * 0.6))):
                 chosen[post.slug] = previous
                 continue
+            if not post.post_id and previous.post_id:
+                # RSS has no post id; keep the one the API gave earlier.
+                post = replace(post, post_id=previous.post_id)
         chosen[post.slug] = post
         render.add(post.slug)
     for slug, (previous, _length, _manifest) in saved.items():
