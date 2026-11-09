@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   CONTENT_SIGNAL,
   estimateTokens,
+  isHiddenPath,
   markdownAssetPath,
   onRequest,
   prefersMarkdown,
@@ -59,4 +60,20 @@ test("markdown-only client: twin, missing page, page without twin", async () => 
   assert.equal(await twin.text(), "# About");
   assert.equal((await onRequest(context("/nope/", "text/markdown", pages))).status, 404);
   assert.equal((await onRequest(context("/demo/", "text/markdown", pages))).status, 406);
+});
+
+test("repo files are hidden", async () => {
+  for (const path of [
+    "/.cursor/skills/verify-silvags/SKILL.md", "/.github/workflows/ci.yml", "/scripts/build_agent.py",
+    "/tests/test_agent.py", "/scripts", "/worker.js", "/wrangler.toml", "/AGENTS.md", "/README.md",
+    "/.gitignore", "/.review-gate.yml", "/%2Ecursor/x", "//scripts/x",
+  ]) {
+    assert.equal(isHiddenPath(path), true, path);
+  }
+  for (const path of ["/", "/writing/", "/llms.txt", "/robots/so-101/", "/talks/x/scripts/", "/scriptsx", "/about/README.md"]) {
+    assert.equal(isHiddenPath(path), false, path);
+  }
+  const res = await onRequest(context("/scripts/build_agent.py", "text/html", { "/scripts/build_agent.py": "secret" }));
+  assert.equal(res.status, 404);
+  assert.notEqual(await res.text(), "secret");
 });

@@ -67,6 +67,36 @@ export function markdownAssetPath(pathname) {
   return path + "/index.md";
 }
 
+// Repo files that Pages deploys but that are not part of the site. Keep in
+// sync with the excludes in .github/workflows/pages-preview.yml. Media under
+// these paths skips this function (_routes.json); none is tracked there.
+const HIDDEN_DIRS = [".cursor", ".github", "scripts", "tests"];
+const HIDDEN_FILES = [
+  "worker.js", "wrangler.toml", "agents.md", "readme.md", ".gitignore", ".review-gate.yml",
+];
+
+export function isHiddenPath(pathname) {
+  let path = pathname || "/";
+  try {
+    path = decodeURIComponent(path);
+  } catch (_error) {
+    return false;
+  }
+  const first = path.replace(/^\/+/, "").split("/")[0].toLowerCase();
+  if (!first) return false;
+  const rest = path.replace(/^\/+/, "").slice(first.length);
+  if (HIDDEN_DIRS.includes(first)) return true;
+  return rest === "" && HIDDEN_FILES.includes(first);
+}
+
+async function notFound(context, url) {
+  const page = await context.env.ASSETS.fetch(new Request(new URL("/__hidden__/", url.origin)));
+  const headers = new Headers({ "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+  headers.set("Content-Signal", CONTENT_SIGNAL);
+  const body = page.status === 404 ? page.body : "Not found\n";
+  return new Response(body, { status: 404, headers });
+}
+
 function vary(headers) {
   const current = headers.get("Vary");
   if (!current) headers.set("Vary", "Accept");
@@ -88,6 +118,9 @@ function stamp(response) {
 
 export async function onRequest(context) {
   const request = context.request;
+  if (isHiddenPath(new URL(request.url).pathname)) {
+    return notFound(context, new URL(request.url));
+  }
   if (request.method !== "GET" && request.method !== "HEAD") {
     return stamp(await context.next());
   }

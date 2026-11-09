@@ -196,6 +196,8 @@ Link previews: each essay's `og:image` and JSON-LD `image` are its first local i
 
 Sitemap: `lastmod` comes only from dates in the HTML. Essays use their publish date, and the homepage and `writing/` use the newest essay's date. Other pages have none. Do not use git dates, because CI's shallow clone would make `--check` drift.
 
+Hidden repo files: Pages deploys the whole repo, so `functions/_middleware.js` returns 404 (with the 404 page) for `.cursor/`, `.github/`, `scripts/`, `tests/`, `worker.js`, `wrangler.toml`, `AGENTS.md`, `README.md`, `.gitignore` and `.review-gate.yml`. Keep that list in sync with the excludes in `.github/workflows/pages-preview.yml`. `_redirects` cannot do this: Pages only allows redirect status codes there.
+
 Markdown negotiation: a client that accepts only `text/markdown` gets 404 for a page that does not exist, and 406 only when the page exists without a twin.
 
 Essay images: `mirror_substack.size_images` adds `width`/`height` read from the WebP header, `decoding="async"`, and `loading="lazy"` to every image but the first. Alt text stays whatever Substack has. Most images have a `figcaption`; add alt text in Substack for ones that need it.
