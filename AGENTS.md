@@ -4,21 +4,38 @@
 
 A static personal website (silvags.com) + robotics build log. No framework, no build step, no package manager. Pure HTML/CSS/vanilla JS.
 
+## Quick start
+
+```bash
+python3 -m http.server 8000                       # serve at http://127.0.0.1:8000
+python3 scripts/build_agent.py                    # after any HTML change: regenerate index.md twins, llms.txt, sitemap, feed
+python3 -m unittest discover -s tests -v          # Python tests
+node --test tests/negotiate.test.mjs              # Pages function test
+node --experimental-detect-module --test tests/worker-snapshot.test.mjs   # Worker test
+python3 scripts/build_agent.py --check            # fails if generated files drift (CI runs this)
+```
+
+Before you finish: run the builder and all tests, then open a pull request. Never push to `main`. A PR that touches a high-tier path (workflows, `_headers`, `_redirects`, `_routes.json`, `functions/`, `worker.js`, `wrangler.toml`, `.review-gate.yml`, `scripts/mirror_substack.py`) needs a person to merge it. The PR body needs `## Testing`, `## Risk` and `## How to revert` sections, or `agent-pr-gate` blocks it.
+
 ## Structure
 
 ```
 index.html              Homepage
+404.html                Not-found page (root-absolute URLs only)
 about/ builds/ talks/ writing/   Section pages
+talks/<slug>/           One talk: page, slides, media
 writing/<slug>/         Mirrored Binary Paths essay (index.html, index.md, images/)
 robots/so-101/          SO-101 build log and media
 robots/pico/            Pico build notes and media
+fonts/                  Self-hosted Newsreader (woff2, OFL)
 llms.txt llms-full.txt  Agent index and full text, generated from the HTML
 robots.txt sitemap.xml feed.xml _headers _routes.json
 functions/_middleware.js   Accept: text/markdown negotiation
-scripts/                Mirror, agent-file builder, gate path check (not deployed)
-tests/                  Stdlib unittest plus one node:test file
+scripts/                Mirror, agent-file builder, gate path check
+tests/                  Stdlib unittest plus node:test files
 favicon.svg             Site icon
-worker.js               Cloudflare Worker (RSS proxy, deployed separately)
+worker.js wrangler.toml Cloudflare Worker (RSS proxy, deployed separately)
+.cursor/skills/verify-silvags/   Cursor skill for checking the site in a browser
 ```
 
 Each robot lives in `robots/<name>/` with its page and media together. Adding a robot = new directory, zero root clutter.
