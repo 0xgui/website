@@ -17,15 +17,23 @@ A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-print
 
 **Links:** [GitHub](https://github.com/0xgui/SO-101) · [Origin story](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building)
 
+ the real CAD: six joints, one servo each
+
 3D model of the SO-101 robotic arm. Drag to rotate.
 
 ![](https://silvags.com/robots/so-101/arms-wide.webp)
 
 *The real SO-101 CAD model. Drag to rotate, scroll to zoom.*
 
+**Folio I**March 5, 2026
+
 ## Day 01 · The arms, they move
 
+ STS3215 servo, twelve of these at €20 each
+
 ![Both SO-101 arms assembled on the desk](https://silvags.com/robots/so-101/arms-wide.webp)
+
+fig. 1
 
 *Two arms, a lot of servos, built from scratch.*
 
@@ -35,9 +43,13 @@ Did I assemble everything on the first try? Ahah, no. At one point I had fully c
 
 It’s also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There’s just something special about seeing something move. Atoms moving.
 
+atoms moving
+
 3D printing the arms
 
 [Media](https://silvags.com/robots/so-101/teleop-v1.webm)
+
+ fig. 2 — both arms, about two days of printing
 
 *3D printing the arms.*
 
@@ -49,13 +61,15 @@ Teleoperation: the follower arm mirrors the leader
 
 [Media](https://silvags.com/robots/so-101/teleop-v2.webm)
 
+ fig. 3 — leader moves, follower mirrors. No learning yet.
+
 *Teleop run.*
 
 Right now it’s pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to pull me completely into this new world of hardware.
 
 ## What’s next
 
-- Teach the arms tasks by demonstration: move them through a motion a few dozen times and let them learn to replicate it (imitation learning). This is the current step.
+- here nowTeach the arms tasks by demonstration: move them through a motion a few dozen times and let them learn to replicate it (imitation learning). This is the current step.
 
 - Sim-to-real with [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) and [Gazebo](https://gazebosim.org/).
 

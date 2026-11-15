@@ -122,6 +122,67 @@ footer a{color:var(--muted)}
   .facts{grid-template-columns:1fr;gap:0}
   .facts dd{margin-bottom:.5rem}
 }
+/* ---- Notebook layer (da Vinci mockup). Additive only: the site's palette, type and spacing are unchanged. ---- */
+@font-face{font-family:"La Belle Aurore";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/labelleaurore-latin-v1.woff2) format("woff2")}
+:root{--sketch:rgba(138,61,28,.5);--grain:.22}
+:root.dark{--sketch:rgba(224,191,146,.42);--grain:.15}
+/* Faint paper grain behind the content (media and text sit above it). One tiny SVG noise tile, no image. */
+body{position:relative;background:transparent}
+body::before,.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:var(--grain);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .2 0 0 0 0 .08 5 0 0 0 -3.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+:root.dark body::before,:root.dark .hero::after{filter:invert(1)}
+.hero::after{z-index:1}
+.hand{font-family:"La Belle Aurore","Bradley Hand",cursive;font-weight:400;font-style:normal;color:var(--muted);line-height:1.25;letter-spacing:.01em}
+.folio{display:flex;align-items:center;gap:.75rem;margin:3.75rem 0 -2.4rem;color:var(--muted);font-size:.86rem;letter-spacing:.14em;text-transform:uppercase;font-variant-numeric:oldstyle-nums}
+.folio::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--rule),transparent)}
+.folio b{font-weight:500;color:var(--link);letter-spacing:.16em}
+.sk{position:absolute;overflow:visible;pointer-events:none;fill:none;stroke:var(--sketch);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.sk *{vector-effect:non-scaling-stroke}
+.sk .on{stroke:var(--link);stroke-width:1.4;opacity:.9}
+.sk .ext{display:none}
+.sk .dot{fill:var(--sketch);stroke:none}
+.sk text{fill:var(--sketch);stroke:none;font:400 15px "La Belle Aurore",cursive}
+figure.plate{position:relative}
+figure.plate .frame{position:relative}
+figure.plate .frame>.sk{inset:0;width:100%;height:100%}
+.dim{display:flex;align-items:center;gap:.6rem;margin:.55rem 0 0;color:var(--sketch);font-size:1rem}
+.dim::before,.dim::after{content:"";flex:1;height:9px;border:solid currentColor;border-width:0 1px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat}
+.dim span{color:var(--muted);font-family:"La Belle Aurore",cursive;line-height:1}
+figcaption .no{font-style:normal;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin-right:.4rem}
+/* Model plate: a construction drawing sits behind the transparent canvas. */
+figure.model .viewer>.sk{inset:0;width:100%;height:100%;z-index:0}
+figure.model .viewer img,figure.model .viewer canvas{z-index:1}
+/* Marginal notes: in the right margin on wide screens, inline asides below that. Decorative restatements, so aria-hidden. */
+.note{display:block;margin:.35rem 0 1.1rem;font-size:1.05rem;max-width:22rem}
+.note svg{display:none}
+.tallrow{display:flex;align-items:flex-end;gap:1.5rem}
+.tallrow video{flex:0 0 62%}
+.tallrow .note{margin:0 0 1.5rem;font-size:1.12rem}
+.tallrow .note svg{display:block;width:4.5rem;height:2rem;margin:0 0 .3rem -.4rem;overflow:visible}
+.tallrow .note path{fill:none;stroke:var(--sketch);stroke-width:1.1;stroke-linecap:round}
+.mirror{display:none}
+li.now{position:relative}
+li.now .note{display:none}
+@media (min-width:1100px){
+  article{position:relative}
+  .sk .ext{display:inline}
+  li.now .note{display:block}
+  .note.side{position:absolute;left:calc(100% + 2.75rem);width:12rem;margin:0}
+  .note.side svg{display:block;position:absolute;right:100%;top:.55rem;width:2.25rem;height:1rem;margin-right:.35rem;overflow:visible}
+  .note.side path{fill:none;stroke:var(--sketch);stroke-width:1.1;stroke-linecap:round}
+  figure.model .note.side{left:calc(100% + .25rem)}
+  .mirror{display:block;position:absolute;left:calc(100% + 2.75rem);width:12rem;font-size:1.15rem;opacity:.55;transform:scaleX(-1) rotate(-3deg);text-align:right}
+}
+@media (max-width:600px){
+  .tallrow{display:block}
+  .tallrow .note{margin:.5rem 0 1rem}.tallrow .note svg{display:none}
+  .folio{margin-bottom:-2rem}
+}
+/* Ink draws on as the drawing scrolls into view; static where unsupported or with reduced motion. */
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .ink{stroke-dasharray:1;stroke-dashoffset:1;animation:ink linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
+  @keyframes ink{to{stroke-dashoffset:0}}
+}}
 @media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
 </style>
 <!-- agent:links -->
@@ -154,6 +215,7 @@ footer a{color:var(--muted)}
   <nav aria-label="Site"><a href="../../builds/" aria-current="page">Builds</a><a href="../../writing/">Writing</a><a href="../../talks/">Talks</a><a href="../../about/">About</a></nav>
 </header>
 <main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="quill"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></svg>
 <article>
 <h1>SO-101 robotic arm</h1>
 <p class="meta">Build log · Day 01 · March 5, 2026</p>
@@ -165,32 +227,56 @@ footer a{color:var(--muted)}
   <dt>Stack</dt><dd>Python, ROS2, LeRobot</dd>
   <dt>Links</dt><dd><a href="https://github.com/0xgui/SO-101" target="_blank" rel="noopener">GitHub</a> · <a href="https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building" target="_blank" rel="noopener">Origin story</a></dd>
 </dl>
-<figure class="model">
-  <div class="viewer" role="img" aria-label="3D model of the SO-101 robotic arm. Drag to rotate." data-glb="so101.glb" data-orbit="0 80"><img src="arms-wide.webp" alt="" width="1600" height="955" loading="lazy"></div>
+<figure class="model plate">
+  <span class="note side hand" aria-hidden="true" style="top:2.5rem"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>the real CAD: six joints, one servo each</span>
+  <div class="viewer" role="img" aria-label="3D model of the SO-101 robotic arm. Drag to rotate." data-glb="so101.glb" data-orbit="0 80"><svg class="sk" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="filter:url(#quill)">
+    <circle class="ink" pathLength="1" cx="300" cy="170" r="150" stroke-dasharray="2 7" opacity=".6"/>
+    <path class="ink" pathLength="1" d="M300 6V334M132 170H468" stroke-dasharray="1 6" opacity=".7"/>
+    <path class="ink" pathLength="1" d="M150 304H450"/>
+    <path class="ink" pathLength="1" d="M168 304l-12 12 M196 304l-12 12 M224 304l-12 12 M252 304l-12 12 M280 304l-12 12 M308 304l-12 12 M336 304l-12 12 M364 304l-12 12 M392 304l-12 12 M420 304l-12 12 M448 304l-12 12" opacity=".55"/>
+    <path class="ink" pathLength="1" d="M206 326C250 346 350 346 394 326M394 326l-11-1M394 326l-6 9"/>
+    <text x="406" y="344">drag</text>
+  </svg><img src="arms-wide.webp" alt="" width="1600" height="955" loading="lazy"></div>
   <figcaption>The real SO-101 CAD model. Drag to rotate, scroll to zoom.</figcaption>
 </figure>
+<p class="folio"><b>Folio I</b><span>March 5, 2026</span></p>
 <h2>Day 01 · The arms, they move</h2>
-<figure>
-  <img src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" width="1600" height="955" loading="lazy" />
+<figure class="plate">
+  <span class="note side hand" aria-hidden="true" style="top:20%"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>STS3215 servo, twelve of these at €20 each</span>
+  <div class="frame"><img src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" width="1600" height="955" loading="lazy" />
+  <svg class="sk" viewBox="0 0 1600 955" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M-44 0H-12M0-44V-12M1644 0H1612M1600-44V-12M-44 955H-12M0 999V967M1644 955H1612M1600 999V967"/>
+    <ellipse class="ink on" pathLength="1" cx="1000" cy="336" rx="46" ry="42" style="filter:url(#quill)"/>
+    <path class="ink on" pathLength="1" d="M1044 316L1300 210H1600" style="filter:url(#quill)"/><path class="ink on ext" pathLength="1" d="M1600 210H1660"/>
+    <circle class="dot" cx="1000" cy="336" r="3"/>
+  </svg></div>
+  <p class="dim" aria-hidden="true"><span>fig. 1</span></p>
   <figcaption>Two arms, a lot of servos, built from scratch.</figcaption>
 </figure>
 <p>I 3D-printed it part by part with a Bambu printer I bought, ordered twelve STS3215 servos from AliExpress at €20 each, and followed open-source designs and instructions. Two arms, built completely from scratch. The 3D printing alone took about two days for both.</p>
 <p>Did I assemble everything on the first try? Ahah, no. At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup. I realized it only after everything was done, and had to redo it all from scratch.</p>
 <p>It’s also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer. There’s just something special about seeing something move. Atoms moving.</p>
+<span class="mirror hand" aria-hidden="true">atoms moving</span>
 <figure class="tall">
+  <div class="tallrow">
   <video autoplay muted loop playsinline preload="none" aria-label="3D printing the arms"><source src="teleop-v1.webm" type="video/webm"></video>
+  <span class="note hand" aria-hidden="true"><svg viewBox="0 0 72 32"><path class="ink" pathLength="1" d="M70 28C48 30 22 22 4 6M4 6l3 9M4 6l9 2"/></svg>fig. 2 — both arms, about two days of printing</span>
+  </div>
   <figcaption>3D printing the arms.</figcaption>
 </figure>
 <blockquote>The moment I grabbed the leader arm, moved it slowly and watched the follower mirror every single action in real time. That was it. The trigger. Something about seeing a machine you built with your own hands actually move hits differently than anything in software.</blockquote>
 <p>It’s physical. It’s immediate. It’s hard. It’s real. Now I just need to give it a brain.</p>
 <figure class="tall">
+  <div class="tallrow">
   <video autoplay muted loop playsinline preload="none" aria-label="Teleoperation: the follower arm mirrors the leader"><source src="teleop-v2.webm" type="video/webm"></video>
+  <span class="note hand" aria-hidden="true"><svg viewBox="0 0 72 32"><path class="ink" pathLength="1" d="M70 28C48 30 22 22 4 6M4 6l3 9M4 6l9 2"/></svg>fig. 3 — leader moves, follower mirrors. No learning yet.</span>
+  </div>
   <figcaption>Teleop run.</figcaption>
 </figure>
 <p>Right now it’s pure teleoperation: I move one arm, the other follows. No AI, no learning, just direct position mapping. That moment alone was enough to pull me completely into this new world of hardware.</p>
 <h2>What’s next</h2>
 <ul>
-  <li>Teach the arms tasks by demonstration: move them through a motion a few dozen times and let them learn to replicate it (imitation learning). This is the current step.</li>
+  <li class="now"><span class="note side hand" aria-hidden="true" style="top:0;font-size:1.1rem"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>here now</span>Teach the arms tasks by demonstration: move them through a motion a few dozen times and let them learn to replicate it (imitation learning). This is the current step.</li>
   <li>Sim-to-real with <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> and <a href="https://gazebosim.org/" target="_blank" rel="noopener">Gazebo</a>.</li>
   <li>Finally, a vision-language-action model so it can see, reason, and act.</li>
 </ul>
@@ -216,8 +302,9 @@ const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback|
 new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
 document.readyState=='complete'?kick():addEventListener('load',kick);
 async function boot(){
-  const key=cur=id(),V='https://cdn.jsdelivr.net/npm/three@0.169.0';
-  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const key=cur=id();
+  // three.js r169, vendored and self-hosted (vendor/three/, MIT): one ESM bundle with the loaders this site uses.
+  const T=await import('/vendor/three/three-0.169.0.min.js'),{GLTFLoader}=T;
   const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
   if(key!==cur)return;
   if(stop){stop();stop=run=null}
@@ -287,12 +374,11 @@ document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()
 </script>
 
 <script type="module">
-// 3D viewers (.viewer in a robot page): the header's three.js build plus OrbitControls, loaded only when a viewer
+// 3D viewers (.viewer in a robot page): the header's vendored three.js build plus OrbitControls, loaded only when a viewer
 // nears the viewport. Drag to rotate, scroll or pinch to zoom; the poster stays if WebGL or the load fails.
 // Runs on every page because in-place navigation (below) can bring a viewer in; dead viewers free their GL context.
-const V='https://cdn.jsdelivr.net/npm/three@0.169.0',live=new Set();let lib=null;
-const load=()=>lib||(lib=Promise.all(['/+esm','/examples/jsm/loaders/GLTFLoader.js/+esm','/examples/jsm/controls/OrbitControls.js/+esm',
-  '/examples/jsm/environments/RoomEnvironment.js/+esm','/examples/jsm/loaders/DRACOLoader.js/+esm'].map(p=>import(V+p))));
+const V='/vendor/three/',live=new Set();let lib=null;
+const load=()=>lib||(lib=import(V+'three-0.169.0.min.js').then(T=>[T,T,T,T,T]));
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);boot(e.target).catch(()=>{lib=null})}),{rootMargin:'300px'});
 const gl2=!!document.createElement('canvas').getContext('webgl2');
 function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}});
@@ -300,7 +386,7 @@ function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}}
 async function boot(el){
   const [T,{GLTFLoader},{OrbitControls},{RoomEnvironment},{DRACOLoader}]=await load();
   // so101.glb is Draco-compressed; the decoder (from the same three build) is fetched only for models that need it.
-  const draco=new DRACOLoader().setDecoderPath(V+'/examples/jsm/libs/draco/gltf/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
+  const draco=new DRACOLoader().setDecoderPath(V+'draco/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
   if(!el.isConnected)return;
   const cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');el.appendChild(cv);
   const r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));r.toneMapping=T.NeutralToneMapping;
