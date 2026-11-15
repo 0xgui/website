@@ -58,6 +58,7 @@ Each HTML page is fully self-contained:
 - `<style>` is inline — there is no external CSS file
 - `<script>` is inline — there is no external JS file (worker.js is the only standalone JS, deployed separately to Cloudflare)
 - Media lives alongside the page in the same `robots/<name>/` directory — use relative paths (e.g. `src="arms-wide.webp"`)
+- CSS `url()` inside a `style` attribute (posters, ink studies) must be root-absolute (`/robots/pico/pico-notebook.svg`): after an in-place navigation a relative one resolves against the previous page and 404s.
 
 Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need styles, add them to the page's `<style>` block. `functions/_middleware.js` is the one exception: a Pages Function, not a browser script. New essays reuse the Writing page's inline style and scripts; do not invent a second visual system.
 

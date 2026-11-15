@@ -75,6 +75,17 @@ class HtmlTests(unittest.TestCase):
             parser.close()
             self.assertEqual(parser.errors, [], rel)
 
+    def test_inline_style_urls_survive_in_place_navigation(self):
+        # Pages swap in place, so a relative url() in a style attribute resolves
+        # against the previous page and 404s. Keep them root-absolute.
+        bad = []
+        for path in list(pages()) + [ROOT / "404.html"]:
+            for style in re.findall(r'style="([^"]*)"', path.read_text(encoding="utf-8")):
+                for url in re.findall(r"url\(([^)]*)\)", style):
+                    if not url.startswith(("/", "#", "data:")):
+                        bad.append(f"{path.relative_to(ROOT)}: {url}")
+        self.assertEqual(bad, [])
+
     def test_published_files_have_no_banned_links_or_place_names(self):
         suffixes = {".html", ".md", ".txt", ".xml"}
         for path in ROOT.rglob("*"):
