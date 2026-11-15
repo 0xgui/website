@@ -260,6 +260,8 @@ A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-print
 
 ## Day 01 · The arms, they move
 
+*The SO-101, drawn from its CAD model.*
+
  STS3215 servo, twelve of these at €20 each
 
 ![Both SO-101 arms assembled on the desk](https://silvags.com/robots/so-101/arms-wide.webp)

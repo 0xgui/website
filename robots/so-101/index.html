@@ -184,6 +184,10 @@ li.now .note{display:none}
   @keyframes ink{to{stroke-dashoffset:0}}
 }}
 @media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+.ink-study{margin:1.5rem 0 2rem}
+.ink-study .ink{display:block;aspect-ratio:4/3;background:var(--ink);-webkit-mask:url(so101-notebook.svg) center/contain no-repeat;mask:url(so101-notebook.svg) center/contain no-repeat}
+:root.dark .ink-study .ink{background:#e8dcc6;-webkit-mask-image:url(so101-notebook-dark.svg);mask-image:url(so101-notebook-dark.svg)}
+.ink-study figcaption{font-style:italic;color:var(--muted);font-size:.9rem}
 </style>
 <!-- agent:links -->
 <link rel="alternate" type="text/markdown" href="/robots/so-101/index.md">
@@ -241,6 +245,7 @@ li.now .note{display:none}
 </figure>
 <p class="folio"><b>Folio I</b><span>March 5, 2026</span></p>
 <h2>Day 01 · The arms, they move</h2>
+<figure class="ink-study"><span class="ink" role="img" aria-label="Ink study of the SO-101 robotic arm: a three-quarter view with cross-hatched shading, joint axis circles, a reach arc, and handwritten notes for shoulder pan, STS3215, wrist roll and gripper."></span><figcaption>The SO-101, drawn from its CAD model.</figcaption></figure>
 <figure class="plate">
   <span class="note side hand" aria-hidden="true" style="top:20%"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>STS3215 servo, twelve of these at €20 each</span>
   <div class="frame"><img src="arms-wide.webp" alt="Both SO-101 arms assembled on the desk" width="1600" height="955" loading="lazy" />
