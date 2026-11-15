@@ -196,6 +196,13 @@ li.now .note{display:none}
 .doodle svg{display:block;width:100%;height:auto;overflow:visible;fill:none;stroke:var(--sketch);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 .doodle text{fill:var(--muted);stroke:none;font:400 28px "La Belle Aurore",cursive}
 .doodle figcaption{font-size:1.1rem;margin-top:.25rem}
+.bench li{display:grid;grid-template-columns:8.5rem 1fr;gap:1.25rem;align-items:center;margin:.2rem 0 1rem}
+.bench .mini{display:block;aspect-ratio:4/3;background:var(--ink);opacity:.9;-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
+:root.dark .bench .mini{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
+@media (max-width:600px){.bench li{grid-template-columns:6.5rem 1fr;gap:.9rem}}
+.intro{position:relative}
+.intro .note{display:none}
+@media (min-width:1100px){.intro .note{display:block}}
 </style>
 
 <!-- agent:links -->

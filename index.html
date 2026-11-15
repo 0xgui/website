@@ -196,6 +196,13 @@ li.now .note{display:none}
 .doodle svg{display:block;width:100%;height:auto;overflow:visible;fill:none;stroke:var(--sketch);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 .doodle text{fill:var(--muted);stroke:none;font:400 28px "La Belle Aurore",cursive}
 .doodle figcaption{font-size:1.1rem;margin-top:.25rem}
+.bench li{display:grid;grid-template-columns:8.5rem 1fr;gap:1.25rem;align-items:center;margin:.2rem 0 1rem}
+.bench .mini{display:block;aspect-ratio:4/3;background:var(--ink);opacity:.9;-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
+:root.dark .bench .mini{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
+@media (max-width:600px){.bench li{grid-template-columns:6.5rem 1fr;gap:.9rem}}
+.intro{position:relative}
+.intro .note{display:none}
+@media (min-width:1100px){.intro .note{display:block}}
 </style>
 
 <!-- agent:links -->
@@ -232,12 +239,15 @@ li.now .note{display:none}
   <nav aria-label="Site"><a href="builds/">Builds</a><a href="writing/">Writing</a><a href="talks/">Talks</a><a href="about/">About</a></nav>
 </header>
 <main>
+<div class="intro">
+<span class="note side hand" aria-hidden="true" style="top:2.1rem"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>by night, the robots</span>
 <p class="lede">Hands-on Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
+</div>
 
 <h2>On the bench</h2>
-<ul class="plain">
-  <li><a href="robots/so-101/">SO-101 robotic arm</a> <span class="sub">— two arms that mirror each other. Teaching them imitation learning now.</span></li>
-  <li><a href="robots/pico/">Pico</a> <span class="sub">— two servos and one job: get back up. It does, on real hardware.</span></li>
+<ul class="plain bench">
+  <li><span class="mini" aria-hidden="true" style="--study:url(/robots/so-101/so101-notebook.svg);--study-dark:url(/robots/so-101/so101-notebook-dark.svg)"></span><span><a href="robots/so-101/">SO-101 robotic arm</a> <span class="sub">— two arms that mirror each other. Teaching them imitation learning now.</span></span></li>
+  <li><span class="mini" aria-hidden="true" style="--study:url(/robots/pico/pico-notebook.svg);--study-dark:url(/robots/pico/pico-notebook-dark.svg)"></span><span><a href="robots/pico/">Pico</a> <span class="sub">— two servos and one job: get back up. It does, on real hardware.</span></span></li>
 </ul>
 <p class="more"><a href="builds/">All builds and open source</a></p>
 
