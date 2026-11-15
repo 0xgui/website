@@ -69,6 +69,24 @@ FORBIDDEN = re.compile(
     r"leiria|portugal|https?://(?:www\.)?(?:x\.com|twitter\.com)|https?://t\.co/",
     re.I,
 )
+# Sign-off tails and leftover Twitter sentences, applied to essay bodies.
+_SPACE = r"(?:\s|&nbsp;|&#160;)+"
+_TAG = r"(?:\s*</?[^>]+>)*\s*"
+_PLATFORM = r"(?:X|Twitter)"
+_SIGNOFF_X_RE = re.compile(
+    rf"(?i)(?:{_SPACE}or{_SPACE}the{_SPACE}digital{_SPACE}playground{_SPACE}\({_TAG}{_PLATFORM}{_TAG}\)"
+    rf"|{_SPACE}or{_SPACE}on{_SPACE}{_TAG}{_PLATFORM}\b{_TAG}"
+    rf"|{_SPACE}or{_SPACE}{_TAG}{_PLATFORM}\b{_TAG})"
+)
+_TWITTER_WORD_RE = re.compile(r"(?i)\bTwitter\b")
+_BLOCK_END_RE = re.compile(
+    r"</?(?:p|li|h[1-6]|div|blockquote|article|ul|ol|section|figcaption)\b",
+    re.I,
+)
+_BLOCK_TAG_AT_END_RE = re.compile(
+    r"</?(?:p|li|h[1-6]|div|blockquote|article|ul|ol|section|figcaption)\b[^>]*>$",
+    re.I,
+)
 LIST_RE = re.compile(
     r"<!-- mirror:posts -->.*?<!-- /mirror:posts -->|<ul class=\"posts\" id=\"articles\">.*?</ul>",
     re.S,
@@ -92,6 +110,49 @@ RSS_HOST_SNAPSHOT = "https://rss.silvags.com/raw.xml"
 def format_date(post: Post) -> str:
     when = post.published
     return f"{MONTHS[when.month - 1]} {when.day}, {when.year}"
+
+
+def _drop_twitter_sentences(html: str) -> str:
+    """Drop each sentence that names Twitter, without crossing block tags."""
+    parts = []
+    pos = 0
+    for match in _TWITTER_WORD_RE.finditer(html):
+        if match.start() < pos:
+            continue
+        start = match.start()
+        i = start
+        while i > 0:
+            ch = html[i - 1]
+            if ch in ".!?":
+                break
+            if ch == ">" and _BLOCK_TAG_AT_END_RE.search(html[max(0, i - 120):i]):
+                break
+            i -= 1
+        end = match.end()
+        while end < len(html):
+            ch = html[end]
+            if ch in ".!?":
+                end += 1
+                break
+            if ch == "<" and _BLOCK_END_RE.match(html[end:]):
+                break
+            end += 1
+        parts.append(html[pos:i])
+        pos = end
+    parts.append(html[pos:])
+    return "".join(parts)
+
+
+def strip_x_mentions(html: str) -> str:
+    """Remove X/Twitter sign-off alternatives and any leftover Twitter sentence.
+
+    'You can find me on LinkedIn or X.' becomes 'You can find me on LinkedIn.'
+    Also covers 'or on X', 'or the digital playground (X|Twitter)', and a
+    body sentence that names Twitter. Idempotent. Does not touch a lone 'X'
+    outside those patterns (OS X, 10x, catch(x)).
+    """
+    text = _SIGNOFF_X_RE.sub("", html)
+    return _drop_twitter_sentences(text)
 
 
 def http_get(url: str, accept: str, timeout: int = 25, attempts: int = 3, sleep=time.sleep):
@@ -773,6 +834,7 @@ def render_posts(root: Path, posts: list[Post], render_slugs: set[str], saved: d
         if post.kind == "full":
             image_map, files, body, manifest = prepare_images(post, fetch_bytes, previous)
             body = sanitize(body, link_map=sibling_links(posts, post.slug), image_map=image_map)
+            body = strip_x_mentions(body)
             body = size_images(body, files)
         else:
             files, manifest = {}, '{ "images": [] }\n'
@@ -858,6 +920,30 @@ def refresh_indexes(root: Path) -> list[str]:
             path.write_text(updated, encoding="utf-8")
             changed.append(str(path.relative_to(root)))
     changed.extend(apply_agent(root))
+    return changed
+
+
+def rewrite_mirrored_essays(root: Path) -> list[str]:
+    """Apply strip_x_mentions to each saved essay body. Leaves the shell alone."""
+    changed = []
+    writing = root / "writing"
+    if not writing.is_dir():
+        return changed
+    article = re.compile(
+        r'(<article\b[^>]*class="post"[^>]*>)(.*?)(</article>)',
+        re.I | re.S,
+    )
+    for path in sorted(writing.glob("*/index.html")):
+        html = path.read_text(encoding="utf-8")
+        match = article.search(html)
+        if not match:
+            continue
+        body = match.group(2)
+        updated = strip_x_mentions(body)
+        if updated == body:
+            continue
+        path.write_text(html[:match.start(2)] + updated + html[match.end(2):], encoding="utf-8")
+        changed.append(str(path.relative_to(root)))
     return changed
 
 

@@ -82,7 +82,7 @@ You'll need to find your own way to manage this.
 
 -
 
-**Tech Influencers** 🐦: Follow people in your areas of interest on social media. Twitter is gold for quick tech updates and discussions. Here are some of my go to follows:
+**Tech Influencers** 🐦: Follow people in your areas of interest on social media. Here are some of my go to follows:
 
   -
 
@@ -350,7 +350,7 @@ At the end of the day, tech is just a tool.
 
 ## Until Next Time 😎
 
-Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on [LinkedIn](https://www.linkedin.com/in/silva-gs/) or on X.
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on [LinkedIn](https://www.linkedin.com/in/silva-gs/).
 
 I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
 

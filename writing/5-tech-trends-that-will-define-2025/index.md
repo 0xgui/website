@@ -423,6 +423,6 @@ In the meantime, let's see what happens.
 ### **
 **Until Next Time 😎
 
-Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)) or the digital playground (X).
+Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)).
 
 I'm always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.

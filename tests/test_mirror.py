@@ -12,7 +12,9 @@ from scripts.mirror_substack import (
     outage_is_loud,
     run_mirror,
     essay_cover,
+    rewrite_mirrored_essays,
     size_images,
+    strip_x_mentions,
     webp_size,
 )
 
@@ -472,3 +474,118 @@ class CoverTests(unittest.TestCase):
             html = path.read_text(encoding="utf-8")
             if '<img src="images/' in html:
                 self.assertIn(f'og:image" content="https://silvags.com/writing/{path.parent.name}/images/', html, path)
+
+
+
+class StripXMentionsTests(unittest.TestCase):
+    def test_signoff_or_x_becomes_linkedin_only(self):
+        src = "<p>You can find me on LinkedIn or X.</p>"
+        self.assertEqual(strip_x_mentions(src), "<p>You can find me on LinkedIn.</p>")
+
+    def test_signoff_variants_and_html_link(self):
+        cases = [
+            (
+                'You can find me on <a href="https://www.linkedin.com/in/silva-gs/">LinkedIn</a> or X.',
+                'You can find me on <a href="https://www.linkedin.com/in/silva-gs/">LinkedIn</a>.',
+            ),
+            (
+                "You can find me on LinkedIn or on X.",
+                "You can find me on LinkedIn.",
+            ),
+            (
+                "You can find me on the professional network (LinkedIn) or the digital playground (X).",
+                "You can find me on the professional network (LinkedIn).",
+            ),
+            (
+                "You can find me on the professional network (LinkedIn) or the digital playground (Twitter).",
+                "You can find me on the professional network (LinkedIn).",
+            ),
+            (
+                'You can find me on <a href="https://www.linkedin.com/in/gssilva-link/">LinkedIn</a> or the digital playground (X).',
+                'You can find me on <a href="https://www.linkedin.com/in/gssilva-link/">LinkedIn</a>.',
+            ),
+            (
+                "You can find me on LinkedIn or <em>X</em>.",
+                "You can find me on LinkedIn.",
+            ),
+            (
+                "You can find me on LinkedIn or\nX.",
+                "You can find me on LinkedIn.",
+            ),
+            (
+                "You can find me on LinkedIn or&nbsp;X.",
+                "You can find me on LinkedIn.",
+            ),
+        ]
+        for src, want in cases:
+            with self.subTest(src=src):
+                self.assertEqual(strip_x_mentions(f"<p>{src}</p>"), f"<p>{want}</p>")
+
+    def test_idempotent_and_preserves_unrelated_text(self):
+        src = "<p>I’m all ears! You can find me on LinkedIn or X.</p><p>Thanks for reading.</p>"
+        once = strip_x_mentions(src)
+        self.assertEqual(once, "<p>I’m all ears! You can find me on LinkedIn.</p><p>Thanks for reading.</p>")
+        self.assertEqual(strip_x_mentions(once), once)
+
+    def test_does_not_touch_os_x_or_10x_or_catch_x(self):
+        src = "<p>OS X and 10x engineers, then catch(x) in a script.</p>"
+        self.assertEqual(strip_x_mentions(src), src)
+
+    def test_drops_a_twitter_sentence_and_keeps_neighbours(self):
+        src = (
+            "<p>Follow people in your areas of interest on social media. "
+            "Twitter is gold for quick tech updates and discussions. "
+            "Here are some of my go to follows:</p>"
+        )
+        out = strip_x_mentions(src)
+        self.assertEqual(
+            out,
+            "<p>Follow people in your areas of interest on social media. "
+            "Here are some of my go to follows:</p>",
+        )
+        self.assertNotIn("Twitter", out)
+        self.assertNotIn("twitter", out.lower())
+
+    def test_rewrite_mirrored_essays_updates_the_article_only(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            target = root / "writing" / "kept-post" / "index.html"
+            html = target.read_text(encoding="utf-8")
+            html = html.replace(
+                "<p>This sentence must survive a bad fetch.</p>",
+                "<p>You can find me on LinkedIn or X.</p>",
+            )
+            target.write_text(html, encoding="utf-8")
+            # A decoy in the shell must not be rewritten.
+            shell = root / "writing" / "index.html"
+            before_shell = shell.read_text(encoding="utf-8")
+            changed = rewrite_mirrored_essays(root)
+            self.assertEqual(changed, ["writing/kept-post/index.html"])
+            updated = target.read_text(encoding="utf-8")
+            self.assertIn("You can find me on LinkedIn.</p>", updated)
+            self.assertNotIn("or X", updated)
+            self.assertEqual(shell.read_text(encoding="utf-8"), before_shell)
+            self.assertEqual(rewrite_mirrored_essays(root), [])
+
+    def test_apply_mirror_strips_the_signoff(self):
+        import tempfile
+        from dataclasses import replace
+        posts = posts_from_api(json.loads((FIX / "api.json").read_text(encoding="utf-8")))
+        posts = [
+            replace(
+                posts[0],
+                body_html=(
+                    "<p>Hello.</p>"
+                    "<p>You can find me on LinkedIn or X.</p>"
+                ),
+            )
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            apply_mirror(root, posts, fetch_bytes=lambda url: TINY_WEBP)
+            html = (root / "writing" / "hello-world" / "index.html").read_text(encoding="utf-8")
+            self.assertIn("You can find me on LinkedIn.", html)
+            self.assertNotRegex(html, r"or X")

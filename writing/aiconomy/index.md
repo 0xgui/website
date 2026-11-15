@@ -290,6 +290,6 @@ Absolutely.
 
 >
 
-Got thoughts? Questions? Just want to say hi? I’m all ears! You can find me on [LinkedIn](https://www.linkedin.com/in/silva-gs/) or X.
+Got thoughts? Questions? Just want to say hi? I’m all ears! You can find me on [LinkedIn](https://www.linkedin.com/in/silva-gs/).
 
 I’m always up for a chat and promise to get back to everyone. After all, the best part of writing is the conversations it starts.
