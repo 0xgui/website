@@ -4,6 +4,14 @@ Build log · Day 01 · March 5, 2026
 
 A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-printed arms, leader-follower teleop, and a slowly growing brain.
 
+*The SO-101, drawn from its CAD model.*
+
+3D model of the SO-101 robotic arm. Drag to rotate.
+
+![](https://silvags.com/robots/so-101/arms-wide.webp)
+
+*The real SO-101 CAD model. Drag to rotate, scroll to zoom.*
+
 **Status:** In progress, step 3 of 4
 
 **Progress:** ✓ Build & assemble
@@ -17,17 +25,9 @@ A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-print
 
 **Links:** [GitHub](https://github.com/0xgui/SO-101) · [Origin story](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building)
 
-3D model of the SO-101 robotic arm. Drag to rotate.
-
-![](https://silvags.com/robots/so-101/arms-wide.webp)
-
-*The real SO-101 CAD model. Drag to rotate, scroll to zoom.*
-
 **Folio I** March 5, 2026
 
 ## Day 01 · The arms, they move
-
-*The SO-101, drawn from its CAD model.*
 
 ![Both SO-101 arms assembled on the desk](https://silvags.com/robots/so-101/arms-wide.webp)
 

@@ -224,13 +224,7 @@ li.now .note{display:none}
 <h1>Pico</h1>
 <p class="meta">Build notes · physical recovery confirmed</p>
 <p class="lede">A small robot with two servos and one job: get back up. An onboard neural network moves its arms to recover from a fall. It’s now reliably self-righting on real hardware.</p>
-<dl class="facts">
-  <dt>Status</dt><dd>Self-righting works, experiments next</dd>
-  <dt>Progress</dt><dd>✓ Build &amp; assemble<br>✓ Calibrate<br>✓ Self-righting<br>→ <b>Experiments</b> (next)</dd>
-  <dt>Hardware</dt><dd>ATOM Matrix, PTK 7465 MG × 2, printed parts</dd>
-  <dt>Stack</dt><dd>MuJoCo, PPO, Arduino / PlatformIO</dd>
-  <dt>Links</dt><dd><a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a></dd>
-</dl>
+<figure class="ink-study"><span class="ink" role="img" aria-label="Ink study of Pico caught mid-tip on the edge of its printed base: hatched shading, a plumb line and tilt angle, the arc its top would trace in a fall, a centre-of-mass mark, and handwritten notes for the ATOM Matrix and the lower and upper servos." style="--study:url(pico-notebook.svg);--study-dark:url(pico-notebook-dark.svg)"></span><figcaption>Pico mid-tip, drawn from its simulation model.</figcaption></figure>
 <figure class="model plate">
   <span class="note side hand" aria-hidden="true" style="top:2.5rem"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>two servos, one job: get back up</span>
   <div class="viewer" role="img" aria-label="Pico simulation model: two servos and printed arms above a base with an ATOM Matrix. Drag to rotate." data-glb="pico.glb" data-orbit="30 78"><svg class="sk" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="filter:url(#quill)">
@@ -243,9 +237,15 @@ li.now .note{display:none}
   </svg><img src="pico-preview.webp" alt="" width="1600" height="900" loading="lazy"></div>
   <figcaption>Simulation geometry, neutral pose. Drag to rotate.</figcaption>
 </figure>
+<dl class="facts">
+  <dt>Status</dt><dd>Self-righting works, experiments next</dd>
+  <dt>Progress</dt><dd>✓ Build &amp; assemble<br>✓ Calibrate<br>✓ Self-righting<br>→ <b>Experiments</b> (next)</dd>
+  <dt>Hardware</dt><dd>ATOM Matrix, PTK 7465 MG × 2, printed parts</dd>
+  <dt>Stack</dt><dd>MuJoCo, PPO, Arduino / PlatformIO</dd>
+  <dt>Links</dt><dd><a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a></dd>
+</dl>
 <p class="folio"><b>Folio I</b> <span>Build notes</span></p>
 <h2>Note 01 · Two motors, back on its feet</h2>
-<figure class="ink-study"><span class="ink" role="img" aria-label="Ink study of Pico caught mid-tip on the edge of its printed base: hatched shading, a plumb line and tilt angle, the arc its top would trace in a fall, a centre-of-mass mark, and handwritten notes for the ATOM Matrix and the lower and upper servos." style="--study:url(pico-notebook.svg);--study-dark:url(pico-notebook-dark.svg)"></span><figcaption>Pico mid-tip, drawn from its simulation model.</figcaption></figure>
 <p>Pico has a printed base, two moving arms, and an M5Stack ATOM Matrix: a tiny ESP32 board with an inertial sensor. When the robot tips over, it estimates its tilt and uses the arms to work its way back upright. The recovery runs entirely on the robot once the firmware is flashed.</p>
 <span class="note side hand" aria-hidden="true"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>four inputs: roll, pitch, two servo targets</span>
 <p>The interesting part is the controller. A policy trained in the MuJoCo simulator takes four inputs (roll, pitch, and the two servo targets) and chooses how to change those targets. The firmware runs that small neural network about 50 times a second during a recovery attempt.</p>
