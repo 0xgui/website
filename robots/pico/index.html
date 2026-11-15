@@ -134,7 +134,7 @@ body::before,.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointe
 .hero::after{z-index:1}
 .hand{font-family:"La Belle Aurore","Bradley Hand",cursive;font-weight:400;font-style:normal;color:var(--muted);line-height:1.25;letter-spacing:.01em}
 .folio{display:flex;align-items:center;gap:.75rem;margin:3.75rem 0 -2.4rem;color:var(--muted);font-size:.86rem;letter-spacing:.14em;text-transform:uppercase;font-variant-numeric:oldstyle-nums}
-.folio::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--rule),transparent)}
+.folio::after{content:"";flex:1;height:10px;background:var(--sketch);opacity:.75;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
 .folio b{font-weight:500;color:var(--link);letter-spacing:.16em}
 .sk{position:absolute;overflow:visible;pointer-events:none;fill:none;stroke:var(--sketch);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .sk *{vector-effect:non-scaling-stroke}
@@ -188,6 +188,14 @@ li.now .note{display:none}
 .ink-study .ink{display:block;aspect-ratio:4/3;background:var(--ink);-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
 :root.dark .ink-study .ink{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
 .ink-study figcaption{font-style:italic;color:var(--muted);font-size:.9rem}
+.build{display:flow-root}
+.build .thumb{float:right;width:11.5rem;aspect-ratio:4/3;margin:-.4rem -.5rem .5rem 1.25rem;background:var(--ink);-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
+:root.dark .build .thumb{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
+@media (max-width:600px){.build .thumb{width:6.5rem;margin-left:1rem}}
+.doodle{margin:1.5rem 0 1.75rem;max-width:19rem}
+.doodle svg{display:block;width:100%;height:auto;overflow:visible;fill:none;stroke:var(--sketch);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.doodle text{fill:var(--muted);stroke:none;font:400 28px "La Belle Aurore",cursive}
+.doodle figcaption{font-size:1.1rem;margin-top:.25rem}
 </style>
 <!-- agent:links -->
 <link rel="alternate" type="text/markdown" href="/robots/pico/index.md">
