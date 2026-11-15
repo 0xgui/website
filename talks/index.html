@@ -134,7 +134,7 @@ body::before,.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointe
 .hero::after{z-index:1}
 .hand{font-family:"La Belle Aurore","Bradley Hand",cursive;font-weight:400;font-style:normal;color:var(--muted);line-height:1.25;letter-spacing:.01em}
 .folio{display:flex;align-items:center;gap:.75rem;margin:3.75rem 0 -2.4rem;color:var(--muted);font-size:.86rem;letter-spacing:.14em;text-transform:uppercase;font-variant-numeric:oldstyle-nums}
-.folio::after{content:"";flex:1;height:10px;background:var(--sketch);opacity:.75;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
+.folio::after{content:"";flex:1;height:10px;background:var(--sketch);opacity:.75;-webkit-mask:var(--quill) center/100% 100% no-repeat;mask:var(--quill) center/100% 100% no-repeat}
 .folio b{font-weight:500;color:var(--link);letter-spacing:.16em}
 .sk{position:absolute;overflow:visible;pointer-events:none;fill:none;stroke:var(--sketch);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .sk *{vector-effect:non-scaling-stroke}
@@ -203,6 +203,22 @@ li.now .note{display:none}
 .intro{position:relative}
 .intro .note{display:none}
 @media (min-width:1100px){.intro .note{display:block}}
+/* ---- Notebook layer, site-wide pass: folio datelines and ink furniture. ---- */
+:root{--quill:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E")}
+/* Folio datelines: an entry's date is set like a folio label (lists, and an essay's dateline over a quill rule). */
+ul.posts time{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-variant-numeric:oldstyle-nums;margin-bottom:.05rem}
+.meta:has(+.post){font-style:normal;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-variant-numeric:oldstyle-nums;margin-bottom:2.25rem}
+.meta:has(+.post) time{color:var(--link);font-weight:500;letter-spacing:.14em}
+.meta:has(+.post)::after{content:"";display:block;height:10px;margin-top:.55rem;background:var(--sketch);opacity:.75;-webkit-mask:var(--quill) center/100% 100% no-repeat;mask:var(--quill) center/100% 100% no-repeat}
+/* Ink furniture: hand-drawn rules for breaks and quotes, a tailpiece where an essay ends, a small mark per talk. */
+hr{border:0;height:10px;margin:2.5rem 0;background:var(--sketch);opacity:.75;-webkit-mask:var(--quill) center/100% 100% no-repeat;mask:var(--quill) center/100% 100% no-repeat}
+blockquote{position:relative;border-left:0}
+blockquote::before{content:"";position:absolute;left:0;top:.25em;bottom:.25em;width:6px;background:var(--sketch);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3.2 1C2.4 22 3.9 45 2.9 66S3.6 88 3.1 99'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.55' d='M4.2 8C3.6 30 4.6 52 3.9 74'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3.2 1C2.4 22 3.9 45 2.9 66S3.6 88 3.1 99'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.55' d='M4.2 8C3.6 30 4.6 52 3.9 74'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
+.post::after{content:"";display:block;width:5.5rem;height:1rem;margin:3.25rem auto 0;background:var(--sketch);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 16'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-width='1.2'%3E%3Cpath d='M3 9C11 4 19 13 27 8.5S36 6 38 8'/%3E%3Cpath d='M87 7C79 12 71 3 63 7.5S54 10 52 8'/%3E%3C/g%3E%3Cpath d='M45 4.6c1.9 0 3.4 1.5 3.4 3.4S46.9 11.4 45 11.4 41.6 9.9 41.6 8 43.1 4.6 45 4.6z' fill='%23000'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 16'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-width='1.2'%3E%3Cpath d='M3 9C11 4 19 13 27 8.5S36 6 38 8'/%3E%3Cpath d='M87 7C79 12 71 3 63 7.5S54 10 52 8'/%3E%3C/g%3E%3Cpath d='M45 4.6c1.9 0 3.4 1.5 3.4 3.4S46.9 11.4 45 11.4 41.6 9.9 41.6 8 43.1 4.6 45 4.6z' fill='%23000'/%3E%3C/svg%3E") center/contain no-repeat}
+ul.marks li{position:relative;padding-left:2.25rem}
+ul.marks li::before{content:"";position:absolute;left:0;top:.42em;width:1.5rem;height:1.05rem;background:var(--sketch);-webkit-mask:var(--mark) center/contain no-repeat;mask:var(--mark) center/contain no-repeat}
+ul.marks.video{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 20'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.3'%3E%3Cpath d='M2.5 2.8C9 2.2 19 2.4 25.6 2.9 26 7 25.9 12 25.4 15.6 18 16.2 9 16 2.8 15.7 2.3 11 2.2 7 2.5 2.8z'/%3E%3Cpath d='M11.4 6.3 17.6 9.3 11.2 12.5z'/%3E%3Cpath d='M8 18.6H20.4'/%3E%3C/g%3E%3C/svg%3E")}
+ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 20'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.3'%3E%3Cpath d='M2.2 2.4 25.8 2.6'/%3E%3Cpath d='M3.4 2.6C3.2 6.5 3.3 10 3.6 13.4 10 13.9 18 13.8 24.6 13.3 24.9 9.6 24.8 6 24.6 2.6'/%3E%3Cpath d='M7.4 10.6V8.4M11 10.6V6.6M14.6 10.6V7.8'/%3E%3Cpath d='M14 13.6 14.1 17.4M14.1 17.4 9.6 19.3M14.1 17.4 18.6 19.2'/%3E%3C/g%3E%3C/svg%3E")}
 </style>
 
 <!-- agent:links -->
@@ -222,13 +238,13 @@ li.now .note{display:none}
 <h1>Talks</h1>
 <p class="lede">My DevOps world: Kubernetes, WebAssembly, and platform engineering. These days my research is more about robotics, but I still work on cloud-native stuff.</p>
 <h2>Videos</h2>
-<ul class="plain">
+<ul class="plain marks video">
   <li><a href="https://youtu.be/GVWSm0GXfFg" target="_blank" rel="noopener">WebAssembly + Kubernetes: Future or Fad?</a></li>
   <li><a href="https://youtu.be/1HnvtX5iFG0" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Intro</a> <span class="sub">— series</span></li>
   <li><a href="https://youtu.be/4-IEQK75ASE" target="_blank" rel="noopener">Kubernetes Multi-Tenancy Guide — Business</a> <span class="sub">— series</span></li>
 </ul>
 <h2>Slides</h2>
-<ul class="plain">
+<ul class="plain marks slide">
   <li><a href="bottleneck-moved/">The Bottleneck Moved</a> <span class="sub">— KCD Porto × DevOpsDays 2026 · slides and sources</span></li>
   <li><a href="https://drive.google.com/file/d/1U3Fy4boqBCr6XJyx-QTuS1T4n3sX4yzg/view" target="_blank" rel="noopener">Beyond the Hype: K8s for Real Business Value</a></li>
   <li><a href="https://drive.google.com/file/d/1mwjWJ6FR0OSCIx_EBlW-GnyAQMKGXbM9/view" target="_blank" rel="noopener">WebAssembly + Kubernetes</a></li>
