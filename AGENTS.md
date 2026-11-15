@@ -48,7 +48,6 @@ scripts/                Mirror, agent-file builder, gate path check
 tests/                  Stdlib unittest plus node:test files
 favicon.svg             Site icon
 worker.js wrangler.toml Cloudflare Worker (RSS proxy, deployed separately)
-.cursor/skills/verify-silvags/   Cursor skill for checking the site in a browser
 ```
 
 Each robot lives in `robots/<name>/` with its page and media together. Adding a robot = new directory, zero root clutter.
