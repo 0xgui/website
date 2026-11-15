@@ -23,7 +23,11 @@ Pico simulation model: two servos and printed arms above a base with an ATOM Mat
 
 *Simulation geometry, neutral pose. Drag to rotate.*
 
+**Folio I** Build notes
+
 ## Note 01 · Two motors, back on its feet
+
+*Pico mid-tip, drawn from its simulation model.*
 
 Pico has a printed base, two moving arms, and an M5Stack ATOM Matrix: a tiny ESP32 board with an inertial sensor. When the robot tips over, it estimates its tilt and uses the arms to work its way back upright. The recovery runs entirely on the robot once the firmware is flashed.
 
@@ -36,6 +40,8 @@ The interesting part is the controller. A policy trained in the MuJoCo simulator
 - *Recover.* The attempt ends after a steady upright hold, or a timeout.
 
 My build uses [HomeMadeGarbage’s SelfRisingRobot](https://github.com/homemadegarbage/SelfRisingRobot) design, simulation, and pretrained policy. My work here is assembling the robot, adapting the firmware, and exploring what I can do with it next.
+
+**Folio II** Build notes
 
 ## Note 02 · Making the code match the build
 
