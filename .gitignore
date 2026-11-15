@@ -17,7 +17,5 @@ __pycache__/
 .codex
 .agents
 .claude
+.cursor/
 
-# Verification skill evidence (keep skill; ignore proof artifacts)
-.cursor/skills/verify-silvags/artifacts/
-.cursor/skills/verify-silvags/.run/
