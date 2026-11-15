@@ -16,6 +16,7 @@ Guidance for AI agents working on silvags.com: Guilherme Silva's personal websit
 10. **The Substack is "Binary Paths"** at `binarypaths.substack.com`. Do not rename it or change the URL.
 11. **Do not edit `writing/<slug>/` by hand.** The mirror script regenerates it from Substack.
 12. **No new dependencies.** Scripts use the Python stdlib only.
+13. **Every change works on every page, on phone and desktop, including in-place navigation.** Before you call it done, run `node scripts/check_pages.mjs` against a local server (see "Browser check"). It loads every page at 390 px and 1280 px, clicks the header links and build cards, and fails on any missing asset, JS error, or sideways scroll. Look at a phone-width screenshot of anything you changed visually. Fix failures; do not skip pages.
 
 ## Commands
 
@@ -26,9 +27,19 @@ python3 scripts/build_agent.py --check            # fails if generated files dri
 python3 -m unittest discover -s tests -v          # Python tests
 node --test tests/negotiate.test.mjs              # Pages function test
 node --experimental-detect-module --test tests/worker-snapshot.test.mjs   # Worker test
+node scripts/check_pages.mjs http://127.0.0.1:8000  # browser check: every page, mobile + desktop, in-place clicks (needs local Chrome)
 ```
 
-Before you finish: run the builder, `--check`, and all three test commands. Then open the PR.
+Before you finish: run the builder, `--check`, all three test commands, and the browser check. Then open the PR.
+
+### Browser check
+
+`scripts/check_pages.mjs` drives a local headless Chrome over the DevTools protocol (Node built-ins only, no npm). Pages are found from every `index.html` plus `404.html`. Bugs it exists to catch:
+
+- **Direct load is not enough.** The site swaps `.col` in place on click, so a page can look right on refresh and broken after a click. A relative CSS `url()` in a `style` attribute was one such bug (sketches 404ed until refresh).
+- **Mobile.** A drawing, table, code block or margin note that fits at 1280 px can push the page sideways at 390 px.
+
+Cloudflare preview URLs work as the base too: `node scripts/check_pages.mjs https://<branch>.silvags-preview.pages.dev`.
 
 ## Structure
 
