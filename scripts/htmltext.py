@@ -269,7 +269,7 @@ class Markdown(HTMLParser):
             if tag not in VOID:
                 self.skip += 1
             return
-        if tag in {"script", "style", "svg", "button", "form", "canvas"}:
+        if tag in {"script", "style", "svg", "button", "form", "canvas"} or attrs.get("aria-hidden") == "true":
             if tag not in VOID:
                 self.skip += 1
             return
