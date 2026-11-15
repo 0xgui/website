@@ -117,7 +117,80 @@ footer a{color:var(--muted)}
   .facts{grid-template-columns:1fr;gap:0}
   .facts dd{margin-bottom:.5rem}
 }
+/* ---- Notebook layer (da Vinci mockup). Additive only: the site's palette, type and spacing are unchanged. ---- */
+@font-face{font-family:"La Belle Aurore";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/labelleaurore-latin-v1.woff2) format("woff2")}
+:root{--sketch:rgba(138,61,28,.5);--grain:.22}
+:root.dark{--sketch:rgba(224,191,146,.42);--grain:.15}
+/* Faint paper grain behind the content (media and text sit above it). One tiny SVG noise tile, no image. */
+body{position:relative;background:transparent}
+body::before,.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:var(--grain);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .2 0 0 0 0 .08 5 0 0 0 -3.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+:root.dark body::before,:root.dark .hero::after{filter:invert(1)}
+.hero::after{z-index:1}
+.hand{font-family:"La Belle Aurore","Bradley Hand",cursive;font-weight:400;font-style:normal;color:var(--muted);line-height:1.25;letter-spacing:.01em}
+.folio{display:flex;align-items:center;gap:.75rem;margin:3.75rem 0 -2.4rem;color:var(--muted);font-size:.86rem;letter-spacing:.14em;text-transform:uppercase;font-variant-numeric:oldstyle-nums}
+.folio::after{content:"";flex:1;height:10px;background:var(--sketch);opacity:.75;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
+.folio b{font-weight:500;color:var(--link);letter-spacing:.16em}
+.sk{position:absolute;overflow:visible;pointer-events:none;fill:none;stroke:var(--sketch);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.sk *{vector-effect:non-scaling-stroke}
+.sk .on{stroke:var(--link);stroke-width:1.4;opacity:.9}
+.sk .ext{display:none}
+.sk .dot{fill:var(--sketch);stroke:none}
+.sk text{fill:var(--sketch);stroke:none;font:400 15px "La Belle Aurore",cursive}
+figure.plate{position:relative}
+figure.plate .frame{position:relative}
+figure.plate .frame>.sk{inset:0;width:100%;height:100%}
+.dim{display:flex;align-items:center;gap:.6rem;margin:.55rem 0 0;color:var(--sketch);font-size:1rem}
+.dim::before,.dim::after{content:"";flex:1;height:9px;border:solid currentColor;border-width:0 1px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat}
+.dim span{color:var(--muted);font-family:"La Belle Aurore",cursive;line-height:1}
+figcaption .no{font-style:normal;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin-right:.4rem}
+/* Model plate: a construction drawing sits behind the transparent canvas. */
+figure.model .viewer>.sk{inset:0;width:100%;height:100%;z-index:0}
+figure.model .viewer img,figure.model .viewer canvas{z-index:1}
+/* Marginal notes: in the right margin on wide screens, inline asides below that. Decorative restatements, so aria-hidden. */
+.note{display:block;margin:.35rem 0 1.1rem;font-size:1.05rem;max-width:22rem}
+.note svg{display:none}
+.tallrow{display:flex;align-items:flex-end;gap:1.5rem}
+.tallrow video{flex:0 0 62%}
+.tallrow .note{margin:0 0 1.5rem;font-size:1.12rem}
+.tallrow .note svg{display:block;width:4.5rem;height:2rem;margin:0 0 .3rem -.4rem;overflow:visible}
+.tallrow .note path{fill:none;stroke:var(--sketch);stroke-width:1.1;stroke-linecap:round}
+.mirror{display:none}
+li.now{position:relative}
+li.now .note{display:none}
+@media (min-width:1100px){
+  article{position:relative}
+  .sk .ext{display:inline}
+  li.now .note{display:block}
+  .note.side{position:absolute;left:calc(100% + 2.75rem);width:12rem;margin:0}
+  .note.side svg{display:block;position:absolute;right:100%;top:.55rem;width:2.25rem;height:1rem;margin-right:.35rem;overflow:visible}
+  .note.side path{fill:none;stroke:var(--sketch);stroke-width:1.1;stroke-linecap:round}
+  figure.model .note.side{left:calc(100% + .25rem)}
+  .mirror{display:block;position:absolute;left:calc(100% + 2.75rem);width:12rem;font-size:1.15rem;opacity:.55;transform:scaleX(-1) rotate(-3deg);text-align:right}
+}
+@media (max-width:600px){
+  .tallrow{display:block}
+  .tallrow .note{margin:.5rem 0 1rem}.tallrow .note svg{display:none}
+  .folio{margin-bottom:-2rem}
+}
+/* Ink draws on as the drawing scrolls into view; static where unsupported or with reduced motion. */
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .ink{stroke-dasharray:1;stroke-dashoffset:1;animation:ink linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
+  @keyframes ink{to{stroke-dashoffset:0}}
+}}
 @media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+.ink-study{margin:1.5rem 0 2rem}
+.ink-study .ink{display:block;aspect-ratio:4/3;background:var(--ink);-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
+:root.dark .ink-study .ink{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
+.ink-study figcaption{font-style:italic;color:var(--muted);font-size:.9rem}
+.build{display:flow-root}
+.build .thumb{float:right;width:14rem;aspect-ratio:4/3;margin:-.6rem -1rem .5rem 1.25rem;background:var(--ink);-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
+:root.dark .build .thumb{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
+@media (max-width:600px){.build .thumb{float:none;display:block;width:100%;max-width:24rem;margin:.25rem auto .75rem}}
+.doodle{margin:1.5rem 0 1.75rem;max-width:19rem}
+.doodle svg{display:block;width:100%;height:auto;overflow:visible;fill:none;stroke:var(--sketch);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.doodle text{fill:var(--muted);stroke:none;font:400 28px "La Belle Aurore",cursive}
+.doodle figcaption{font-size:1.1rem;margin-top:.25rem}
 </style>
 
 </head>
@@ -131,6 +204,20 @@ footer a{color:var(--muted)}
 <main>
 <h1>Page not found</h1>
 <p class="lede">Nothing lives at this address. The robot looked everywhere.</p>
+<figure class="doodle" aria-hidden="true"><svg viewBox="0 0 260 150">
+  <path class="ink" pathLength="1" d="M30 134H130"/>
+  <path class="ink" pathLength="1" d="M42 134l-8 8M58 134l-8 8M74 134l-8 8M90 134l-8 8M106 134l-8 8M122 134l-8 8" opacity=".55"/>
+  <path class="ink" pathLength="1" d="M56 134c0-11 5-17 24-17s24 6 24 17"/>
+  <path class="ink" pathLength="1" d="M74 118L92 66M86 119L103 69"/>
+  <circle class="ink" pathLength="1" cx="98" cy="64" r="7"/>
+  <path class="ink" pathLength="1" d="M104 60L162 46M106 69L164 55"/>
+  <circle class="ink" pathLength="1" cx="167" cy="50" r="4.5"/>
+  <path class="ink" pathLength="1" d="M171 46l13-7M171 54l13 6"/>
+  <circle class="ink" pathLength="1" cx="206" cy="46" r="15"/>
+  <path class="ink" pathLength="1" d="M195 57l-10 4"/>
+  <path class="ink" pathLength="1" d="M126 22C160 4 214 2 246 30" stroke-dasharray="2 6" opacity=".7"/>
+  <text x="228" y="22">?</text>
+</svg><figcaption class="hand">fig. 404: looked in every drawer</figcaption></figure>
 <p>It may have moved, or the link has a typo. Try one of these:</p>
 <ul class="plain">
   <li><a href="/">Home</a></li>
@@ -157,8 +244,9 @@ const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback|
 new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
 document.readyState=='complete'?kick():addEventListener('load',kick);
 async function boot(){
-  const key=cur=id(),V='https://cdn.jsdelivr.net/npm/three@0.169.0';
-  const T=await import(V+'/+esm'),{GLTFLoader}=await import(V+'/examples/jsm/loaders/GLTFLoader.js/+esm');
+  const key=cur=id();
+  // three.js r169, vendored and self-hosted (vendor/three/, MIT): one ESM bundle with the loaders this site uses.
+  const T=await import('/vendor/three/three-0.169.0.min.js'),{GLTFLoader}=T;
   const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
   if(key!==cur)return;
   if(stop){stop();stop=run=null}
@@ -228,12 +316,11 @@ document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()
 </script>
 
 <script type="module">
-// 3D viewers (.viewer in a robot page): the header's three.js build plus OrbitControls, loaded only when a viewer
+// 3D viewers (.viewer in a robot page): the header's vendored three.js build plus OrbitControls, loaded only when a viewer
 // nears the viewport. Drag to rotate, scroll or pinch to zoom; the poster stays if WebGL or the load fails.
 // Runs on every page because in-place navigation (below) can bring a viewer in; dead viewers free their GL context.
-const V='https://cdn.jsdelivr.net/npm/three@0.169.0',live=new Set();let lib=null;
-const load=()=>lib||(lib=Promise.all(['/+esm','/examples/jsm/loaders/GLTFLoader.js/+esm','/examples/jsm/controls/OrbitControls.js/+esm',
-  '/examples/jsm/environments/RoomEnvironment.js/+esm','/examples/jsm/loaders/DRACOLoader.js/+esm'].map(p=>import(V+p))));
+const V='/vendor/three/',live=new Set();let lib=null;
+const load=()=>lib||(lib=import(V+'three-0.169.0.min.js').then(T=>[T,T,T,T,T]));
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);boot(e.target).catch(()=>{lib=null})}),{rootMargin:'300px'});
 const gl2=!!document.createElement('canvas').getContext('webgl2');
 function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}});
@@ -241,7 +328,7 @@ function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}}
 async function boot(el){
   const [T,{GLTFLoader},{OrbitControls},{RoomEnvironment},{DRACOLoader}]=await load();
   // so101.glb is Draco-compressed; the decoder (from the same three build) is fetched only for models that need it.
-  const draco=new DRACOLoader().setDecoderPath(V+'/examples/jsm/libs/draco/gltf/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
+  const draco=new DRACOLoader().setDecoderPath(V+'draco/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
   if(!el.isConnected)return;
   const cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');el.appendChild(cv);
   const r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));r.toneMapping=T.NeutralToneMapping;

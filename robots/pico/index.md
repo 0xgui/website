@@ -4,6 +4,14 @@ Build notes · physical recovery confirmed
 
 A small robot with two servos and one job: get back up. An onboard neural network moves its arms to recover from a fall. It’s now reliably self-righting on real hardware.
 
+*Pico mid-tip, drawn from its simulation model.*
+
+Pico simulation model: two servos and printed arms above a base with an ATOM Matrix. Drag to rotate.
+
+![](https://silvags.com/robots/pico/pico-preview.webp)
+
+*Simulation geometry, neutral pose. Drag to rotate.*
+
 **Status:** Self-righting works, experiments next
 
 **Progress:** ✓ Build & assemble
@@ -17,11 +25,7 @@ A small robot with two servos and one job: get back up. An onboard neural networ
 
 **Links:** [GitHub](https://github.com/0xgui/pico-self-rising-robot)
 
-Pico simulation model: two servos and printed arms above a base with an ATOM Matrix. Drag to rotate.
-
-![](https://silvags.com/robots/pico/pico-preview.webp)
-
-*Simulation geometry, neutral pose. Drag to rotate.*
+**Folio I** Build notes
 
 ## Note 01 · Two motors, back on its feet
 
@@ -36,6 +40,8 @@ The interesting part is the controller. A policy trained in the MuJoCo simulator
 - *Recover.* The attempt ends after a steady upright hold, or a timeout.
 
 My build uses [HomeMadeGarbage’s SelfRisingRobot](https://github.com/homemadegarbage/SelfRisingRobot) design, simulation, and pretrained policy. My work here is assembling the robot, adapting the firmware, and exploring what I can do with it next.
+
+**Folio II** Build notes
 
 ## Note 02 · Making the code match the build
 
