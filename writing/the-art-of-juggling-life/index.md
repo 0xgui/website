@@ -2,8 +2,6 @@
 
 September 25, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/the-art-of-juggling-life)
 
-![](https://silvags.com/writing/the-art-of-juggling-life/images/01.webp)
-
 Welcome back to another piece of Binary Paths!
 
 I'm back from vacations and because of that, I decided to do something different for this piece.

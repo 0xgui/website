@@ -4,8 +4,6 @@ August 14, 2024 · Originally published on [Binary Paths](https://binarypaths.su
 
 ![](https://silvags.com/writing/becoming-a-product-minded-engineer/images/01.webp)
 
-![](https://silvags.com/writing/becoming-a-product-minded-engineer/images/02.webp)
-
 As an engineer, you have the power to shape the products that touch millions of lives.
 
 But to truly make a difference, you need to go beyond just writing elegant code that nobody will see. You need to develop a deep understanding of the product itself and the business goals it aims to achieve.

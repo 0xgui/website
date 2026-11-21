@@ -4,8 +4,6 @@ July 31, 2024 · Originally published on [Binary Paths](https://binarypaths.subs
 
 ![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/01.webp)
 
-![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/02.webp)
-
 -
 
 CEOs and top executives
@@ -62,7 +60,7 @@ And no, you can't fix it with drugs.
 
 ## It's just a matter of time ⏳
 
-![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/03.webp)
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/02.webp)
 
 There will be a time in your career/personal life (you probably already reached that time) where you will feel doubts about yourself. 
 
@@ -76,7 +74,7 @@ No matter who you are, you will be impacted by it.
 
 ## The "I'm Smart" effect 🧠
 
-![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/04.webp)
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/03.webp)
 
 There's one effect that goes pretty hand in hand with the imposter syndrome. The Dunning-Kruger effect. Or, as I like to call it, the "I'm Smart" effect.
 

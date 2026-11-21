@@ -1133,8 +1133,6 @@ August 14, 2024 · Originally published on [Binary Paths](https://binarypaths.su
 
 ![](https://silvags.com/writing/becoming-a-product-minded-engineer/images/01.webp)
 
-![](https://silvags.com/writing/becoming-a-product-minded-engineer/images/02.webp)
-
 As an engineer, you have the power to shape the products that touch millions of lives.
 
 But to truly make a difference, you need to go beyond just writing elegant code that nobody will see. You need to develop a deep understanding of the product itself and the business goals it aims to achieve.
@@ -1737,8 +1735,6 @@ July 31, 2024 · Originally published on [Binary Paths](https://binarypaths.subs
 
 ![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/01.webp)
 
-![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/02.webp)
-
 -
 
 CEOs and top executives
@@ -1795,7 +1791,7 @@ And no, you can't fix it with drugs.
 
 ## It's just a matter of time ⏳
 
-![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/03.webp)
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/02.webp)
 
 There will be a time in your career/personal life (you probably already reached that time) where you will feel doubts about yourself. 
 
@@ -1809,7 +1805,7 @@ No matter who you are, you will be impacted by it.
 
 ## The "I'm Smart" effect 🧠
 
-![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/04.webp)
+![](https://silvags.com/writing/imposter-syndrome-if-you-have-it/images/03.webp)
 
 There's one effect that goes pretty hand in hand with the imposter syndrome. The Dunning-Kruger effect. Or, as I like to call it, the "I'm Smart" effect.
 
@@ -1915,15 +1911,13 @@ Source: https://silvags.com/writing/personal-branding-as-an-engineer/
 
 July 17, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/personal-branding-as-an-engineer)
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/01.webp)
-
 When you hear the word *brand*, you probably think about Coca-Cola, Nike, Microsoft, Apple, Gucci, Google and so on. These companies spend millions and millions of dollars perfecting their brand identities. The objective for this is simple. The next time you see their brand, they want to transmit to you their values. They want to transmit to you who they are, what they are and what they do. And they want you to talk about them with the values that they passed on to you when they are not around.
 
 We don't even need to use companies as an example. We can use single individuals. Look at football players. Look at Ronaldo. Ronaldo created a huge personal brand that is well known everywhere around the globe. If someone mentions the word "Ronaldo", you instantly know who he is and what he does.
 
 I'm not saying that you should become as famous as Ronaldo. But you should at least try to be known for what you are worth for.
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/02.webp)
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/01.webp)
 
 ## Put Yourself out There
 
@@ -1933,7 +1927,7 @@ That's a lot of engineers.
 
 You need to stand out. There is no other way around. It's a must at this point. If you want to get those six-figure jobs, you need to stand out and have incredible technical and soft skills.
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/03.webp)
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/02.webp)
 
 ## Why You Need to Promote Yourself
 
@@ -1991,7 +1985,7 @@ When you know Who you are, figure out What you want to be known for
 
 Who is your audience? Who should you target?
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/04.webp)
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/03.webp)
 
 Don't think that this is a one-way stop. This will be a continuous cycle until the end of your career. Like most businesses evolve through time, so should you. 
 
@@ -2215,8 +2209,6 @@ October 9, 2024 · Originally published on [Binary Paths](https://binarypaths.su
 
 ![](https://silvags.com/writing/speaking-in-front-of-250-people/images/01.webp)
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/02.webp)
-
 "What will they think of me?" "What if I say something wrong?" "How will they judge me?"
 
 All valid questions for someone who is about to enter the spotlight.
@@ -2275,7 +2267,7 @@ Building your personal branding.
 
 ## Yes, it will be scary at first 😰
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/03.webp)
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/02.webp)
 
 *(me at Cloud Native Lisbon)*
 
@@ -2303,7 +2295,7 @@ You can also start by doing remote talks. It will help your flow in the slides. 
 
 ## Going International 🌍
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/04.webp)
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/03.webp)
 
 *(me at Munich, Germany)*
 
@@ -2321,7 +2313,7 @@ Start small. Maybe a remote international meetup. Then work your way up.
 
 ## Conferences 🏆
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/05.webp)
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/04.webp)
 
 *(me at KCD Porto 2024)*
 
@@ -2442,8 +2434,6 @@ Source: https://silvags.com/writing/the-art-of-juggling-life/
 # The Art of Juggling Life
 
 September 25, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/the-art-of-juggling-life)
-
-![](https://silvags.com/writing/the-art-of-juggling-life/images/01.webp)
 
 Welcome back to another piece of Binary Paths!
 
@@ -2811,8 +2801,6 @@ November 9, 2024 · Originally published on [Binary Paths](https://binarypaths.s
 
 ![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/01.webp)
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/02.webp)
-
 *Sorry for the delay. Life got in the way the past few days. Better late than never.*
 
 You're in a meeting with the business people. You're ready to talk about your team's technical achievements. Then someone says: "We need to focus on EBITDA this quarter" or "Our CAC is too high."
@@ -2827,7 +2815,7 @@ If you know nothing about business terms this probably already happened to you.
 
 ## Why These Terms Matter Now 💼
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/03.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/02.webp)
 
 I get it. A few years back, I thought knowing terms like "MVP" and "KPI" was enough. I was wrong.
 
@@ -2893,7 +2881,7 @@ This is why understanding business terms matters. Not to sound smart in meetings
 
 ## The Essential Business Dictionary for Engineers 📚
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/04.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/03.webp)
 
 Let's break some examples that we might encounter in meetings:
 
@@ -3067,7 +3055,7 @@ We can try: "Adding caching will improve customer retention by making the app 3x
 
 ## Startup vs Enterprise: The Language Differs 🏢
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/05.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/04.webp)
 
 The terms you'll hear depend on your company's stage.
 
@@ -3119,7 +3107,7 @@ Don't throw them around just to sound smart. It's obvious and counterproductive.
 
 ## The Bottom Line 💡
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/06.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/05.webp)
 
 Remember:
 

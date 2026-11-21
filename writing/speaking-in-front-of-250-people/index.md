@@ -4,8 +4,6 @@ October 9, 2024 · Originally published on [Binary Paths](https://binarypaths.su
 
 ![](https://silvags.com/writing/speaking-in-front-of-250-people/images/01.webp)
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/02.webp)
-
 "What will they think of me?" "What if I say something wrong?" "How will they judge me?"
 
 All valid questions for someone who is about to enter the spotlight.
@@ -64,7 +62,7 @@ Building your personal branding.
 
 ## Yes, it will be scary at first 😰
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/03.webp)
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/02.webp)
 
 *(me at Cloud Native Lisbon)*
 
@@ -92,7 +90,7 @@ You can also start by doing remote talks. It will help your flow in the slides. 
 
 ## Going International 🌍
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/04.webp)
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/03.webp)
 
 *(me at Munich, Germany)*
 
@@ -110,7 +108,7 @@ Start small. Maybe a remote international meetup. Then work your way up.
 
 ## Conferences 🏆
 
-![](https://silvags.com/writing/speaking-in-front-of-250-people/images/05.webp)
+![](https://silvags.com/writing/speaking-in-front-of-250-people/images/04.webp)
 
 *(me at KCD Porto 2024)*
 

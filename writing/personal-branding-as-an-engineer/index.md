@@ -2,15 +2,13 @@
 
 July 17, 2024 · Originally published on [Binary Paths](https://binarypaths.substack.com/p/personal-branding-as-an-engineer)
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/01.webp)
-
 When you hear the word *brand*, you probably think about Coca-Cola, Nike, Microsoft, Apple, Gucci, Google and so on. These companies spend millions and millions of dollars perfecting their brand identities. The objective for this is simple. The next time you see their brand, they want to transmit to you their values. They want to transmit to you who they are, what they are and what they do. And they want you to talk about them with the values that they passed on to you when they are not around.
 
 We don't even need to use companies as an example. We can use single individuals. Look at football players. Look at Ronaldo. Ronaldo created a huge personal brand that is well known everywhere around the globe. If someone mentions the word "Ronaldo", you instantly know who he is and what he does.
 
 I'm not saying that you should become as famous as Ronaldo. But you should at least try to be known for what you are worth for.
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/02.webp)
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/01.webp)
 
 ## Put Yourself out There
 
@@ -20,7 +18,7 @@ That's a lot of engineers.
 
 You need to stand out. There is no other way around. It's a must at this point. If you want to get those six-figure jobs, you need to stand out and have incredible technical and soft skills.
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/03.webp)
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/02.webp)
 
 ## Why You Need to Promote Yourself
 
@@ -78,7 +76,7 @@ When you know Who you are, figure out What you want to be known for
 
 Who is your audience? Who should you target?
 
-![](https://silvags.com/writing/personal-branding-as-an-engineer/images/04.webp)
+![](https://silvags.com/writing/personal-branding-as-an-engineer/images/03.webp)
 
 Don't think that this is a one-way stop. This will be a continuous cycle until the end of your career. Like most businesses evolve through time, so should you. 
 

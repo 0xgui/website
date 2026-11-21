@@ -4,8 +4,6 @@ November 9, 2024 · Originally published on [Binary Paths](https://binarypaths.s
 
 ![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/01.webp)
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/02.webp)
-
 *Sorry for the delay. Life got in the way the past few days. Better late than never.*
 
 You're in a meeting with the business people. You're ready to talk about your team's technical achievements. Then someone says: "We need to focus on EBITDA this quarter" or "Our CAC is too high."
@@ -20,7 +18,7 @@ If you know nothing about business terms this probably already happened to you.
 
 ## Why These Terms Matter Now 💼
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/03.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/02.webp)
 
 I get it. A few years back, I thought knowing terms like "MVP" and "KPI" was enough. I was wrong.
 
@@ -86,7 +84,7 @@ This is why understanding business terms matters. Not to sound smart in meetings
 
 ## The Essential Business Dictionary for Engineers 📚
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/04.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/03.webp)
 
 Let's break some examples that we might encounter in meetings:
 
@@ -260,7 +258,7 @@ We can try: "Adding caching will improve customer retention by making the app 3x
 
 ## Startup vs Enterprise: The Language Differs 🏢
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/05.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/04.webp)
 
 The terms you'll hear depend on your company's stage.
 
@@ -312,7 +310,7 @@ Don't throw them around just to sound smart. It's obvious and counterproductive.
 
 ## The Bottom Line 💡
 
-![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/06.webp)
+![](https://silvags.com/writing/when-engineers-need-to-talk-business/images/05.webp)
 
 Remember:
 
