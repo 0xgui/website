@@ -23,7 +23,7 @@ Pico simulation model: two servos and printed arms above a base with an ATOM Mat
 
 **Stack:** MuJoCo, PPO, Arduino / PlatformIO
 
-**Links:** [GitHub](https://github.com/0xgui/pico-self-rising-robot)
+**Links:** [GitHub](https://github.com/0xgui/pico-self-rising-robot) · [The essay](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/)
 
 **Folio I** Build notes
 
@@ -59,4 +59,4 @@ Self-righting now works reliably on the physical robot. Next I want to record re
 - LED status feedback
 - training experiments
 
-Code, parts, and experiments on [GitHub](https://github.com/0xgui/pico-self-rising-robot). [All builds](https://silvags.com/builds/)
+I wrote up the story in [I built a tiny robot that refuses to stay down](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/). Code, parts, and experiments on [GitHub](https://github.com/0xgui/pico-self-rising-robot). [All builds](https://silvags.com/builds/)

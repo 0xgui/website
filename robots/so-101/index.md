@@ -23,7 +23,7 @@ A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-print
 
 **Stack:** Python, ROS2, LeRobot
 
-**Links:** [GitHub](https://github.com/0xgui/SO-101) · [Origin story](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building)
+**Links:** [GitHub](https://github.com/0xgui/SO-101) · [Origin story](https://silvags.com/writing/physical-ai-is-here-and-im-building/)
 
 **Folio I** March 5, 2026
 
@@ -65,6 +65,6 @@ Right now it’s pure teleoperation: I move one arm, the other follows. No AI, n
 
 - Finally, a vision-language-action model so it can see, reason, and act.
 
-More on the why and the bigger picture in the [origin story on Binary Paths](https://binarypaths.substack.com/p/physical-ai-is-here-and-im-building). Calibration scripts and more on [GitHub](https://github.com/0xgui/SO-101).
+More on the why and the bigger picture in the origin story, [Physical AI is here and I’m building for it](https://silvags.com/writing/physical-ai-is-here-and-im-building/). Calibration scripts and more on [GitHub](https://github.com/0xgui/SO-101).
 
 *Next entry: imitation learning, first demonstrations.* [All builds](https://silvags.com/builds/)

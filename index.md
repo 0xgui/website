@@ -1,7 +1,5 @@
 # Guilherme Silva
 
-> Building small robots from scratch and writing about engineering and physical AI at Binary Paths.
-
 Hands-on Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at [Binary Paths](https://binarypaths.substack.com).
 
 ## On the bench

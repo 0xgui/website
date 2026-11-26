@@ -6,10 +6,9 @@
 <title>Pico, a self-righting robot · Guilherme Silva</title>
 <meta name="description" content="Pico: my two-servo self-righting robot. An ATOM Matrix, a policy trained in MuJoCo, and recovery working on real hardware." />
 <meta name="theme-color" content="#16130f" />
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Pico, a self-righting robot · Guilherme Silva">
 <meta property="og:description" content="Pico: my two-servo self-righting robot. An ATOM Matrix, a policy trained in MuJoCo, and recovery working on real hardware.">
-<meta property="og:image" content="https://silvags.com/robots/pico/pico-preview.webp">
 <meta property="og:url" content="https://silvags.com/robots/pico/">
 <link rel="canonical" href="https://silvags.com/robots/pico/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -65,6 +64,7 @@ p{margin:0 0 1.1rem}
 .meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
 .lede{font-size:1.34rem;line-height:1.55}
 .sub{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .more{font-size:1rem}
 ul{margin:0 0 1.1rem;padding-left:1.2rem}
 li{margin:.35rem 0}
@@ -244,12 +244,53 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
   "url": "https://silvags.com/robots/pico/",
   "author": {
     "@type": "Person",
+    "@id": "https://silvags.com/#person",
     "name": "Guilherme Silva",
     "url": "https://silvags.com/"
-  }
+  },
+  "image": "https://silvags.com/og/robot-pico-v1.webp"
 }
 </script>
 <!-- /agent:ld -->
+<!-- agent:crumbs -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://silvags.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Builds",
+      "item": "https://silvags.com/builds/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pico",
+      "item": "https://silvags.com/robots/pico/"
+    }
+  ]
+}
+</script>
+<!-- /agent:crumbs -->
+<!-- agent:social -->
+<meta property="og:site_name" content="Guilherme Silva">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://silvags.com/og/robot-pico-v1.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:alt" content="Pico, a self-righting robot, beside an ink study of Pico tipping on its base">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="Pico, a self-righting robot, beside an ink study of Pico tipping on its base">
+<!-- /agent:social -->
 </head>
 <body>
 <a class="hero" href="../../" aria-label="Guilherme Silva, home" data-robot="pico" data-anim="tip" data-seed="0" data-glb="../../robots/pico/pico-lite.glb"><span class="poster" style="--poster:url(/robots/pico/header-pico.png)"></span><canvas aria-hidden="true"></canvas></a>
@@ -282,7 +323,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
   <dt>Progress</dt><dd>✓ Build &amp; assemble<br>✓ Calibrate<br>✓ Self-righting<br>→ <b>Experiments</b> (next)</dd>
   <dt>Hardware</dt><dd>ATOM Matrix, PTK 7465 MG × 2, printed parts</dd>
   <dt>Stack</dt><dd>MuJoCo, PPO, Arduino / PlatformIO</dd>
-  <dt>Links</dt><dd><a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a></dd>
+  <dt>Links</dt><dd><a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a> · <a href="../../writing/i-built-a-tiny-robot-that-refuses/">The essay</a></dd>
 </dl>
 <p class="folio"><b>Folio I</b> <span>Build notes</span></p>
 <h2>Note 01 · Two motors, back on its feet</h2>
@@ -306,12 +347,12 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <h2>What’s next</h2>
 <p>Self-righting now works reliably on the physical robot. Next I want to record recovery results from different starting poses and use those as a baseline for further experiments:</p>
 <ul><li class="now"><span class="note side hand" aria-hidden="true" style="top:0;font-size:1.1rem"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>next</span>recovery measurements</li><li>LED status feedback</li><li>training experiments</li></ul>
-<p>Code, parts, and experiments on <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a>. <a href="../../builds/">All builds</a></p>
+<p>I wrote up the story in <a href="../../writing/i-built-a-tiny-robot-that-refuses/">I built a tiny robot that refuses to stay down</a>. Code, parts, and experiments on <a href="https://github.com/0xgui/pico-self-rising-robot" target="_blank" rel="noopener">GitHub</a>. <a href="../../builds/">All builds</a></p>
 </article>
 </main>
 
 <footer>
-  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><a href="mailto:guilherme@silvags.com">guilherme@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
   <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
 </footer>
 </div>

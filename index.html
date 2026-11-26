@@ -9,7 +9,6 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Guilherme Silva">
 <meta property="og:description" content="Building small robots from scratch and writing about engineering and physical AI at Binary Paths.">
-<meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
 <meta property="og:url" content="https://silvags.com/">
 <link rel="canonical" href="https://silvags.com/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -65,6 +64,7 @@ p{margin:0 0 1.1rem}
 .meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
 .lede{font-size:1.34rem;line-height:1.55}
 .sub{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .more{font-size:1rem}
 ul{margin:0 0 1.1rem;padding-left:1.2rem}
 li{margin:.35rem 0}
@@ -240,21 +240,48 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://silvags.com/#person",
   "name": "Guilherme Silva",
   "url": "https://silvags.com/",
   "jobTitle": "Engineering Manager",
   "worksFor": {
     "@type": "Organization",
-    "name": "xgeeks"
+    "name": "Hitachi Digital"
   },
-  "email": "mailto:work@silvags.com",
+  "email": "mailto:guilherme@silvags.com",
   "sameAs": [
     "https://github.com/0xgui",
     "https://www.linkedin.com/in/silva-gs"
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://silvags.com/#website",
+  "name": "Guilherme Silva",
+  "url": "https://silvags.com/",
+  "author": {
+    "@id": "https://silvags.com/#person"
+  },
+  "publisher": {
+    "@id": "https://silvags.com/#person"
+  }
+}
+</script>
 <!-- /agent:ld -->
+<!-- agent:social -->
+<meta property="og:site_name" content="Guilherme Silva">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://silvags.com/og/home-v1.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:alt" content="Guilherme Silva: building small robots from scratch and writing about engineering and physical AI, beside an ink study of the SO-101 robotic arm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="Guilherme Silva: building small robots from scratch and writing about engineering and physical AI, beside an ink study of the SO-101 robotic arm">
+<!-- /agent:social -->
 </head>
 <body>
 <a class="hero" href="./" aria-current="page" aria-label="Guilherme Silva, home" data-robot="so101" data-anim="teleop" data-seed="0" data-glb="robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(/robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
@@ -264,6 +291,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
   <nav aria-label="Site"><a href="builds/">Builds</a><a href="writing/">Writing</a><a href="talks/">Talks</a><a href="about/">About</a><a href="work/">Work</a></nav>
 </header>
 <main>
+<h1 class="sr-only">Guilherme Silva</h1>
 <div class="intro">
 <span class="note side hand" aria-hidden="true" style="top:2.1rem"><svg viewBox="0 0 36 14"><path class="ink" pathLength="1" d="M35 9C24 3 12 13 2 7M2 7l6-4M2 7l5 4"/></svg>by night, the robots</span>
 <p class="lede">Hands-on Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at <a href="https://binarypaths.substack.com" target="_blank" rel="noopener">Binary Paths</a>.</p>
@@ -289,7 +317,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 
 </main>
 <footer>
-  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><a href="mailto:guilherme@silvags.com">guilherme@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
   <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
 </footer>
 </div>
