@@ -613,8 +613,20 @@ def gif_to_webm(data: bytes) -> bytes:
 
 def _encode_webps(data: bytes, scales: dict[int, str], quality: int) -> dict[int, bytes]:
     icc, orientation = _image_metadata(data)
-    # WebP stores its display orientation separately from the encoded pixels.
-    autorotate = ["-noautorotate"] if orientation != 1 else []
+    transforms = {
+        2: "hflip",
+        3: "hflip,vflip",
+        4: "vflip",
+        5: "transpose=clock,hflip",
+        6: "transpose=clock",
+        7: "transpose=clock,vflip",
+        8: "transpose=cclock",
+    }
+    # Embed orientation in the pixels because browsers may ignore WebP EXIF.
+    transform = transforms.get(orientation)
+    autorotate = ["-noautorotate"] if transform else []
+    if not _is_webp(data) and icc[16:20] != b"RGB ":
+        icc = b""  # The encoder writes RGB, so a source CMYK or gray profile no longer applies.
     results = {}
     with tempfile.TemporaryDirectory() as tmp:
         folder = Path(tmp)
@@ -624,17 +636,19 @@ def _encode_webps(data: bytes, scales: dict[int, str], quality: int) -> dict[int
         for width, scale in scales.items():
             _ffmpeg([
                 "-y", "-hide_banner", "-loglevel", "error", *autorotate, "-i", str(src),
-                "-vf", scale, "-frames:v", "1", "-map_metadata", "-1",
+                "-vf", f"{transform},{scale}" if transform else scale, "-frames:v", "1", "-map_metadata", "-1",
                 "-c:v", "libwebp", "-quality", str(quality), str(dest),
             ])
-            results[width] = _webp_with_metadata(dest.read_bytes(), icc, orientation)
+            results[width] = _webp_with_metadata(dest.read_bytes(), icc, 1)
     return results
 
 
 def to_webp(data: bytes) -> bytes:
     if _is_webp(data) and len(data) <= IMAGE_MAX:
-        return _webp_with_metadata(data, *_image_metadata(data))
-    scale = "scale=-1:'min(1600,ih)'" if _image_metadata(data)[1] >= 5 else "scale='min(1600,iw)':-1"
+        icc, orientation = _image_metadata(data)
+        if orientation == 1 or _animated_webp(data):
+            return _webp_with_metadata(data, icc, orientation)
+    scale = "scale='min(1600,iw)':-1"
     for quality in (78, 63, 48):
         result = _encode_webps(data, {1600: scale}, quality)[1600]
         if len(result) <= IMAGE_TARGET:
@@ -644,21 +658,20 @@ def to_webp(data: bytes) -> bytes:
     raise FeedError("could not compress an image under 1MB")
 
 
+def _animated_webp(data: bytes) -> bool:
+    return any(tag == b"ANIM" for tag, _ in _webp_chunks(data))
+
+
 def _responsive_webps(data: bytes) -> dict[int, bytes]:
-    size = _display_size(data)
-    animated = any(tag == b"ANIM" for tag, _ in _webp_chunks(data))
-    if not size or animated:
+    size = webp_size(data)
+    if not size or _animated_webp(data):
         return {}
-    rotated = _image_metadata(data)[1] >= 5
-    scales = {
-        width: f"scale=-1:{width}" if rotated else f"scale={width}:-1"
-        for width in (800, 1200) if width < size[0]
-    }
+    scales = {width: f"scale={width}:-1" for width in (800, 1200) if width < size[0]}
     if not scales:
         return {}
     return {
         width: variant for width, variant in _encode_webps(data, scales, 78).items()
-        if len(variant) < len(data) and (_display_size(variant) or (0, 0))[0] == width
+        if len(variant) < len(data) and (webp_size(variant) or (0, 0))[0] == width
     }
 
 
@@ -757,13 +770,6 @@ def webp_size(data: bytes) -> tuple[int, int] | None:
     return None
 
 
-def _display_size(data: bytes) -> tuple[int, int] | None:
-    size = webp_size(data)
-    if size and _image_metadata(data)[1] >= 5:
-        return size[1], size[0]
-    return size
-
-
 IMG_TAG_RE = re.compile(r'<img src="([^"]+)" alt="([^"]*)">')
 
 
@@ -775,7 +781,7 @@ def size_images(body: str, files: dict[str, bytes]) -> str:
         nonlocal count
         count += 1
         src, alt = match.group(1), match.group(2)
-        size = _display_size(files.get(src, b""))
+        size = webp_size(files.get(src, b""))
         dims = f' width="{size[0]}" height="{size[1]}"' if size else ""
         responsive = ""
         if size:
@@ -969,7 +975,7 @@ def render_article(template: str, post: Post, body: str, *, root: Path, files: d
         cover = SITE + "/" + custom.relative_to(root).as_posix()
         dimensions = (1200, 630)
     elif cover:
-        dimensions = _display_size(files.get(cover.removeprefix(local), b""))
+        dimensions = webp_size(files.get(cover.removeprefix(local), b""))
         match = re.search(r'<img src="images/[^"]+" alt="([^"]*)"', body)
         if match and match[1].strip():
             cover_alt = unescape(match[1])
@@ -979,7 +985,7 @@ def render_article(template: str, post: Post, body: str, *, root: Path, files: d
         if cover.startswith(SITE + "/"):
             fallback = root / cover.removeprefix(SITE + "/")
             if fallback.is_file():
-                dimensions = _display_size(fallback.read_bytes())
+                dimensions = webp_size(fallback.read_bytes())
     if cover:
         html = _set_attr_meta(html, "property", "og:image", cover)
         if dimensions:

@@ -430,6 +430,14 @@ class StalenessTests(unittest.TestCase):
 
 
 class ImageSizeTests(unittest.TestCase):
+    def make_webp(self, folder, size):
+        path = Path(folder) / "source.webp"
+        subprocess.run([
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+            f"testsrc2=size={size}", "-frames:v", "1", "-c:v", "libwebp", "-lossless", "1", str(path),
+        ], check=True)
+        return path.read_bytes()
+
     def test_webp_size_reads_vp8_header(self):
         self.assertEqual(webp_size(TINY_WEBP), (8, 8))
         self.assertIsNone(webp_size(b"not an image"))
@@ -452,15 +460,19 @@ class ImageSizeTests(unittest.TestCase):
 
     def test_webp_cleanup_removes_extra_exif_and_keeps_icc_and_orientation(self):
         profile = b"embedded profile"
-        oriented = _webp_with_metadata(TINY_WEBP, profile, 6)
+        with tempfile.TemporaryDirectory() as tmp:
+            oriented = _webp_with_metadata(self.make_webp(tmp, "100x60"), profile, 6)
         chunks = bytearray(b"WEBP")
         for tag, payload in _webp_chunks(oriented):
             if tag == b"EXIF":
                 payload += b"unused device metadata"
             chunks.extend(tag + len(payload).to_bytes(4, "little") + payload + b"\0" * (len(payload) % 2))
         source = b"RIFF" + len(chunks).to_bytes(4, "little") + chunks
-        self.assertEqual(to_webp(source), oriented)
-        self.assertEqual(dict(_webp_chunks(to_webp(source)))[b"ICCP"], profile)
+        cleaned = to_webp(source)
+        self.assertEqual(webp_size(cleaned), (60, 100))
+        metadata = dict(_webp_chunks(cleaned))
+        self.assertEqual(metadata[b"ICCP"], profile)
+        self.assertNotIn(b"EXIF", metadata)
 
         invalid = source.replace(b"II*\0", b"bad!")
         self.assertNotIn(b"EXIF", dict(_webp_chunks(to_webp(invalid))))
@@ -469,12 +481,7 @@ class ImageSizeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
-            fixture = root / "wide.webp"
-            subprocess.run([
-                "ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
-                "testsrc2=size=1440x820", "-frames:v", "1", "-c:v", "libwebp", "-lossless", "1", str(fixture),
-            ], check=True)
-            original = fixture.read_bytes()
+            original = self.make_webp(root, "1440x820")
             post = posts_from_api(json.loads((FIX / "api.json").read_text()))[0]
             post = replace(post, body_html='<p>Hello</p><img src="https://example.com/wide.webp" alt="Sample">')
             apply_mirror(root, [post], fetch_bytes=lambda _: original)
