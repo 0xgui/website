@@ -50,7 +50,7 @@ Since I was alone and didn’t want to mess it up (like touching another part of
 
 This way I know that I could be safe from accidentally disconnecting the jumper wire from GND and I only had to worry with TPA17.
 
-Video
+Soldering the jumper wire
 
 [Media](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/02.webm)
 
@@ -88,7 +88,7 @@ With that done, I had to reassemble the robot and that was a pain, not gonna lie
 
 Now that you can control your robot you can literally do things like change its voice, schedule times, lower the volume of the voice commands (which I did because the lady is annoying) and even control it like it’s an RC car!
 
-Video
+Driving the robot vacuum with Valetudo
 
 [Media](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/06.webm)
 

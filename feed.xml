@@ -32,7 +32,7 @@
 &lt;p&gt;The plan:&lt;/p&gt;
 &lt;p&gt;Print the foot. Print the arms. Screw the motors on. Plug the wires in. Flash the firmware.&lt;/p&gt;
 &lt;p&gt;In my head, that was the plan.&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/02.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;First parts being printed.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;464&quot; height=&quot;832&quot; aria-label=&quot;3D printing the first Pico parts&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/02.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;First parts being printed.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;The plan is never straightforward&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;First problem, assembly.&lt;/strong&gt;&lt;/p&gt;
@@ -51,7 +51,7 @@
 &lt;p&gt;The code was fine. My wiring was not. &lt;/p&gt;
 &lt;p&gt;So I sent one command, watched which arm moved, wrote it down, and sent another, until the arms agreed with the version on the code. &lt;br&gt;&lt;br&gt;Thank god we have AI nowadays to help troubleshoot these things.&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fourth problem, the robot thought up was down.&lt;/strong&gt;&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/05.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;That little grey cube’s position was the issue.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;464&quot; height=&quot;832&quot; aria-label=&quot;How the grey cube affects Pico in simulation&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/05.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;That little grey cube’s position was the issue.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Pico sitting flat on the desk, perfectly still, and the program was certain it was upside down. Every get-up attempt started from a lie.&lt;/p&gt;
 &lt;p&gt;The tilt math. My board, the little grey cube (the brain of all of this) is mounted in a different orientation than the original build, and the formula was 180 degrees off. &lt;/p&gt;
@@ -59,7 +59,7 @@
 &lt;p&gt;But hey, at least it was moving! Progress!&lt;/p&gt;
 &lt;p&gt;Patched the code and off it went.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fifth problem, the USB port said no.&lt;/strong&gt;&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/06.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;USB Ports didn’t have enough power to handle the motors load.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;464&quot; height=&quot;824&quot; aria-label=&quot;Pico underpowered over USB&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/06.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;USB Ports didn’t have enough power to handle the motors load.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;With both motors moving at the same time plus the development board draining energy, my USB ports just did not have enough juice to handle all the load when the load hit its peak.&lt;/p&gt;
 &lt;p&gt;Solution? &lt;br&gt;Why won’t you just connect the battery and try it? &lt;br&gt;&lt;br&gt;It worked. &lt;br&gt;(Thanks AI gods again)&lt;/p&gt;
@@ -69,7 +69,7 @@
 &lt;p&gt;It never changed. I changed everything around it without realizing and because of that I needed to adapt the code to the way I built it.&lt;/p&gt;
 &lt;p&gt;Hardware is hard! &lt;/p&gt;
 &lt;h2&gt;It works. Rise!&lt;/h2&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/07.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;Happy little guy.&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;464&quot; height=&quot;824&quot; aria-label=&quot;Pico’s self-righting test&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/07.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;Happy little guy.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Below is a video so you can hear the motors and see how it behaves:&lt;/p&gt;
 &lt;p&gt;I knocked it over and over again.&lt;/p&gt;
@@ -81,7 +81,7 @@
 &lt;p&gt;Nobody wrote “swing this arm, then that one” by hand for every situation or environment. &lt;/p&gt;
 &lt;p&gt;The program learned the motion in a simulator, before it ever touched the robot.&lt;/p&gt;
 &lt;p&gt;The simulator, MuJoCo, think a physics engine for robots, drops a virtual Pico on its side, over and over. Every attempt gets a score: points for being more upright, penalties for staying tilted, for wiggling once it’s already up, for the wrong body height. &lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/08.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;Pico in simulation&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;800&quot; height=&quot;436&quot; aria-label=&quot;Pico in simulation&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/08.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;Pico in simulation&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;A training method called PPO (Proximal Policy Optimization) nudges the program toward better scores. &lt;/p&gt;
 &lt;p&gt;Try, score, adjust. Thousands of times.&lt;/p&gt;
@@ -123,7 +123,7 @@
 &lt;p&gt;Once you reach the PCB you can see the TPA17 and GND SH1 pads on the board. The rooting process works by shorting the two at exactly the right moment. Neither is a port. Neither has a connector. They are bare metal pads about the size of a grain of rice, and the intended tool is your hand. &lt;/p&gt;
 &lt;p&gt;Since I was alone and didn’t want to mess it up (like touching another part of the board with the wire’s loose ends), I decided to solder one terminal of the jumper wire to the SH1 GND and then use my hands just to operate the TPA17.&lt;/p&gt;
 &lt;p&gt;This way I know that I could be safe from accidentally disconnecting the jumper wire from GND and I only had to worry with TPA17.&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/02.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;Soldering the jumper wire&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;480&quot; height=&quot;854&quot; aria-label=&quot;Soldering the jumper wire&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/02.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;Soldering the jumper wire&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;I won't post all the necessary steps to reach the bootloader because that’s in the docs but this is the line that matters:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;“Press the power button for 3 seconds and keep the TPA17 connected to GND for 5 more seconds after that.”&lt;/em&gt;&lt;/p&gt;
@@ -141,7 +141,7 @@
 &lt;p&gt;With that done, I had to reassemble the robot and that was a pain, not gonna lie.&lt;/p&gt;
 &lt;h2&gt;Part 3: Valetudo, mas vale mesmo tudo! &lt;/h2&gt;
 &lt;p&gt;Now that you can control your robot you can literally do things like change its voice, schedule times, lower the volume of the voice commands (which I did because the lady is annoying) and even control it like it’s an RC car!&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/06.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;480&quot; height=&quot;854&quot; aria-label=&quot;Driving the robot vacuum with Valetudo&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/06.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;/figure&gt;
 &lt;p&gt;There a lot more things you can do now with Valetudo since you now have full control of your robot vacuum cleaner, but truth be told &lt;strong&gt;I just wanted to clean the office and that’s what I did next!&lt;/strong&gt; &lt;/p&gt;
 &lt;h3&gt;&lt;strong&gt;Freedom to do what you want with your own stuff&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;It seems that every day there is a new app and a new subscription service for you to pay to be able to access all the features that the hardware that you bought is capable of. It’s tiring. Why can’t we just fully use what we already paid for? Why do we need to be locked out from so many features on the software or hardware that we use? &lt;/p&gt;
@@ -167,7 +167,7 @@
 &lt;p&gt;Did I assemble everything on the first try? &lt;/p&gt;
 &lt;p&gt;Ahah, no.&lt;/p&gt;
 &lt;p&gt;At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup, realized it only after everything was done. Had to redo it all from scratch.&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/02.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;480&quot; height=&quot;854&quot; aria-label=&quot;Testing the SO-101 arm setup&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/physical-ai-is-here-and-im-building/images/02.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;/figure&gt;
 &lt;h2&gt;So what is Physical AI?&lt;/h2&gt;
 &lt;p&gt;Now you’re probably wondering, why did I build robotic arms at all?&lt;/p&gt;
 &lt;p&gt;Well to start, robotics is something that always interested me, and second because we’re at the beginning of something I can’t ignore.&lt;/p&gt;
@@ -196,7 +196,7 @@
 &lt;p&gt;Now a robot can watch you perform a task a few dozen times and learn to do it on its own (this is called imitation learning). It can handle objects it’s never seen. It can adapt when things don’t go exactly as expected.&lt;/p&gt;
 &lt;p&gt;This is the shift from &lt;strong&gt;programmed robots&lt;/strong&gt; to &lt;strong&gt;learning robots&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;It changes everything about what robots can actually be used for.&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot; aria-label=&quot;Comos Reason GIF.&quot;&gt;&lt;source src=&quot;images/04.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;&lt;a href=&quot;https://developer.nvidia.com/blog/curating-synthetic-datasets-to-train-physical-ai-models-with-nvidia-cosmos-reason/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(source Nvidia)&lt;/a&gt;&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;600&quot; height=&quot;338&quot; aria-label=&quot;NVIDIA Cosmos Reason demonstration&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/physical-ai-is-here-and-im-building/images/04.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;&lt;a href=&quot;https://developer.nvidia.com/blog/curating-synthetic-datasets-to-train-physical-ai-models-with-nvidia-cosmos-reason/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(source Nvidia)&lt;/a&gt;&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;Simulation to the real world (sim-to-real)&lt;/h2&gt;
 &lt;p&gt;You can’t just throw an AI model at a physical robot and hope for the best. Robots are expensive (it’s hardware and not a simple software rollback). &lt;/p&gt;
@@ -209,7 +209,7 @@
 &lt;p&gt;That’s how you build robots that actually work.&lt;/p&gt;
 &lt;p&gt;Sim-to-real is one of my next steps. I want to simulate my arms in Isaac Sim, run experiments virtually, and then transfer what works to the physical arms on my desk. &lt;/p&gt;
 &lt;p&gt;The link between the virtual and the physical.&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/05.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;&lt;a href=&quot;https://github.com/isaac-sim/OmniIsaacGymEnvs&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(source)&lt;/a&gt;&lt;/figcaption&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;544&quot; height=&quot;288&quot; aria-label=&quot;Robotics simulation in Isaac Sim&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/physical-ai-is-here-and-im-building/images/05.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;figcaption&gt;&lt;a href=&quot;https://github.com/isaac-sim/OmniIsaacGymEnvs&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;(source)&lt;/a&gt;&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;Finally some fun&lt;/h2&gt;
 &lt;p&gt;I haven’t put AI on my arms. Yet.&lt;/p&gt;
@@ -217,7 +217,7 @@
 &lt;p&gt;Next, is teaching the arms tasks by demonstration. I move them through a motion a few dozen times, and it learns to replicate it on its own.&lt;/p&gt;
 &lt;p&gt;Then things get really interesting and we start to put some VLAs to give it a brain.&lt;/p&gt;
 &lt;p&gt;It’s also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer.&lt;/p&gt;
-&lt;figure&gt;&lt;video autoplay muted loop playsinline preload=&quot;none&quot;&gt;&lt;source src=&quot;images/06.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;video controls muted loop playsinline preload=&quot;none&quot; width=&quot;480&quot; height=&quot;854&quot; aria-label=&quot;SO-101 robotic arm teleoperation&quot;&gt;&lt;source src=&quot;https://silvags.com/writing/physical-ai-is-here-and-im-building/images/06.webm&quot; type=&quot;video/webm&quot;&gt;&lt;/video&gt;&lt;/figure&gt;
 &lt;h2&gt;Hardware might be next&lt;/h2&gt;
 &lt;p&gt;Multiple industries are being rebuilt around robots that can learn, adapt, and operate autonomously.&lt;br&gt;&lt;br&gt;To put things in perspective: China just registered 64000 new robotics companies. &lt;strong&gt;In the last 3 months. (&lt;a href=&quot;https://www.36kr.com/p/3702849154380164&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;source&lt;/a&gt;, you need to translate from Chinese).&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The honest answer is nobody knows exactly how this plays out.&lt;/p&gt;

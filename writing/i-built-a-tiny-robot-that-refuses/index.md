@@ -34,7 +34,7 @@ Print the foot. Print the arms. Screw the motors on. Plug the wires in. Flash th
 
 In my head, that was the plan.
 
-Video
+3D printing the first Pico parts
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/02.webm)
 
@@ -76,7 +76,7 @@ Thank god we have AI nowadays to help troubleshoot these things.
 
 **Fourth problem, the robot thought up was down.**
 
-Video
+How the grey cube affects Pico in simulation
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/05.webm)
 
@@ -94,7 +94,7 @@ Patched the code and off it went.
 
 **Fifth problem, the USB port said no.**
 
-Video
+Pico underpowered over USB
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/06.webm)
 
@@ -120,7 +120,7 @@ Hardware is hard!
 
 ## It works. Rise!
 
-Video
+Pico’s self-righting test
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/07.webm)
 
@@ -148,7 +148,7 @@ The program learned the motion in a simulator, before it ever touched the robot.
 
 The simulator, MuJoCo, think a physics engine for robots, drops a virtual Pico on its side, over and over. Every attempt gets a score: points for being more upright, penalties for staying tilted, for wiggling once it’s already up, for the wrong body height.
 
-Video
+Pico in simulation
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/08.webm)
 

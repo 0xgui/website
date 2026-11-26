@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from html import unescape
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 
@@ -189,8 +190,8 @@ class Sanitizer(HTMLParser):
             if src.endswith(".webm"):
                 label = f' aria-label="{escape_attr(alt)}"' if alt else ""
                 self.parts.append(
-                    f'<video autoplay muted loop playsinline preload="none"{label}>'
-                    f'<source src="{escape_attr(src)}" type="video/webm"></video>'
+                    f'<video controls muted loop playsinline preload="none"{label}>'
+                    f'<source data-src="{escape_attr(src)}" type="video/webm"></video>'
                 )
                 return
             self.parts.append(f'<img src="{escape_attr(src)}" alt="{escape_attr(alt)}">')
@@ -269,6 +270,71 @@ def plain_text(html: str) -> str:
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()
+
+
+def webm_size(data: bytes) -> tuple[int, int] | None:
+    """Read PixelWidth and PixelHeight from the WebM video track."""
+    def elements(start, end):
+        pos = start
+        while pos < end:
+            ident_len = 9 - data[pos].bit_length()
+            size_pos = pos + ident_len
+            if ident_len > 4 or size_pos >= end:
+                return
+            size_len = 9 - data[size_pos].bit_length()
+            body = size_pos + size_len
+            if size_len > 8 or body > end:
+                return
+            unknown = (1 << (7 * size_len)) - 1
+            size = int.from_bytes(data[size_pos:body], "big") & unknown
+            stop = end if size == unknown else body + size
+            if stop > end:
+                return
+            yield data[pos:size_pos], body, stop
+            pos = stop
+
+    def find(ident, start, end):
+        return next(((a, b) for key, a, b in elements(start, end) if key == ident), (0, 0))
+
+    segment = find(bytes.fromhex("18538067"), 0, len(data))
+    tracks = find(bytes.fromhex("1654ae6b"), *segment)
+    for key, start, end in elements(*tracks):
+        if key != b"\xae":  # TrackEntry
+            continue
+        video = find(b"\xe0", start, end)
+        width = int.from_bytes(data[slice(*find(b"\xb0", *video))], "big")
+        height = int.from_bytes(data[slice(*find(b"\xba", *video))], "big")
+        if width and height:
+            return width, height
+    return None
+
+
+_MIRRORED_VIDEO = re.compile(
+    r'<video(?P<attrs>[^>]*)><source data-src="(?P<src>images/(?P<number>[0-9]+)\.webm)"'
+    r' type="video/webm"></video>(?:<figcaption>(?P<caption>.*?)</figcaption>)?',
+    re.S,
+)
+
+
+def size_mirrored_videos(body: str, files: dict[str, bytes], title: str) -> str:
+    """Complete sanitized clips using the WebM bytes staged for the essay."""
+    def complete(match):
+        attrs, src, caption = match.group("attrs", "src", "caption")
+        updated = attrs
+        if ' width="' not in attrs:
+            size = webm_size(files.get(src, b""))
+            if size:
+                updated += f' width="{size[0]}" height="{size[1]}"'
+        if ' aria-label="' not in attrs:
+            caption_text = unescape(plain_text(caption or ""))
+            if caption_text and not caption_text.startswith("(source"):
+                label = caption_text
+            else:
+                label = f'Video {int(match["number"])} in {title}'
+            updated += f' aria-label="{escape_attr(label)}"'
+        return match[0].replace(f"<video{attrs}>", f"<video{updated}>", 1)
+
+    return _MIRRORED_VIDEO.sub(complete, body)
 
 
 def absolutize(href: str, page_url: str) -> str:
@@ -372,7 +438,11 @@ class Markdown(HTMLParser):
             if not empty and tag not in VOID:
                 self.skip_stack.append(tag)
             return
-        if tag in {"script", "style", "svg", "button", "form", "canvas"} or attrs.get("aria-hidden") == "true":
+        if (
+            tag in {"script", "style", "svg", "button", "form", "canvas"}
+            or attrs.get("aria-hidden") == "true"
+            or (tag == "a" and "skip" in attrs.get("class", "").split())
+        ):
             if not empty and tag not in VOID:
                 self.skip_stack.append(tag)
             return
@@ -485,9 +555,10 @@ class Markdown(HTMLParser):
             label = clean_text(attrs.get("aria-label", "Video")).strip() or "Video"
             self._emit(f"\n\n{label}\n\n")
             return
-        if tag == "source" and attrs.get("src"):
-            src = absolutize(attrs["src"], self.page_url)
-            self._emit(f"\n\n[Media]({src})\n\n")
+        if tag == "source":
+            src = attrs.get("data-src") or attrs.get("src")
+            if src:
+                self._emit(f"\n\n[Media]({absolutize(src, self.page_url)})\n\n")
 
     def handle_endtag(self, tag):
         tag = tag.lower()

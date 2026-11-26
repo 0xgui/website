@@ -26,7 +26,7 @@ Ahah, no.
 
 At one point I had fully configured the leader arm… as a follower. Wrong configuration, wrong setup, realized it only after everything was done. Had to redo it all from scratch.
 
-Video
+Testing the SO-101 arm setup
 
 [Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/02.webm)
 
@@ -86,7 +86,7 @@ This is the shift from **programmed robots** to **learning robots**.
 
 It changes everything about what robots can actually be used for.
 
-Comos Reason GIF.
+NVIDIA Cosmos Reason demonstration
 
 [Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/04.webm)
 
@@ -114,7 +114,7 @@ Sim-to-real is one of my next steps. I want to simulate my arms in Isaac Sim, ru
 
 The link between the virtual and the physical.
 
-Video
+Robotics simulation in Isaac Sim
 
 [Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/05.webm)
 
@@ -132,7 +132,7 @@ Then things get really interesting and we start to put some VLAs to give it a br
 
 It’s also been a great opportunity to put my mechanical and electrical skills to the test, drawing on my background as an automotive engineer.
 
-Video
+SO-101 robotic arm teleoperation
 
 [Media](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/06.webm)
 

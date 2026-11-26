@@ -52,6 +52,7 @@ from scripts.htmltext import (
     meta_content,
     plain_text,
     sanitize,
+    size_mirrored_videos,
     tag_text,
 )
 
@@ -968,13 +969,20 @@ def render_article(template: str, post: Post, body: str, *, root: Path, files: d
             f'<p class="more"><a href="{canonical}" target="_blank" rel="noopener">Continue reading on Binary Paths</a></p>\n'
         )
     else:
+        body = size_mirrored_videos(body, files, title)
         article = (
             f"<h1>{escape_text(title)}</h1>\n"
             f'<p class="meta"><time datetime="{post.date_key()}">{display}</time> · '
             f'Originally published on <a href="{canonical}" target="_blank" rel="noopener">Binary Paths</a></p>\n'
             f'<article class="post">\n{body.strip()}\n</article>\n'
         )
-    html = re.sub(r"<main>.*?</main>", lambda _: "<main>\n" + article + "</main>", html, count=1, flags=re.S)
+    html = re.sub(
+        r"<main>.*?</main>",
+        lambda _: '<main id="main" tabindex="-1">\n' + article + "</main>",
+        html,
+        count=1,
+        flags=re.S,
+    )
     cover = essay_cover(body, local)
     dimensions = None
     cover_alt = title

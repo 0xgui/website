@@ -6,7 +6,7 @@ A small robot with two servos and one job: get back up. An onboard neural networ
 
 *Pico mid-tip, drawn from its simulation model.*
 
-Pico simulation model: two servos and printed arms above a base with an ATOM Matrix. Drag to rotate.
+Pico simulation model: two servos and printed arms above a base with an ATOM Matrix.
 
 ![](https://silvags.com/robots/pico/pico-preview.webp)
 

@@ -46,7 +46,7 @@ function page(card) {
   const art = card.art && ART[card.art];
   const textWidth = art ? 640 : 1040;
   return `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;src:url(/fonts/newsreader-normal-latin-v26.woff2) format("woff2")}
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;src:url(/fonts/newsreader-normal-latin-v27.woff2) format("woff2")}
 @font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;src:url(/fonts/newsreader-italic-latin-v26.woff2) format("woff2")}
 html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#f4efe4}
 body{position:relative;font-family:"Newsreader",Georgia,serif;color:#2a231b;-webkit-font-smoothing:antialiased}

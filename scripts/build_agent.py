@@ -569,6 +569,8 @@ def build_feed(pages: list[tuple[Path, str]]) -> str:
             canonical = match.group(1)
         stamp = published if "T" in published else (published + "T00:00:00Z" if published else updated)
         content = inner(doc, "article", "post") or summary
+        # Feed readers render the article without the site's lazy-loading script.
+        content = re.sub(r'<source data-src="(images/[0-9]+\.webm)"', rf'<source src="{url}\1"', content)
         lines.extend([
             "  <entry>",
             f"    <title>{_xml(title)}</title>",
