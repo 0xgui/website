@@ -286,7 +286,7 @@ def build_headers() -> str:
         "  Content-Type: text/plain; charset=utf-8",
         "",
         "/llms-full.txt",
-        "  Content-Type: text/plain; charset=utf-8",
+        "  Content-Type: text/markdown; charset=utf-8",
         "",
         "/robots.txt",
         "  Content-Type: text/plain; charset=utf-8",
@@ -307,10 +307,13 @@ def build_headers() -> str:
         "/fonts/*",
         "  Cache-Control: public, max-age=31536000, immutable",
         "",
+        "/vendor/*",
+        "  Cache-Control: public, max-age=31536000, immutable",
+        "",
     ])
 
 
-MEDIA_EXTS = ("glb", "webp", "webm", "png", "mp4", "svg")
+MEDIA_EXTS = ("glb", "webp", "webm", "png", "mp4", "svg", "pdf")
 
 
 def _xml(value: str) -> str:

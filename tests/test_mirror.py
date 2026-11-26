@@ -1,11 +1,17 @@
 import json
+import re
+import subprocess
+import tempfile
 import unittest
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from scripts.feeds import posts_from_api
 from scripts.mirror_substack import (
     FeedError,
+    _webp_chunks,
+    _webp_with_metadata,
     apply_mirror,
     discover,
     fetch_posts,
@@ -15,6 +21,7 @@ from scripts.mirror_substack import (
     rewrite_mirrored_essays,
     size_images,
     strip_x_mentions,
+    to_webp,
     webp_size,
 )
 
@@ -87,9 +94,6 @@ var stale = 1;
 
 class MirrorTests(unittest.TestCase):
     def test_fetch_failure_leaves_the_essay(self):
-        root = Path(self.id().replace(".", "_"))
-        # use a real temp dir
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
@@ -103,7 +107,6 @@ class MirrorTests(unittest.TestCase):
             self.assertEqual((root / "writing" / "kept-post" / "index.html").read_bytes(), before)
 
     def test_missing_slug_is_not_deleted_and_run_is_idempotent(self):
-        import tempfile
         payload = json.loads((FIX / "api.json").read_text(encoding="utf-8"))
         posts = posts_from_api(payload)
         with tempfile.TemporaryDirectory() as tmp:
@@ -128,8 +131,6 @@ class MirrorTests(unittest.TestCase):
             self.assertIn("This sentence must survive a bad fetch.", before)
 
     def test_feed_without_ids_keeps_the_saved_id(self):
-        import tempfile
-        from dataclasses import replace
         posts = posts_from_api(json.loads((FIX / "api.json").read_text(encoding="utf-8")))
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -141,7 +142,6 @@ class MirrorTests(unittest.TestCase):
             self.assertIn('<meta name="mirror-id" content="12345">', hello.read_text(encoding="utf-8"))
 
     def test_stub_does_not_replace_a_full_essay(self):
-        import tempfile
         paid = posts_from_api(json.loads((FIX / "api-paid.json").read_text(encoding="utf-8")))
         # Pretend the paid slug is the one we already mirrored in full.
         full = paid[0]
@@ -175,7 +175,6 @@ class MirrorTests(unittest.TestCase):
         self.assertFalse(any("rss.silvags.com" in url for url in seen))
 
     def test_reindex_drops_only_the_removed_essay(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
@@ -190,7 +189,6 @@ class MirrorTests(unittest.TestCase):
             self.assertTrue((root / "index.html").exists())
 
     def test_discover_keeps_saved_posts(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
@@ -373,7 +371,6 @@ class StalenessTests(unittest.TestCase):
         return code
 
     def test_recent_good_data_stays_quiet(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.assertEqual(self._failed(root, timedelta(hours=47)), 0)
@@ -381,27 +378,23 @@ class StalenessTests(unittest.TestCase):
             self.assertEqual((root / "writing" / "last-good.txt").read_text(encoding="utf-8").strip(), "2026-10-30T21:00:00Z")
 
     def test_exactly_48h_is_loud_and_deletes_nothing(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.assertEqual(self._failed(root, timedelta(hours=48)), 1)
             self.assertTrue(outage_is_loud(root, NOW))
 
     def test_older_than_48h_is_loud(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.assertEqual(self._failed(root, timedelta(hours=49)), 1)
 
     def test_missing_stamp_is_loud(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.assertEqual(self._failed(root, None), 1)
             self.assertFalse((root / "writing" / "last-good.txt").exists())
 
     def test_success_does_not_rewrite_a_fresh_stamp_or_drop_an_essay(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
@@ -420,7 +413,6 @@ class StalenessTests(unittest.TestCase):
             self.assertEqual((root / "writing" / "last-good.txt").read_text(encoding="utf-8").strip(), "2026-11-01T19:00:00Z")
 
     def test_success_rewrites_a_stamp_older_than_24h(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
@@ -435,10 +427,6 @@ class StalenessTests(unittest.TestCase):
             self.assertTrue((root / "writing" / "hello-world" / "index.html").exists())
             self.assertEqual((root / "writing" / "last-good.txt").read_text(encoding="utf-8").strip(), "2026-11-01T20:00:00Z")
             self.assertIn("This sentence must survive a bad fetch.", (root / "writing" / "kept-post" / "index.html").read_text(encoding="utf-8"))
-
-
-if __name__ == "__main__":
-    unittest.main()
 
 
 class ImageSizeTests(unittest.TestCase):
@@ -462,6 +450,44 @@ class ImageSizeTests(unittest.TestCase):
         out = size_images('<img src="images/09.webp" alt="">', {})
         self.assertEqual(out, '<img src="images/09.webp" alt="" decoding="async">')
 
+    def test_webp_cleanup_removes_extra_exif_and_keeps_icc_and_orientation(self):
+        profile = b"embedded profile"
+        oriented = _webp_with_metadata(TINY_WEBP, profile, 6)
+        chunks = bytearray(b"WEBP")
+        for tag, payload in _webp_chunks(oriented):
+            if tag == b"EXIF":
+                payload += b"unused device metadata"
+            chunks.extend(tag + len(payload).to_bytes(4, "little") + payload + b"\0" * (len(payload) % 2))
+        source = b"RIFF" + len(chunks).to_bytes(4, "little") + chunks
+        self.assertEqual(to_webp(source), oriented)
+        self.assertEqual(dict(_webp_chunks(to_webp(source)))[b"ICCP"], profile)
+
+        invalid = source.replace(b"II*\0", b"bad!")
+        self.assertNotIn(b"EXIF", dict(_webp_chunks(to_webp(invalid))))
+
+    def test_mirror_generates_narrower_smaller_images_and_reuses_them(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            fixture = root / "wide.webp"
+            subprocess.run([
+                "ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+                "testsrc2=size=1440x820", "-frames:v", "1", "-c:v", "libwebp", "-lossless", "1", str(fixture),
+            ], check=True)
+            original = fixture.read_bytes()
+            post = posts_from_api(json.loads((FIX / "api.json").read_text()))[0]
+            post = replace(post, body_html='<p>Hello</p><img src="https://example.com/wide.webp" alt="Sample">')
+            apply_mirror(root, [post], fetch_bytes=lambda _: original)
+            essay = root / "writing" / post.slug
+            html = (essay / "index.html").read_text()
+            self.assertIn('srcset="images/01-800w.webp 800w, images/01-1200w.webp 1200w, images/01.webp 1440w"', html)
+            self.assertIn('sizes="(max-width: 600px) 100vw, 544px"', html)
+            for width in (800, 1200):
+                variant = (essay / "images" / f"01-{width}w.webp").read_bytes()
+                self.assertEqual(webp_size(variant)[0], width)
+                self.assertLess(len(variant), len(original))
+            self.assertEqual(apply_mirror(root, [post], fetch_bytes=lambda _: original), [])
+
 
 class CoverTests(unittest.TestCase):
     def test_cover_is_first_local_image(self):
@@ -470,11 +496,67 @@ class CoverTests(unittest.TestCase):
         self.assertIsNone(essay_cover("<p>no images</p>", "https://silvags.com/writing/a/"))
 
     def test_committed_essays_preview_their_own_cover(self):
-        for path in (Path(__file__).parent.parent / "writing").glob("*/index.html"):
+        root = Path(__file__).parent.parent
+        for path in (root / "writing").glob("*/index.html"):
             html = path.read_text(encoding="utf-8")
             if '<img src="images/' in html:
-                self.assertIn(f'og:image" content="https://silvags.com/writing/{path.parent.name}/images/', html, path)
+                cover = re.search(r'<meta property="og:image" content="([^"]+)">', html)
+                self.assertIsNotNone(cover, path)
+                allowed = [f"https://silvags.com/{image.relative_to(root).as_posix()}"
+                           for image in (root / "og").glob(f"essay-{path.parent.name}-*.webp")]
+                self.assertTrue(
+                    cover[1].startswith(f"https://silvags.com/writing/{path.parent.name}/images/")
+                    or cover[1] in allowed, path,
+                )
 
+    def test_essay_metadata_uses_cover_dimensions_alt_and_canonical(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            post = posts_from_api(json.loads((FIX / "api.json").read_text()))[0]
+            post = replace(post, body_html='<p>Hello</p><img src="https://example.com/small.webp" alt="A &amp; B">')
+            apply_mirror(root, [post], fetch_bytes=lambda _: TINY_WEBP)
+            html = (root / "writing" / post.slug / "index.html").read_text()
+            for key, value in {
+                "og:site_name": "Guilherme Silva",
+                "og:locale": "en_GB",
+                "og:image": f"https://silvags.com/writing/{post.slug}/images/01.webp",
+                "og:image:width": "8",
+                "og:image:height": "8",
+                "og:image:type": "image/webp",
+                "og:image:alt": "A &amp; B",
+            }.items():
+                self.assertIn(f'<meta property="{key}" content="{value}">', html)
+            self.assertIn('<meta name="twitter:card" content="summary_large_image">', html)
+            self.assertIn('<meta name="twitter:image:alt" content="A &amp; B">', html)
+            self.assertIn(f'<link rel="canonical" href="{post.canonical}">', html)
+            data = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)[1])
+            self.assertEqual(data["mainEntityOfPage"], post.canonical)
+            self.assertEqual(data["image"], f"https://silvags.com/writing/{post.slug}/images/01.webp")
+
+    def test_mirror_prefers_a_local_og_cover_and_keeps_it_on_rerender(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            post = posts_from_api(json.loads((FIX / "api.json").read_text()))[0]
+            post = replace(post, body_html='<p>Hello</p><img src="https://example.com/small.webp" alt="">')
+            og = root / "og"
+            og.mkdir()
+            custom = og / f"essay-{post.slug}-v3.webp"
+            custom.write_bytes(TINY_WEBP)
+            essay = root / "writing" / post.slug / "index.html"
+            apply_mirror(root, [post], fetch_bytes=lambda _: TINY_WEBP)
+            self.assertIn(f'og:image" content="https://silvags.com/og/{custom.name}"', essay.read_text())
+            preferred = og / f"essay-{post.slug}-v1.webp"
+            preferred.write_bytes(TINY_WEBP)
+            rerender = replace(post, title="Updated essay")
+            apply_mirror(root, [rerender], fetch_bytes=lambda _: TINY_WEBP)
+            html = essay.read_text()
+            self.assertIn(f'og:image" content="https://silvags.com/og/{preferred.name}"', html)
+            self.assertIn('og:image:width" content="1200"', html)
+            self.assertIn('og:image:height" content="630"', html)
+            self.assertIn('<meta name="twitter:image:alt" content="Updated essay">', html)
+            self.assertEqual(preferred.read_bytes(), TINY_WEBP)
 
 
 class StripXMentionsTests(unittest.TestCase):
@@ -546,8 +628,21 @@ class StripXMentionsTests(unittest.TestCase):
         self.assertNotIn("Twitter", out)
         self.assertNotIn("twitter", out.lower())
 
+    def test_twitter_sentences_leave_image_attributes_and_link_tags_intact(self):
+        src = (
+            '<p>Keep this. Read <a href="https://example.com/thread">this Twitter thread</a> tomorrow. '
+            'Keep <em>this too</em>.</p>'
+            '<figure><img src="images/01.webp" alt="A Twitter post or Twitter"></figure>'
+            '<p><a href="https://example.com/Twitter">Keep the unrelated link.</a></p>'
+        )
+        self.assertEqual(
+            strip_x_mentions(src),
+            '<p>Keep this.<a href="https://example.com/thread"></a> Keep <em>this too</em>.</p>'
+            '<figure><img src="images/01.webp" alt="A Twitter post or Twitter"></figure>'
+            '<p><a href="https://example.com/Twitter">Keep the unrelated link.</a></p>',
+        )
+
     def test_rewrite_mirrored_essays_updates_the_article_only(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             site(root)
@@ -570,8 +665,6 @@ class StripXMentionsTests(unittest.TestCase):
             self.assertEqual(rewrite_mirrored_essays(root), [])
 
     def test_apply_mirror_strips_the_signoff(self):
-        import tempfile
-        from dataclasses import replace
         posts = posts_from_api(json.loads((FIX / "api.json").read_text(encoding="utf-8")))
         posts = [
             replace(
@@ -589,3 +682,7 @@ class StripXMentionsTests(unittest.TestCase):
             html = (root / "writing" / "hello-world" / "index.html").read_text(encoding="utf-8")
             self.assertIn("You can find me on LinkedIn.", html)
             self.assertNotRegex(html, r"or X")
+
+
+if __name__ == "__main__":
+    unittest.main()
