@@ -1,7 +1,10 @@
 import json
+import tempfile
 import unittest
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.feeds import posts_from_api
 from scripts.mirror_substack import (
@@ -86,6 +89,33 @@ var stale = 1;
 
 
 class MirrorTests(unittest.TestCase):
+    def test_mirrored_gif_keeps_dimensions_controls_and_media_link(self):
+        payload = json.loads((FIX / "api.json").read_text(encoding="utf-8"))
+        post = replace(
+            posts_from_api(payload)[0],
+            body_html='<figure><img src="https://example.com/clip.gif">'
+                      '<figcaption>Testing &amp; recording Pico</figcaption></figure>',
+            cover_url="",
+        )
+        clip = FIX.parent.parent / "talks/bottleneck-moved/robot-pico.webm"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site(root)
+            with patch("scripts.mirror_substack.gif_to_webm", return_value=clip.read_bytes()):
+                apply_mirror(root, [post], fetch_bytes=lambda _url: b"GIF89a")
+            essay = root / "writing" / post.slug
+            rendered = (essay / "index.html").read_text()
+            self.assertIn('<main id="main" tabindex="-1">', rendered)
+            self.assertIn('<video controls muted loop playsinline preload="none"', rendered)
+            self.assertIn('width="400" height="710"', rendered)
+            self.assertIn('aria-label="Testing &amp; recording Pico"', rendered)
+            self.assertIn('<source data-src="images/01.webm"', rendered)
+            self.assertIn(f"/writing/{post.slug}/images/01.webm", (essay / "index.md").read_text())
+            self.assertIn(
+                f'&lt;source src=&quot;https://silvags.com/writing/{post.slug}/images/01.webm&quot;',
+                (root / "feed.xml").read_text(),
+            )
+
     def test_fetch_failure_leaves_the_essay(self):
         root = Path(self.id().replace(".", "_"))
         # use a real temp dir

@@ -12,28 +12,42 @@
 <meta property="og:url" content="https://silvags.com/talks/">
 <link rel="canonical" href="https://silvags.com/talks/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="preload" href="/fonts/newsreader-normal-latin-v26.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/newsreader-normal-latin-v27.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 // Dark first. Light only if chosen, or if the OS prefers light and nothing is stored.
 (function(){var h=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}
-if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches))h.classList.remove('dark');})();
+if(t==='light'||(!t&&matchMedia('(prefers-color-scheme: light)').matches)){
+  h.classList.remove('dark');document.querySelector('meta[name="theme-color"]').content='#f4efe4';
+}})();
+
+// Probe on first 3D use and release the temporary context.
+window.siteHasWebGL2=(()=>{
+  let supported;
+  return ()=>{
+    if(supported!==undefined)return supported;
+    const gl=document.createElement('canvas').getContext('webgl2');
+    supported=!!gl;
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    return supported;
+  };
+})();
 </script>
 <style>
 /* Newsreader, self-hosted (fonts/, SIL OFL). One variable file per style covers 400 and 500. */
-@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-v26.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-v27.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Newsreader";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-normal-latin-ext-v26.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-italic-latin-v26.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Newsreader";font-style:italic;font-weight:400 500;font-display:swap;src:url(/fonts/newsreader-italic-latin-ext-v26.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
 /* :root is light, :root.dark is dark (AGENTS.md). --ink/--paper also feed the header shader. */
-:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.35);
-  --bg:var(--paper);--text:var(--ink);color-scheme:light}
-:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.38);
+:root{--paper:#f4efe4;--ink:#2a231b;--muted:#6c6152;--link:#8a3d1c;--rule:#d8cdbb;--line:rgba(138,61,28,.55);--study-ink:var(--ink);
+  color-scheme:light}
+:root.dark{--paper:#16130f;--ink:#e8e0d2;--muted:#a19686;--link:#e0bf92;--rule:#342e26;--line:rgba(224,191,146,.54);--study-ink:#e8dcc6;
   color-scheme:dark}
 @view-transition{navigation:auto}
-.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}main:focus{outline:0}
+.hero{view-transition-name:hero}.col>header{view-transition-name:masthead}main:focus:not(:focus-visible){outline:0}
 *{box-sizing:border-box}
 html{background:var(--paper)}
-body{margin:0;background:var(--paper);color:var(--ink);
+body{position:relative;margin:0;color:var(--ink);
   font:400 1.22rem/1.62 "Newsreader",Charter,"Iowan Old Style",Georgia,serif;
   font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-wrap:pretty}
 .hero{display:block;position:relative;height:230px;margin-bottom:1.5rem;overflow:hidden;background:var(--paper)}
@@ -47,14 +61,16 @@ a{color:var(--link);text-decoration:underline;text-decoration-color:var(--line);
   text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .25s,color .25s}
 a:hover{text-decoration-color:currentColor}
 :focus-visible{outline:2px solid var(--link);outline-offset:3px}
+.skip{position:fixed;z-index:2;top:.75rem;left:.75rem;padding:.35rem .75rem;background:var(--paper);color:var(--ink)}
+.skip:not(:focus-visible){clip-path:inset(50%)}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1.5rem;
   margin-bottom:3.5rem;font-size:1.02rem}
 header .name{color:var(--ink);text-decoration:none;font-weight:500}
 header nav a{color:var(--muted);text-decoration:none;margin-left:1rem}
 header nav a:first-child{margin-left:0}
 header nav a:hover,header nav a[aria-current]{color:var(--ink)}
-header nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--rule)}
-main{animation:rise .6s ease-out both}
+header nav a[aria-current]{text-decoration:underline;text-decoration-color:currentColor}
+main.swapped{animation:rise .6s ease-out both}
 @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 h1,h2,h3{font-weight:400;line-height:1.15;text-wrap:balance}
 h1{font-size:2.4rem;margin:0 0 .5rem;letter-spacing:-.01em}
@@ -73,9 +89,9 @@ ul.plain{list-style:none;padding:0}
 ul.plain li{margin:.55rem 0}
 ul.posts{list-style:none;padding:0;margin:0 0 1.1rem}
 ul.posts li{margin:0 0 1.15rem}
-ul.posts time{display:block;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+ul.posts time{display:block;color:var(--muted);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-variant-numeric:oldstyle-nums;margin-bottom:.05rem}
 ul.posts .desc{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
-.build{margin:0 0 2.5rem}
+.build{display:flow-root;margin:0 0 2.5rem}
 .build h3{margin:0 0 .15rem}
 .status{color:var(--muted);font-style:italic;font-size:.98rem;margin:0 0 .6rem}
 .status b{font-weight:500;font-style:normal;color:var(--link)}
@@ -91,10 +107,11 @@ ol.steps .now em{color:var(--link);font-size:.92rem}
 .facts dt{font-style:italic;color:var(--muted)}
 .facts dd{margin:0}
 .facts b{font-weight:500}
-blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;border-left:1px solid var(--rule);font-style:italic}
+blockquote{margin:1.75rem 0;padding:0 0 0 1.25rem;position:relative;font-style:italic}
 figure{margin:2rem 0}
 figure img,figure video{display:block;width:100%;height:auto;border-radius:2px}
-figure.tall video{width:62%;max-height:34rem;object-fit:cover}
+figure video{aspect-ratio:auto attr(width type(<number>)) / attr(height type(<number>));object-fit:contain}
+figure.tall video{width:62%;max-height:34rem}
 :root.dark figure img{filter:brightness(.92)}
 figcaption{color:var(--muted);font-size:.95rem;font-style:italic;margin-top:.5rem}
 figure.model{margin:2rem -2.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.5rem 0}
@@ -127,7 +144,6 @@ footer a{color:var(--muted)}
 :root{--sketch:rgba(138,61,28,.5);--grain:.22}
 :root.dark{--sketch:rgba(224,191,146,.42);--grain:.15}
 /* Faint paper grain behind the content (media and text sit above it). One tiny SVG noise tile, no image. */
-body{position:relative;background:transparent}
 body::before,.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:var(--grain);
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .2 0 0 0 0 .08 5 0 0 0 -3.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
 :root.dark body::before,:root.dark .hero::after{filter:invert(1)}
@@ -148,7 +164,6 @@ figure.plate .frame>.sk{inset:0;width:100%;height:100%}
 .dim{display:flex;align-items:center;gap:.6rem;margin:.55rem 0 0;color:var(--sketch);font-size:1rem}
 .dim::before,.dim::after{content:"";flex:1;height:9px;border:solid currentColor;border-width:0 1px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat}
 .dim span{color:var(--muted);font-family:"La Belle Aurore",cursive;line-height:1}
-figcaption .no{font-style:normal;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin-right:.4rem}
 /* Model plate: a construction drawing sits behind the transparent canvas. */
 figure.model .viewer>.sk{inset:0;width:100%;height:100%;z-index:0}
 figure.model .viewer img,figure.model .viewer canvas{z-index:1}
@@ -183,14 +198,12 @@ li.now .note{display:none}
   .ink{stroke-dasharray:1;stroke-dashoffset:1;animation:ink linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
   @keyframes ink{to{stroke-dashoffset:0}}
 }}
-@media (prefers-reduced-motion:reduce){main{animation:none}a{transition:none}@view-transition{navigation:none}}
+@media (prefers-reduced-motion:reduce){main.swapped{animation:none}a{transition:none}@view-transition{navigation:none}}
 .ink-study{margin:1.5rem 0 2rem}
 .ink-study .ink{display:block;aspect-ratio:4/3;background:var(--ink);-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
-:root.dark .ink-study .ink{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
+:root.dark :is(.ink-study .ink,.build .thumb,.bench .mini){background:var(--study-ink);-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
 .ink-study figcaption{font-style:italic;color:var(--muted);font-size:.9rem}
-.build{display:flow-root}
 .build .thumb{float:right;width:14rem;aspect-ratio:4/3;margin:-.6rem -1rem .5rem 1.25rem;background:var(--ink);-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
-:root.dark .build .thumb{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
 @media (max-width:600px){.build .thumb{float:none;display:block;width:100%;max-width:24rem;margin:.25rem auto .75rem}}
 .doodle{margin:1.5rem 0 1.75rem;max-width:19rem}
 .doodle svg{display:block;width:100%;height:auto;overflow:visible;fill:none;stroke:var(--sketch);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
@@ -198,7 +211,6 @@ li.now .note{display:none}
 .doodle figcaption{font-size:1.1rem;margin-top:.25rem}
 .bench li{display:grid;grid-template-columns:8.5rem 1fr;gap:1.25rem;align-items:center;margin:.2rem 0 1rem}
 .bench .mini{display:block;aspect-ratio:4/3;background:var(--ink);opacity:.9;-webkit-mask:var(--study) center/contain no-repeat;mask:var(--study) center/contain no-repeat}
-:root.dark .bench .mini{background:#e8dcc6;-webkit-mask-image:var(--study-dark);mask-image:var(--study-dark)}
 @media (max-width:600px){.bench li{grid-template-columns:6.5rem 1fr;gap:.9rem}}
 .intro{position:relative}
 .intro .note{display:none}
@@ -206,15 +218,15 @@ li.now .note{display:none}
 /* ---- Notebook layer, site-wide pass: folio datelines and ink furniture. ---- */
 :root{--quill:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 10' preserveAspectRatio='none'%3E%3ClinearGradient id='f'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cg fill='none' stroke='url(%23f)' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3 5.5C70 3.8 140 6.4 230 5S420 3.6 597 5.2'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.6' d='M14 6.8C90 6 170 7.4 260 6.2S400 5.6 470 6.6'/%3E%3C/g%3E%3C/svg%3E")}
 /* Folio datelines: an entry's date is set like a folio label (lists, and an essay's dateline over a quill rule). */
-ul.posts time{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-variant-numeric:oldstyle-nums;margin-bottom:.05rem}
 .meta:has(+.post){font-style:normal;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-variant-numeric:oldstyle-nums;margin-bottom:2.25rem}
 .meta:has(+.post) time{color:var(--link);font-weight:500;letter-spacing:.14em}
 .meta:has(+.post)::after{content:"";display:block;height:10px;margin-top:.55rem;background:var(--sketch);opacity:.75;-webkit-mask:var(--quill) center/100% 100% no-repeat;mask:var(--quill) center/100% 100% no-repeat}
 /* Ink furniture: hand-drawn rules for breaks and quotes, a tailpiece where an essay ends, a small mark per talk. */
 hr{border:0;height:10px;margin:2.5rem 0;background:var(--sketch);opacity:.75;-webkit-mask:var(--quill) center/100% 100% no-repeat;mask:var(--quill) center/100% 100% no-repeat}
-blockquote{position:relative;border-left:0}
-blockquote::before{content:"";position:absolute;left:0;top:.25em;bottom:.25em;width:6px;background:var(--sketch);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3.2 1C2.4 22 3.9 45 2.9 66S3.6 88 3.1 99'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.55' d='M4.2 8C3.6 30 4.6 52 3.9 74'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3.2 1C2.4 22 3.9 45 2.9 66S3.6 88 3.1 99'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.55' d='M4.2 8C3.6 30 4.6 52 3.9 74'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
-.post::after{content:"";display:block;width:5.5rem;height:1rem;margin:3.25rem auto 0;background:var(--sketch);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 16'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-width='1.2'%3E%3Cpath d='M3 9C11 4 19 13 27 8.5S36 6 38 8'/%3E%3Cpath d='M87 7C79 12 71 3 63 7.5S54 10 52 8'/%3E%3C/g%3E%3Cpath d='M45 4.6c1.9 0 3.4 1.5 3.4 3.4S46.9 11.4 45 11.4 41.6 9.9 41.6 8 43.1 4.6 45 4.6z' fill='%23000'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 16'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-width='1.2'%3E%3Cpath d='M3 9C11 4 19 13 27 8.5S36 6 38 8'/%3E%3Cpath d='M87 7C79 12 71 3 63 7.5S54 10 52 8'/%3E%3C/g%3E%3Cpath d='M45 4.6c1.9 0 3.4 1.5 3.4 3.4S46.9 11.4 45 11.4 41.6 9.9 41.6 8 43.1 4.6 45 4.6z' fill='%23000'/%3E%3C/svg%3E") center/contain no-repeat}
+:root{--quote-rule:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='1.1' d='M3.2 1C2.4 22 3.9 45 2.9 66S3.6 88 3.1 99'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-width='.7' opacity='.55' d='M4.2 8C3.6 30 4.6 52 3.9 74'/%3E%3C/g%3E%3C/svg%3E")}
+blockquote::before{content:"";position:absolute;left:0;top:.25em;bottom:.25em;width:6px;background:var(--sketch);-webkit-mask:var(--quote-rule) center/100% 100% no-repeat;mask:var(--quote-rule) center/100% 100% no-repeat}
+:root{--tailpiece:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 16'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-width='1.2'%3E%3Cpath d='M3 9C11 4 19 13 27 8.5S36 6 38 8'/%3E%3Cpath d='M87 7C79 12 71 3 63 7.5S54 10 52 8'/%3E%3C/g%3E%3Cpath d='M45 4.6c1.9 0 3.4 1.5 3.4 3.4S46.9 11.4 45 11.4 41.6 9.9 41.6 8 43.1 4.6 45 4.6z' fill='%23000'/%3E%3C/svg%3E")}
+.post::after{content:"";display:block;width:5.5rem;height:1rem;margin:3.25rem auto 0;background:var(--sketch);-webkit-mask:var(--tailpiece) center/contain no-repeat;mask:var(--tailpiece) center/contain no-repeat}
 ul.marks li{position:relative;padding-left:2.25rem}
 ul.marks li::before{content:"";position:absolute;left:0;top:.42em;width:1.5rem;height:1.05rem;background:var(--sketch);-webkit-mask:var(--mark) center/contain no-repeat;mask:var(--mark) center/contain no-repeat}
 ul.marks.video{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 20'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.3'%3E%3Cpath d='M2.5 2.8C9 2.2 19 2.4 25.6 2.9 26 7 25.9 12 25.4 15.6 18 16.2 9 16 2.8 15.7 2.3 11 2.2 7 2.5 2.8z'/%3E%3Cpath d='M11.4 6.3 17.6 9.3 11.2 12.5z'/%3E%3Cpath d='M8 18.6H20.4'/%3E%3C/g%3E%3C/svg%3E")}
@@ -248,13 +260,14 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <!-- /agent:social -->
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <a class="hero" href="../" aria-label="Guilherme Silva, home" data-robot="pico" data-anim="turn" data-seed="1" data-glb="../robots/pico/pico-lite.glb"><span class="poster" style="--poster:url(/robots/pico/header-pico.png)"></span><canvas aria-hidden="true"></canvas></a>
 <div class="col">
 <header>
   <a class="name" href="../">Guilherme Silva</a>
   <nav aria-label="Site"><a href="../builds/">Builds</a><a href="../writing/">Writing</a><a href="../talks/" aria-current="page">Talks</a><a href="../about/">About</a><a href="../work/">Work</a></nav>
 </header>
-<main>
+<main id="main" tabindex="-1">
 <h1>Talks</h1>
 <p class="lede">I talk about Kubernetes, WebAssembly and platform engineering. The latest, The Bottleneck Moved, is about how platform teams can trust AI-written code in production. These days my side projects are mostly robots, but I still work on cloud-native stuff.</p>
 <h2>Videos</h2>
@@ -274,29 +287,43 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 </main>
 <footer>
   <span><a href="mailto:guilherme@silvags.com">guilherme@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
-  <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
+  <span><button id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true">light</button></span>
 </footer>
 </div>
 <script type="module">
 // Header: a real GLB of the robot, rendered small, then dithered 8x8 to 1-bit ink on paper. Poster shows first.
 const hero=document.querySelector('.hero'),POSTER=!!window.__POSTER;
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,gl2=!!document.createElement('canvas').getContext('webgl2');
-if(hero&&gl2&&(!reduce||POSTER)){
-const cv=hero.querySelector('canvas'),R=document.documentElement,id=()=>hero.dataset.glb+hero.dataset.anim+hero.dataset.seed;
+const motion=matchMedia('(prefers-reduced-motion: reduce)');
+if(hero&&(!motion.matches||POSTER)){
+const cv=hero.querySelector('canvas'),R=document.documentElement;
+const modelURL=()=>new URL(hero.dataset.glb,location.href).href;
+const id=()=>JSON.stringify([modelURL(),hero.dataset.anim,hero.dataset.seed]);
 // One renderer for the page's life. After an in-place navigation (site:swap) with a different robot, boot() loads the
 // new GLB (cached) and swaps scenes; the old frame stays up until the new one draws.
-let A,SEED,seen=false,booted=false,run=null,stop=null,cur='',r,rt;
-const kick=()=>{if(booted||!seen)return;booted=true;(window.requestIdleCallback||setTimeout)(()=>boot().catch(()=>{}),{timeout:1200})};
-new IntersectionObserver(e=>{seen=e[0].isIntersecting;kick();run&&run()}).observe(hero);
-document.readyState=='complete'?kick():addEventListener('load',kick);
-async function boot(){
-  const key=cur=id();
+let seen=false,quiet=false,booted=false,run=null,stop=null,cur='',r,rt;
+let width=0,height=0;
+const kick=()=>{
+  if(!quiet||!seen||(motion.matches&&!POSTER)||!window.siteHasWebGL2())return;
+  const key=id();
+  if(booted&&key===cur)return;
+  booted=true;cur=key;
+  boot(key,modelURL()).catch(()=>{if(key===cur)booted=false});
+};
+const ready=()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  const start=()=>{quiet=true;kick()};
+  if(window.requestIdleCallback)requestIdleCallback(start,{timeout:1200});
+  else setTimeout(start,200);
+}));
+document.readyState==='complete'?ready():addEventListener('load',ready,{once:true});
+new IntersectionObserver(([entry])=>{seen=entry.isIntersecting;kick();run?.()}).observe(hero);
+new ResizeObserver(([entry])=>{width=entry.contentRect.width;height=entry.contentRect.height;run?.()}).observe(cv);
+async function boot(key,url){
   // three.js r169, vendored and self-hosted (vendor/three/, MIT): one ESM bundle with the loaders this site uses.
   const T=await import('/vendor/three/three-0.169.0.min.js'),{GLTFLoader}=T;
-  const gltf=await new GLTFLoader().loadAsync(hero.dataset.glb);
-  if(key!==cur)return;
+  const gltf=await new GLTFLoader().loadAsync(url);
+  if(key!==cur||(motion.matches&&!POSTER))return;
   if(stop){stop();stop=run=null}
-  A=hero.dataset.anim;SEED=+hero.dataset.seed||0;
+  const A=hero.dataset.anim,SEED=+hero.dataset.seed||0;
   if(!r){r=new T.WebGLRenderer({canvas:cv,antialias:false,powerPreference:'low-power'});r.setPixelRatio(1);
     rt=new T.WebGLRenderTarget(1,1,{minFilter:T.NearestFilter,magFilter:T.NearestFilter,depthBuffer:true})}
   const scene=new T.Scene();scene.background=new T.Color(0);
@@ -343,9 +370,14 @@ async function boot(){
   const col=n=>{const m=getComputedStyle(R).getPropertyValue(n).trim().match(/^#(\w{6})$/),v=m?parseInt(m[1],16):0;return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
   const colors=()=>{if(POSTER){post.uniforms.I.value.set(1,1,1);post.uniforms.P.value.set(0,0,0);return}
     const i=col('--ink'),p=col('--paper');post.uniforms.P.value.set(...p);post.uniforms.I.value.set(...i.map((v,k)=>p[k]+(v-p[k])*.85))};colors();
-  const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
-  let sized=false;const size=()=>{const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);if(sized&&cv.width==w&&cv.height==h)return;sized=true;
-    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix()};
+  let lastW=0,lastH=0;
+  const size=()=>{
+    const dpr=Math.min(devicePixelRatio||1,2),cell=Math.max(1,Math.round(2*dpr));
+    const w=Math.max(1,Math.round(width*dpr)),h=Math.max(1,Math.round(height*dpr));
+    if(w===lastW&&h===lastH&&cell===post.uniforms.C.value)return;
+    lastW=w;lastH=h;
+    r.setSize(w,h,false);rt.setSize(Math.ceil(w/cell),Math.ceil(h/cell));post.uniforms.R.value.set(w,h);post.uniforms.C.value=cell;cam.aspect=w/h;cam.updateProjectionMatrix();
+  };
   const draw=t=>{size();pose(t);post.uniforms.t.value=t;r.setRenderTarget(rt);r.render(scene,cam);r.setRenderTarget(null);r.render(ps,oc)};
   let t=POSTER?(pico?1:2.2):0,raf=0,last=0;
   draw(t);cv.classList.add('on');if(POSTER){hero.dataset.ready=1;return}
@@ -357,7 +389,7 @@ async function boot(){
     [scene,ps].forEach(s=>s.traverse(o=>{o.geometry&&o.geometry.dispose();o.material&&o.material.dispose()}))};
   run();
 }
-document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()=>{})});
+document.addEventListener('site:swap',kick);
 }
 </script>
 
@@ -365,16 +397,30 @@ document.addEventListener('site:swap',()=>{if(booted&&id()!==cur)boot().catch(()
 // 3D viewers (.viewer in a robot page): the header's vendored three.js build plus OrbitControls, loaded only when a viewer
 // nears the viewport. Drag to rotate, scroll or pinch to zoom; the poster stays if WebGL or the load fails.
 // Runs on every page because in-place navigation (below) can bring a viewer in; dead viewers free their GL context.
-const V='/vendor/three/',live=new Set();let lib=null;
-const load=()=>lib||(lib=import(V+'three-0.169.0.min.js').then(T=>[T,T,T,T,T]));
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);boot(e.target).catch(()=>{lib=null})}),{rootMargin:'300px'});
-const gl2=!!document.createElement('canvas').getContext('webgl2');
-function scan(){live.forEach(v=>{if(!v.el.isConnected){v.stop();live.delete(v)}});
-  if(gl2)document.querySelectorAll('.viewer:not([data-seen])').forEach(el=>{el.dataset.seen=1;io.observe(el)})}
+const V='/vendor/three/',live=new Map();
+const io=new IntersectionObserver(entries=>{
+  for(const {target,isIntersecting} of entries){
+    if(!isIntersecting||!target.isConnected)continue;
+    io.unobserve(target);
+    if(window.siteHasWebGL2())boot(target).catch(()=>{});
+  }
+},{rootMargin:'40px'});
+function scan(){
+  for(const [el,stop] of live){
+    if(el.isConnected)continue;
+    io.unobserve(el);stop?.();live.delete(el);
+  }
+  document.querySelectorAll('.viewer').forEach(el=>{
+    if(!live.has(el)){live.set(el,null);io.observe(el)}
+  });
+}
 async function boot(el){
-  const [T,{GLTFLoader},{OrbitControls},{RoomEnvironment},{DRACOLoader}]=await load();
+  const url=new URL(el.dataset.glb,location.href).href;
+  const T=await import(V+'three-0.169.0.min.js');
+  const {GLTFLoader,OrbitControls,RoomEnvironment,DRACOLoader}=T;
   // so101.glb is Draco-compressed; the decoder (from the same three build) is fetched only for models that need it.
-  const draco=new DRACOLoader().setDecoderPath(V+'draco/'),gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(el.dataset.glb);draco.dispose();
+  const draco=new DRACOLoader().setDecoderPath(V+'draco/');
+  const gltf=await new GLTFLoader().setDRACOLoader(draco).loadAsync(url).finally(()=>draco.dispose());
   if(!el.isConnected)return;
   const cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');el.appendChild(cv);
   const r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));r.toneMapping=T.NeutralToneMapping;
@@ -383,7 +429,7 @@ async function boot(el){
   const c=new T.Box3().setFromObject(model).getCenter(new T.Vector3()),rad=new T.Box3().setFromObject(model).getBoundingSphere(new T.Sphere()).radius;
   const [az,po]=(el.dataset.orbit||'0 80').split(' ').map(n=>T.MathUtils.degToRad(+n)),d=rad/Math.sin(T.MathUtils.degToRad(15))*1.05;
   const cam=new T.PerspectiveCamera(30,1,rad/100,rad*20);cam.position.setFromSphericalCoords(d,po,az).add(c);
-  const ctl=new OrbitControls(cam,cv);ctl.target.copy(c);ctl.enableDamping=true;ctl.enablePan=false;ctl.minDistance=d*.4;ctl.maxDistance=d*2;ctl.update();
+  const ctl=new OrbitControls(cam,cv);ctl.target.copy(c);ctl.enableDamping=true;ctl.enablePan=false;ctl.minDistance=d*.4;ctl.maxDistance=d*2;ctl.update();ctl.saveState();
   cv.style.touchAction='pan-y';
   let raf=0,idle=0;const draw=()=>r.render(scene,cam);
   const tick=()=>{raf=0;if(ctl.update()){draw();idle=0}else idle++;if(idle<10&&!raf)raf=requestAnimationFrame(tick)};
@@ -391,9 +437,31 @@ async function boot(el){
   ctl.addEventListener('start',wake);ctl.addEventListener('change',wake);
   const size=()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();draw()};
   const ro=new ResizeObserver(size);ro.observe(cv);size();el.classList.add('ready');
-  live.add({el,stop(){cancelAnimationFrame(raf);ro.disconnect();ctl.dispose();
+  el.setAttribute('aria-description','Drag or use the arrow keys to rotate. Press plus or minus to zoom, or R to reset.');
+  el.addEventListener('keydown',e=>{
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    let azimuth=ctl.getAzimuthalAngle(),polar=ctl.getPolarAngle(),distance=ctl.getDistance();
+    switch(e.key){
+      case 'ArrowLeft':azimuth-=.12;break;
+      case 'ArrowRight':azimuth+=.12;break;
+      case 'ArrowUp':polar-=.12;break;
+      case 'ArrowDown':polar+=.12;break;
+      case '+':case '=':distance*=.9;break;
+      case '-':distance/=.9;break;
+      case 'r':case 'R':e.preventDefault();ctl.reset();draw();return;
+      default:return;
+    }
+    e.preventDefault();
+    polar=T.MathUtils.clamp(polar,.001,Math.PI-.001);
+    distance=T.MathUtils.clamp(distance,ctl.minDistance,ctl.maxDistance);
+    cam.position.setFromSphericalCoords(distance,polar,azimuth).add(ctl.target);
+    ctl.update();draw();
+  });
+  live.set(el,()=>{
+    cancelAnimationFrame(raf);ro.disconnect();ctl.dispose();
     scene.traverse(o=>{o.geometry&&o.geometry.dispose();[].concat(o.material||[]).forEach(m=>{Object.values(m).forEach(v=>v&&v.isTexture&&v.dispose());m.dispose()})});
-    env.dispose();r.dispose();r.forceContextLoss()}});
+    env.dispose();r.dispose();r.forceContextLoss();
+  });
 }
 scan();document.addEventListener('site:swap',scan);
 </script>
@@ -401,15 +469,75 @@ scan();document.addEventListener('site:swap',scan);
 // Theme toggle: :root.dark is dark, :root is light; persisted in localStorage "theme".
 // Delegated, so it survives the content swap below.
 (function(){var h=document.documentElement;
-function label(){var b=document.getElementById('theme-toggle');if(b)b.textContent=h.classList.contains('dark')?'light':'dark';}
+function label(){
+  var dark=h.classList.contains('dark'),b=document.getElementById('theme-toggle');
+  if(b){
+    b.textContent=dark?'light':'dark';
+    b.setAttribute('aria-label','Switch to '+b.textContent+' theme');
+    b.setAttribute('aria-pressed',dark);
+  }
+  document.querySelector('meta[name="theme-color"]').content=dark?'#16130f':'#f4efe4';
+}
 label();document.addEventListener('site:swap',label);
 document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('#theme-toggle'))return;
 h.classList.toggle('dark');label();try{localStorage.setItem('theme',h.classList.contains('dark')?'dark':'light')}catch(x){}});})();
+
+// Load nearby video sources, and only play clips within the viewport.
+(function(){
+  const clips=new Map(),motion=matchMedia('(prefers-reduced-motion: reduce)');
+  function load(clip,state){
+    if(state.loaded)return;
+    for(const source of clip.querySelectorAll('source[data-src]'))source.src=source.dataset.src;
+    clip.load();state.loaded=true;nearby.unobserve(clip);
+  }
+  const nearby=new IntersectionObserver(entries=>{
+    for(const {target,isIntersecting} of entries){
+      const state=clips.get(target);
+      if(isIntersecting&&state)load(target,state);
+    }
+  },{rootMargin:'150px'});
+  const visible=new IntersectionObserver(entries=>{
+    for(const {target,isIntersecting} of entries){
+      const state=clips.get(target);
+      if(!state||state.visible===isIntersecting)continue;
+      state.visible=isIntersecting;
+      if(isIntersecting){
+        load(target,state);
+        if(state.resume&&(!motion.matches||state.played))target.play().catch(()=>{});
+        else if(motion.matches)state.resume=false;
+      }else{
+        state.resume=!target.paused;
+        target.pause();
+      }
+    }
+  });
+  function scan(){
+    for(const clip of clips.keys()){
+      if(clip.isConnected)continue;
+      nearby.unobserve(clip);visible.unobserve(clip);clip.pause();clips.delete(clip);
+    }
+    document.querySelectorAll('video').forEach(clip=>{
+      if(clips.has(clip)||!clip.querySelector('source[data-src]'))return;
+      const state={visible:false,resume:true,played:false};
+      clips.set(clip,state);
+      clip.addEventListener('playing',()=>{state.played=true});
+      nearby.observe(clip);visible.observe(clip);
+    });
+  }
+  scan();document.addEventListener('site:swap',scan);
+})();
 
 // Instant navigation: fetch same-site pages on hover, then swap .col and keep the hero (and its WebGL) running.
 // Any failure falls back to a normal page load.
 (function(){
 var col=document.querySelector('.col'),hero=document.querySelector('.hero');
+// The mirror requires a bare main tag in its Writing template. Its static skip target works without JS.
+function prepareMain(column){
+  var main=column.querySelector('main'),target=main?.querySelector('.skip-target');
+  if(target){target.remove();main.id='main';main.tabIndex=-1}
+  return main;
+}
+if(col)prepareMain(col);
 if(!col||!hero||!window.fetch||!window.DOMParser||!history.pushState)return;
 var cache=new Map(),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 history.scrollRestoration='manual';
@@ -419,9 +547,8 @@ function get(u){var k=key(u);if(!cache.has(k)){var p=fetch(k,{headers:{Accept:'t
   if(!r.ok||!/html/.test(r.headers.get('content-type')||''))throw Error(r.status);return r.text()});
   p.catch(function(){cache.delete(k)});cache.set(k,p)}return cache.get(k)}
 function save(){history.replaceState({y:scrollY},'')}
-function swap(html,url,y){
-  var d=new DOMParser().parseFromString(html,'text/html'),nc=d.querySelector('.col'),nh=d.querySelector('.hero');
-  if(!nc)throw Error('no .col');
+function swap(d,nc,url,y){
+  var nh=d.querySelector('.hero');
   d.head.querySelectorAll('script[src]').forEach(function(s){var src=new URL(s.getAttribute('src'),url).href;
     if(![].some.call(document.scripts,function(o){return o.src===src})){var n=document.createElement('script');if(s.type)n.type=s.type;n.src=src;document.head.appendChild(n)}});
   document.title=d.title;
@@ -429,17 +556,24 @@ function swap(html,url,y){
   if(nh){['href','aria-current','aria-label','data-robot','data-anim','data-seed','data-glb'].forEach(function(n){nh.hasAttribute(n)?hero.setAttribute(n,nh.getAttribute(n)):hero.removeAttribute(n)});
     var op=hero.querySelector('.poster'),np=nh.querySelector('.poster');if(op&&np)op.setAttribute('style',np.getAttribute('style'))}
   col.replaceChildren.apply(col,[].map.call(nc.childNodes,function(n){return document.importNode(n,true)}));
-  var t=url.hash&&document.getElementById(decodeURIComponent(url.hash.slice(1)));
+  var m=prepareMain(col);
+  var t;
+  if(url.hash)try{t=document.getElementById(decodeURIComponent(url.hash.slice(1)))}catch(e){}
   if(y!=null)scrollTo(0,y);else if(t)t.scrollIntoView();else scrollTo(0,0);
-  var m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true})}
+  if(m){m.classList.add('swapped');m.tabIndex=-1;m.focus({preventScroll:true})}
   document.dispatchEvent(new Event('site:swap'));
 }
 function go(href,push,y){
   var url=new URL(href,location.href);
   return get(url).then(function(html){
-    if(push){save();history.pushState({y:0},'',url.href)}
-    var run=function(){swap(html,url,y)};
-    if(document.startViewTransition&&!reduce)document.startViewTransition(run);else run();
+    var d=new DOMParser().parseFromString(html,'text/html'),nc=d.querySelector('.col');
+    if(!nc)throw Error('no .col');
+    var run=function(){
+      if(push){save();history.pushState({y:0},'',url.href)}
+      swap(d,nc,url,y);
+    };
+    if(document.startViewTransition&&!reduce)return document.startViewTransition(run).updateCallbackDone;
+    run();
   }).catch(function(){push?location.assign(url.href):location.reload()});
 }
 document.addEventListener('click',function(e){
@@ -449,9 +583,26 @@ document.addEventListener('click',function(e){
   e.preventDefault();go(a.href,true);
 });
 addEventListener('popstate',function(e){go(location.href,false,e.state&&e.state.y||0)});
-var warm=function(e){var a=e.target.closest&&e.target.closest('a');if(page(a)&&key(a.href)!==key(location.href))get(a.href)};
-document.addEventListener('pointerover',warm,{passive:true});document.addEventListener('touchstart',warm,{passive:true});document.addEventListener('focusin',warm);
-(window.requestIdleCallback||setTimeout)(function(){document.querySelectorAll('.col>header a').forEach(function(a){if(page(a)&&key(a.href)!==key(location.href))get(a.href)})},{timeout:3000});
+var pending=new WeakMap();
+function warm(e){
+  if(e.pointerType==='touch'||navigator.connection?.saveData)return;
+  var a=e.target.closest?.('a');
+  if(!page(a)||a.contains(e.relatedTarget)||pending.has(a)||key(a.href)===key(location.href))return;
+  pending.set(a,setTimeout(function(){
+    pending.delete(a);
+    if(a.isConnected&&!navigator.connection?.saveData)get(a.href);
+  },65));
+}
+function cool(e){
+  var a=e.target.closest?.('a');
+  if(!a||a.contains(e.relatedTarget))return;
+  if(e.type==='pointerout'?a.matches(':focus-within'):a.matches(':hover'))return;
+  clearTimeout(pending.get(a));pending.delete(a);
+}
+document.addEventListener('pointerover',warm,{passive:true});
+document.addEventListener('pointerout',cool,{passive:true});
+document.addEventListener('focusin',warm);
+document.addEventListener('focusout',cool);
 })();
 </script>
 

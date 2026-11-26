@@ -22,7 +22,7 @@ import html
 import json
 import re
 
-from scripts.htmltext import html_to_markdown, inner, meta_content, tag_text
+from scripts.htmltext import html_to_markdown, inner, meta_content, size_mirrored_videos, tag_text
 
 ROOT = Path(__file__).resolve().parents[1]  # repo root
 SITE = "https://silvags.com"
@@ -304,8 +304,13 @@ def _upsert(document: str, pattern: re.Pattern, block: str | None) -> str:
 
 def update_document(rel: Path, document: str, root: Path = ROOT) -> str:
     document = _upsert(document, LINKS_RE, links_block(rel))
-    # Mirrored essays own their BlogPosting block. Don't replace it.
-    if not _is_essay(rel):
+    if _is_essay(rel):
+        # The mirror emits a bare <main> and stages its WebM files before invoking the builder.
+        document = document.replace("<main>", '<main id="main" tabindex="-1">', 1)
+        document = size_mirrored_videos(
+            document, lambda src: (root / rel.parent / src).read_bytes(), tag_text(document, "h1")
+        )
+    else:
         document = _upsert(document, LD_RE, _ld_for(rel, document))
     # Breadcrumbs and social tags always go last in <head>. Essays copy writing/index.html's head,
     # so a fixed position keeps the mirror's output the same on every run.
@@ -566,6 +571,8 @@ def build_feed(pages: list[tuple[Path, str]]) -> str:
             canonical = match.group(1)
         stamp = published if "T" in published else (published + "T00:00:00Z" if published else updated)
         content = inner(doc, "article", "post") or summary
+        # Feed readers render the article without the site's lazy-loading script.
+        content = re.sub(r'<source data-src="(images/[0-9]+\.webm)"', rf'<source src="{url}\1"', content)
         lines.extend([
             "  <entry>",
             f"    <title>{_xml(title)}</title>",

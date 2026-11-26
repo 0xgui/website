@@ -4,7 +4,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-ATTRS = re.compile(r'''(?:href|src|data-glb)\s*=\s*["']([^"']+)["']''', re.I)
+ATTRS = re.compile(r'''(?<![\w-])(?:href|src|data-src|data-glb)\s*=\s*["']([^"']+)["']''', re.I)
 HREFS = re.compile(r'''href\s*=\s*["']([^"']+)["']''', re.I)
 IDS = re.compile(r'''\bid\s*=\s*["']([^"']+)["']''', re.I)
 URLS = re.compile(r'''url\(([^)]+)\)''')

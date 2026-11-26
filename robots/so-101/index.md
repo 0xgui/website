@@ -6,7 +6,7 @@ A 6-DOF robotic arm, built from scratch with twelve STS3215 servos, two 3D-print
 
 *The SO-101, drawn from its CAD model.*
 
-3D model of the SO-101 robotic arm. Drag to rotate.
+3D model of the SO-101 robotic arm.
 
 ![](https://silvags.com/robots/so-101/arms-wide.webp)
 
