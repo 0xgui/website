@@ -1,5 +1,8 @@
 {
   "version": 1,
   "include": ["/*"],
-  "exclude": ["/*.webp", "/*.png", "/*.svg", "/*.glb", "/*.webm", "/*.jpg", "/*.jpeg", "/*.gif", "/*.ico"]
+  "exclude": [
+    "/*.webp", "/*.png", "/*.svg", "/*.glb", "/*.webm", "/*.jpg", "/*.jpeg", "/*.gif", "/*.ico",
+    "/*.pdf", "/fonts/*", "/vendor/*", "/*.wasm", "/*.mp4"
+  ]
 }

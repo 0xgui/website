@@ -70,7 +70,7 @@ export function markdownAssetPath(pathname) {
 // Repo files that Pages deploys but that are not part of the site. Keep in
 // sync with the excludes in .github/workflows/pages-preview.yml. Media under
 // these paths skips this function (_routes.json); none is tracked there.
-const HIDDEN_DIRS = [".cursor", ".github", "scripts", "tests"];
+const HIDDEN_DIRS = [".cursor", ".github", "functions", "scripts", "tests"];
 const HIDDEN_FILES = [
   "worker.js", "wrangler.toml", "agents.md", "readme.md", ".gitignore", ".review-gate.yml",
 ];
@@ -80,13 +80,17 @@ export function isHiddenPath(pathname) {
   try {
     path = decodeURIComponent(path);
   } catch (_error) {
-    return false;
+    // A stray percent escape elsewhere in the path must not hide an ASCII name.
+    path = path.replace(/%([0-7][0-9a-f])/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
   }
-  const first = path.replace(/^\/+/, "").split("/")[0].toLowerCase();
-  if (!first) return false;
-  const rest = path.replace(/^\/+/, "").slice(first.length);
+  const segments = [];
+  for (const part of path.split(/[\/\\]/)) {
+    if (part === "..") segments.pop();
+    else if (part && part !== ".") segments.push(part);
+  }
+  const first = segments[0]?.toLowerCase();
   if (HIDDEN_DIRS.includes(first)) return true;
-  return rest === "" && HIDDEN_FILES.includes(first);
+  return segments.length === 1 && HIDDEN_FILES.includes(first);
 }
 
 async function notFound(context, url) {
@@ -118,14 +122,20 @@ function stamp(response) {
 
 export async function onRequest(context) {
   const request = context.request;
-  if (isHiddenPath(new URL(request.url).pathname)) {
-    return notFound(context, new URL(request.url));
+  const url = new URL(request.url);
+  if (isHiddenPath(url.pathname)) {
+    return notFound(context, url);
+  }
+  // Mirror the static redirect rules for requests handled by this function.
+  if (url.pathname === "/cv" || url.pathname.startsWith("/cv/")) {
+    const suffix = url.pathname.slice("/cv/".length);
+    const location = "/work/" + (suffix === "index.html" ? "" : suffix) + url.search;
+    return new Response(null, { status: 301, headers: { Location: location } });
   }
   if (request.method !== "GET" && request.method !== "HEAD") {
     return stamp(await context.next());
   }
   const accept = request.headers.get("Accept") || "";
-  const url = new URL(request.url);
   if (prefersMarkdown(accept)) {
     const assetPath = markdownAssetPath(url.pathname);
     if (assetPath) {
@@ -151,6 +161,7 @@ export async function onRequest(context) {
       if (html.q <= 0) {
         // No twin. If the page itself does not exist, say so (404) rather than blaming the format (406).
         const page = await context.next();
+        if (page.status >= 300 && page.status < 400) return page;
         if (page.status === 404) {
           return new Response("Not found\n", {
             status: 404,

@@ -22,7 +22,7 @@ import html
 import json
 import re
 
-from scripts.htmltext import html_to_markdown, inner, meta_content, size_mirrored_videos, tag_text
+from scripts.htmltext import html_to_markdown, inner, meta_content, tag_text
 
 ROOT = Path(__file__).resolve().parents[1]  # repo root
 SITE = "https://silvags.com"
@@ -304,13 +304,8 @@ def _upsert(document: str, pattern: re.Pattern, block: str | None) -> str:
 
 def update_document(rel: Path, document: str, root: Path = ROOT) -> str:
     document = _upsert(document, LINKS_RE, links_block(rel))
-    if _is_essay(rel):
-        # The mirror emits a bare <main> and stages its WebM files before invoking the builder.
-        document = document.replace("<main>", '<main id="main" tabindex="-1">', 1)
-        document = size_mirrored_videos(
-            document, lambda src: (root / rel.parent / src).read_bytes(), tag_text(document, "h1")
-        )
-    else:
+    # Mirrored essays own their BlogPosting block. Don't replace it.
+    if not _is_essay(rel):
         document = _upsert(document, LD_RE, _ld_for(rel, document))
     # Breadcrumbs and social tags always go last in <head>. Essays copy writing/index.html's head,
     # so a fixed position keeps the mirror's output the same on every run.
@@ -497,7 +492,7 @@ def build_headers() -> str:
         "  Content-Type: text/plain; charset=utf-8",
         "",
         "/llms-full.txt",
-        "  Content-Type: text/plain; charset=utf-8",
+        "  Content-Type: text/markdown; charset=utf-8",
         "",
         "/robots.txt",
         "  Content-Type: text/plain; charset=utf-8",
@@ -518,10 +513,13 @@ def build_headers() -> str:
         "/fonts/*",
         "  Cache-Control: public, max-age=31536000, immutable",
         "",
+        "/vendor/*",
+        "  Cache-Control: public, max-age=31536000, immutable",
+        "",
     ])
 
 
-MEDIA_EXTS = ("glb", "webp", "webm", "png", "mp4", "svg")
+MEDIA_EXTS = ("glb", "webp", "webm", "png", "mp4", "svg", "pdf")
 
 
 def _xml(value: str) -> str:

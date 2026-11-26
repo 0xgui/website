@@ -14,14 +14,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
+      - name: Install FFmpeg for image tests
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+
       - name: Python tests
         run: python3 -m unittest discover -s tests -v
+
+      - name: Check generated agent files
+        run: python3 scripts/build_agent.py --check
 
       - name: Markdown negotiation tests
         run: node --test tests/negotiate.test.mjs
 
       - name: Worker snapshot tests
         run: node --experimental-detect-module --test tests/worker-snapshot.test.mjs
+
+      - name: Browser checks
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          google-chrome --version
+          python3 -m http.server 8000 --bind 127.0.0.1 > "$RUNNER_TEMP/silvags-http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          curl --fail --silent --show-error --retry 5 --retry-connrefused http://127.0.0.1:8000/ -o /dev/null
+          node scripts/check_pages.mjs http://127.0.0.1:8000
 
   # Check name is the job id `test`. Branch protection should require that
   # name and the commit status `agent-pr-gate` only.

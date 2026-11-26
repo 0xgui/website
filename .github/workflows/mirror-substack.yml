@@ -101,8 +101,11 @@ jobs:
             url="$(gh pr create --base "$base" --head "$branch" --title "$message" --body-file "$body_file")"
           fi
           number="$(gh pr view "$branch" --json number --jq .number)"
-          files="$(git diff --name-only "origin/${base}...HEAD")"
-          decision="$(python3 scripts/gate_paths.py decide --files $files --body-file "$body_file")"
+          paths_file="$(mktemp)"
+          trap 'rm -f "$paths_file"' EXIT
+          git diff --name-only -z "origin/${base}...HEAD" > "$paths_file"
+          mapfile -d '' -t files < "$paths_file"
+          decision="$(python3 scripts/gate_paths.py decide --files "${files[@]/#/./}" --body-file "$body_file")"
           echo "$decision"
           auto="$(python3 -c 'import json,sys; print("yes" if json.load(sys.stdin)["auto_merge"] else "no")' <<<"$decision")"
           if [ -n "$proof" ]; then

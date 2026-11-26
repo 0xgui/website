@@ -316,13 +316,13 @@ _MIRRORED_VIDEO = re.compile(
 )
 
 
-def size_mirrored_videos(document, read_media, title):
-    """Complete sanitized clips after the mirror has written its local assets."""
+def size_mirrored_videos(body: str, files: dict[str, bytes], title: str) -> str:
+    """Complete sanitized clips using the WebM bytes staged for the essay."""
     def complete(match):
         attrs, src, caption = match.group("attrs", "src", "caption")
         updated = attrs
         if ' width="' not in attrs:
-            size = webm_size(read_media(src))
+            size = webm_size(files.get(src, b""))
             if size:
                 updated += f' width="{size[0]}" height="{size[1]}"'
         if ' aria-label="' not in attrs:
@@ -334,7 +334,7 @@ def size_mirrored_videos(document, read_media, title):
             updated += f' aria-label="{escape_attr(label)}"'
         return match[0].replace(f"<video{attrs}>", f"<video{updated}>", 1)
 
-    return _MIRRORED_VIDEO.sub(complete, document)
+    return _MIRRORED_VIDEO.sub(complete, body)
 
 
 def absolutize(href: str, page_url: str) -> str:

@@ -5,6 +5,8 @@ import worker, {
   assertSnapshot,
   collectSnapshot,
   isChallenge,
+  parseFeed,
+  readUpstream,
   rssFromPosts,
   saveSnapshot,
 } from "../worker.js";
@@ -53,6 +55,29 @@ test("posts become a feed with content encoded", () => {
   assertSnapshot(xml);
 });
 
+test("posts with HTTPS covers carry an escaped enclosure through RSS", () => {
+  const cover = "https://example.com/cover.jpg?first=1&second=2";
+  const xml = rssFromPosts([
+    { slug: "secure-cover", title: "Secure cover", cover_image: cover },
+    { slug: "insecure-cover", title: "Insecure cover", cover_image: "http://example.com/insecure.jpg" },
+    { slug: "invalid-cover", title: "Invalid cover", cover_image: "https://" },
+    { slug: "no-cover", title: "No cover" },
+  ], "2026-11-01T18:27:00.000Z");
+  assert.equal((xml.match(/<enclosure/g) ?? []).length, 1);
+  assert.ok(xml.includes('<enclosure url="https://example.com/cover.jpg?first=1&amp;second=2" type="image/jpeg"/>'));
+  assert.deepEqual(parseFeed(xml).map(item => item.image), [cover, "", "", ""]);
+});
+
+test("readUpstream aborts while the response body is still pending", async () => {
+  const fetcher = async (_url, { signal }) => ({
+    ok: true,
+    text: () => new Promise((_, reject) => {
+      signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+    }),
+  });
+  await assert.rejects(readUpstream(fetcher, "https://example.com/feed", 0), { name: "AbortError" });
+});
+
 test("collectSnapshot retries the feed then uses the posts API", async () => {
   const calls = [];
   let rssTries = 0;
@@ -64,7 +89,7 @@ test("collectSnapshot retries the feed then uses the posts API", async () => {
     return JSON.stringify({
       posts: [{ slug: "from-api", title: "From API", post_date: "2026-03-05T08:00:00.000Z", body_html: "<p>Full.</p>" }],
     });
-  }, calls), () => new Date("2026-11-01T18:27:00.000Z"));
+  }, calls), () => new Date("2026-11-01T18:27:00.000Z"), 0);
   assert.equal(rssTries, 3);
   assert.equal(calls.filter(url => url.includes("/api/v1/posts")).length, 1);
   assert.match(xml, /from-api/);
