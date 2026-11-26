@@ -2,7 +2,7 @@
 
 Where I’ve worked.
 
-## Hitachi Digital formerly synvert xgeeks
+## Hitachi Digital · formerly synvert xgeeks
 
 Nov 2021 to now
 
@@ -10,13 +10,13 @@ I joined as a DevOps Engineer in Nov 2021, became DevOps Team Lead in Mar 2022, 
 
 Client work there included:
 
-### Deichmann client
+### Deichmann · client
 
 Jan 2026 to Sep 2026
 
 I led a team of **7** to **8** on a shared e-commerce platform: Azure, Kubernetes, GitLab CI. Builds went from **20** to **5** minutes, and recovery from **30+** to about **5**, with automated rollbacks. I also brought in AI code review and merge-request preview environments.
 
-### Mercedes-Benz client
+### Mercedes-Benz · client
 
 Nov 2021 to Jun 2024
 

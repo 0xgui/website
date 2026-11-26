@@ -130,7 +130,7 @@ Source: https://silvags.com/work/
 
 Where I’ve worked.
 
-## Hitachi Digital formerly synvert xgeeks
+## Hitachi Digital · formerly synvert xgeeks
 
 Nov 2021 to now
 
@@ -138,13 +138,13 @@ I joined as a DevOps Engineer in Nov 2021, became DevOps Team Lead in Mar 2022, 
 
 Client work there included:
 
-### Deichmann client
+### Deichmann · client
 
 Jan 2026 to Sep 2026
 
 I led a team of **7** to **8** on a shared e-commerce platform: Azure, Kubernetes, GitLab CI. Builds went from **20** to **5** minutes, and recovery from **30+** to about **5**, with automated rollbacks. I also brought in AI code review and merge-request preview environments.
 
-### Mercedes-Benz client
+### Mercedes-Benz · client
 
 Nov 2021 to Jun 2024
 
@@ -850,7 +850,7 @@ We just need to understand that the present as it is will change. And it will ch
 
 In the meantime, let's see what happens.
 
-**The future is bright. **
+**The future is bright.**
 
 **We are in the best timeline.**
 
@@ -858,8 +858,8 @@ In the meantime, let's see what happens.
 
 ---
 
-### **
-**Until Next Time 😎
+###
+Until Next Time 😎
 
 Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)).
 
@@ -1293,7 +1293,7 @@ Product SWOT Analysis
 
 Feature Prioritization
 
-## **🧗‍♀️ **Overcoming Challenges
+## **🧗‍♀️** Overcoming Challenges
 
 You will not become a product-minded engineer the next day. It takes time. Especially if you work in an organization that isn't product-focused. 
 
@@ -1449,7 +1449,7 @@ As important as the mindset shift is, the hardest part is often saying no to unr
 
 **Show your damn work**: Provide regular demos, show milestones hits, and celebrate small wins to build trust in the process.
 
-**You're not pushing back because you don't want to work. **
+**You're not pushing back because you don't want to work.**
 
 **You're pushing back because you know what it takes to make it work.**
 
@@ -1619,8 +1619,7 @@ Every time.
 
 I knocked it over maybe fifty times, and about five of those it stayed down, unable to get up. I think that’s pretty good!
 
-I can finally say it: **I added a new robot to my collection.
-**
+I can finally say it: **I added a new robot to my collection.**
 
 ## Where the “get up” comes from
 
@@ -2135,7 +2134,7 @@ You already know AI. You use it every day probably. But all the AI you interact 
 
 Physical AI is AI that acts in the real world. Through robots/machines. Through arms, legs, wheels, grippers, humanoids, drones, etc. It doesn’t just generate an answer or a cute cat image.
 
-It ***does something***** **in physical space.
+It ***does something*** in physical space.
 
 We’re talking about:
 
@@ -2153,9 +2152,9 @@ Agricultural bots harvesting crops autonomously
 
 And much much more.
 
-At first I really thought like everyone else that “Physical AI” was just another buzzword that someone invented with the word AI on it, just to sell more.** **
+At first I really thought like everyone else that “Physical AI” was just another buzzword that someone invented with the word AI on it, just to sell more.
 
-**But I was wrong. **
+**But I was wrong.**
 
 ![The Current Generation of Humanoid Robots (2025)](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/03.webp)
 
@@ -3351,7 +3350,7 @@ October 23, 2024 · Originally published on [Binary Paths](https://binarypaths.s
 
 Imagine this: You're at a tech conference or chatting with friends, and suddenly you're drowning in buzzwords you've never heard of. Your colleagues are discussing some new framework or tool, and you're thinking:
 
-*"When did this even come out?" *
+*"When did this even come out?"*
 
 *"Should I know this?"*
 

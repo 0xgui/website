@@ -138,8 +138,7 @@ Every time.
 
 I knocked it over maybe fifty times, and about five of those it stayed down, unable to get up. I think that’s pretty good!
 
-I can finally say it: **I added a new robot to my collection.
-**
+I can finally say it: **I added a new robot to my collection.**
 
 ## Where the “get up” comes from
 

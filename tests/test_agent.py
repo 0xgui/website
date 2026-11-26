@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from scripts.build_agent import CONTENT_SIGNAL, diff
+from scripts.build_agent import CONTENT_SIGNAL, SITE, diff, html_pages, md_href, page_url
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -27,17 +27,20 @@ class AgentFileTests(unittest.TestCase):
         self.assertTrue(llms.startswith("# Guilherme Silva\n"))
         self.assertIn("> ", llms)
         self.assertIn("## Site\n", llms)
+        self.assertIn("https://silvags.com/talks/bottleneck-moved/index.md", llms)
         full = (ROOT / "llms-full.txt").read_text(encoding="utf-8")
-        for html in ROOT.rglob("index.html"):
-            rel = html.relative_to(ROOT)
-            if any(part in {".git", "tests", "scripts"} for part in rel.parts):
-                continue
+        for rel in html_pages(ROOT):
+            html = ROOT / rel
             twin = html.with_name("index.md")
             self.assertTrue(twin.exists(), str(twin))
             page = html.read_text(encoding="utf-8")
             self.assertIn('rel="alternate" type="text/markdown"', page)
             self.assertIn('rel="describedby"', page)
             self.assertIn(twin.name, page)
+            twin_url = SITE + md_href(rel)
+            self.assertIn(twin_url, llms, f"llms.txt missing {twin_url}")
+            source_line = f"Source: {page_url(rel)}"
+            self.assertIn(source_line, full, f"llms-full.txt missing {source_line}")
 
     def test_person_sameas_is_only_github_and_linkedin(self):
         import json

@@ -116,7 +116,7 @@ As important as the mindset shift is, the hardest part is often saying no to unr
 
 **Show your damn work**: Provide regular demos, show milestones hits, and celebrate small wins to build trust in the process.
 
-**You're not pushing back because you don't want to work. **
+**You're not pushing back because you don't want to work.**
 
 **You're pushing back because you know what it takes to make it work.**
 

@@ -3,13 +3,16 @@ import unittest
 from html.parser import HTMLParser
 from pathlib import Path
 
+from scripts.htmltext import meta_content, tag_text
+from scripts.sync_shell import check_pages, site_pages
+
 ROOT = Path(__file__).resolve().parents[1]
 VOID = {
     "area", "base", "br", "col", "embed", "hr", "img", "input",
     "link", "meta", "source", "track", "wbr",
 }
 BANNED = re.compile(
-    r"leiria|https?://(?:www\.)?(?:x\.com|twitter\.com)|https?://t\.co/",
+    r"leiria|(?:https?:)?//(?:www\.)?(?:x\.com|twitter\.com|mobile\.twitter\.com|nitter\.net|vxtwitter\.com)\b|(?:https?:)?//t\.co/",
     re.I,
 )
 
@@ -69,7 +72,7 @@ class HtmlTests(unittest.TestCase):
             self.assertIn("<title>", text, rel)
             self.assertIn('rel="canonical"', text, rel)
             self.assertIn('id="theme-toggle"', text, rel)
-            self.assertLessEqual(len(re.findall(r"<h1\b", text)), 1, rel)
+            self.assertEqual(len(re.findall(r"<h1\b", text)), 1, rel)
             parser = Balance()
             parser.feed(text)
             parser.close()
@@ -108,6 +111,39 @@ class HtmlTests(unittest.TestCase):
             self.assertIn("BlogPosting", text)
             self.assertRegex(text, r'<time datetime="\d{4}-\d{2}-\d{2}">')
             self.assertIn('type="text/markdown"', text)
+
+    def test_404_and_slides_have_no_banned_terms_or_draft_title(self):
+        for rel in ("404.html", "talks/bottleneck-moved/slides.html"):
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            self.assertIsNone(BANNED.search(text), f"{rel} matches {BANNED.pattern}")
+        slides = (ROOT / "talks/bottleneck-moved/slides.html").read_text(encoding="utf-8")
+        title = tag_text(slides, "title")
+        self.assertTrue(title)
+        self.assertNotIn("draft", title.lower())
+
+    def test_shell_parity_across_all_site_pages(self):
+        self.assertEqual(len(site_pages(ROOT)), 25)
+        diffs = check_pages(ROOT)
+        self.assertEqual(diffs, [], f"run python3 scripts/sync_shell.py --apply: {diffs}")
+
+    def test_og_and_twitter_meta_present_on_all_pages(self):
+        all_pages = pages()
+        self.assertEqual(len(all_pages), 24)
+        for path in all_pages:
+            text = path.read_text(encoding="utf-8")
+            rel = path.relative_to(ROOT).as_posix()
+            for prop in (
+                "og:title",
+                "og:description",
+                "og:image",
+                "og:image:width",
+                "og:image:height",
+                "og:image:alt",
+                "og:site_name",
+            ):
+                self.assertTrue(meta_content(text, prop, prop=True), f"{rel} missing {prop}")
+            for name in ("twitter:card", "description"):
+                self.assertTrue(meta_content(text, name, prop=False), f"{rel} missing {name}")
 
 
 if __name__ == "__main__":

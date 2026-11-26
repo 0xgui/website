@@ -6,7 +6,7 @@ October 23, 2024 · Originally published on [Binary Paths](https://binarypaths.s
 
 Imagine this: You're at a tech conference or chatting with friends, and suddenly you're drowning in buzzwords you've never heard of. Your colleagues are discussing some new framework or tool, and you're thinking:
 
-*"When did this even come out?" *
+*"When did this even come out?"*
 
 *"Should I know this?"*
 

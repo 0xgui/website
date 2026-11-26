@@ -1,7 +1,10 @@
+import io
+import json
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 
-from scripts.gate_paths import load_config, mirror_pr_body, tier_for_paths, verdict
+from scripts.gate_paths import load_config, main as gate_main, mirror_pr_body, tier_for_paths, verdict
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -71,6 +74,24 @@ class GateTests(unittest.TestCase):
         self.assertEqual(result["gate"], "blocked")
         self.assertIn("section:Testing", result["missing"])
         self.assertFalse(result["auto_merge"])
+
+    def test_cli_no_ci_green_blocks_and_ci_green_passes(self):
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = gate_main(["decide", "--files", "writing/a/index.html", "--no-ci-green"])
+        self.assertEqual(code, 1)
+        data = json.loads(buf.getvalue())
+        self.assertEqual(data["gate"], "blocked")
+        self.assertIn("ci", data["missing"])
+        self.assertFalse(data["auto_merge"])
+
+        buf_ok = io.StringIO()
+        with redirect_stdout(buf_ok):
+            code_ok = gate_main(["decide", "--files", "writing/a/index.html", "--ci-green"])
+        self.assertEqual(code_ok, 0)
+        data_ok = json.loads(buf_ok.getvalue())
+        self.assertEqual(data_ok["gate"], "pass")
+        self.assertTrue(data_ok["auto_merge"])
 
 
 if __name__ == "__main__":
