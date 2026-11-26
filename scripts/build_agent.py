@@ -194,7 +194,7 @@ def build_llms(root: Path, pages: list[tuple[Path, str]]) -> str:
             SITE + "/builds/",
             SITE + "/writing/",
             SITE + "/talks/",
-            SITE + "/cv/",
+            SITE + "/work/",
         ])),
         _section("Builds", rows([
             SITE + "/robots/so-101/",

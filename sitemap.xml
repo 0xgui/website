@@ -11,9 +11,6 @@
     <loc>https://silvags.com/builds/</loc>
   </url>
   <url>
-    <loc>https://silvags.com/cv/</loc>
-  </url>
-  <url>
     <loc>https://silvags.com/robots/pico/</loc>
   </url>
   <url>
@@ -24,6 +21,9 @@
   </url>
   <url>
     <loc>https://silvags.com/talks/bottleneck-moved/</loc>
+  </url>
+  <url>
+    <loc>https://silvags.com/work/</loc>
   </url>
   <url>
     <loc>https://silvags.com/writing/</loc>
