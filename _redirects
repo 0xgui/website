@@ -1,0 +1,4 @@
+# Old CV address. /work/ is the page now; the PDF lives beside it.
+/cv /work/ 301
+/cv/ /work/ 301
+/cv/* /work/:splat 301

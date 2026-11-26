@@ -41,12 +41,9 @@ def escape_attr(value: str) -> str:
 
 
 def clean_text(value: str) -> str:
-    """Drop banned URLs and place names this site does not publish."""
+    """Drop banned URLs and the one place name this site does not publish (Leiria)."""
     value = _BANNED_URL.sub("", value)
     value = re.sub(r"\bLeiria\b", "", value, flags=re.I)
-    value = re.sub(r"\s+in Portugal\b", " there", value, flags=re.I)
-    value = re.sub(r"\s+of Portugal\b", " of the trip", value, flags=re.I)
-    value = re.sub(r"\bPortugal(?:['’]s)?\b", "", value, flags=re.I)
     value = re.sub(r"[ \t]{2,}", " ", value)
     value = re.sub(r" +([,.;:!?])", r"\1", value)
     return value

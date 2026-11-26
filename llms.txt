@@ -11,6 +11,7 @@ Canonical site: https://silvags.com. Essays keep a canonical link to https://bin
 - [Builds](https://silvags.com/builds/index.md): Robots I’m building (SO-101, Pico) and small open-source tools.
 - [Writing](https://silvags.com/writing/index.md): Posts from Binary Paths, on engineering, teams, and physical AI.
 - [Talks](https://silvags.com/talks/index.md): Talks and slides on Kubernetes, WebAssembly, and platform engineering.
+- [Work](https://silvags.com/work/index.md): Where Guilherme Silva has worked: Hitachi Digital, Deichmann, Mercedes-Benz, Anova and La Redoute Portugal.
 
 ## Builds
 

@@ -27,7 +27,7 @@ const PAGES = [...pages(), '/404.html'];
 // Clicks a visitor makes: every header link from a few starting pages, plus the build cards.
 const CLICKS = [
   ...['/', '/builds/', '/robots/pico/', '/robots/so-101/', '/writing/'].flatMap(p =>
-    ['a.name', ...['builds', 'writing', 'talks', 'about'].map(s => `nav a[href*="${s}"]`)].map(sel => [p, sel])),
+    ['a.name', ...['builds', 'writing', 'talks', 'about', 'work'].map(s => `nav a[href*="${s}"]`)].map(sel => [p, sel])),
   ['/builds/', 'h3 a[href*="so-101"]'], ['/builds/', 'h3 a[href*="pico"]'],
 ];
 
