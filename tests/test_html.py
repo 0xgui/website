@@ -9,7 +9,7 @@ VOID = {
     "link", "meta", "source", "track", "wbr",
 }
 BANNED = re.compile(
-    r"leiria|portugal|https?://(?:www\.)?(?:x\.com|twitter\.com)|https?://t\.co/",
+    r"leiria|https?://(?:www\.)?(?:x\.com|twitter\.com)|https?://t\.co/",
     re.I,
 )
 

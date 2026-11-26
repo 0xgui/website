@@ -40,13 +40,11 @@ class SanitizeTests(unittest.TestCase):
         self.assertIn("profile", out)
         self.assertIn("today", out)
 
-    def test_place_names_are_removed(self):
-        html = "<p>The first event in Portugal, and the highest point of Portugal.</p><p>Leiria stays out.</p>"
+    def test_leiria_is_removed_and_portugal_kept(self):
+        html = "<p>The first event in Portugal.</p><p>Leiria stays out.</p>"
         out = sanitize(html)
-        self.assertNotIn("Portugal", out)
+        self.assertIn("in Portugal", out)
         self.assertNotIn("Leiria", out)
-        self.assertIn("there", out)
-        self.assertIn("of the trip", out)
 
     def test_entities_are_not_double_encoded(self):
         out = sanitize("<p>AT&amp;T</p>")

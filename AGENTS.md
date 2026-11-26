@@ -12,7 +12,7 @@ Guidance for AI agents working on silvags.com: Guilherme Silva's personal websit
 6. **Regenerate after any HTML change:** `python3 scripts/build_agent.py`. Never hand-edit `index.md`, `llms.txt`, `llms-full.txt`, `sitemap.xml`, `feed.xml`, `robots.txt` or `_headers`.
 7. **Media under 1 MB each** (aim for 500 KB). Images as WebP, video as WebM. No GIFs or PNGs.
 8. **No X/Twitter links**, anywhere.
-9. **xgeeks is the current employer** (Engineering Manager). Do not change it.
+9. **The current employer is Hitachi Digital (formerly synvert xgeeks)**, as Engineering Manager. The CV at `/cv/` is the source of truth.
 10. **The Substack is "Binary Paths"** at `binarypaths.substack.com`. Do not rename it or change the URL.
 11. **Do not edit `writing/<slug>/` by hand.** The mirror script regenerates it from Substack.
 12. **No new dependencies.** Scripts use the Python stdlib only.

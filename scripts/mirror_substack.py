@@ -66,7 +66,7 @@ MONTHS = [
     "July", "August", "September", "October", "November", "December",
 ]
 FORBIDDEN = re.compile(
-    r"leiria|portugal|https?://(?:www\.)?(?:x\.com|twitter\.com)|https?://t\.co/",
+    r"leiria|https?://(?:www\.)?(?:x\.com|twitter\.com)|https?://t\.co/",
     re.I,
 )
 # Sign-off tails and leftover Twitter sentences, applied to essay bodies.
