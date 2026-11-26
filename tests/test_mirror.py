@@ -496,26 +496,7 @@ class ImageSizeTests(unittest.TestCase):
             self.assertEqual(apply_mirror(root, [post], fetch_bytes=lambda _: original), [])
 
 
-class CoverTests(unittest.TestCase):
-    def test_cover_is_first_local_image(self):
-        body = '<p>x</p><figure><img src="images/01.webp" alt=""></figure><img src="images/02.webp" alt="">'
-        self.assertEqual(essay_cover(body, "https://silvags.com/writing/a/"), "https://silvags.com/writing/a/images/01.webp")
-        self.assertIsNone(essay_cover("<p>no images</p>", "https://silvags.com/writing/a/"))
-
-    def test_committed_essays_preview_their_own_cover(self):
-        root = Path(__file__).parent.parent
-        for path in (root / "writing").glob("*/index.html"):
-            html = path.read_text(encoding="utf-8")
-            if '<img src="images/' in html:
-                cover = re.search(r'<meta property="og:image" content="([^"]+)">', html)
-                self.assertIsNotNone(cover, path)
-                allowed = [f"https://silvags.com/{image.relative_to(root).as_posix()}"
-                           for image in (root / "og").glob(f"essay-{path.parent.name}-*.webp")]
-                self.assertTrue(
-                    cover[1].startswith(f"https://silvags.com/writing/{path.parent.name}/images/")
-                    or cover[1] in allowed, path,
-                )
-
+class ArticleMetadataTests(unittest.TestCase):
     def test_essay_metadata_uses_cover_dimensions_alt_and_canonical(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -564,6 +545,20 @@ class CoverTests(unittest.TestCase):
             self.assertIn('og:image:height" content="630"', html)
             self.assertIn('<meta name="twitter:image:alt" content="Updated essay">', html)
             self.assertEqual(preferred.read_bytes(), TINY_WEBP)
+
+
+class CoverTests(unittest.TestCase):
+    def test_cover_is_first_local_image(self):
+        body = '<p>x</p><figure><img src="images/01.webp" alt=""></figure><img src="images/02.webp" alt="">'
+        self.assertEqual(essay_cover(body, "https://silvags.com/writing/a/"), "https://silvags.com/writing/a/images/01.webp")
+        self.assertIsNone(essay_cover("<p>no images</p>", "https://silvags.com/writing/a/"))
+
+    def test_committed_essays_preview_their_own_cover(self):
+        for path in (Path(__file__).parent.parent / "writing").glob("*/index.html"):
+            html = path.read_text(encoding="utf-8")
+            if '<img src="images/' in html:
+                self.assertIn(f'og:image" content="https://silvags.com/writing/{path.parent.name}/images/', html, path)
+
 
 
 class StripXMentionsTests(unittest.TestCase):
