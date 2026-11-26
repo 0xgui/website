@@ -88,6 +88,10 @@ FEED_SCRIPT_RE = re.compile(
     r"\n<script>\s*// Binary Paths via rss\.silvags\.com.*?</script>",
     re.S,
 )
+AGENT_BLOCK_RE = re.compile(r"<!-- agent:([\w-]+) -->.*?<!-- /agent:\1 -->\n?", re.S)
+SOCIAL_TAG_RE = re.compile(
+    r'<meta\s+(?:property="og:(?:site_name|locale|image(?::[^"]+)?)"|name="twitter:[^"]+")\s+content="[^"]*"\s*/?>\n?'
+)
 IMAGE_MAX = 1_000_000
 IMAGE_TARGET = 500_000
 # Rewritten after a successful fetch when the file is missing or older than this.
@@ -900,8 +904,7 @@ def sibling_links(posts: list[Post], here: str) -> dict[str, str]:
 
 def article_template(writing_html: str) -> str:
     html = FEED_SCRIPT_RE.sub("", writing_html)
-    html = re.sub(r"<!-- agent:links -->.*?<!-- /agent:links -->\n?", "", html, flags=re.S)
-    html = re.sub(r"<!-- agent:ld -->.*?<!-- /agent:ld -->\n?", "", html, flags=re.S)
+    html = AGENT_BLOCK_RE.sub(lambda match: match[0] if match[1] == "social" else "", html)
     if "../../" in html:
         raise FeedError("writing/index.html already contains ../../ so it cannot be the article template")
     return html.replace("../", "../../")
@@ -921,22 +924,31 @@ def essay_cover(body: str, page_url: str) -> str | None:
     return page_url + match.group(1) if match else None
 
 
+def _custom_cover(root: Path, slug: str) -> Path | None:
+    prefix = f"essay-{slug}-"
+    candidates = (path for path in (root / "og").glob(f"{prefix}*.webp") if path.is_file())
+
+    def priority(path):
+        version = re.fullmatch(r"v([0-9]+)", path.stem.removeprefix(prefix))
+        return path.stem == prefix + "v1", int(version[1]) if version else 0, path.name
+
+    return max(candidates, key=priority, default=None)
+
+
 def render_article(template: str, post: Post, body: str, *, root: Path, files: dict[str, bytes]) -> str:
     local = f"{SITE}/writing/{post.slug}/"
     title = clean_text(post.title).strip()
     description = clean_text(post.description).strip()
     if len(description) > 180:
         description = description[:177].rsplit(" ", 1)[0] + "…"
-    html = template
+    html = AGENT_BLOCK_RE.sub("", template)
+    html = SOCIAL_TAG_RE.sub("", html)
     html = re.sub(r"<title>.*?</title>", f"<title>{escape_text(title)} · {escape_text('Guilherme Silva')}</title>", html, count=1, flags=re.S)
     html = _set_attr_meta(html, "name", "description", description)
     html = _set_attr_meta(html, "property", "og:title", title)
     html = _set_attr_meta(html, "property", "og:description", description)
     html = _set_attr_meta(html, "property", "og:url", post.canonical)
     html = _set_attr_meta(html, "property", "og:type", "article")
-    html = _set_attr_meta(html, "property", "og:site_name", "Guilherme Silva")
-    html = _set_attr_meta(html, "property", "og:locale", "en_GB")
-    html = _set_attr_meta(html, "name", "twitter:card", "summary_large_image")
     html = re.sub(
         r'<link\s+rel="canonical"\s+href="[^"]*">',
         f'<link rel="canonical" href="{escape_attr(post.canonical)}">',
@@ -966,35 +978,48 @@ def render_article(template: str, post: Post, body: str, *, root: Path, files: d
     cover = essay_cover(body, local)
     dimensions = None
     cover_alt = title
-    og = root / "og"
-    preferred = og / f"essay-{post.slug}-v1.webp"
-    custom = preferred if preferred.is_file() else next(
-        (path for path in sorted(og.glob(f"essay-{post.slug}-*.webp")) if path.is_file()), None
-    )
+    custom = _custom_cover(root, post.slug)
     if custom:
         cover = SITE + "/" + custom.relative_to(root).as_posix()
         dimensions = (1200, 630)
+        saved_essay = root / "writing" / post.slug / "index.html"
+        if saved_essay.is_file():
+            saved_html = saved_essay.read_text(encoding="utf-8")
+            if unescape(meta_content(saved_html, "og:image", prop=True)) == cover:
+                cover_alt = unescape(meta_content(saved_html, "og:image:alt", prop=True)) or title
     elif cover:
         dimensions = webp_size(files.get(cover.removeprefix(local), b""))
         match = re.search(r'<img src="images/[^"]+" alt="([^"]*)"', body)
         if match and match[1].strip():
             cover_alt = unescape(match[1])
-    else:
+    article_cover = cover
+    if not cover:
         cover = unescape(meta_content(template, "og:image", prop=True))
         cover_alt = unescape(meta_content(template, "og:image:alt", prop=True)) or title
         if cover.startswith(SITE + "/"):
             fallback = root / cover.removeprefix(SITE + "/")
             if fallback.is_file():
                 dimensions = webp_size(fallback.read_bytes())
+    social = [
+        "<!-- agent:social -->",
+        '<meta property="og:site_name" content="Guilherme Silva">',
+        '<meta property="og:locale" content="en_GB">',
+    ]
     if cover:
-        html = _set_attr_meta(html, "property", "og:image", cover)
-        if dimensions:
-            html = _set_attr_meta(html, "property", "og:image:width", str(dimensions[0]))
-            html = _set_attr_meta(html, "property", "og:image:height", str(dimensions[1]))
-        if cover.endswith(".webp"):
-            html = _set_attr_meta(html, "property", "og:image:type", "image/webp")
-        html = _set_attr_meta(html, "property", "og:image:alt", cover_alt)
-        html = _set_attr_meta(html, "name", "twitter:image:alt", cover_alt)
+        social.append(f'<meta property="og:image" content="{escape_attr(cover)}">')
+    if dimensions:
+        social.extend([
+            f'<meta property="og:image:width" content="{dimensions[0]}">',
+            f'<meta property="og:image:height" content="{dimensions[1]}">',
+        ])
+    if cover and cover.endswith(".webp"):
+        social.append('<meta property="og:image:type" content="image/webp">')
+    if cover:
+        social.append(f'<meta property="og:image:alt" content="{escape_attr(cover_alt)}">')
+    social.append('<meta name="twitter:card" content="summary_large_image">')
+    if cover:
+        social.append(f'<meta name="twitter:image:alt" content="{escape_attr(cover_alt)}">')
+    social.append("<!-- /agent:social -->")
     ld = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -1006,8 +1031,8 @@ def render_article(template: str, post: Post, body: str, *, root: Path, files: d
         "url": local,
         "isBasedOn": post.canonical,
     }
-    if cover:
-        ld["image"] = cover
+    if article_cover:
+        ld["image"] = article_cover
     payload = json.dumps(ld, ensure_ascii=False, indent=2).replace("<", "\\u003c")
     block = "\n".join([
         links_block(Path("writing") / post.slug / "index.html"),
@@ -1019,6 +1044,7 @@ def render_article(template: str, post: Post, body: str, *, root: Path, files: d
         f'<meta name="author" content="Guilherme Silva">',
         f'<meta name="mirror-kind" content="{post.kind}">',
         f'<meta name="mirror-id" content="{escape_attr(post.post_id)}">',
+        *social,
     ])
     html = html.replace("</head>", block + "\n</head>", 1)
     return html
@@ -1092,6 +1118,11 @@ def default_fetch_bytes(url: str) -> bytes:
     return body
 
 
+def _essay_for_comparison(html: str) -> str:
+    # Essay metadata is owned by the mirror. The builder adds other blocks such as breadcrumbs.
+    return AGENT_BLOCK_RE.sub(lambda match: match[0] if match[1] in {"ld", "social"} else "", html)
+
+
 def apply_mirror(root: Path, posts: list[Post], *, fetch_bytes=default_fetch_bytes) -> list[str]:
     saved = discover(root)
     merged, render_slugs = merge(saved, posts)
@@ -1117,8 +1148,13 @@ def apply_mirror(root: Path, posts: list[Post], *, fetch_bytes=default_fetch_byt
     for rel, content in staged.items():
         path = root / rel
         data = content if isinstance(content, bytes) else content.encode("utf-8")
-        if path.exists() and path.read_bytes() == data:
-            continue
+        if path.exists():
+            previous = path.read_bytes()
+            if previous == data:
+                continue
+            if rel.startswith("writing/") and rel.count("/") == 2 and rel.endswith("/index.html"):
+                if _essay_for_comparison(previous.decode("utf-8")) == _essay_for_comparison(data.decode("utf-8")):
+                    continue
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
         changed.append(rel)

@@ -493,7 +493,14 @@ class ImageSizeTests(unittest.TestCase):
                 variant = (essay / "images" / f"01-{width}w.webp").read_bytes()
                 self.assertEqual(webp_size(variant)[0], width)
                 self.assertLess(len(variant), len(original))
+            if "<!-- agent:crumbs -->" not in html:
+                html = html.replace(
+                    "<!-- agent:social -->",
+                    "<!-- agent:crumbs -->\nbreadcrumbs\n<!-- /agent:crumbs -->\n<!-- agent:social -->",
+                )
+                (essay / "index.html").write_text(html)
             self.assertEqual(apply_mirror(root, [post], fetch_bytes=lambda _: original), [])
+            self.assertEqual((essay / "index.html").read_text(), html)
 
 
 class ArticleMetadataTests(unittest.TestCase):
@@ -530,13 +537,19 @@ class ArticleMetadataTests(unittest.TestCase):
             post = replace(post, body_html='<p>Hello</p><img src="https://example.com/small.webp" alt="">')
             og = root / "og"
             og.mkdir()
+            source = og / "source.webp"
+            subprocess.run([
+                "ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+                "testsrc2=size=1200x630", "-frames:v", "1", "-c:v", "libwebp", str(source),
+            ], check=True)
+            cover = source.read_bytes()
             custom = og / f"essay-{post.slug}-v3.webp"
-            custom.write_bytes(TINY_WEBP)
+            custom.write_bytes(cover)
             essay = root / "writing" / post.slug / "index.html"
             apply_mirror(root, [post], fetch_bytes=lambda _: TINY_WEBP)
             self.assertIn(f'og:image" content="https://silvags.com/og/{custom.name}"', essay.read_text())
             preferred = og / f"essay-{post.slug}-v1.webp"
-            preferred.write_bytes(TINY_WEBP)
+            preferred.write_bytes(cover)
             rerender = replace(post, title="Updated essay")
             apply_mirror(root, [rerender], fetch_bytes=lambda _: TINY_WEBP)
             html = essay.read_text()
@@ -544,7 +557,7 @@ class ArticleMetadataTests(unittest.TestCase):
             self.assertIn('og:image:width" content="1200"', html)
             self.assertIn('og:image:height" content="630"', html)
             self.assertIn('<meta name="twitter:image:alt" content="Updated essay">', html)
-            self.assertEqual(preferred.read_bytes(), TINY_WEBP)
+            self.assertEqual(preferred.read_bytes(), cover)
 
 
 class CoverTests(unittest.TestCase):
