@@ -1,6 +1,6 @@
 # Guilherme Silva
 
-> Personal site of Guilherme Silva, engineering manager at xgeeks. Robotics build logs, and essays first published on Binary Paths.
+> Personal site of Guilherme Silva, engineering manager at Hitachi Digital. Robotics build logs, and essays first published on Binary Paths.
 
 Canonical site: https://silvags.com. Essays keep a canonical link to https://binarypaths.substack.com. Content-Signal: search=yes, ai-input=yes, ai-train=no.
 
@@ -10,7 +10,8 @@ Canonical site: https://silvags.com. Essays keep a canonical link to https://bin
 - [About](https://silvags.com/about/index.md): Guilherme Silva: automotive engineer turned platform engineer turned robot tinkerer.
 - [Builds](https://silvags.com/builds/index.md): Robots I’m building (SO-101, Pico) and small open-source tools.
 - [Writing](https://silvags.com/writing/index.md): Posts from Binary Paths, on engineering, teams, and physical AI.
-- [Talks](https://silvags.com/talks/index.md): Talks and slides on Kubernetes, WebAssembly, and platform engineering.
+- [Talks](https://silvags.com/talks/index.md): Talks and slides on Kubernetes, WebAssembly, platform engineering and AI-written code.
+- [The Bottleneck Moved](https://silvags.com/talks/bottleneck-moved/index.md): Slides and sources for The Bottleneck Moved: how platform teams can trust AI-written code in production. KCD Porto × DevOpsDays 2026.
 - [Work](https://silvags.com/work/index.md): Where Guilherme Silva has worked: Hitachi Digital, Deichmann, Mercedes-Benz, Anova and La Redoute Portugal.
 
 ## Builds
@@ -40,4 +41,4 @@ Canonical site: https://silvags.com. Essays keep a canonical link to https://bin
 
 - [Full text](https://silvags.com/llms-full.txt): Every page in one Markdown file
 - [Atom feed](https://silvags.com/feed.xml): Essays mirrored from Binary Paths
-- [Sitemap](https://silvags.com/sitemap.xml): HTML pages on this site
+- [Sitemap](https://silvags.com/sitemap.xml): HTML pages canonical on this site

@@ -470,9 +470,14 @@ class CoverTests(unittest.TestCase):
         self.assertIsNone(essay_cover("<p>no images</p>", "https://silvags.com/writing/a/"))
 
     def test_committed_essays_preview_their_own_cover(self):
+        # Unless scripts/build_agent.py gives the essay a card in og/ (covers that crop badly).
+        from scripts.build_agent import CARDS
         for path in (Path(__file__).parent.parent / "writing").glob("*/index.html"):
             html = path.read_text(encoding="utf-8")
-            if '<img src="images/' in html:
+            card = CARDS.get(f"writing/{path.parent.name}/index.html")
+            if card:
+                self.assertIn(f'og:image" content="https://silvags.com/og/{card[0]}"', html, path)
+            elif '<img src="images/' in html:
                 self.assertIn(f'og:image" content="https://silvags.com/writing/{path.parent.name}/images/', html, path)
 
 

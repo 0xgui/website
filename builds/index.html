@@ -9,7 +9,6 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Builds · Guilherme Silva">
 <meta property="og:description" content="Robots I’m building (SO-101, Pico) and small open-source tools.">
-<meta property="og:image" content="https://silvags.com/robots/so-101/arms-wide.webp">
 <meta property="og:url" content="https://silvags.com/builds/">
 <link rel="canonical" href="https://silvags.com/builds/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -65,6 +64,7 @@ p{margin:0 0 1.1rem}
 .meta{color:var(--muted);font-style:italic;margin:0 0 2rem}
 .lede{font-size:1.34rem;line-height:1.55}
 .sub{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .more{font-size:1rem}
 ul{margin:0 0 1.1rem;padding-left:1.2rem}
 li{margin:.35rem 0}
@@ -235,6 +235,17 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <link rel="describedby" href="/llms.txt" type="text/plain">
 <link rel="alternate" type="application/atom+xml" title="Guilherme Silva" href="/feed.xml">
 <!-- /agent:links -->
+<!-- agent:social -->
+<meta property="og:site_name" content="Guilherme Silva">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://silvags.com/og/builds-v1.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:alt" content="Robots I’m building, beside an ink study of Pico">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="Robots I’m building, beside an ink study of Pico">
+<!-- /agent:social -->
 </head>
 <body>
 <a class="hero" href="../" aria-label="Guilherme Silva, home" data-robot="so101" data-anim="teleop" data-seed="1" data-glb="../robots/so-101/so101-lite.glb"><span class="poster" style="--poster:url(/robots/so-101/header-so101.png)"></span><canvas aria-hidden="true"></canvas></a>
@@ -272,14 +283,14 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 
 <h2>Open source</h2>
 <ul class="plain">
-  <li><a href="https://github.com/0xgui/agent-pr-gate" target="_blank" rel="noopener">agent-pr-gate</a> <span class="sub">— a GitHub Action that gates agent-authored pull requests on risk tier, evidence, and review rounds.</span></li>
-  <li><a href="https://github.com/0xgui/write" target="_blank" rel="noopener">write</a> <span class="sub">— a minimal GTK writing app, for the simple pleasure of putting words on a page.</span></li>
+  <li><a href="https://github.com/0xgui/agent-pr-gate" target="_blank" rel="noopener">agent-pr-gate</a><span class="sub">: a GitHub Action that gates agent-authored pull requests on risk tier, evidence, and review rounds.</span></li>
+  <li><a href="https://github.com/0xgui/write" target="_blank" rel="noopener">write</a><span class="sub">: a minimal GTK writing app, for the simple pleasure of putting words on a page.</span></li>
 </ul>
 <p class="more">More on <a href="https://github.com/0xgui" target="_blank" rel="noopener">GitHub</a>.</p>
 
 </main>
 <footer>
-  <span><a href="mailto:work@silvags.com">work@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
+  <span><a href="mailto:guilherme@silvags.com">guilherme@silvags.com</a> · <a href="https://github.com/0xgui" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/silva-gs" rel="noopener">LinkedIn</a></span>
   <span><button id="theme-toggle" type="button" aria-label="Switch colour theme">light</button></span>
 </footer>
 </div>

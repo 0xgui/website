@@ -70,6 +70,24 @@ class AgentFileTests(unittest.TestCase):
             data = json.loads(match.group(1))
             self.assertEqual(data["@type"], "CreativeWork")
 
+    def test_social_block_replaces_bare_tags_and_is_idempotent(self):
+        import re
+        from scripts.build_agent import update_document
+        rel = Path("writing/the-art-of-juggling-life/index.html")
+        page = (ROOT / rel).read_text(encoding="utf-8")
+        page = re.sub(r"<!-- agent:social -->.*?<!-- /agent:social -->\n", "", page, flags=re.S)
+        page = page.replace("</head>", (
+            '<meta property="og:site_name" content="X">\n'
+            '<meta property="og:image" content="https://silvags.com/writing/the-art-of-juggling-life/images/01.webp">\n'
+            '<meta property="og:image:alt" content="A juggler &amp; clocks">\n'
+            '<meta name="twitter:card" content="summary">\n</head>'
+        ))
+        out = update_document(rel, page)
+        for tag in ('property="og:site_name"', 'property="og:image"', 'name="twitter:card"', 'property="og:image:alt"'):
+            self.assertEqual(out.count(tag), 1, tag)
+        self.assertIn('og:image:alt" content="A juggler &amp; clocks"', out)
+        self.assertEqual(update_document(rel, out), out)
+
     def test_llms_full_contains_page_text(self):
         full = (ROOT / "llms-full.txt").read_text(encoding="utf-8")
         self.assertIn("SO-101", full)

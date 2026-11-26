@@ -12,7 +12,7 @@ Guidance for AI agents working on silvags.com: Guilherme Silva's personal websit
 6. **Regenerate after any HTML change:** `python3 scripts/build_agent.py`. Never hand-edit `index.md`, `llms.txt`, `llms-full.txt`, `sitemap.xml`, `feed.xml`, `robots.txt` or `_headers`.
 7. **Media under 1 MB each** (aim for 500 KB). Images as WebP, video as WebM. No GIFs or PNGs.
 8. **No X/Twitter links**, anywhere.
-9. **The current employer is Hitachi Digital (formerly synvert xgeeks)**, as Engineering Manager. The CV at `/cv/` is the source of truth.
+9. **The current employer is Hitachi Digital (formerly synvert xgeeks)**, as Engineering Manager. The Work page at `/work/` (with the CV PDF beside it, `work/guilherme-silva-cv.pdf`) is the source of truth.
 10. **The Substack is "Binary Paths"** at `binarypaths.substack.com`. Do not rename it or change the URL.
 11. **Do not edit `writing/<slug>/` by hand.** The mirror script regenerates it from Substack.
 12. **No new dependencies.** Scripts use the Python stdlib only.
@@ -22,7 +22,8 @@ Guidance for AI agents working on silvags.com: Guilherme Silva's personal websit
 
 ```bash
 python3 -m http.server 8000                       # serve at http://127.0.0.1:8000
-python3 scripts/build_agent.py                    # regenerate Markdown twins, llms.txt, sitemap, feed, _headers
+python3 scripts/build_agent.py                    # regenerate Markdown twins, llms.txt, sitemap, feed, _headers, social tags
+node scripts/og_cards.mjs                         # re-render the og/ link-preview cards (needs local Chrome, Chromium or Brave)
 python3 scripts/build_agent.py --check            # fails if generated files drift (CI runs this)
 python3 -m unittest discover -s tests -v          # Python tests
 node --test tests/negotiate.test.mjs              # Pages function test
@@ -46,16 +47,18 @@ Cloudflare preview URLs work as the base too: `node scripts/check_pages.mjs http
 ```
 index.html              Homepage
 404.html                Not-found page (root-absolute URLs only)
-about/ builds/ talks/ writing/   Section pages
+about/ builds/ talks/ writing/ work/   Section pages (work/ also holds the CV PDF)
 talks/<slug>/           One talk: page, slides, media
 writing/<slug>/         Mirrored Binary Paths essay (index.html, index.md, images/)
 robots/so-101/          SO-101 build log and media
 robots/pico/            Pico build notes and media
-fonts/                  Self-hosted Newsreader (woff2, OFL)
+fonts/                  Self-hosted Newsreader and La Belle Aurore (woff2, OFL)
+vendor/three/           Vendored three.js r169 and the Draco decoder (MIT)
+og/                     1200x630 link-preview cards, made by scripts/og_cards.mjs
 llms.txt llms-full.txt  Agent index and full text, generated from the HTML
 robots.txt sitemap.xml feed.xml _headers _routes.json
 functions/_middleware.js   Accept: text/markdown negotiation
-scripts/                Mirror, agent-file builder, gate path check
+scripts/                Mirror, agent-file builder, OG cards, browser check, gate path check
 tests/                  Stdlib unittest plus node:test files
 favicon.svg             Site icon
 worker.js wrangler.toml Cloudflare Worker (RSS proxy, deployed separately)
@@ -81,6 +84,7 @@ Do NOT create `style.css`, `app.js`, or any external CSS/JS files. If you need s
 | `robots/so-101/index.html` | SO-101 build log — entries, progress, 3D model viewer |
 | `worker.js` | Cloudflare Worker — JSON RSS proxy, plus an hourly full-feed snapshot in KV served at `/raw.xml`. Deployed separately |
 | `favicon.svg` | Site icon |
+| `scripts/og_cards.mjs` | Renders the 1200x630 WebP link-preview cards in `og/` (see Link previews under Agent files) |
 | `robots/so-101/*` | Optimized media (webm/webp) for the SO-101 build log |
 | `robots/pico/index.html` | Pico build notes — recovery loop, hardware adaptation, progress |
 | `robots/pico/pico.glb` | Neutral robot model converted from SelfRisingRobot MuJoCo meshes |
@@ -116,7 +120,7 @@ Pico's physical self-righting is confirmed working by the owner. Further measure
 ## CSS conventions
 
 - Variables live in `:root` (light) and `:root.dark` (dark), with the same names: `--paper`, `--ink`, `--muted`, `--link`, `--rule`, `--line`.
-- One font: Newsreader, self-hosted (see Fonts below).
+- Two fonts, both self-hosted (see Fonts below): Newsreader for everything, La Belle Aurore only for the handwritten `.hand` margin notes.
 - Content column: `.col`, `max-width: 37rem`.
 - Reuse the existing variables and classes. Do not add a second visual system.
 
@@ -191,21 +195,21 @@ Content Signals default to `search=yes, ai-input=yes, ai-train=no`. Change `CONT
 
 `functions/_middleware.js` is the free-plan stand-in for Cloudflare Markdown for Agents (that product is not on the free plan). It serves the twin when `Accept` prefers `text/markdown`, with `Content-Type: text/markdown` and `Vary: Accept`. Direct fetches of `index.md` work without the function. `_routes.json` runs the function for HTML and Markdown and skips images, video, and models so those stay ordinary static files. The preview workflow uploads the static tree without the `functions/` directory; Wrangler reads `functions/` from the repo root while deploying that tree. Do not put `_worker.js` in the site or the function is ignored.
 
-The dithered header is the inline module on `.hero`: a poster image first, then a small GLB drawn with three.js from the existing jsDelivr URL and reduced to the page's ink and paper colours. Reduced motion keeps the poster. It is not part of the agent files.
+The dithered header is the inline module on `.hero`: a poster image first, then a small GLB drawn with the vendored three.js (`/vendor/three/`) and reduced to the page's ink and paper colours. Reduced motion keeps the poster. It is not part of the agent files.
 
 Navigation: the header hero is the home link on every page (`aria-current="page"` on the homepage). The last inline script on every page fetches same-site pages on hover and swaps the children of `.col` in place, so the hero and its WebGL keep running; title, description, canonical and the hero's `href`/`aria-*` are copied from the fetched page, and missing head `<script src>` are added. Anything unexpected falls back to a normal load. So every page must keep the `.col` > `header` + `main` + `footer` shape and the identical `<style>`, and page-specific behaviour must not depend on inline scripts inside `.col` (they are not run after a swap). The hero's `data-robot/anim/seed/glb` and poster style are copied too; the header module keeps one WebGL renderer and, on `site:swap` with a different robot, loads the new GLB and swaps scenes (the old frame stays up until the new one draws). The theme toggle is delegated and listens for the `site:swap` event. Essays inherit all of this from `writing/index.html`; the script must not contain `../`, which the mirror template rewrites.
 
-3D viewers: robot pages use `<div class="viewer" role="img" aria-label="…" data-glb="x.glb" data-orbit="<azimuth> <polar>">` with a poster `<img>` inside. A module on every page (it must be on every page because a swap can bring a viewer in) loads three.js, OrbitControls, RoomEnvironment and DRACOLoader from the same jsDelivr build as the header when a viewer nears the viewport. Drag rotates, scroll or pinch zooms, it renders only while moving, and it frees its WebGL context when swapped out. The poster stays if WebGL or the load fails. `so101.glb` is Draco-compressed, so the Draco decoder is fetched for it alone. Do not reintroduce `model-viewer`: it bundles a second copy of three.js (~258 KB).
+3D viewers: robot pages use `<div class="viewer" role="img" aria-label="…" data-glb="x.glb" data-orbit="<azimuth> <polar>">` with a poster `<img>` inside. A module on every page (it must be on every page because a swap can bring a viewer in) loads three.js, OrbitControls, RoomEnvironment and DRACOLoader from the same vendored build as the header (`/vendor/three/`) when a viewer nears the viewport. Drag rotates, scroll or pinch zooms, it renders only while moving, and it frees its WebGL context when swapped out. The poster stays if WebGL or the load fails. `so101.glb` is Draco-compressed, so the Draco decoder (`/vendor/three/draco/`) is fetched for it alone. Do not reintroduce `model-viewer`: it bundles a second copy of three.js (~258 KB).
 
-Fonts: Newsreader is self-hosted in `fonts/` (SIL OFL, `fonts/OFL.txt`). It is one variable woff2 per style, split into Latin and Latin-ext by `unicode-range`. Every page preloads the normal Latin file and declares the four `@font-face` rules at the top of `<style>` with root-absolute `/fonts/` URLs. A new font version gets a new file name, because `/fonts/*` is cached for a year and marked `immutable`.
+Fonts: Newsreader is self-hosted in `fonts/` (SIL OFL, `fonts/OFL.txt`). It is one variable woff2 per style, split into Latin and Latin-ext by `unicode-range`. Every page preloads the normal Latin file and declares the four `@font-face` rules at the top of `<style>` with root-absolute `/fonts/` URLs. La Belle Aurore (`fonts/labelleaurore-latin-v1.woff2`, `fonts/OFL-LaBelleAurore.txt`) is declared the same way and used only by `.hand`. A new font version gets a new file name, because `/fonts/*` is cached for a year and marked `immutable`.
 
 404: `404.html` is served by Cloudflare Pages for any unknown path, with status 404. Without it Pages falls back to serving the homepage with 200. It can appear at any depth, so every local URL in it is root-absolute (`/`, `/builds/`, `/robots/…`). Keep its `<style>` and scripts in sync with the other pages.
 
 Caching: `_headers` (generated by `build_agent.py`, `MEDIA_EXTS`) gives media a day of freshness plus a week of stale-while-revalidate, because media file names are not fingerprinted. Replacing a GLB or image can therefore take up to a day to reach repeat visitors. Rename the file if it must be immediate.
 
-Link previews: each essay's `og:image` and JSON-LD `image` are its first local image (`mirror_substack.essay_cover`, usually the Substack cover). Pages without one keep the SO-101 photo.
+Link previews: `build_agent.py` writes an `<!-- agent:social -->` block last in every page's `<head>`: `og:site_name`, `og:locale` (`en_GB`), `og:image` with width, height, type and alt, and `twitter:card` (`summary_large_image`) with `twitter:image:alt`. No `twitter:site` or `twitter:creator`. The image comes from `CARDS` in `build_agent.py`: the section pages, robot pages, the talk, and seven essays whose Substack cover crops badly have a 1200x630 WebP card in `og/`. Other essays use their first local image (the same rule as `mirror_substack.essay_cover`, usually the Substack cover), and an essay with no image uses the Writing card. Cards are made by `node scripts/og_cards.mjs` (Node built-ins and a local Chromium: it looks for Chrome, Chromium or Brave, or set `CHROME=`). Card file names carry `-vN`; when a card changes, bump the version in `og_cards.mjs` and in `CARDS`, because media is cached for a day and link-preview caches keep the old URL. Breadcrumbs (`BreadcrumbList`) for robot pages, the talk and essays go in an `<!-- agent:crumbs -->` block. Home carries `WebSite` and `Person` (`@id` `https://silvags.com/#person`), and `/work/` carries `ProfilePage` with that Person as `mainEntity`.
 
-Sitemap: `lastmod` comes only from dates in the HTML. Essays use their publish date, and the homepage and `writing/` use the newest essay's date. Other pages have none. Do not use git dates, because CI's shallow clone would make `--check` drift.
+Sitemap: it lists only pages canonical on silvags.com, so mirrored essays (canonical on Binary Paths) are left out. `lastmod` comes only from dates in the HTML: the homepage and `writing/` use the newest essay's date. Other pages have none. Do not use git dates, because CI's shallow clone would make `--check` drift.
 
 Hidden repo files: Pages deploys the whole repo, so `functions/_middleware.js` returns 404 (with the 404 page) for `.cursor/`, `.github/`, `scripts/`, `tests/`, `worker.js`, `wrangler.toml`, `AGENTS.md`, `README.md`, `.gitignore` and `.review-gate.yml`. Keep that list in sync with the excludes in `.github/workflows/pages-preview.yml`. `_redirects` cannot do this: Pages only allows redirect status codes there.
 

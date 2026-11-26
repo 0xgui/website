@@ -32,8 +32,8 @@ I also tinker with smaller ESP32 gadgets. When one is worth writing up, it’ll 
 
 ## Open source
 
-- [agent-pr-gate](https://github.com/0xgui/agent-pr-gate) — a GitHub Action that gates agent-authored pull requests on risk tier, evidence, and review rounds.
+- [agent-pr-gate](https://github.com/0xgui/agent-pr-gate): a GitHub Action that gates agent-authored pull requests on risk tier, evidence, and review rounds.
 
-- [write](https://github.com/0xgui/write) — a minimal GTK writing app, for the simple pleasure of putting words on a page.
+- [write](https://github.com/0xgui/write): a minimal GTK writing app, for the simple pleasure of putting words on a page.
 
 More on [GitHub](https://github.com/0xgui).

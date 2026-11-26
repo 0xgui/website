@@ -1,14 +1,12 @@
 # Guilherme Silva
 
-> Building small robots from scratch and writing about engineering and physical AI at Binary Paths.
-
-Hands-on Engineering Manager helping clients during the day and a robotics enthusiast during the night. Currently building small robots because why not. I also write from time to time about engineering, tech and how AI meets the physical world at [Binary Paths](https://binarypaths.substack.com).
+I’m an engineering manager at Hitachi Digital, and I build small robots on the side, because why not. Now and then I write about engineering, tech and how AI meets the physical world at [Binary Paths](https://binarypaths.substack.com).
 
 ## On the bench
 
-- [SO-101 robotic arm](https://silvags.com/robots/so-101/) — two arms that mirror each other. Teaching them imitation learning now.
+- [SO-101 robotic arm](https://silvags.com/robots/so-101/): two arms that mirror each other. Teaching them imitation learning now.
 
-- [Pico](https://silvags.com/robots/pico/) — two servos and one job: get back up. It does, on real hardware.
+- [Pico](https://silvags.com/robots/pico/): two servos and one job: get back up. It does, on real hardware.
 
 [All builds and open source](https://silvags.com/builds/)
 
