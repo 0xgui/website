@@ -76,6 +76,8 @@ async function refresh(cache, key) {
 const API_URL = 'https://binarypaths.substack.com/api/v1/posts?limit=50';
 const SNAPSHOT_KEY = 'raw.xml';
 const SNAPSHOT_ATTEMPTS = 3;
+const SNAPSHOT_TIMEOUT_MS = 12000;
+const SNAPSHOT_RETRY_DELAY_MS = 100;
 const CONTENT_NS = 'http://purl.org/rss/1.0/modules/content/';
 // Substack rejects short client names. This is the same browser string the mirror uses.
 const SNAPSHOT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
@@ -130,12 +132,14 @@ export function rssFromPosts(payload, fetchedAt) {
   const items = rows.map(post => {
     const slug = String(post.slug || '').trim();
     const link = String(post.canonical_url || post.link || (slug ? `https://binarypaths.substack.com/p/${slug}` : ''));
+    const cover = /^https:\/\//i.test(post.cover_image || '') ? httpsURL(post.cover_image) : '';
     return [
       '<item>',
       `<title>${xmlEscape(post.title || '')}</title>`,
       `<link>${xmlEscape(link)}</link>`,
       `<pubDate>${xmlEscape(post.post_date || post.pubDate || '')}</pubDate>`,
       `<description>${xmlEscape(post.subtitle || post.description || '')}</description>`,
+      cover ? `<enclosure url="${xmlEscape(cover)}" type="image/jpeg"/>` : '',
       `<content:encoded>${cdata(post.body_html || post.content_html || '')}</content:encoded>`,
       '</item>',
     ].join('');
@@ -146,34 +150,44 @@ export function rssFromPosts(payload, fetchedAt) {
   ));
 }
 
-async function readUpstream(fetcher, url) {
-  const response = await fetcher(url, {
-    headers: { 'User-Agent': SNAPSHOT_UA, Accept: '*/*' },
-  });
-  const text = await response.text();
-  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
-  if (isChallenge(text)) throw new Error(`${url} returned a challenge`);
-  return text;
+export async function readUpstream(fetcher, url, timeoutMs = SNAPSHOT_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetcher(url, {
+      headers: { 'User-Agent': SNAPSHOT_UA, Accept: '*/*' },
+      signal: controller.signal,
+    });
+    const text = await response.text();
+    if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+    if (isChallenge(text)) throw new Error(`${url} returned a challenge`);
+    return text;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
-async function retry(fn) {
+async function retry(fn, delayMs) {
   let last;
   for (let attempt = 0; attempt < SNAPSHOT_ATTEMPTS; attempt++) {
     try {
       return await fn();
     } catch (err) {
       last = err;
+      if (delayMs && attempt + 1 < SNAPSHOT_ATTEMPTS) {
+        await new Promise(resolve => setTimeout(resolve, delayMs * 2 ** attempt));
+      }
     }
   }
   throw last;
 }
 
-async function postsFromApi(fetcher) {
+async function postsFromApi(fetcher, retryDelayMs) {
   const posts = [];
   let cursor = '';
   for (let page = 0; page < 20; page++) {
     const url = API_URL + (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '');
-    const raw = await retry(() => readUpstream(fetcher, url));
+    const raw = await retry(() => readUpstream(fetcher, url), retryDelayMs);
     let payload;
     try {
       payload = JSON.parse(raw);
@@ -191,17 +205,17 @@ async function postsFromApi(fetcher) {
   return posts;
 }
 
-export async function collectSnapshot(fetcher = fetch, now = () => new Date()) {
+export async function collectSnapshot(fetcher = fetch, now = () => new Date(), retryDelayMs = SNAPSHOT_RETRY_DELAY_MS) {
   const fetchedAt = now().toISOString();
   let rssError;
   try {
-    const xml = await retry(() => readUpstream(fetcher, RSS_URL));
-    return stampFetchedAt(assertSnapshot(xml), fetchedAt);
+    const xml = await retry(async () => assertSnapshot(await readUpstream(fetcher, RSS_URL)), retryDelayMs);
+    return stampFetchedAt(xml, fetchedAt);
   } catch (err) {
     rssError = err;
   }
   try {
-    return rssFromPosts(await postsFromApi(fetcher), fetchedAt);
+    return rssFromPosts(await postsFromApi(fetcher, retryDelayMs), fetchedAt);
   } catch (err) {
     throw new Error(`snapshot fetch failed: ${rssError}; ${err}`);
   }

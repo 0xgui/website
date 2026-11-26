@@ -23,8 +23,11 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
+import zlib
 from dataclasses import replace
 from datetime import datetime, timezone
+from html import unescape
+from html.parser import HTMLParser
 
 from scripts.build_agent import apply as apply_agent
 from scripts.build_agent import links_block
@@ -39,6 +42,7 @@ from scripts.feeds import (
     posts_from_rss,
 )
 from scripts.htmltext import (
+    BLOCKS,
     attr_map,
     banned_url,
     clean_text,
@@ -50,7 +54,6 @@ from scripts.htmltext import (
     sanitize,
     tag_text,
 )
-from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]  # noqa: F811 — Path imported above
 # Substack answers 403 to the default Python client and to short bot names from
@@ -71,22 +74,12 @@ FORBIDDEN = re.compile(
 )
 # Sign-off tails and leftover Twitter sentences, applied to essay bodies.
 _SPACE = r"(?:\s|&nbsp;|&#160;)+"
-_TAG = r"(?:\s*</?[^>]+>)*\s*"
-_PLATFORM = r"(?:X|Twitter)"
 _SIGNOFF_X_RE = re.compile(
-    rf"(?i)(?:{_SPACE}or{_SPACE}the{_SPACE}digital{_SPACE}playground{_SPACE}\({_TAG}{_PLATFORM}{_TAG}\)"
-    rf"|{_SPACE}or{_SPACE}on{_SPACE}{_TAG}{_PLATFORM}\b{_TAG}"
-    rf"|{_SPACE}or{_SPACE}{_TAG}{_PLATFORM}\b{_TAG})"
+    rf"(?i){_SPACE}or{_SPACE}(?:(?P<playground>the{_SPACE}digital{_SPACE}playground{_SPACE}\()|on{_SPACE})?"
+    rf"(?:(?:X|Twitter)\b|<(?P<tag>em|strong|b|i|span)>(?:X|Twitter)</(?P=tag)>)(?(playground)\))"
 )
 _TWITTER_WORD_RE = re.compile(r"(?i)\bTwitter\b")
-_BLOCK_END_RE = re.compile(
-    r"</?(?:p|li|h[1-6]|div|blockquote|article|ul|ol|section|figcaption)\b",
-    re.I,
-)
-_BLOCK_TAG_AT_END_RE = re.compile(
-    r"</?(?:p|li|h[1-6]|div|blockquote|article|ul|ol|section|figcaption)\b[^>]*>$",
-    re.I,
-)
+_SENTENCE_RE = re.compile(r".+?(?:[.!?]+(?=\s|$)|$)", re.S)
 LIST_RE = re.compile(
     r"<!-- mirror:posts -->.*?<!-- /mirror:posts -->|<ul class=\"posts\" id=\"articles\">.*?</ul>",
     re.S,
@@ -94,6 +87,10 @@ LIST_RE = re.compile(
 FEED_SCRIPT_RE = re.compile(
     r"\n<script>\s*// Binary Paths via rss\.silvags\.com.*?</script>",
     re.S,
+)
+AGENT_BLOCK_RE = re.compile(r"<!-- agent:([\w-]+) -->.*?<!-- /agent:\1 -->\n?", re.S)
+SOCIAL_TAG_RE = re.compile(
+    r'<meta\s+(?:property="og:(?:site_name|locale|image(?::[^"]+)?)"|name="twitter:[^"]+")\s+content="[^"]*"\s*/?>\n?'
 )
 IMAGE_MAX = 1_000_000
 IMAGE_TARGET = 500_000
@@ -112,35 +109,69 @@ def format_date(post: Post) -> str:
     return f"{MONTHS[when.month - 1]} {when.day}, {when.year}"
 
 
-def _drop_twitter_sentences(html: str) -> str:
-    """Drop each sentence that names Twitter, without crossing block tags."""
+class _TextSpans(HTMLParser):
+    """Collect text node offsets, grouped into blocks of visible text."""
+
+    def __init__(self, html: str):
+        super().__init__(convert_charrefs=False)
+        self.html = html
+        self.lines = [0, *(match.end() for match in re.finditer("\n", html))]
+        self.blocks: list[list[tuple[int, int]]] = [[]]
+        self.feed(html)
+        self.close()
+
+    def handle_starttag(self, tag, attrs):
+        self.handle_endtag(tag)
+
+    def handle_endtag(self, tag):
+        if (tag in BLOCKS or tag == "br") and self.blocks[-1]:
+            self.blocks.append([])
+
+    def handle_data(self, data):
+        line, column = self.getpos()
+        start = self.lines[line - 1] + column
+        self.blocks[-1].append((start, start + len(data)))
+
+    def handle_entityref(self, name):
+        self._entity("&" + name)
+
+    def handle_charref(self, name):
+        self._entity("&#" + name)
+
+    def _entity(self, raw):
+        line, column = self.getpos()
+        end = self.lines[line - 1] + column + len(raw)
+        self.handle_data(raw + ";" if self.html[end:end + 1] == ";" else raw)
+
+
+def _without_spans(html: str, spans: list[tuple[int, int]]) -> str:
     parts = []
     pos = 0
-    for match in _TWITTER_WORD_RE.finditer(html):
-        if match.start() < pos:
-            continue
-        start = match.start()
-        i = start
-        while i > 0:
-            ch = html[i - 1]
-            if ch in ".!?":
-                break
-            if ch == ">" and _BLOCK_TAG_AT_END_RE.search(html[max(0, i - 120):i]):
-                break
-            i -= 1
-        end = match.end()
-        while end < len(html):
-            ch = html[end]
-            if ch in ".!?":
-                end += 1
-                break
-            if ch == "<" and _BLOCK_END_RE.match(html[end:]):
-                break
-            end += 1
-        parts.append(html[pos:i])
+    for start, end in spans:
+        parts.append(html[pos:start])
         pos = end
     parts.append(html[pos:])
     return "".join(parts)
+
+
+def _drop_twitter_sentences(html: str) -> str:
+    """Drop Twitter sentences across inline markup by editing only their text."""
+    removed = []
+    for block in _TextSpans(html).blocks:
+        text = "".join(html[start:end] for start, end in block)
+        sentences = [
+            match.span() for match in _SENTENCE_RE.finditer(text)
+            if _TWITTER_WORD_RE.search(unescape(match.group()))
+        ]
+        offset = 0
+        for start, end in block:
+            for left, right in sentences:
+                lo = max(offset, left)
+                hi = min(offset + end - start, right)
+                if lo < hi:
+                    removed.append((start + lo - offset, start + hi - offset))
+            offset += end - start
+    return _without_spans(html, removed)
 
 
 def strip_x_mentions(html: str) -> str:
@@ -151,7 +182,12 @@ def strip_x_mentions(html: str) -> str:
     body sentence that names Twitter. Idempotent. Does not touch a lone 'X'
     outside those patterns (OS X, 10x, catch(x)).
     """
-    text = _SIGNOFF_X_RE.sub("", html)
+    spans = [span for block in _TextSpans(html).blocks for span in block]
+    alternatives = [
+        match.span() for match in _SIGNOFF_X_RE.finditer(html)
+        if any(start <= match.start() < end for start, end in spans)
+    ]
+    text = _without_spans(html, alternatives)
     return _drop_twitter_sentences(text)
 
 
@@ -428,6 +464,122 @@ def _is_webp(data: bytes) -> bool:
     return data[:4] == b"RIFF" and data[8:12] == b"WEBP"
 
 
+def _webp_chunks(data: bytes):
+    offset = 12
+    while offset + 8 <= len(data):
+        tag = data[offset:offset + 4]
+        size = int.from_bytes(data[offset + 4:offset + 8], "little")
+        end = offset + 8 + size
+        if end > len(data):
+            break
+        yield tag, data[offset + 8:end]
+        offset = end + (size % 2)
+
+
+def _exif_orientation(data: bytes) -> int:
+    data = data.removeprefix(b"Exif\0\0")
+    if data.startswith(b"II*\0"):
+        order = "little"
+    elif data.startswith(b"MM\0*"):
+        order = "big"
+    else:
+        return 1
+    start = int.from_bytes(data[4:8], order)
+    count = int.from_bytes(data[start:start + 2], order)
+    for offset in range(start + 2, min(len(data) - 11, start + 2 + count * 12), 12):
+        tag = int.from_bytes(data[offset:offset + 2], order)
+        field_type = int.from_bytes(data[offset + 2:offset + 4], order)
+        values = int.from_bytes(data[offset + 4:offset + 8], order)
+        if (tag, field_type, values) == (0x112, 3, 1):
+            orientation = int.from_bytes(data[offset + 8:offset + 10], order)
+            return orientation if 1 <= orientation <= 8 else 1
+    return 1
+
+
+def _image_metadata(data: bytes) -> tuple[bytes, int]:
+    if _is_webp(data):
+        chunks = dict(_webp_chunks(data))
+        return chunks.get(b"ICCP", b""), _exif_orientation(chunks.get(b"EXIF", b""))
+    icc = b""
+    orientation = 1
+    if data.startswith(b"\x89PNG\r\n\x1a\n"):
+        offset = 8
+        while offset + 12 <= len(data):
+            size = int.from_bytes(data[offset:offset + 4], "big")
+            tag = data[offset + 4:offset + 8]
+            payload = data[offset + 8:offset + 8 + size]
+            if tag == b"iCCP" and b"\0\0" in payload:
+                try:
+                    decoder = zlib.decompressobj()
+                    profile = decoder.decompress(payload.split(b"\0\0", 1)[1], IMAGE_MAX)
+                    if decoder.eof:
+                        icc = profile
+                except zlib.error:
+                    pass
+            elif tag == b"eXIf":
+                orientation = _exif_orientation(payload)
+            offset += 12 + size
+    elif data.startswith(b"\xff\xd8"):
+        offset = 2
+        profile_parts = {}
+        total = 0
+        while data[offset:offset + 1] == b"\xff":
+            marker = data[offset + 1:offset + 2]
+            if marker == b"\xff":
+                offset += 1
+                continue
+            if marker in (b"\xda", b"\xd9"):
+                break
+            size = int.from_bytes(data[offset + 2:offset + 4], "big")
+            if size < 2 or offset + 2 + size > len(data):
+                break
+            payload = data[offset + 4:offset + 2 + size]
+            if marker == b"\xe1" and payload.startswith(b"Exif\0\0"):
+                orientation = _exif_orientation(payload)
+            elif marker == b"\xe2" and payload.startswith(b"ICC_PROFILE\0") and len(payload) >= 14:
+                index, total = payload[12:14]
+                profile_parts[index] = payload[14:]
+            offset += 2 + size
+        if total and len(profile_parts) == total and all(i in profile_parts for i in range(1, total + 1)):
+            icc = b"".join(profile_parts[i] for i in range(1, total + 1))
+    return icc, orientation
+
+
+def _webp_with_metadata(data: bytes, icc: bytes, orientation: int) -> bytes:
+    chunks = list(_webp_chunks(data))
+    extended = next((body for tag, body in chunks if tag == b"VP8X"), b"")
+    original_flags = int.from_bytes(extended[:1], "little")
+    if orientation == 1 and not icc and not original_flags & 0x08 and not any(tag == b"EXIF" for tag, _ in chunks):
+        return data
+    size = webp_size(data)
+    if size is None:
+        raise FeedError("could not read WebP dimensions")
+    width, height = size
+    # VP8X flags announce ICC, alpha and EXIF chunks to the decoder.
+    flags = original_flags & ~0x28
+    if any(tag == b"VP8L" and len(body) >= 5 and body[4] & 0x10 for tag, body in chunks):
+        flags |= 0x10
+    if icc:
+        flags |= 0x20
+    if orientation != 1:
+        flags |= 0x08
+    canvas = bytes([flags]) + b"\0" * 3 + (width - 1).to_bytes(3, "little") + (height - 1).to_bytes(3, "little")
+    output = [(b"VP8X", canvas)]
+    if icc:
+        output.append((b"ICCP", icc))
+    output.extend((tag, body) for tag, body in chunks if tag not in (b"VP8X", b"ICCP", b"EXIF", b"XMP "))
+    if orientation != 1:
+        # Minimal little-endian TIFF with just the orientation entry.
+        exif = bytes.fromhex("49492a000800000001001201030001000000") + bytes([orientation]) + b"\0" * 7
+        output.append((b"EXIF", exif))
+    output.extend((tag, body) for tag, body in chunks if tag == b"XMP ")
+    riff = b"WEBP" + b"".join(
+        tag + len(body).to_bytes(4, "little") + body + b"\0" * (len(body) % 2)
+        for tag, body in output
+    )
+    return b"RIFF" + len(riff).to_bytes(4, "little") + riff
+
+
 def _ffmpeg(args: list[str]) -> None:
     ffmpeg = _which("ffmpeg")
     if not ffmpeg:
@@ -463,34 +615,68 @@ def gif_to_webm(data: bytes) -> bytes:
     raise FeedError("could not compress a gif under 1MB")
 
 
-def to_webp(data: bytes) -> bytes:
-    if _is_webp(data) and len(data) <= IMAGE_MAX:
-        return data
-    ffmpeg = _which("ffmpeg")
-    if not ffmpeg:
-        raise FeedError("image is over 1MB or not WebP and ffmpeg is not installed")
+def _encode_webps(data: bytes, scales: dict[int, str], quality: int) -> dict[int, bytes]:
+    icc, orientation = _image_metadata(data)
+    transforms = {
+        2: "hflip",
+        3: "hflip,vflip",
+        4: "vflip",
+        5: "transpose=clock,hflip",
+        6: "transpose=clock",
+        7: "transpose=clock,vflip",
+        8: "transpose=cclock",
+    }
+    # Embed orientation in the pixels because browsers may ignore WebP EXIF.
+    transform = transforms.get(orientation)
+    autorotate = ["-noautorotate"] if transform else []
+    if not _is_webp(data) and icc[16:20] != b"RGB ":
+        icc = b""  # The encoder writes RGB, so a source CMYK or gray profile no longer applies.
+    results = {}
     with tempfile.TemporaryDirectory() as tmp:
         folder = Path(tmp)
         src = folder / "in"
         dest = folder / "out.webp"
         src.write_bytes(data)
-        quality = 78
-        last = b""
-        while quality >= 40:
-            import subprocess
-            result = subprocess.run(
-                [ffmpeg, "-y", "-hide_banner", "-loglevel", "error", "-i", str(src),
-                 "-vf", "scale='min(1600,iw)':-2", "-c:v", "libwebp", "-quality", str(quality), str(dest)],
-                check=False, capture_output=True,
-            )
-            if result.returncode == 0 and dest.exists():
-                last = dest.read_bytes()
-                if len(last) <= IMAGE_TARGET:
-                    return last
-            quality -= 15
-        if last and len(last) <= IMAGE_MAX:
-            return last
+        for width, scale in scales.items():
+            _ffmpeg([
+                "-y", "-hide_banner", "-loglevel", "error", *autorotate, "-i", str(src),
+                "-vf", f"{transform},{scale}" if transform else scale, "-frames:v", "1", "-map_metadata", "-1",
+                "-c:v", "libwebp", "-quality", str(quality), str(dest),
+            ])
+            results[width] = _webp_with_metadata(dest.read_bytes(), icc, 1)
+    return results
+
+
+def to_webp(data: bytes) -> bytes:
+    if _is_webp(data) and len(data) <= IMAGE_MAX:
+        icc, orientation = _image_metadata(data)
+        if orientation == 1 or _animated_webp(data):
+            return _webp_with_metadata(data, icc, orientation)
+    scale = "scale='min(1600,iw)':-1"
+    for quality in (78, 63, 48):
+        result = _encode_webps(data, {1600: scale}, quality)[1600]
+        if len(result) <= IMAGE_TARGET:
+            return result
+    if len(result) <= IMAGE_MAX:
+        return result
     raise FeedError("could not compress an image under 1MB")
+
+
+def _animated_webp(data: bytes) -> bool:
+    return any(tag == b"ANIM" for tag, _ in _webp_chunks(data))
+
+
+def _responsive_webps(data: bytes) -> dict[int, bytes]:
+    size = webp_size(data)
+    if not size or _animated_webp(data):
+        return {}
+    scales = {width: f"scale={width}:-1" for width in (800, 1200) if width < size[0]}
+    if not scales:
+        return {}
+    return {
+        width: variant for width, variant in _encode_webps(data, scales, 78).items()
+        if len(variant) < len(data) and (webp_size(variant) or (0, 0))[0] == width
+    }
 
 
 def _which(name: str) -> str | None:
@@ -498,8 +684,8 @@ def _which(name: str) -> str | None:
     return which(name)
 
 
-def prepare_images(post: Post, fetch_bytes, previous: dict) -> tuple[dict[str, str], dict[str, bytes], str]:
-    """Return image_map (remote src -> local path), files to write, and body html with cover."""
+def prepare_images(post: Post, fetch_bytes, previous: dict) -> tuple[dict[str, str], dict[str, bytes], str, str]:
+    """Return remote-to-local paths, media bytes, body HTML with cover, and manifest JSON."""
     parser = _Images()
     parser.feed(post.body_html or "")
     ordered = []
@@ -523,7 +709,7 @@ def prepare_images(post: Post, fetch_bytes, previous: dict) -> tuple[dict[str, s
     files: dict[str, bytes] = {}
     manifest = {"images": []}
     old = previous.get("images") or []
-    old_by_hash = {item.get("source_sha256"): item.get("file") for item in old if isinstance(item, dict)}
+    old_by_hash = {item.get("source_sha256"): item for item in old if isinstance(item, dict)}
     for index, src in enumerate(ordered, start=1):
         tuned = tune_image_url(src)
         origin = origin_url(src)
@@ -537,21 +723,30 @@ def prepare_images(post: Post, fetch_bytes, previous: dict) -> tuple[dict[str, s
         ident_local[image_identity(src)] = local
         if src != tuned:
             image_map[tuned] = local
-        prior_name = old_by_hash.get(digest)
-        prior_path = None
-        if prior_name:
-            prior_path = post_dir_file(previous, prior_name)
-        if prior_path and prior_name == name and len(prior_path) <= IMAGE_MAX:
-            media = prior_path
-        else:
-            try:
-                media = gif_to_webm(data) if ext == "webm" else to_webp(data)
-            except FeedError as exc:
-                raise FeedError(f"{post.slug} {origin} ({len(data)} bytes, {data[:16]!r}): {exc}") from exc
+        prior = old_by_hash.get(digest, {})
+        prior_bytes = post_dir_file(previous, name) if prior.get("file") == name else None
+        reusable = prior_bytes is not None and 0 < len(prior_bytes) <= IMAGE_MAX
+        try:
+            if ext == "webm":
+                media = prior_bytes if reusable else gif_to_webm(data)
+            else:
+                # Older manifests predate metadata preservation and responsive WebPs.
+                media = to_webp(prior_bytes if reusable and "variants" in prior else data)
+        except FeedError as exc:
+            raise FeedError(f"{post.slug} {origin} ({len(data)} bytes, {data[:16]!r}): {exc}") from exc
         if len(media) > IMAGE_MAX:
             raise FeedError(f"{post.slug} image {name} is {len(media)} bytes")
         files[local] = media
-        manifest["images"].append({"file": name, "source_sha256": digest})
+        item = {"file": name, "source_sha256": digest}
+        if ext == "webp":
+            cached = prior.get("variants") if media == prior_bytes else None
+            if isinstance(cached, list) and all(post_dir_file(previous, variant) for variant in cached):
+                variants = {variant: post_dir_file(previous, variant) for variant in cached}
+            else:
+                variants = {f"{index:02d}-{width}w.webp": variant for width, variant in _responsive_webps(media).items()}
+            files.update({f"images/{variant}": content for variant, content in variants.items()})
+            item["variants"] = list(variants)
+        manifest["images"].append(item)
     for src in parser.found:
         ident = image_identity(src)
         if ident in ident_local:
@@ -592,8 +787,18 @@ def size_images(body: str, files: dict[str, bytes]) -> str:
         src, alt = match.group(1), match.group(2)
         size = webp_size(files.get(src, b""))
         dims = f' width="{size[0]}" height="{size[1]}"' if size else ""
+        responsive = ""
+        if size:
+            candidates = []
+            for width in (800, 1200):
+                variant = f"{src[:-len('.webp')]}-{width}w.webp"
+                if variant in files:
+                    candidates.append(f"{variant} {width}w")
+            if candidates:
+                candidates.append(f"{src} {size[0]}w")
+                responsive = f' srcset="{", ".join(candidates)}" sizes="(max-width: 600px) 100vw, 544px"'
         lazy = ' loading="lazy"' if count > 1 else ""
-        return f'<img src="{src}" alt="{alt}"{dims}{lazy} decoding="async">'
+        return f'<img src="{src}" alt="{alt}"{dims}{responsive}{lazy} decoding="async">'
 
     return IMG_TAG_RE.sub(repl, body)
 
@@ -641,9 +846,10 @@ def load_saved(path: Path) -> tuple[Post, int, dict]:
         except json.JSONDecodeError as exc:
             raise FeedError(f"{media} is not valid json") from exc
         for item in manifest.get("images") or []:
-            image = path.parent / "images" / item.get("file", "")
-            if image.exists():
-                file_bytes[item["file"]] = image.read_bytes()
+            for name in [item.get("file", ""), *item.get("variants", [])]:
+                image = path.parent / "images" / name
+                if image.is_file():
+                    file_bytes[name] = image.read_bytes()
     manifest["_bytes"] = file_bytes
     return post, len(plain_text(body)), manifest
 
@@ -698,8 +904,7 @@ def sibling_links(posts: list[Post], here: str) -> dict[str, str]:
 
 def article_template(writing_html: str) -> str:
     html = FEED_SCRIPT_RE.sub("", writing_html)
-    html = re.sub(r"<!-- agent:links -->.*?<!-- /agent:links -->\n?", "", html, flags=re.S)
-    html = re.sub(r"<!-- agent:ld -->.*?<!-- /agent:ld -->\n?", "", html, flags=re.S)
+    html = AGENT_BLOCK_RE.sub(lambda match: match[0] if match[1] == "social" else "", html)
     if "../../" in html:
         raise FeedError("writing/index.html already contains ../../ so it cannot be the article template")
     return html.replace("../", "../../")
@@ -709,7 +914,7 @@ def _set_attr_meta(html: str, attr: str, key: str, content: str) -> str:
     pattern = rf'<meta\s+{attr}="{re.escape(key)}"\s+content="[^"]*"\s*/?>'
     repl = f'<meta {attr}="{key}" content="{escape_attr(content)}">'
     if re.search(pattern, html):
-        return re.sub(pattern, repl, html, count=1)
+        return re.sub(pattern, lambda _: repl, html, count=1)
     return html.replace("</head>", repl + "\n</head>", 1)
 
 
@@ -719,13 +924,25 @@ def essay_cover(body: str, page_url: str) -> str | None:
     return page_url + match.group(1) if match else None
 
 
-def render_article(template: str, post: Post, body: str) -> str:
+def _custom_cover(root: Path, slug: str) -> Path | None:
+    prefix = f"essay-{slug}-"
+    candidates = (path for path in (root / "og").glob(f"{prefix}*.webp") if path.is_file())
+
+    def priority(path):
+        version = re.fullmatch(r"v([0-9]+)", path.stem.removeprefix(prefix))
+        return path.stem == prefix + "v1", int(version[1]) if version else 0, path.name
+
+    return max(candidates, key=priority, default=None)
+
+
+def render_article(template: str, post: Post, body: str, *, root: Path, files: dict[str, bytes]) -> str:
     local = f"{SITE}/writing/{post.slug}/"
     title = clean_text(post.title).strip()
     description = clean_text(post.description).strip()
     if len(description) > 180:
         description = description[:177].rsplit(" ", 1)[0] + "…"
-    html = template
+    html = AGENT_BLOCK_RE.sub("", template)
+    html = SOCIAL_TAG_RE.sub("", html)
     html = re.sub(r"<title>.*?</title>", f"<title>{escape_text(title)} · {escape_text('Guilherme Silva')}</title>", html, count=1, flags=re.S)
     html = _set_attr_meta(html, "name", "description", description)
     html = _set_attr_meta(html, "property", "og:title", title)
@@ -757,10 +974,52 @@ def render_article(template: str, post: Post, body: str) -> str:
             f'Originally published on <a href="{canonical}" target="_blank" rel="noopener">Binary Paths</a></p>\n'
             f'<article class="post">\n{body.strip()}\n</article>\n'
         )
-    html = re.sub(r"<main>.*?</main>", "<main>\n" + article + "</main>", html, count=1, flags=re.S)
+    html = re.sub(r"<main>.*?</main>", lambda _: "<main>\n" + article + "</main>", html, count=1, flags=re.S)
     cover = essay_cover(body, local)
+    dimensions = None
+    cover_alt = title
+    custom = _custom_cover(root, post.slug)
+    if custom:
+        cover = SITE + "/" + custom.relative_to(root).as_posix()
+        dimensions = (1200, 630)
+        saved_essay = root / "writing" / post.slug / "index.html"
+        if saved_essay.is_file():
+            saved_html = saved_essay.read_text(encoding="utf-8")
+            if unescape(meta_content(saved_html, "og:image", prop=True)) == cover:
+                cover_alt = unescape(meta_content(saved_html, "og:image:alt", prop=True)) or title
+    elif cover:
+        dimensions = webp_size(files.get(cover.removeprefix(local), b""))
+        match = re.search(r'<img src="images/[^"]+" alt="([^"]*)"', body)
+        if match and match[1].strip():
+            cover_alt = unescape(match[1])
+    article_cover = cover
+    if not cover:
+        cover = unescape(meta_content(template, "og:image", prop=True))
+        cover_alt = unescape(meta_content(template, "og:image:alt", prop=True)) or title
+        if cover.startswith(SITE + "/"):
+            fallback = root / cover.removeprefix(SITE + "/")
+            if fallback.is_file():
+                dimensions = webp_size(fallback.read_bytes())
+    social = [
+        "<!-- agent:social -->",
+        '<meta property="og:site_name" content="Guilherme Silva">',
+        '<meta property="og:locale" content="en_GB">',
+    ]
     if cover:
-        html = _set_attr_meta(html, "property", "og:image", cover)
+        social.append(f'<meta property="og:image" content="{escape_attr(cover)}">')
+    if dimensions:
+        social.extend([
+            f'<meta property="og:image:width" content="{dimensions[0]}">',
+            f'<meta property="og:image:height" content="{dimensions[1]}">',
+        ])
+    if cover and cover.endswith(".webp"):
+        social.append('<meta property="og:image:type" content="image/webp">')
+    if cover:
+        social.append(f'<meta property="og:image:alt" content="{escape_attr(cover_alt)}">')
+    social.append('<meta name="twitter:card" content="summary_large_image">')
+    if cover:
+        social.append(f'<meta name="twitter:image:alt" content="{escape_attr(cover_alt)}">')
+    social.append("<!-- /agent:social -->")
     ld = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -768,12 +1027,12 @@ def render_article(template: str, post: Post, body: str) -> str:
         "description": description,
         "datePublished": post.atom_time(),
         "author": {"@type": "Person", "name": "Guilherme Silva", "url": SITE + "/"},
-        "mainEntityOfPage": local,
+        "mainEntityOfPage": post.canonical,
         "url": local,
         "isBasedOn": post.canonical,
     }
-    if cover:
-        ld["image"] = cover
+    if article_cover:
+        ld["image"] = article_cover
     payload = json.dumps(ld, ensure_ascii=False, indent=2).replace("<", "\\u003c")
     block = "\n".join([
         links_block(Path("writing") / post.slug / "index.html"),
@@ -785,6 +1044,7 @@ def render_article(template: str, post: Post, body: str) -> str:
         f'<meta name="author" content="Guilherme Silva">',
         f'<meta name="mirror-kind" content="{post.kind}">',
         f'<meta name="mirror-id" content="{escape_attr(post.post_id)}">',
+        *social,
     ])
     html = html.replace("</head>", block + "\n</head>", 1)
     return html
@@ -839,7 +1099,7 @@ def render_posts(root: Path, posts: list[Post], render_slugs: set[str], saved: d
         else:
             files, manifest = {}, '{ "images": [] }\n'
             body = ""
-        html = render_article(template, post, body)
+        html = render_article(template, post, body, root=root, files=files)
         _scan(html, post.slug)
         folder = f"writing/{post.slug}"
         staged[f"{folder}/index.html"] = html
@@ -856,6 +1116,11 @@ def default_fetch_bytes(url: str) -> bytes:
     if not body:
         raise FeedError(f"image {url} was empty")
     return body
+
+
+def _essay_for_comparison(html: str) -> str:
+    # Essay metadata is owned by the mirror. The builder adds other blocks such as breadcrumbs.
+    return AGENT_BLOCK_RE.sub(lambda match: match[0] if match[1] in {"ld", "social"} else "", html)
 
 
 def apply_mirror(root: Path, posts: list[Post], *, fetch_bytes=default_fetch_bytes) -> list[str]:
@@ -883,8 +1148,13 @@ def apply_mirror(root: Path, posts: list[Post], *, fetch_bytes=default_fetch_byt
     for rel, content in staged.items():
         path = root / rel
         data = content if isinstance(content, bytes) else content.encode("utf-8")
-        if path.exists() and path.read_bytes() == data:
-            continue
+        if path.exists():
+            previous = path.read_bytes()
+            if previous == data:
+                continue
+            if rel.startswith("writing/") and rel.count("/") == 2 and rel.endswith("/index.html"):
+                if _essay_for_comparison(previous.decode("utf-8")) == _essay_for_comparison(data.decode("utf-8")):
+                    continue
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
         changed.append(rel)
