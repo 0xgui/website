@@ -114,16 +114,26 @@ def webp_size(data: bytes) -> tuple[int, int] | None:
 
 
 def _essay_card(root: Path, slug: str) -> Path | None:
-    """An on-disk card og/essay-<slug>-vN.webp, preferring -v1, else the highest version."""
-    found = sorted(
-        (root / "og").glob(f"essay-{slug}-v*.webp"),
-        key=lambda path: int(m.group(1)) if (m := re.search(r"-v(\d+)\.webp$", path.name)) else 0,
-    )
-    found = [path for path in found if re.fullmatch(rf"essay-{re.escape(slug)}-v\d+\.webp", path.name)]
+    """An on-disk card og/essay-<slug>-*.webp: -v1 first, then the highest -vN, then any other name (sorted)."""
+    prefix = f"essay-{slug}-"
+    # Skip cards of a longer slug that starts with this one (the-art vs the-art-of-juggling-life).
+    longer = [f"essay-{other.name}-" for other in (root / "writing").glob(f"{slug}-*") if other.is_dir()]
+    found = [
+        path for path in (root / "og").glob(f"{prefix}*.webp")
+        if path.is_file() and not any(path.name.startswith(other) for other in longer)
+    ]
     if not found:
         return None
-    first = root / "og" / f"essay-{slug}-v1.webp"
-    return first if first in found else found[-1]
+    versioned = {}
+    for path in found:
+        match = re.fullmatch(r"v(\d+)", path.name[len(prefix):-len(".webp")])
+        if match:
+            versioned[int(match.group(1))] = path
+    if 1 in versioned:
+        return versioned[1]
+    if versioned:
+        return versioned[max(versioned)]
+    return sorted(found)[0]
 
 
 def _existing_alt(document: str) -> str | None:
