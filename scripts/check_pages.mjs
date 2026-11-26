@@ -90,6 +90,7 @@ for (const [name, vp] of Object.entries(VIEWPORTS)) {
     report(`${name} click ${start} -> ${href.replace(BASE, '')}`, extra);
   }
 }
-ws.close(); chrome.kill(); rmSync(profile, {recursive: true, force: true});
+ws.close(); chrome.kill();
+try { rmSync(profile, {recursive: true, force: true, maxRetries: 5}) } catch {}  // Chrome may still be flushing its profile
 console.log(failed ? `${failed} of ${total} checks failed` : `all ${total} checks passed (${PAGES.length} pages, ${CLICKS.length} clicks, mobile + desktop)`);
 process.exit(failed ? 1 : 0);

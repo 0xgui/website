@@ -47,7 +47,7 @@ PERSON_ID = SITE + "/#person"
 # Link-preview cards (1200x630 WebP) made by scripts/og_cards.mjs. Page -> (file in og/, alt text).
 # Essays not listed keep their own cover image. Bump the -vN in both places when a card changes.
 CARDS = {
-    "index.html": ("home-v1.webp", "Guilherme Silva, engineering manager with robots on the side, beside an ink study of the SO-101 robotic arm"),
+    "index.html": ("home-v1.webp", "Guilherme Silva: building small robots from scratch and writing about engineering and physical AI, beside an ink study of the SO-101 robotic arm"),
     "about/index.html": ("about-v1.webp", "About Guilherme Silva: platform engineer turned robot tinkerer"),
     "work/index.html": ("work-v1.webp", "Where I’ve worked: Hitachi Digital, Deichmann, Mercedes-Benz and more"),
     "builds/index.html": ("builds-v1.webp", "Robots I’m building, beside an ink study of Pico"),

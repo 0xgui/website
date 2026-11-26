@@ -20,7 +20,7 @@ const ART = {
 
 // slug: output name; kicker: small caps line; title; sub: one line under the title; art: right-third study.
 export const CARDS = [
-  {slug: 'home', kicker: 'Engineering manager · robots on the side', title: 'Guilherme Silva', sub: 'Build logs, essays and talks', art: 'so101'},
+  {slug: 'home', kicker: 'Builds · Writing · Talks', title: 'Guilherme Silva', sub: 'Building small robots from scratch and writing about engineering and physical AI', art: 'so101'},
   {slug: 'about', kicker: 'About', title: 'Platform engineer turned robot tinkerer', sub: 'Guilherme Silva'},
   {slug: 'work', kicker: 'Work', title: 'Where I’ve worked', sub: 'Hitachi Digital, Deichmann, Mercedes-Benz and more'},
   {slug: 'builds', kicker: 'Builds', title: 'Robots I’m building', sub: 'An SO-101 arm and Pico, a self-righting robot', art: 'pico'},
