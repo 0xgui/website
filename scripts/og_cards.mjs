@@ -165,7 +165,7 @@ async function main() {
   const exited = new Promise(r => chrome.once('exit', r));
   chrome.kill();
   await Promise.race([exited, sleep(3000)]);
-  rmSync(profile, {recursive: true, force: true, maxRetries: 5});
+  try { rmSync(profile, {recursive: true, force: true, maxRetries: 5}) } catch {}  // Chrome may still be flushing its profile
 }
 
 main();
