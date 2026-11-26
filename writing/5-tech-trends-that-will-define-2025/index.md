@@ -412,7 +412,7 @@ We just need to understand that the present as it is will change. And it will ch
 
 In the meantime, let's see what happens.
 
-**The future is bright. **
+**The future is bright.**
 
 **We are in the best timeline.**
 
@@ -420,8 +420,8 @@ In the meantime, let's see what happens.
 
 ---
 
-### **
-**Until Next Time 😎
+###
+Until Next Time 😎
 
 Got thoughts? Questions? Just want to say hi? I'm all ears! You can find me on the professional network ([LinkedIn](https://www.linkedin.com/in/gssilva-link/)).
 

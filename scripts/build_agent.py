@@ -596,7 +596,6 @@ def outputs(root: Path) -> dict[str, str]:
         document = update_document(rel, original, root)
         updated_html[str(rel)] = document
         md = markdown_for(root, rel, document)
-        md_rel = rel.with_suffix(".md") if rel.name == "index.html" else rel
         # index.html -> index.md beside it
         md_rel = rel.parent / "index.md"
         updated_html[str(md_rel)] = md

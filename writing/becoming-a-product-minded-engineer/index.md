@@ -122,7 +122,7 @@ Product SWOT Analysis
 
 Feature Prioritization
 
-## **🧗‍♀️ **Overcoming Challenges
+## **🧗‍♀️** Overcoming Challenges
 
 You will not become a product-minded engineer the next day. It takes time. Especially if you work in an organization that isn't product-focused. 
 

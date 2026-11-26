@@ -51,9 +51,6 @@ def _parse_list(lines, index, indent):
     while index < len(lines) and lines[index][0] == indent and lines[index][1].startswith("- "):
         item = lines[index][1][2:]
         index += 1
-        if item.endswith(":") and not item[:-1].strip().endswith(":"):
-            # "- key:" with nested keys, or "- key: value" handled below
-            pass
         if ": " in item or item.endswith(":"):
             key, _, rest = item.partition(":")
             mapping = {}
@@ -279,7 +276,7 @@ def main(argv: list[str]) -> int:
     parser.add_argument("command", choices=["decide", "body"])
     parser.add_argument("--files", nargs="*", default=[])
     parser.add_argument("--body-file")
-    parser.add_argument("--ci-green", action="store_true", default=True)
+    parser.add_argument("--ci-green", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--summary", default="Mirror public Binary Paths essays onto the site.")
     args = parser.parse_args(argv)
     if args.command == "body":

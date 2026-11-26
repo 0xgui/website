@@ -40,7 +40,7 @@ You already know AI. You use it every day probably. But all the AI you interact 
 
 Physical AI is AI that acts in the real world. Through robots/machines. Through arms, legs, wheels, grippers, humanoids, drones, etc. It doesn’t just generate an answer or a cute cat image.
 
-It ***does something***** **in physical space.
+It ***does something*** in physical space.
 
 We’re talking about:
 
@@ -58,9 +58,9 @@ Agricultural bots harvesting crops autonomously
 
 And much much more.
 
-At first I really thought like everyone else that “Physical AI” was just another buzzword that someone invented with the word AI on it, just to sell more.** **
+At first I really thought like everyone else that “Physical AI” was just another buzzword that someone invented with the word AI on it, just to sell more.
 
-**But I was wrong. **
+**But I was wrong.**
 
 ![The Current Generation of Humanoid Robots (2025)](https://silvags.com/writing/physical-ai-is-here-and-im-building/images/03.webp)
 
