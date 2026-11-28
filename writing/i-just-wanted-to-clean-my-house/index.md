@@ -88,7 +88,7 @@ With that done, I had to reassemble the robot and that was a pain, not gonna lie
 
 Now that you can control your robot you can literally do things like change its voice, schedule times, lower the volume of the voice commands (which I did because the lady is annoying) and even control it like it’s an RC car!
 
-Driving the robot vacuum with Valetudo
+Video 6 in I just wanted to clean my house.
 
 [Media](https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/06.webm)
 

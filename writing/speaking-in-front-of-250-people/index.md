@@ -12,7 +12,7 @@ All valid questions for someone who is about to enter the spotlight.
 
 ---
 
-This September, I got the opportunity to speak at a conference. The CNCF KCD Porto. The first KCD ever there, organized alongside [Synvert xgeeks](https://xgeeks.com/).
+This September, I got the opportunity to speak at a conference. The CNCF KCD Porto. The first KCD ever in Portugal, organized alongside [Synvert xgeeks](https://xgeeks.com/).
 
 I got the opportunity to meet old friends from past companies and new friends from different ones.
 

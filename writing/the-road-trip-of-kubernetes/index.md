@@ -68,7 +68,7 @@ It's my meditation.
 
 ![](https://silvags.com/writing/the-road-trip-of-kubernetes/images/01.webp)
 
-*(me at the highest point of the trip)*
+*(me at the highest point of Portugal)*
 
 Just like a road trip, you don't want your Kubernetes journey to fail. So you will try to prepare for it and make it happen the best way you can.
 

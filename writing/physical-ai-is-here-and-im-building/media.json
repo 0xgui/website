@@ -2,7 +2,11 @@
   "images": [
     {
       "file": "01.webp",
-      "source_sha256": "b08d96d3bad4f69ba97400b892647a6a285fc5ab74a09a3fa970e77682f2b806"
+      "source_sha256": "b08d96d3bad4f69ba97400b892647a6a285fc5ab74a09a3fa970e77682f2b806",
+      "variants": [
+        "01-800w.webp",
+        "01-1200w.webp"
+      ]
     },
     {
       "file": "02.webm",
@@ -10,7 +14,11 @@
     },
     {
       "file": "03.webp",
-      "source_sha256": "1d37c34dac1af756b384e478cb7306ab8890bbe73e387d66035973a313c98aea"
+      "source_sha256": "1d37c34dac1af756b384e478cb7306ab8890bbe73e387d66035973a313c98aea",
+      "variants": [
+        "03-800w.webp",
+        "03-1200w.webp"
+      ]
     },
     {
       "file": "04.webm",
@@ -26,7 +34,11 @@
     },
     {
       "file": "07.webp",
-      "source_sha256": "b729109b17e16bbf93fa24f4cfbd8ad1717985ff15346e854de0af7317ac7637"
+      "source_sha256": "b729109b17e16bbf93fa24f4cfbd8ad1717985ff15346e854de0af7317ac7637",
+      "variants": [
+        "07-800w.webp",
+        "07-1200w.webp"
+      ]
     }
   ]
 }

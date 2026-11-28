@@ -260,10 +260,10 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
     "name": "Guilherme Silva",
     "url": "https://silvags.com/"
   },
-  "mainEntityOfPage": "https://silvags.com/writing/i-just-wanted-to-clean-my-house/",
+  "mainEntityOfPage": "https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house",
   "url": "https://silvags.com/writing/i-just-wanted-to-clean-my-house/",
   "isBasedOn": "https://binarypaths.substack.com/p/i-just-wanted-to-clean-my-house",
-  "image": "https://silvags.com/writing/i-just-wanted-to-clean-my-house/images/01.webp"
+  "image": "https://silvags.com/og/essay-i-just-wanted-to-clean-my-house-v1.webp"
 }
 </script>
 <!-- /agent:ld -->
@@ -339,7 +339,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <p>You see, Valetudo has a list of compatible robots that can use it and there are several ways to install it. Some robots you just use OTA (over the air updates) method requiring no disassembly nor attaching any cables and for others you literally have to take the entire robot apart until you reach the circuits to solder jump wires to the PCB board to get access to the bootloader.</p>
 <p>Guess which one I got.</p>
 <p>The S7 is the second kind. The method is called <a href="https://valetudo.cloud/pages/installation/roborock/#fel-rooting" target="_blank" rel="noopener">FEL rooting</a>, and the first step is "completely disassemble the robot," a phrase the documentation means with total sincerity. Top shell off. LiDAR turret off. Second shell off. Battery out. A dozen ribbon cables thinner than a fingernail, until you reach the mainboard at the very bottom, sitting under every other component like the last pringle in the can.</p>
-<figure><img src="images/01.webp" alt="" width="1600" height="2133" decoding="async"><figcaption>Disassembly process </figcaption>
+<figure><img src="images/01.webp" alt="" width="1600" height="2133" srcset="images/01-800w.webp 800w, images/01-1200w.webp 1200w, images/01.webp 1600w" sizes="(max-width: 600px) 100vw, 544px" decoding="async"><figcaption>Disassembly process </figcaption>
 </figure>
 <h2>Part 2: Hacking it</h2>
 <p>Once you reach the PCB you can see the TPA17 and GND SH1 pads on the board. The rooting process works by shorting the two at exactly the right moment. Neither is a port. Neither has a connector. They are bare metal pads about the size of a grain of rice, and the intended tool is your hand. </p>
@@ -349,21 +349,21 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 </figure>
 <p>I won't post all the necessary steps to reach the bootloader because that’s in the docs but this is the line that matters:</p>
 <p><em>“Press the power button for 3 seconds and keep the TPA17 connected to GND for 5 more seconds after that.”</em></p>
-<figure><img src="images/03.webp" alt="" width="1600" height="2133" loading="lazy" decoding="async"><figcaption>Jumper wire to connect TPA17 and GND(SH1)</figcaption>
+<figure><img src="images/03.webp" alt="" width="1600" height="2133" srcset="images/03-800w.webp 800w, images/03-1200w.webp 1200w, images/03.webp 1600w" sizes="(max-width: 600px) 100vw, 544px" loading="lazy" decoding="async"><figcaption>Jumper wire to connect TPA17 and GND(SH1)</figcaption>
 </figure>
 <p>Do it right, and the robot appears on your laptop’s USB bus as Allwinner Technology sunxi SoC OTG connector in FEL/flashing mode. </p>
-<figure><img src="images/04.webp" alt="" width="1600" height="1200" loading="lazy" decoding="async"><figcaption>Uploading the new firmware</figcaption>
+<figure><img src="images/04.webp" alt="" width="1600" height="1200" srcset="images/04-800w.webp 800w, images/04-1200w.webp 1200w, images/04.webp 1600w" sizes="(max-width: 600px) 100vw, 544px" loading="lazy" decoding="async"><figcaption>Uploading the new firmware</figcaption>
 </figure>
 <p>After rebooting several times and sending a lot of files between my laptop and the robot, if all went ok after the robot has rebooted, connect to the robot’s own Wi-Fi AP, wait for a minute or two and then open the Valetudo Web interface in your browser to connect the robot to your Wi-Fi network.</p>
 <p>For that, just browse to http://192.168.8.1, and voilá you are inside your robot.</p>
-<figure><img src="images/05.webp" alt="" width="919" height="853" loading="lazy" decoding="async"><figcaption>Valetudo Interface</figcaption>
+<figure><img src="images/05.webp" alt="" width="919" height="853" srcset="images/05-800w.webp 800w, images/05.webp 919w" sizes="(max-width: 600px) 100vw, 544px" loading="lazy" decoding="async"><figcaption>Valetudo Interface</figcaption>
 </figure>
 <p>This is the point where you have full control of your robot with no need for an app or a company telling you what to do.</p>
 <p>Now you control the robot, not the other way around.</p>
 <p>With that done, I had to reassemble the robot and that was a pain, not gonna lie.</p>
 <h2>Part 3: Valetudo, mas vale mesmo tudo! </h2>
 <p>Now that you can control your robot you can literally do things like change its voice, schedule times, lower the volume of the voice commands (which I did because the lady is annoying) and even control it like it’s an RC car!</p>
-<figure><video controls muted loop playsinline preload="none" width="480" height="854" aria-label="Driving the robot vacuum with Valetudo"><source data-src="images/06.webm" type="video/webm"></video></figure>
+<figure><video controls muted loop playsinline preload="none" width="480" height="854" aria-label="Video 6 in I just wanted to clean my house."><source data-src="images/06.webm" type="video/webm"></video></figure>
 <p>There a lot more things you can do now with Valetudo since you now have full control of your robot vacuum cleaner, but truth be told <strong>I just wanted to clean the office and that’s what I did next!</strong> </p>
 <h3><strong>Freedom to do what you want with your own stuff</strong></h3>
 <p>It seems that every day there is a new app and a new subscription service for you to pay to be able to access all the features that the hardware that you bought is capable of. It’s tiring. Why can’t we just fully use what we already paid for? Why do we need to be locked out from so many features on the software or hardware that we use? </p>

@@ -260,10 +260,10 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
     "name": "Guilherme Silva",
     "url": "https://silvags.com/"
   },
-  "mainEntityOfPage": "https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/",
+  "mainEntityOfPage": "https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses",
   "url": "https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/",
   "isBasedOn": "https://binarypaths.substack.com/p/i-built-a-tiny-robot-that-refuses",
-  "image": "https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/01.webp"
+  "image": "https://silvags.com/og/essay-i-built-a-tiny-robot-that-refuses-v1.webp"
 }
 </script>
 <!-- /agent:ld -->
@@ -326,7 +326,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <p>I had one of those.</p>
 <p>The “something cool”: a tiny robot that stands up. I knock it over, I let go, and it tries to get up by itself. Every time. I think that is cool. </p>
 <p>I also like learning more about robotics and a robot on the desk is a better way to do that than another tab of your web browser. </p>
-<figure><img src="images/01.webp" alt="" width="1600" height="2133" decoding="async"><figcaption>Pico.</figcaption>
+<figure><img src="images/01.webp" alt="" width="1600" height="2133" srcset="images/01-800w.webp 800w, images/01-1200w.webp 1200w, images/01.webp 1600w" sizes="(max-width: 600px) 100vw, 544px" decoding="async"><figcaption>Pico.</figcaption>
 </figure>
 <h2>The plan</h2>
 <p>It all started when I saw a maker called <em>HomeMadeGarbage</em> who built this tiny robot that would always get up. Always! I thought it was so cool and interesting that I had to make my own. </p>
@@ -338,7 +338,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <p>The plan:</p>
 <p>Print the foot. Print the arms. Screw the motors on. Plug the wires in. Flash the firmware.</p>
 <p>In my head, that was the plan.</p>
-<figure><video controls muted loop playsinline preload="none" width="464" height="832" aria-label="3D printing the first Pico parts"><source data-src="images/02.webm" type="video/webm"></video><figcaption>First parts being printed.</figcaption>
+<figure><video controls muted loop playsinline preload="none" width="464" height="832" aria-label="First parts being printed."><source data-src="images/02.webm" type="video/webm"></video><figcaption>First parts being printed.</figcaption>
 </figure>
 <h2>The plan is never straightforward</h2>
 <p><strong>First problem, assembly.</strong></p>
@@ -350,14 +350,14 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <p>When testing the robot, some wires got loose because of the movement and the general jankiness of it. Since it was the first prototype, I thought that for testing, duct tape and a bit of soldering was enough.</p>
 <p>I guess it was not.</p>
 <p>I stopped being a caveman and set the cables in a sturdier way.</p>
-<figure><img src="images/04.webp" alt="" width="1200" height="934" loading="lazy" decoding="async"><figcaption>Wires just got loose after some tests.</figcaption>
+<figure><img src="images/04.webp" alt="" width="1200" height="934" srcset="images/04-800w.webp 800w, images/04.webp 1200w" sizes="(max-width: 600px) 100vw, 544px" loading="lazy" decoding="async"><figcaption>Wires just got loose after some tests.</figcaption>
 </figure>
 <p><strong>Third problem, the arms were connected wrong.</strong></p>
 <p>Each motor has a signal wire, and that wire has to land on the right pin. The motor also has to turn the direction the program expects. Mine didn’t. Wrong pins. Wrong direction. A command that meant “move up” went down, and the robot threw itself at the table like it meant to.</p>
 <p>The code was fine. My wiring was not. </p>
 <p>So I sent one command, watched which arm moved, wrote it down, and sent another, until the arms agreed with the version on the code. <br><br>Thank god we have AI nowadays to help troubleshoot these things.<br></p>
 <p><strong>Fourth problem, the robot thought up was down.</strong></p>
-<figure><video controls muted loop playsinline preload="none" width="464" height="832" aria-label="How the grey cube affects Pico in simulation"><source data-src="images/05.webm" type="video/webm"></video><figcaption>That little grey cube’s position was the issue.</figcaption>
+<figure><video controls muted loop playsinline preload="none" width="464" height="832" aria-label="That little grey cube’s position was the issue."><source data-src="images/05.webm" type="video/webm"></video><figcaption>That little grey cube’s position was the issue.</figcaption>
 </figure>
 <p>Pico sitting flat on the desk, perfectly still, and the program was certain it was upside down. Every get-up attempt started from a lie.</p>
 <p>The tilt math. My board, the little grey cube (the brain of all of this) is mounted in a different orientation than the original build, and the formula was 180 degrees off. </p>
@@ -365,7 +365,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <p>But hey, at least it was moving! Progress!</p>
 <p>Patched the code and off it went.</p>
 <p><strong>Fifth problem, the USB port said no.</strong></p>
-<figure><video controls muted loop playsinline preload="none" width="464" height="824" aria-label="Pico underpowered over USB"><source data-src="images/06.webm" type="video/webm"></video><figcaption>USB Ports didn’t have enough power to handle the motors load.</figcaption>
+<figure><video controls muted loop playsinline preload="none" width="464" height="824" aria-label="USB Ports didn’t have enough power to handle the motors load."><source data-src="images/06.webm" type="video/webm"></video><figcaption>USB Ports didn’t have enough power to handle the motors load.</figcaption>
 </figure>
 <p>With both motors moving at the same time plus the development board draining energy, my USB ports just did not have enough juice to handle all the load when the load hit its peak.</p>
 <p>Solution? <br>Why won’t you just connect the battery and try it? <br><br>It worked. <br>(Thanks AI gods again)</p>
@@ -375,7 +375,7 @@ ul.marks.slide{--mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 <p>It never changed. I changed everything around it without realizing and because of that I needed to adapt the code to the way I built it.</p>
 <p>Hardware is hard! </p>
 <h2>It works. Rise!</h2>
-<figure><video controls muted loop playsinline preload="none" width="464" height="824" aria-label="Pico’s self-righting test"><source data-src="images/07.webm" type="video/webm"></video><figcaption>Happy little guy.</figcaption>
+<figure><video controls muted loop playsinline preload="none" width="464" height="824" aria-label="Happy little guy."><source data-src="images/07.webm" type="video/webm"></video><figcaption>Happy little guy.</figcaption>
 </figure>
 <p>Below is a video so you can hear the motors and see how it behaves:</p>
 <p>I knocked it over and over again.</p>

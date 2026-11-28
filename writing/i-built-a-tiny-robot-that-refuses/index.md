@@ -34,7 +34,7 @@ Print the foot. Print the arms. Screw the motors on. Plug the wires in. Flash th
 
 In my head, that was the plan.
 
-3D printing the first Pico parts
+First parts being printed.
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/02.webm)
 
@@ -76,7 +76,7 @@ Thank god we have AI nowadays to help troubleshoot these things.
 
 **Fourth problem, the robot thought up was down.**
 
-How the grey cube affects Pico in simulation
+That little grey cube’s position was the issue.
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/05.webm)
 
@@ -94,7 +94,7 @@ Patched the code and off it went.
 
 **Fifth problem, the USB port said no.**
 
-Pico underpowered over USB
+USB Ports didn’t have enough power to handle the motors load.
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/06.webm)
 
@@ -120,7 +120,7 @@ Hardware is hard!
 
 ## It works. Rise!
 
-Pico’s self-righting test
+Happy little guy.
 
 [Media](https://silvags.com/writing/i-built-a-tiny-robot-that-refuses/images/07.webm)
 
