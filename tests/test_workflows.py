@@ -67,6 +67,21 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("actions: write", text)
         self.assertNotIn("rss.silvags.com", text)
 
+    def test_mirror_workflow_gates_an_open_pr_not_a_merged_one(self):
+        text = _text("mirror-substack.yml")
+        # `gh pr view "$branch"` returns merged PRs for a reused branch.
+        self.assertNotIn('gh pr view "$branch"', text)
+        self.assertIn(
+            'gh pr list --head "$branch" --base "$base" --state open',
+            text,
+        )
+        self.assertIn(
+            'gh pr create --base "$base" --head "$branch" --title "$message" --body-file "$body_file"',
+            text,
+        )
+        self.assertIn('echo "opened=false"', text)
+        self.assertIn("steps.pr.outputs.opened == 'true'", text)
+
 
 if __name__ == "__main__":
     unittest.main()
